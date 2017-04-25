@@ -1,2 +1,0 @@
-# IntSys
-Intsys Projek
