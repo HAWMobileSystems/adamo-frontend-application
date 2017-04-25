@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Fortschrittskontrolle" name="Gantt Chart erstellen&#10;" isExecutable="false">
+    <bpmn2:extensionElements>
+      <camunda:properties>
+        <camunda:property name="IPIM_Val_TeamSize" value="7" />
+        <camunda:property name="IPIM_Val_hatFestPreis" value="false" />
+      </camunda:properties>
+    </bpmn2:extensionElements>
+    <bpmn2:task id="Task_0rknwwi" name="Eregebnisse der Abnahme dokumentieren&#10;">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_0ou7neu</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_09gm3f2</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task id="Task_1fwr8mg" name="Meilenstein abnehmen&#10;">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_1bpbqx7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0ou7neu</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_1bpbqx7" sourceRef="StartEvent_1" targetRef="Task_1fwr8mg">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:startEvent id="StartEvent_1" name="Fortschritts-&#10;kontrolle durchführen">
+      <bpmn2:outgoing>SequenceFlow_1bpbqx7</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_0ux1gez</bpmn2:outgoing>
+      <bpmn2:timerEventDefinition />
+    </bpmn2:startEvent>
+    <bpmn2:task id="Task_0qzle9e" name="ScrumBoard aktualisieren">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#60;=9 &#38;&#38; ![hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_0ux1gez</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0rksj00</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_0ux1gez" sourceRef="StartEvent_1" targetRef="Task_0qzle9e">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#60;=9 &#38;&#38; ![hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task id="Task_1bik4b5" name="Burndown Chart aktualisieren">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#60;=9 &#38;&#38; ![hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_0rksj00</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0kr7cpt</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_0rksj00" sourceRef="Task_0qzle9e" targetRef="Task_1bik4b5">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#60;=9 &#38;&#38; ![hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_0kr7cpt" sourceRef="Task_1bik4b5" targetRef="EndEvent_12jc4fh">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#60;=9 &#38;&#38; ![hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task id="Task_076ultk" name="Projektfortschritt im Gantt Chart dokumentieren">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_0bwfqhq</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1ocvt59</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:endEvent id="EndEvent_12jc4fh">
+      <bpmn2:incoming>SequenceFlow_0kr7cpt</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_1ocvt59</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition />
+    </bpmn2:endEvent>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_0momsfo" name="Meilenstein erreicht?">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_09gm3f2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_06uhqcq</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_1g2ze2w</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_1ocvt59" sourceRef="Task_076ultk" targetRef="EndEvent_12jc4fh">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_0u8betz">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_1g2ze2w</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_17he5sn</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0bwfqhq</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_0bwfqhq" sourceRef="ExclusiveGateway_0u8betz" targetRef="Task_076ultk">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_1g2ze2w" name="ja" sourceRef="ExclusiveGateway_0momsfo" targetRef="ExclusiveGateway_0u8betz">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task id="Task_0k8wz95" name="Verzögerung berechnen&#10;">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_06uhqcq</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_17he5sn</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_06uhqcq" name="nein" sourceRef="ExclusiveGateway_0momsfo" targetRef="Task_0k8wz95">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_17he5sn" sourceRef="Task_0k8wz95" targetRef="ExclusiveGateway_0u8betz">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_0ou7neu" sourceRef="Task_1fwr8mg" targetRef="Task_0rknwwi">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_CALC" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_09gm3f2" sourceRef="Task_0rknwwi" targetRef="ExclusiveGateway_0momsfo">
+      <bpmn2:extensionElements>
+        <camunda:properties>
+          <camunda:property name="IPIM_Calc" value="[TeamSize]&#62;9 || [hatFestpreis]" />
+        </camunda:properties>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Fortschrittskontrolle">
+      <bpmndi:BPMNShape id="Task_0rknwwi_di" bpmnElement="Task_0rknwwi">
+        <dc:Bounds x="411" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1fwr8mg_di" bpmnElement="Task_1fwr8mg">
+        <dc:Bounds x="264" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1bpbqx7_di" bpmnElement="SequenceFlow_1bpbqx7">
+        <di:waypoint xsi:type="dc:Point" x="172" y="274" />
+        <di:waypoint xsi:type="dc:Point" x="221" y="274" />
+        <di:waypoint xsi:type="dc:Point" x="221" y="150" />
+        <di:waypoint xsi:type="dc:Point" x="264" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="236" y="212" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_176ww4j_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="136" y="256" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="122" y="292" width="64" height="39" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0qzle9e_di" bpmnElement="Task_0qzle9e">
+        <dc:Bounds x="266" y="401" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ux1gez_di" bpmnElement="SequenceFlow_0ux1gez">
+        <di:waypoint xsi:type="dc:Point" x="172" y="274" />
+        <di:waypoint xsi:type="dc:Point" x="221" y="274" />
+        <di:waypoint xsi:type="dc:Point" x="221" y="441" />
+        <di:waypoint xsi:type="dc:Point" x="266" y="441" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="236" y="357.5" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1bik4b5_di" bpmnElement="Task_1bik4b5">
+        <dc:Bounds x="411" y="401" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0rksj00_di" bpmnElement="SequenceFlow_0rksj00">
+        <di:waypoint xsi:type="dc:Point" x="366" y="441" />
+        <di:waypoint xsi:type="dc:Point" x="411" y="441" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="389" y="416" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0kr7cpt_di" bpmnElement="SequenceFlow_0kr7cpt">
+        <di:waypoint xsi:type="dc:Point" x="511" y="441" />
+        <di:waypoint xsi:type="dc:Point" x="921" y="441" />
+        <di:waypoint xsi:type="dc:Point" x="921" y="278" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="716" y="426" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_076ultk_di" bpmnElement="Task_076ultk">
+        <dc:Bounds x="871" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1vcura3_di" bpmnElement="EndEvent_12jc4fh">
+        <dc:Bounds x="903" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="921" y="278" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0momsfo_di" bpmnElement="ExclusiveGateway_0momsfo" isMarkerVisible="true">
+        <dc:Bounds x="536" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="529" y="175" width="63" height="26" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ocvt59_di" bpmnElement="SequenceFlow_1ocvt59">
+        <di:waypoint xsi:type="dc:Point" x="921" y="190" />
+        <di:waypoint xsi:type="dc:Point" x="921" y="239" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="936" y="214.5" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0u8betz_di" bpmnElement="ExclusiveGateway_0u8betz" isMarkerVisible="true">
+        <dc:Bounds x="787" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="812" y="175" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0bwfqhq_di" bpmnElement="SequenceFlow_0bwfqhq">
+        <di:waypoint xsi:type="dc:Point" x="837" y="150" />
+        <di:waypoint xsi:type="dc:Point" x="871" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="854" y="135" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1g2ze2w_di" bpmnElement="SequenceFlow_1g2ze2w">
+        <di:waypoint xsi:type="dc:Point" x="561" y="125" />
+        <di:waypoint xsi:type="dc:Point" x="561" y="90" />
+        <di:waypoint xsi:type="dc:Point" x="812" y="90" />
+        <di:waypoint xsi:type="dc:Point" x="812" y="124" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="681" y="75" width="12" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_0k8wz95_di" bpmnElement="Task_0k8wz95">
+        <dc:Bounds x="654" y="173" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_06uhqcq_di" bpmnElement="SequenceFlow_06uhqcq">
+        <di:waypoint xsi:type="dc:Point" x="561" y="175" />
+        <di:waypoint xsi:type="dc:Point" x="561" y="213" />
+        <di:waypoint xsi:type="dc:Point" x="654" y="213" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="599" y="191" width="24" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_17he5sn_di" bpmnElement="SequenceFlow_17he5sn">
+        <di:waypoint xsi:type="dc:Point" x="754" y="213" />
+        <di:waypoint xsi:type="dc:Point" x="812" y="213" />
+        <di:waypoint xsi:type="dc:Point" x="812" y="175" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="783" y="198" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ou7neu_di" bpmnElement="SequenceFlow_0ou7neu">
+        <di:waypoint xsi:type="dc:Point" x="364" y="150" />
+        <di:waypoint xsi:type="dc:Point" x="411" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="388" y="135" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_09gm3f2_di" bpmnElement="SequenceFlow_09gm3f2">
+        <di:waypoint xsi:type="dc:Point" x="511" y="150" />
+        <di:waypoint xsi:type="dc:Point" x="536" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="524" y="125" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
