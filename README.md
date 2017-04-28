@@ -19,3 +19,10 @@ Dieses wird mit jQuery erweitert.
 
 Die weitere Entwicklung wird unter Einsatz aktuellerer Tools geschehen. 
 Eine Idee ist die Nutzung von TypeScript in Kombination mit React, um typsicheren Javascript Code zu schreiben und diesen in Komponenten zu gliedern.
+
+## React
+Benötigt:
+    Yarn
+    node-js
+
+ps. Developing with MacOs would work like charm.. (thanks to windows...)
