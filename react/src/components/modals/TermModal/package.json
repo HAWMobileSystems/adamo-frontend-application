@@ -1,0 +1,6 @@
+{
+  "name": "TermModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TermModal.js"
+}

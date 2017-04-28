@@ -1,0 +1,6 @@
+{
+  "name": "Bpmnio",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Bpmnio.js"
+}
