@@ -9,9 +9,9 @@
 
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Bpmnio.css';
+import s from './InputModal.css';
 
-class Bpmnio extends React.Component {
+class InputModal extends React.Component {
   /*<!-- The Modal -- Used for specifing Values -->*/
   render() {
     return (<div id="InputModal" class="modal">

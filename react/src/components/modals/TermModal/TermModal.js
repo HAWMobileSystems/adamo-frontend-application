@@ -9,13 +9,7 @@
 
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Bpmnio.css';
-import BpmnModeler from 'bpmn-js/lib/Modeler';
-
-import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-
+import s from './TermModal.css';
 
 class TermModal extends React.Component {
 
