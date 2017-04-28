@@ -37,4 +37,4 @@ class InputModal extends React.Component {
   }
 }
 
-export default withStyles(s)(Bpmnio);
+export default (InputModal);

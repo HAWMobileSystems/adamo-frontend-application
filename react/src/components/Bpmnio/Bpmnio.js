@@ -10,34 +10,32 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Bpmnio.css';
-import BpmnModeler from 'bpmn-js/lib/Modeler';
+ let BpmnModeler = require('bpmn-js/lib/Modeler');
 import TermModal from './../modals/TermModal';
-
 import InputModal from './../modals/InputModal';
-
 import VariableModal from './../modals/VariableModal';
 
-import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+// import propertiesPanelModule from 'bpmn-js-properties-panel';
+// import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+// import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 
 
 class Bpmnio extends React.Component {
-  _initBPMNIO() {
-    return bpmnModeler = new BpmnModeler({
-      container: canvas,
-      propertiesPanel: {
-        parent: '#js-properties-panel'
-      },
-      additionalModules: [
-        propertiesPanelModule,
-        propertiesProviderModule
-      ],
-      moddleExtensions: {
-        camunda: camundaModdleDescriptor
-      }
-    });
-  }
+  // _initBPMNIO() {
+  //   return bpmnModeler = new BpmnModeler({
+  //     container: canvas,
+  //     propertiesPanel: {
+  //       parent: '#js-properties-panel'
+  //     },
+  //     additionalModules: [
+  //       propertiesPanelModule,
+  //       propertiesProviderModule
+  //     ],
+  //     moddleExtensions: {
+  //       camunda: camundaModdleDescriptor
+  //     }
+  //   });
+  // }
   render() {
     return (
       <div className={s.root}>
@@ -98,14 +96,14 @@ class Bpmnio extends React.Component {
 
             <!--  <input style="position:absolute; top:2%; left:5%; width:7%;" type="button" value="Evaluate" id="IPIMButtonEval" >
           -->*/}
-          <input style="position:absolute; top:2%; left:12%; width:5%; display: none;" type="button" value="Reset" id="IPIMButtonReset" />
+          {/*<input style="position:absolute; top:2%; left:12%; width:5%; display: none;" type="button" value="Reset" id="IPIMButtonReset" />
           <input style="position:absolute; top:2%; left:18%; width:8%; display: none;" type="button" value="SetValues" id="IPIMButtonEval2" />
           <input style="position:absolute; top:2%; left:28%; width:8%; display: none;" type="button" value="Open File" id="OpenFile" />
           <input style="position:absolute; top:2%; left:28%; display: none;" type="file" id="files" name="files[]" />
           <input style="position:absolute; top:2%; left:38%; width:8%; display: none;" type="button" value="Toggle Terms" id="IPIMShowTerms" />
           <input style="position:absolute; top:2%; left:48%; width:8%; display: none;" type="button" value="Set Term" id="IPIMButtonTermSet" />
           <input style="position:absolute; top:2%; left:48%; width:8%; display: none;" type="button" value="Set Variables" id="IPIMButtonVariableSet" />
-          <input style="position:absolute; top:2%; left:48%; width:8%; display: none;" type="button" value="ToggleMenu" id="ToggleMenu" />
+          <input style="position:absolute; top:2%; left:48%; width:8%; display: none;" type="button" value="ToggleMenu" id="ToggleMenu" />*/}
 
           {/*<!-- The Modal -- Used for specifing Values -->*/}
           <TermModal />
@@ -121,4 +119,4 @@ class Bpmnio extends React.Component {
   }
 }
 
-export default withStyles(s)(Bpmnio);
+export default (Bpmnio);

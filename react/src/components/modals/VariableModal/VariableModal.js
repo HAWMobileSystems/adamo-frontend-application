@@ -31,7 +31,7 @@ class VariableModal extends React.Component {
             </form>
           </div>
           <div class="modal-footer">
-            <div style="float: left; width: 5vw">
+            <div>
               <input type="button" value=" Add Variable " id="IPIMButtonAddVariable" />
             </div>
             <input type="button" value=" Set " id="VariableModalButton" />
@@ -43,4 +43,4 @@ class VariableModal extends React.Component {
   }
 }
 
-export default withStyles(s)(Bpmnio);
+export default (VariableModal);

@@ -36,4 +36,6 @@ class TermModal extends React.Component {
   }
 }
 
-export default withStyles(s)(Bpmnio);
+export default (TermModal);
+
+// export default withStyles(s)(TermModal);
