@@ -1,4 +1,4 @@
-import {Custom} from './custom';
+import {Custom} from './../custom';
 
 var inherits = require('inherits');
 

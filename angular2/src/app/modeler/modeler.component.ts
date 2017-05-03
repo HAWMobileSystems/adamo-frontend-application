@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
 
-import { PaletteProvider } from './palette';
-import { CustomPropertiesProvider } from './props-provider';
+import { PaletteProvider } from './palette/palette';
+import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from "../bpmn-store/bpmn-store.service";
 
 const modeler = require("bpmn-js/lib/Modeler.js");

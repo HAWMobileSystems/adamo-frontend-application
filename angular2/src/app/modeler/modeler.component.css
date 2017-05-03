@@ -21,14 +21,14 @@
     /*outline: 2px solid brown;*/
 }
 
-@import './props.less';
 
 @import '~bpmn-js/assets/bpmn-font/css/bpmn.css';
 @import '~bpmn-js/assets/bpmn-font/css/bpmn-embedded.css';
 @import '~bpmn-js-properties-panel/styles/properties.less';
 @import '~diagram-js/assets/diagram-js.css';
 
-@import './palette.less';
+@import './properties/props.less';
+@import './palette/palette.less';
 /*<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">*/
 
 
