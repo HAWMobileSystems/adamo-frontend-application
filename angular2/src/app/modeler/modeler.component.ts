@@ -598,8 +598,6 @@ export class ModelerComponent implements OnInit {
         };
     }
 
-
-
     createNewDiagram() {
         let newDiagramXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" id=\"sample-diagram\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n  <bpmn2:process id=\"Process_1\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"Process_1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"412.0\" y=\"240.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
         this.openDiagram(newDiagramXML);
@@ -616,7 +614,6 @@ export class ModelerComponent implements OnInit {
                     .addClass('with-error');
 
                 container.find('.error pre').text(err.message);
-
                 console.error(err);
             } else {
                 container
@@ -625,5 +622,180 @@ export class ModelerComponent implements OnInit {
             }
         });
     }
+
+    //      saveSVG(done) {
+    //   bpmnModeler.saveSVG(done);
+    // }
+
+    //  saveDiagram(done) {
+
+    //   bpmnModeler.saveXML({ format: true }, function(err, xml) {
+    //     done(err, xml);
+    //   });
+// }
+
+//Schließt das Modal zur Termeingabe und uebernimmt diese
+//   $('#SetTermModal').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('TermModal');
+//       modal.style.display = "none";
+// 	  writeTermModalValues();
+//    });
+   
+//   //Schließt das Modal zur Termeingabe und uebernimmt diese
+//   $('#ToggleMenu').click(function(){
+// 	  resizePalette();
+//    });
+   
+//   //Schließt das Modal zur Termeingabe 
+//   $('#TermClose').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('TermModal');
+//       modal.style.display = "none";
+//    });
+   
+   
+   
+//   //Oeffnet das Modal zur Termeingabe
+//   $('#IPIMButtonTermSet').click(function(){
+//       if (lastDiagramXML == "") { window.alert("No Diagram loaded!");return;};
+//       // Get the modal
+//       var modal = document.getElementById('TermModal');
+//       modal.style.display = "block";
+// 	  document.getElementById('inputFieldTerm').value= "";
+// 	  FillTermModal();
+//    });
+
+//    //Schließt das Modal zur Werteingabe und startet Evaluation
+//   $('#EvalModal').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('InputModal');
+//       modal.style.display = "none";
+// 	  writeInputModalValues();
+// 	  evaluatProcess();
+//    });
+   
+   
+//    //Schließt das Modal zur Termeingabe 
+//   $('#VariableClose').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('VariableModal');
+//       modal.style.display = "none";
+//    });
+   
+//      //Oeffnet das Modal zur Variableneingabe
+//   $('#IPIMButtonVariableSet').click(function(){
+//       if (lastDiagramXML == "") { window.alert("No Diagram loaded!");return;};
+//       // Get the modal
+//       var modal = document.getElementById('VariableModal');
+//       modal.style.display = "block";
+// 	  ClearVariableModal();
+// 	  FillVariableModal();
+//    });
+
+//    //Schließt das Modal zur Variableneingabe
+//   $('#VariableModalButton').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('VariableModal');
+//       modal.style.display = "none";
+// 	  writeVariableModalValues();
+//    });
+   
+//    // Schließt das Modal zur Werteingabe
+//   $('#EvalClose').click(function(){
+// 	  // Get the modal
+//       var modal = document.getElementById('InputModal');
+//       modal.style.display = "none";
+//    });
+   
+//    $('#IPIMButtonAddVariable').click(function(){
+//        insertVariableField("newField","NewVariable",'variablefset')
+//     });
+   
+   
+//   //Oeffnet das Modal zur Werteingabe und fuegt Inhalt dynamisch hinzu
+//   $('#IPIMButtonEval2').click(function(){
+//       if (lastDiagramXML == "") { window.alert("No Diagram loaded!");return;};
+//       // Get the modal
+//       var modal = document.getElementById('InputModal');
+//       modal.style.display = "block";
+// 	  ClearInputModal();
+// 	  FillInputModal();
+//    });
+	
+//   //Führt die Evaluation aus --- depricated	
+//   $('#IPIMButtonEval').click(function(){
+//        evaluatProcess();
+//     });
+	
+//   //Toogled die Farbmarkierung für Elemente die einen Term haben
+//   $('#IPIMShowTerms').click(function(){
+//        if (termscolored == false){   toggleTermsColored();}
+// 	   else {toggleTermsNormal();}
+// 	   termscolored = !termscolored;
+//     });
+	
+//   //Setzt Diagramm auf letzten geladenen Zustand zurück
+//   $('#IPIMButtonReset').click(function(){
+//        resetDiagram();
+//     });
+	
+//   //Ruft den Dialog zum öffnene einer Datei auf
+//   $("#files").change(function() { 
+// 		OpenFileDiagram(); 
+// 	});	
+
+//   //Zwischenevent um von HTML Button auf FileOpen weiterzuleiten
+//   $('#OpenFile').click(function(){
+// 	   //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+// 	   document.getElementById('files').value = "";
+//        document.getElementById('files').click();
+//     });
+
+// 	//CHANGEMS --- Upload Button freischalten
+//   $('#IPIM-Load').addClass('active').attr({
+//         'href': 'data:application/bpmn20-xml;charset=UTF-8,',
+//         'download': 'Openfile'
+//       });
+
+//   $('#IPIM-Load').addClass('IPIM').attr({
+//         'href': 'data:application/bpmn20-xml;charset=UTF-8,',
+//         'download': 'Openfile'
+//       });
+	  
+//    $('#IPIM-Load').click(function(){
+// 	  //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+// 	   document.getElementById('files').value = "";
+//        document.getElementById('files').click();
+//     });
+	
+	
+// //ChangeMS .... alles bis hierher IPIM
+	
+//   $('#js-create-diagram').click(function(e) {
+//     e.stopPropagation();
+//     e.preventDefault();
+
+//     createNewDiagram();
+//   });
+
+// //   var downloadLink = $('#js-download-diagram');
+// //   var downloadSvgLink = $('#js-download-svg');
+  
+  
+
+//   $('.buttons a').click(function(e) {
+//     if (!$(this).is('.active')) {
+//       e.preventDefault();
+//       e.stopPropagation();
+//     }
+// 	//CHANGEMS Hier eingefügt damit Standard buttons a Event nicht feuert!
+// 	if ($(this).is('.IPIM')) {
+//       e.preventDefault();
+//       e.stopPropagation();
+//     }
+// 	//CHANGEMS Ende
+//   });
+
 }
 
