@@ -29,6 +29,7 @@ const propsPanelRef = '#js-properties-panel';
 
 @Component({
     templateUrl: './modeler.component.html',
+    //  styles: [ require('./modeler.component.css') ],
     styleUrls: ['./modeler.component.css'],
     providers: [BPMNStore]
 })
