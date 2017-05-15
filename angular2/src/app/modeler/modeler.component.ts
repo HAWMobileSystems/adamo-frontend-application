@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from "@angular/http";
+import { Http } from '@angular/http';
 
 import { PaletteProvider } from './palette';
 import { CustomPropertiesProvider } from './props-provider';
@@ -14,6 +14,9 @@ import { Observable, Subject } from "rxjs";
 import { ChangeDetectorRef } from '@angular/core';
 
 import * as $ from 'jquery';
+
+
+import { COMMANDS } from './../bpmn-store/commandstore.service'
 const customPaletteModule = {
     paletteProvider: ['type', PaletteProvider]
 };
@@ -31,22 +34,22 @@ const propsPanelRef = '#js-properties-panel';
     providers: [BPMNStore]
 })
 export class ModelerComponent implements OnInit {
-    modeler: any;
+    private modeler: any;
 
-    url: string;
-    _urls: Link[];
-    extraPaletteEntries: any;
-    commandQueue: Subject<any>;
+    private url: string;
+    // private urls: Link[];
+    private extraPaletteEntries: any;
+    private commandQueue: Subject<any>;
 
     constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
     }
 
     get urls(): Link[] {
-        return this._urls;
+        return this.urls;
     }
 
     set urls(u: Link[]) {
-        console.log("urls: ", u);
+        console.log('urls: ', u);
         this._urls = u;
         this.url = u[0].href;
     }
@@ -57,63 +60,64 @@ export class ModelerComponent implements OnInit {
         this.commandQueue
             .subscribe(cmd => console.log('Received command: ', cmd));
         this.commandQueue
-            .filter(cmd => 'extra' == cmd.action)
+            .filter(cmd => COMMANDS.EXTRA === cmd.action)
             .subscribe(cmd => console.log('Received SUPER SPECIAL EXTRA command: ', cmd));
 
         this.commandQueue
-            .filter(cmd => 'two-column' == cmd.action)
+            .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
             .do(cmd => {
-                console.log('two columns', cmd)
-                let palette = $('.djs-palette');
+                console.log(COMMANDS.TWO_COLUMN, cmd);
+                const palette = $('.djs-palette');
                 palette.hasClass('two-column')
-                    ? this.shrinkToOneColumn(palette) 
-                    : this.expandToTwoColumns(palette)
-                this.ref.detectChanges
+                    ? this.shrinkToOneColumn(palette)
+                    : this.expandToTwoColumns(palette);
+                this.ref.detectChanges;
             })
             .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
-        // .do(cmd =>  console.log('two-column', cmd))
+        this.commandQueue
+        .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
+        .do(cmd => {
+        })
 
         this.commandQueue
             .filter(cmd => 'save' == cmd.action)
             .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
-            .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)))
-            ;
-
+            .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml))) ;
 
         this.store.listDiagrams()
             .do(links => this.urls = links)
-            .do(() => console.log('Got links: ', this.urls))
+            // .do(() => console.log('Got links: ', this.urls))
             .flatMap(() => this.store.paletteEntries())
             .do(entries => this.extraPaletteEntries = entries)
-            .do(() => console.log('Got entries: ', this.extraPaletteEntries))
+            // .do(() => console.log('Got entries: ', this.extraPaletteEntries))
             .subscribe(() => this.createModeler());
 
     }
 
-    shrinkToOneColumn = (palette: JQuery) => {
+    private shrinkToOneColumn = (palette: JQuery) => {
         palette.removeClass('two-column');
-        palette.find('.fa-square').removeClass('fa-square').addClass('fa-th-large')
+        palette.find('.fa-square').removeClass('fa-square').addClass('fa-th-large');
     }
 
-    expandToTwoColumns(palette: JQuery) {
-        palette.addClass('two-column')
-        palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square')
+    private expandToTwoColumns(palette: JQuery) {
+        palette.addClass('two-column');
+        palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square');
     }
 
-    createModeler() {
-        console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
+    private createModeler() {
+        // console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
         this.modeler = new modeler({
             container: containerRef,
             propertiesPanel: {
                 parent: propsPanelRef
             },
             additionalModules: [
-                { 'extraPaletteEntries': ['type', () => this.extraPaletteEntries] },
-                { 'commandQueue': ['type', () => this.commandQueue] },
+                { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
+                { commandQueue: ['type', () => this.commandQueue] },
                 propertiesPanelModule,
                 propertiesProviderModule,
                 customPropertiesProviderModule,
-                customPaletteModule,
+                customPaletteModule
             ],
             moddleExtensions: {
                 ne: CustomModdle
@@ -125,9 +129,9 @@ export class ModelerComponent implements OnInit {
         this.loadBPMN();
     }
 
-    loadBPMN() {
-        console.log('load', this.url, this.store);
-        var canvas = this.modeler.get('canvas');
+    private loadBPMN() {
+        // console.log('load', this.url, this.store);
+        const canvas = this.modeler.get('canvas');
         this.http.get(this.url)
             .map(response => response.text())
             .map(data => this.modeler.importXML(data, this.handleError))
@@ -135,15 +139,15 @@ export class ModelerComponent implements OnInit {
             ;
     }
 
-    postLoad() {
-        var canvas = this.modeler.get('canvas');
+    private postLoad() {
+        const canvas = this.modeler.get('canvas');
         canvas.zoom('fit-viewport');
     }
 
-    handleError(err: any) {
-        if (err)
+    private handleError(err: any) {
+        if (err) {
             console.log('error rendering', err);
+        }
     }
 
 }
-
