@@ -16,7 +16,7 @@ export class BPMNStore {
     constructor(private http: Http) {
     }
 
-    private listDiagrams(): Observable<Link[]> {
+    public listDiagrams(): Observable<Link[]> {
         // console.log('listDiagrams');
         // This could be async and coming from a server:
         return Observable.of([
@@ -25,7 +25,7 @@ export class BPMNStore {
         ]).delay(2000);
     }
 
-    private paletteEntries(): Observable<any> {
+    public paletteEntries(): Observable<any> {
         // This could be async and coming from a server:
         return Observable.of({
             [COMMANDS.SAVE] : {

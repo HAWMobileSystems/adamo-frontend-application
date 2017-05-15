@@ -3,18 +3,18 @@ import { Http } from '@angular/http';
 
 import { PaletteProvider } from './palette';
 import { CustomPropertiesProvider } from './props-provider';
-import { BPMNStore, Link } from "../bpmn-store/bpmn-store.service";
+import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 
-const modeler = require("bpmn-js/lib/Modeler.js");
+// tslint:disable-next-line:no-require-imports
+const modeler = require('bpmn-js/lib/Modeler.js');
 const propertiesPanelModule = require('bpmn-js-properties-panel');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
 
 import { CustomModdle } from './custom-moddle';
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 
 import * as $ from 'jquery';
-
 
 import { COMMANDS } from './../bpmn-store/commandstore.service'
 const customPaletteModule = {
@@ -37,7 +37,7 @@ export class ModelerComponent implements OnInit {
     private modeler: any;
 
     private url: string;
-    // private urls: Link[];
+    private _urls: Link[];
     private extraPaletteEntries: any;
     private commandQueue: Subject<any>;
 
@@ -54,8 +54,7 @@ export class ModelerComponent implements OnInit {
         this.url = u[0].href;
     }
 
-
-    ngOnInit() {
+    public ngOnInit() {
         this.commandQueue = new Subject();
         this.commandQueue
             .subscribe(cmd => console.log('Received command: ', cmd));
@@ -66,7 +65,7 @@ export class ModelerComponent implements OnInit {
         this.commandQueue
             .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
             .do(cmd => {
-                console.log(COMMANDS.TWO_COLUMN, cmd);
+                // console.log(COMMANDS.TWO_COLUMN, cmd);
                 const palette = $('.djs-palette');
                 palette.hasClass('two-column')
                     ? this.shrinkToOneColumn(palette)
@@ -75,14 +74,31 @@ export class ModelerComponent implements OnInit {
             })
             .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
         this.commandQueue
-        .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
-        .do(cmd => {
-        })
+            .filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
+            .do(cmd => {
+                // TODO
+            });
 
         this.commandQueue
-            .filter(cmd => 'save' == cmd.action)
+            .filter(cmd => COMMANDS.SET_IPIM_VALUES_EVALUATE === cmd.action)
+            .do(cmd => {
+                // TODO
+            });
+        this.commandQueue
+            .filter(cmd => COMMANDS.HIGHLIGHT === cmd.action)
+            .do(cmd => {
+                // TODO
+            });
+        this.commandQueue
+            .filter(cmd => COMMANDS.EXTRA === cmd.action)
+            .do(cmd => {
+                // TODO
+            });
+
+        this.commandQueue
+            .filter(cmd => COMMANDS.SAVE === cmd.action)
             .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
-            .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml))) ;
+            .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
 
         this.store.listDiagrams()
             .do(links => this.urls = links)
@@ -121,7 +137,7 @@ export class ModelerComponent implements OnInit {
             ],
             moddleExtensions: {
                 ne: CustomModdle
-            },
+            }
         });
 
         // Start with an empty diagram:
