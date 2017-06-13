@@ -28,12 +28,20 @@ export class BPMNStore {
     public paletteEntries(): Observable<any> {
         // This could be async and coming from a server:
         return Observable.of({
-            [COMMANDS.SAVE] : {
+            [COMMANDS.TWO_COLUMN] : {
                 group: 'row',
                 className: ['fa-th-large', 'fa'],
-                title: 'Multi Row',
+                title: COMMANDS.TWO_COLUMN,
                 action: {
                     click: () => console.log('two-column')
+                }
+            },
+            [COMMANDS.SAVE] : {
+                group: 'row',
+                className: ['fa-save', 'fa'],
+                title: COMMANDS.SAVE,
+                action: {
+                    click: () => console.log('save')
                 }
             },
             [COMMANDS.SET_IPIM_VALUES]: {
@@ -47,7 +55,7 @@ export class BPMNStore {
              [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
                 className: ['fa-cogs', 'fa'],
-                title: 'Multi Row',
+                title: COMMANDS.SET_IPIM_VALUES_EVALUATE,
                 action: {
                     click: () => console.log('two-column')
                 }
@@ -55,7 +63,7 @@ export class BPMNStore {
             [COMMANDS.RESET]: {
                 group: 'ipim',
                 className: ['fa-undo', 'fa'],
-                title: 'Multi Row',
+                title: COMMANDS.RESET,
                 action: {
                     click: () => console.log('two-column')
                 }
@@ -63,7 +71,7 @@ export class BPMNStore {
             [COMMANDS.SET_TERM]: {
                 group: 'ipim',
                 className: ['fa-tasks', 'fa'],
-                title: 'Multi Row',
+                title: COMMANDS.SET_TERM,
                 action: {
                     click: () => console.log('two-column')
                 }
@@ -71,7 +79,7 @@ export class BPMNStore {
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
                 className: ['fa-lightbulb-o', 'fa'],
-                title: 'Multi Row',
+                title:  COMMANDS.HIGHLIGHT,
                 action: {
                     click: () => console.log('two-column')
                 }
