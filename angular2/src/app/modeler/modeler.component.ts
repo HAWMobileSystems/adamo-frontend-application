@@ -16,8 +16,6 @@ const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/
 import { CustomModdle } from './custom-moddle';
 import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
-
-
 import * as $ from 'jquery';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
@@ -48,15 +46,14 @@ export class ModelerComponent implements OnInit {
   private commandQueue: Subject<any>;
   private container: any = $('#js-drop-zone');
 
-  @ViewChild('myFirstModal')
-  private modal1: ModalComponent;
-  @ViewChild('mySecondModal')
-  private modal22: ModalComponent;
+  @ViewChild('variableModal')
+  private variableModal: ModalComponent;
+  @ViewChild('inputModal')
+  private inputModal: ModalComponent;
   @ViewChild('termModal')
   private termModal: ModalComponent;
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
-  }
+  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {}
 
   get urls(): Link[] {
     return this._urls;
@@ -69,87 +66,60 @@ export class ModelerComponent implements OnInit {
   }
 
   // Extract the following to the separate controler
-  public openTermModal() {
+  public openTermModal = () => {
     this.termModal.open();
   }
 
-  public closeTermController() {
+  public openInputModal = () => {
+    this.inputModal.open();
+  }
+  public openVariableModal = () => {
+    this.variableModal.open();
+  }
+
+  public closeTermController = () => {
     this.termModal.close();
   }
 
+  private setIPIMValues = () => {
+    this.inputModal.open();
+    // TODO
+  }
+
+  private setIPIMValuesAndEvaluate = () => {
+    console.log('setIPIMValuesAndEvaluate');
+    this.variableModal.open();
+  }
+
+  private setTerm = () => {
+    this.termModal.open();
+  }
+
+  private expandToTwoColumns = (palette: JQuery) => {
+    palette.addClass('two-column');
+    palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square');
+  }
+  private shrinkToOneColumn = (palette: JQuery) => {
+    palette.removeClass('two-column');
+    palette.find('.fa-square').removeClass('fa-square').addClass('fa-th-large');
+  }
+
+  private handleTwoColumnToggleClick = () => {
+    const palette = $('.djs-palette');
+    palette.hasClass('two-column')
+      ? this.shrinkToOneColumn(palette)
+      : this.expandToTwoColumns(palette);
+  }
+
+  private funcMap: any = {
+    [COMMANDS.SET_IPIM_VALUES]: this.setIPIMValues,
+    [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.setIPIMValuesAndEvaluate,
+    [COMMANDS.SET_TERM]: this.setTerm,
+    [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick
+  };
+
   public ngOnInit() {
     this.commandQueue = new Subject();
-    this.commandQueue
-      .subscribe(cmd => console.log('Received command: ', cmd));
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.EXTRA === cmd.action)
-    //   .subscribe(cmd => console.log('Received SUPER SPECIAL EXTRA command: ', cmd));
-
-    this.commandQueue
-      .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
-      .do(cmd => {
-        const palette = $('.djs-palette');
-        palette.hasClass('two-column')
-          ? this.shrinkToOneColumn(palette)
-          : this.expandToTwoColumns(palette);
-          this.openTermModal();
-        this.ref.detectChanges;
-      })
-      .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
-
-    this.commandQueue
-      .filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
-      .do(cmd => {
-        console.log('open modal');
-        this.openTermModal();
-
-        console.log('opened modal');
-        // if (this.lastDiagramXML === '') {
-        //   window.alert('No Diagram loaded!');
-        //   return;
-
-        // }
-        // // Get the modal
-        // const modal = document.getElementById('InputModal');
-        // modal.style.display = 'block';
-        // this.ClearInputModal();
-        // this.FillInputModal();
-        // TODO
-      })
-      .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
-
-    this.commandQueue
-      .filter(cmd => COMMANDS.SET_IPIM_VALUES_EVALUATE === cmd.action)
-      .do(cmd => {
-        this.evaluateProcess();
-      });
-    this.commandQueue
-      .filter(cmd => COMMANDS.HIGHLIGHT === cmd.action)
-      .do(cmd => {
-
-        this.termsColored
-          ? this.toggleTermsColored()
-          : this.toggleTermsNormal();
-
-        this.termsColored = !this.termsColored;
-      });
-    this.commandQueue
-      .filter(cmd => COMMANDS.RESET === cmd.action)
-      .do(cmd => {
-        this.resetDiagram();
-      }
-      );
-    this.commandQueue
-      .filter(cmd => COMMANDS.EXTRA === cmd.action)
-      .do(cmd => {
-        // TODO
-      });
-
-    this.commandQueue
-      .filter(cmd => COMMANDS.SAVE === cmd.action)
-      .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
-      .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
-
     this.store.listDiagrams()
       .do(links => this.urls = links)
       // .do(() => console.log('Got links: ', this.urls))
@@ -157,8 +127,88 @@ export class ModelerComponent implements OnInit {
       .do(entries => this.extraPaletteEntries = entries)
       // .do(() => console.log('Got entries: ', this.extraPaletteEntries))
       .subscribe(() => this.createModeler());
+    this.commandQueue
+      .subscribe(cmd => {
+        const command = COMMANDS[cmd.action];
+        const func = this.funcMap[cmd.action];
+        if(func) {
+          func();
+        }
+      });
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.EXTRA === cmd.action)
+    //   .subscribe(cmd => console.log('Received SUPER SPECIAL EXTRA command: ', cmd));
 
+    // this.commandQueue.filter(cmd => this.funcMap.hasOwnProperty(cmd)).do(cmd => this.funcMap[cmd]);
+
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
+    //   .do(cmd => {
+    //     c
+    //   })
+    //   .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
+
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
+    //   .do(cmd => {
+    //     console.log('open modal');
+    //     this.openTermModal();
+
+    //     console.log('opened modal');
+    //     // if (this.lastDiagramXML === '') {
+    //     //   window.alert('No Diagram loaded!');
+    //     //   return;
+
+    //     // }
+    //     // // Get the modal
+    //     // const modal = document.getElementById('InputModal');
+    //     // modal.style.display = 'block';
+    //     // this.ClearInputModal();
+    //     // this.FillInputModal();
+    //     // TODO
+    //   })
+    //   .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
+
+
+
+    // this.commandQueue.filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
+    //   .do(cmd => {
+    //     this.openVariableModal();
+    //   });
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.SET_IPIM_VALUES_EVALUATE === cmd.action)
+    //   .do(cmd => {
+    //     this.openVariableModal();
+    //     this.evaluateProcess();
+    //   });
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.HIGHLIGHT === cmd.action)
+    //   .do(cmd => {
+
+    //     this.termsColored
+    //       ? this.toggleTermsColored()
+    //       : this.toggleTermsNormal();
+
+    //     this.termsColored = !this.termsColored;
+    //   });
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.RESET === cmd.action)
+    //   .do(cmd => {
+    //     this.resetDiagram();
+    //   }
+    //   );
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.EXTRA === cmd.action)
+    //   .do(cmd => {
+    //     // TODO
+    //   });
+
+    // this.commandQueue
+    //   .filter(cmd => COMMANDS.SAVE === cmd.action)
+    //   .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
+    //   .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
   }
+
 
   private resetDiagram() {
     if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
@@ -166,7 +216,6 @@ export class ModelerComponent implements OnInit {
   }
 
   private toggleTermsNormal() {
-
     const elementRegistry = modeler.get('elementRegistry');
     const modeling = modeler.get('modeling');
 
@@ -194,16 +243,6 @@ export class ModelerComponent implements OnInit {
           .addClass('with-diagram');
       }
     });
-  }
-
-  private shrinkToOneColumn = (palette: JQuery) => {
-    palette.removeClass('two-column');
-    palette.find('.fa-square').removeClass('fa-square').addClass('fa-th-large');
-  }
-
-  private expandToTwoColumns(palette: JQuery) {
-    palette.addClass('two-column');
-    palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square');
   }
 
   private createModeler() {
