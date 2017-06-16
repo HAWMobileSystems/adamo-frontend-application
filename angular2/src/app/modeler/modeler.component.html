@@ -14,25 +14,27 @@
     </modal-header>
     <modal-body>
 
-        {{this.loadVariableModalValues()}}
-        	<fieldset id="inputfset"/>
+        this.loadVariableModalValues()
+        	<fieldset id="inputfset">
+                </fieldset>
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
         <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
     </modal-footer>
 </modal>
-<modal #inputModal>
+<modal #inputModal id="inputModal">
     <modal-header>
         <h4 class="modal-title">IPIM Evaluation!</h4>
     </modal-header>
     <modal-body>
-        {{this.loadInputModalValues()}}
+        this.loadInputModalValues()
         ?? dynamic load values
-       	<fieldset id="inputfset"/>
+       	<fieldset id="inputfset">
+       	</fieldset>
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.inputModalEvaluation()">Evaluate</button>
+        <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
     </modal-footer>
 </modal>
 

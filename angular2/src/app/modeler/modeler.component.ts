@@ -53,7 +53,7 @@ export class ModelerComponent implements OnInit {
   @ViewChild('termModal')
   private termModal: ModalComponent;
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {}
+  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) { }
 
   get urls(): Link[] {
     return this._urls;
@@ -80,21 +80,6 @@ export class ModelerComponent implements OnInit {
   public closeTermController = () => {
     this.termModal.close();
   }
-
-  private setIPIMValues = () => {
-    this.inputModal.open();
-    // TODO
-  }
-
-  private setIPIMValuesAndEvaluate = () => {
-    console.log('setIPIMValuesAndEvaluate');
-    this.variableModal.open();
-  }
-
-  private setTerm = () => {
-    this.termModal.open();
-  }
-
   private expandToTwoColumns = (palette: JQuery) => {
     palette.addClass('two-column');
     palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square');
@@ -111,10 +96,18 @@ export class ModelerComponent implements OnInit {
       : this.expandToTwoColumns(palette);
   }
 
+  private highlightTerms = () => {
+    this.termsColored
+      ? this.toggleTermsColored()
+      : this.toggleTermsNormal();
+    this.termsColored = !this.termsColored;
+  }
   private funcMap: any = {
-    [COMMANDS.SET_IPIM_VALUES]: this.setIPIMValues,
-    [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.setIPIMValuesAndEvaluate,
-    [COMMANDS.SET_TERM]: this.setTerm,
+    [COMMANDS.SET_IPIM_VALUES]: this.openInputModal,
+    [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openVariableModal,
+    [COMMANDS.SET_TERM]: this.openTermModal,
+    [COMMANDS.HIGHLIGHT]: this.highlightTerms,
+    [COMMANDS.RESET]: this.resetDiagram,
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick
   };
 
@@ -131,22 +124,10 @@ export class ModelerComponent implements OnInit {
       .subscribe(cmd => {
         const command = COMMANDS[cmd.action];
         const func = this.funcMap[cmd.action];
-        if(func) {
+        if (func) {
           func();
         }
       });
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.EXTRA === cmd.action)
-    //   .subscribe(cmd => console.log('Received SUPER SPECIAL EXTRA command: ', cmd));
-
-    // this.commandQueue.filter(cmd => this.funcMap.hasOwnProperty(cmd)).do(cmd => this.funcMap[cmd]);
-
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.TWO_COLUMN === cmd.action)
-    //   .do(cmd => {
-    //     c
-    //   })
-    //   .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
 
     // this.commandQueue
     //   .filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
@@ -171,36 +152,7 @@ export class ModelerComponent implements OnInit {
 
 
 
-    // this.commandQueue.filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
-    //   .do(cmd => {
-    //     this.openVariableModal();
-    //   });
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.SET_IPIM_VALUES_EVALUATE === cmd.action)
-    //   .do(cmd => {
-    //     this.openVariableModal();
     //     this.evaluateProcess();
-    //   });
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.HIGHLIGHT === cmd.action)
-    //   .do(cmd => {
-
-    //     this.termsColored
-    //       ? this.toggleTermsColored()
-    //       : this.toggleTermsNormal();
-
-    //     this.termsColored = !this.termsColored;
-    //   });
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.RESET === cmd.action)
-    //   .do(cmd => {
-    //     this.resetDiagram();
-    //   }
-    //   );
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.EXTRA === cmd.action)
-    //   .do(cmd => {
-    //     // TODO
     //   });
 
     // this.commandQueue

@@ -19,8 +19,12 @@ export class BPMNStore {
     public listDiagrams(): Observable<Link[]> {
         // console.log('listDiagrams');
         // This could be async and coming from a server:
+
+        // TODO: async read from folder via fs read async
         return Observable.of([
+            new Link('/diagrams/scrum.bpmn'),
             new Link('/diagrams/initial.bpmn'),
+            new Link('/diagrams/initial2.bpmn'),
             new Link('/diagrams/pizza-collaboration.bpmn')
         ]).delay(2000);
     }
