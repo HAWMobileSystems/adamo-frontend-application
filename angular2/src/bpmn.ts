@@ -1,5 +1,6 @@
-import '../public/diagrams/pizza-collaboration.bpmn';
-import '../public/diagrams/initial.bpmn';
+// TODO FIX ME: to import dynamically
+import '../public/diagrams/scrum.bpmn';
+// import '../public/diagrams/initial.bpmn';
 
 import 'bpmn-js/lib/Modeler';
 

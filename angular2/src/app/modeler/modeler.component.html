@@ -1,16 +1,55 @@
+<h1>Modeler / editor</h1>
+<select [(ngModel)]="url">
+    <option *ngFor="let url of urls" value="{{url.href}}">{{url.text}}</option>
+</select>
+<button (click)="loadBPMN()">Load BPMN-XML</button>
 <div id="js-drop-zone" class="with-diagram modeler">
-    <div class="page-header">
-        <select [(ngModel)]="url">
-            <option *ngFor="let url of urls" value="{{url.href}}">{{url.text}}</option>
-        </select>
-        <button (click)="loadBPMN()">Load BPMN-XML</button>
-    </div>
-    <div id="js-canvas" class="canvas .section-to-print">
-        <a class="ipim-link" href="http://ipim.institue" target="_blank" title="Powered by IPIM">
-            <img class="ipim-logo" src="./../../../public/images/ipim-logo.png" alt="IPIM Logo" />
-        </a>
-    </div>
-    <div id="js-properties-panel" class="properties">
-    </div>
-
+    <div id="js-canvas" class="canvas .section-to-print"></div>
+    <div id="js-properties-panel" class="properties"></div>
 </div>
+<modal #variableModal>
+
+    <modal-header>
+        <h4 class="modal-title">IPIM Variables!</h4>
+    </modal-header>
+    <modal-body>
+
+        this.loadVariableModalValues()
+        	<fieldset id="inputfset">
+                </fieldset>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+    </modal-footer>
+</modal>
+<modal #inputModal id="inputModal">
+    <modal-header>
+        <h4 class="modal-title">IPIM Evaluation!</h4>
+    </modal-header>
+    <modal-body>
+        this.loadInputModalValues()
+        ?? dynamic load values
+       	<fieldset id="inputfset">
+       	</fieldset>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
+    </modal-footer>
+</modal>
+
+<modal #termModal>
+    <modal-header>
+        <h4 class="modal-title">TermModal!</h4>
+    </modal-header>
+    <modal-body>
+        <div class="form-group">
+            <label for="term">Insert new Term for all Elements</label>
+            <input type="text" class="form-control" required [(ngModel)]="this.termModal.term" name="term" id="term">
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="this.termModalClose()">Ok</button>
+    </modal-footer>
+</modal>
