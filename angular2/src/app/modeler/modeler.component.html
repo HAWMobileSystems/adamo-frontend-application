@@ -2,18 +2,20 @@
 <select [(ngModel)]="url">
     <option *ngFor="let url of urls" value="{{url.href}}">{{url.text}}</option>
 </select>
-<button (click)="loadBPMN()">Load BPMN-XML</button>
+<button (click)="loadBPMN()">Load BPMN-XML</button> 
+<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />
+
+<input type="file" (change)="openFileDiagram()">
 <div id="js-drop-zone" class="with-diagram modeler">
     <div id="js-canvas" class="canvas .section-to-print"></div>
     <div id="js-properties-panel" class="properties"></div>
 </div>
-<modal #variableModal>
 
+<modal #variableModal>
     <modal-header>
         <h4 class="modal-title">IPIM Variables!</h4>
     </modal-header>
     <modal-body>
-
         this.loadVariableModalValues()
         	<fieldset id="inputfset">
                 </fieldset>

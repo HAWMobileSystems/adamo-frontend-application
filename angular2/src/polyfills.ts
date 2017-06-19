@@ -8,3 +8,10 @@ if (process.env.ENV === 'production') {
     Error['stackTraceLimit'] = Infinity;
     require('zone.js/dist/long-stack-trace-zone');
 }
+declare global {
+  interface Window {
+    File: any,
+    FileReader: any, 
+    FileList: any, 
+  }
+}

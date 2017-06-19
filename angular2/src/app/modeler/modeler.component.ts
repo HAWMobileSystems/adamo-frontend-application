@@ -3,8 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Http } from '@angular/http';
 
-import { PaletteProvider } from './palette';
-import { CustomPropertiesProvider } from './props-provider';
+import { PaletteProvider } from './palette/palette';
+import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 
 // import modeler from 'bpmn-js/lib/Modeler.js';
@@ -17,6 +17,7 @@ import { CustomModdle } from './custom-moddle';
 import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
+import { FileReaderEvent } from './interfaces'
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
@@ -45,6 +46,7 @@ export class ModelerComponent implements OnInit {
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
   private container: any = $('#js-drop-zone');
+  private newDiagramXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" id=\"sample-diagram\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n  <bpmn2:process id=\"Process_1\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"Process_1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"412.0\" y=\"240.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
 
   @ViewChild('variableModal')
   private variableModal: ModalComponent;
@@ -102,6 +104,7 @@ export class ModelerComponent implements OnInit {
       : this.toggleTermsNormal();
     this.termsColored = !this.termsColored;
   }
+
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openInputModal,
     [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openVariableModal,
@@ -115,45 +118,23 @@ export class ModelerComponent implements OnInit {
     this.commandQueue = new Subject();
     this.store.listDiagrams()
       .do(links => this.urls = links)
-      // .do(() => console.log('Got links: ', this.urls))
       .flatMap(() => this.store.paletteEntries())
       .do(entries => this.extraPaletteEntries = entries)
-      // .do(() => console.log('Got entries: ', this.extraPaletteEntries))
       .subscribe(() => this.createModeler());
-    this.commandQueue
-      .subscribe(cmd => {
-        const command = COMMANDS[cmd.action];
+    this.commandQueue.subscribe(cmd => {
         const func = this.funcMap[cmd.action];
         if (func) {
           func();
         }
       });
 
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.SET_IPIM_VALUES === cmd.action)
-    //   .do(cmd => {
-    //     console.log('open modal');
-    //     this.openTermModal();
-
-    //     console.log('opened modal');
-    //     // if (this.lastDiagramXML === '') {
-    //     //   window.alert('No Diagram loaded!');
-    //     //   return;
-
-    //     // }
-    //     // // Get the modal
-    //     // const modal = document.getElementById('InputModal');
-    //     // modal.style.display = 'block';
-    //     // this.ClearInputModal();
-    //     // this.FillInputModal();
-    //     // TODO
-    //   })
-    //   .subscribe(cmd => console.log('Received SUPER SPECIAL two-column command: ', cmd));
-
-
-
-    //     this.evaluateProcess();
-    //   });
+    if (!window.FileList || !window.FileReader) {
+      window.alert(
+        'Looks Flike you use an older browser that does not support drag and drop. ' +
+        'Try using Chrome, Firefox or the Internet Explorer > 10.');
+    } else {
+      this.registerFileDrop(this.container, this.openDiagram);
+    }
 
     // this.commandQueue
     //   .filter(cmd => COMMANDS.SAVE === cmd.action)
@@ -161,6 +142,42 @@ export class ModelerComponent implements OnInit {
     //   .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
   }
 
+  openBPMN() {
+    $('#IPIM-Load').addClass('IPIM').attr({
+      'href': 'data:application/bpmn20-xml;charset=UTF-8,',
+      'download': 'Openfile'
+    });
+
+    $('#IPIM-Load').click(function () {
+      //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+      (<HTMLInputElement>document.getElementById('')).value = "";
+      document.getElementById('').click();
+    });
+  }
+
+  registerFileDrop(container: any, callback: any) {
+    function handleelect(e: any) {
+      e.stopPropagation();
+      e.preventDefault();
+      var files = e.dataTransfer.files;
+      var file = files[0];
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var xml = (<FileReaderEvent>e).target.result;
+        callback(xml);
+      };
+      reader.readAsText(file);
+    }
+
+    function handleDragOver(e: any) {
+      e.stopPropagation();
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    }
+    // TODO: Fixme
+    container.get(0).addEventListener('dragover', handleDragOver, false);
+    container.get(0).addEventListener('drop', handleelect, false);
+  }
 
   private resetDiagram() {
     if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
@@ -180,7 +197,10 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-  private openDiagram(xml: string) {
+createNewDiagram() {
+ this. openDiagram(this.newDiagramXML);
+}
+ openDiagram(xml: string) {
     this.lastDiagramXML = xml;
     modeler.importXML(xml, (err: any) => {
       if (err) {
@@ -304,7 +324,7 @@ export class ModelerComponent implements OnInit {
     }
   }
 
-  private FillInputModal() {
+  private fillInputModal() {
     //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
     const elementRegistry = modeler.get('elementRegistry');
     const modeling = modeler.get('modeling');
@@ -408,7 +428,6 @@ export class ModelerComponent implements OnInit {
     this.termsColored
       ? this.toggleTermsColored()
       : this.toggleTermsNormal();
-
   }
 
   private getTermList = (scope: string) => {
@@ -444,7 +463,6 @@ export class ModelerComponent implements OnInit {
       window.alert('Attention selected Elements already have different Terms!');
     }
     const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
-
     terms.length > 0
       ? element.value = terms[0]
       : element.value = '';
@@ -467,6 +485,7 @@ export class ModelerComponent implements OnInit {
       inpNode.removeChild(inpNode.firstChild);
     }
   }
+
   private evaluateProcess = () => {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
@@ -505,6 +524,17 @@ export class ModelerComponent implements OnInit {
         }
       }
     });
+
+   const ipimTags = {
+     META : 'ipim_meta_', 
+     VAL : 'ipim_val_', 
+     CALC : 'ipim_calc_'
+   }
+
+   const lookup = {
+     MODELING: 'modeling', 
+     ELEMENTREGISTRY: 'elementRegistry'
+   }
     //Alle Elemente durchlaufen um Evaluationsterme auszuwerten
     elements.forEach((element: any) => {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
@@ -514,7 +544,7 @@ export class ModelerComponent implements OnInit {
         //Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
-          if (extras[0].values[i].name.toLowerCase() === 'IPIM_Calc'.toLowerCase()) {
+          if (extras[0].values[i].name.toLowerCase() == ipimTags.CALC) {
             //Stringoperationen um den Wert anzupassen.
             let evalterm = extras[0].values[i].value.toLowerCase();
             //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
@@ -531,29 +561,25 @@ export class ModelerComponent implements OnInit {
             }
           }
         }
-
       }
     });
   }
 
-  // private OpenFileDiagram() {
-  //   if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-  //     const inpfiles = $('#files')[0].files;
-
-  //     for (const i = 0; i < inpfiles.length; i++) {
-  //       const fr = new FileReader();
-  //       fr.onload = (e: any) => {
-  //         this.openDiagram(e.target.result);
-  //         this.lastDiagramXML = e.target.result;
-  //       };
-  //       fr.readAsText(inpfiles[i]);
-  //     }
-
-  //   } else {
-  //     alert('The File APIs are not fully supported in this browser.');
-  //   }
-  // }
+  private openFileDiagram() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      const inp = (<HTMLInputElement> $('#')[0]).files;
+      for (let i = 0; i < inp.length; i++) {
+        const fr = new FileReader();
+        fr.onload = (e: any) => {
+          this.openDiagram(e.target.result);
+          this.lastDiagramXML = e.target.result;
+        };
+        fr.readAsText(inp[i]);
+      }
+    } else {
+      alert('The File APIs are not fully supported in this browser.');
+    }
+  }
 
   private toggleTermsColored() {
     if (this.lastDiagramXML === '') {
@@ -573,7 +599,6 @@ export class ModelerComponent implements OnInit {
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
-
     const colorelements: any[] = [];
 
     for (let i = 0; i < this.ipimColors.length; i++) {
@@ -588,34 +613,31 @@ export class ModelerComponent implements OnInit {
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
           if (extras[0].values[i].name === 'IPIM_Calc') {
-
             colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
-
             // const endEventNode = document.querySelector('[data-element-id="sid-52EB1772-F36E-433E-8F5B-D5DFD26E6F26"]');
-
             // endEventNode.setAttribute('title', "HELPT!");
-
             // const children = endEventNode.children;
             // for (const i = 0; i < children.length; i++) {
             // children[i].setAttribute('title', "HELPT!");
-
             // }
-
           }
         }
       }
-      //console.timeEnd('someFunction');
     });
     for (let i = 0; i < this.ipimColors.length; i++) {
       if (colorelements[i].length > 0) {
         modeling.setColor(colorelements[i], {
-          stroke: this.ipimColors[i] //,
-          //fill: 'green'
+          stroke: this.ipimColors[i]
         });
       }
     }
   }
 
+  // <div>
+  //   <label value="Variable + {{pname}}: ">
+  //   <input type="text" name={{pname}} value={{inpval}} id={{generateID(inputVal, pname)}}/>
+  //   <br>
+  // </div>
   private insertInputField(pname: string, inpval: string, pform: string) {
     const inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
@@ -634,6 +656,7 @@ export class ModelerComponent implements OnInit {
 
   }
 
+// TODO: FIxme in a template?
   private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
     const inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
@@ -648,14 +671,18 @@ export class ModelerComponent implements OnInit {
     valueField.setAttribute('class', 'maxwid');
     valueField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
 
+
+    // (<HTMLElement> checkingBox).attr({"data-test-1":'num1', "data-test-2": 'num2'});
+    // $('#pform').append('<input>').attr({});
+
     const checkingbox = document.createElement('input');
+    checkingbox.attributes
     checkingbox.setAttribute('type', 'checkbox');
     checkingbox.setAttribute('name', 'checkbox');
     checkingbox.setAttribute('value', 'Meta?');
     if (meta) {
       checkingbox.setAttribute('checked', meta.toString());
     }
-
     checkingbox.setAttribute('id', 'Variable_IPIM_'.toLowerCase() + pname.toLowerCase());
 
     const br = document.createElement('br');
