@@ -5,7 +5,7 @@
 <button (click)="loadBPMN()">Load BPMN-XML</button> 
 <input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />
 
-<input type="file" (change)="openFileDiagram()">
+<input type="file" id="file" (change)="openFileDiagram()">
 <div id="js-drop-zone" class="with-diagram modeler">
     <div id="js-canvas" class="canvas .section-to-print"></div>
     <div id="js-properties-panel" class="properties"></div>

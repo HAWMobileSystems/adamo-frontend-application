@@ -7,9 +7,6 @@ import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 
-// import modeler from 'bpmn-js/lib/Modeler.js';
-
-const modeler = require('bpmn-js/lib/Modeler.js');
 const propertiesPanelModule = require('bpmn-js-properties-panel');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
 
@@ -28,16 +25,13 @@ const customPropertiesProviderModule = {
   propertiesProvider: ['type', CustomPropertiesProvider]
 };
 
-const containerRef = '#js-canvas';
-const propsPanelRef = '#js-properties-panel';
-
 @Component({
   templateUrl: './modeler.component.html',
   styleUrls: ['./modeler.component.css'],
   providers: [BPMNStore]
 })
 export class ModelerComponent implements OnInit {
-  private modeler: any;
+  private modeler: any = require('bpmn-js/lib/Modeler.js');
   private termsColored: boolean = false;
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
   private lastDiagramXML: string = '';
@@ -45,7 +39,9 @@ export class ModelerComponent implements OnInit {
   private _urls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
-  private container: any = $('#js-drop-zone');
+  private container: JQuery = $('#js-drop-zone');
+  private containerRef = '#js-canvas';
+  private propsPanelRef = '#js-properties-panel';
   private newDiagramXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" id=\"sample-diagram\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n  <bpmn2:process id=\"Process_1\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"Process_1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"412.0\" y=\"240.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
 
   @ViewChild('variableModal')
@@ -133,7 +129,9 @@ export class ModelerComponent implements OnInit {
         'Looks Flike you use an older browser that does not support drag and drop. ' +
         'Try using Chrome, Firefox or the Internet Explorer > 10.');
     } else {
-      this.registerFileDrop(this.container, this.openDiagram);
+      console.log(this.container);
+      this.container.
+      this.registerFileDrop(this.containerRef, this.openDiagram);
     }
 
     // this.commandQueue
@@ -155,7 +153,7 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-  registerFileDrop(container: any, callback: any) {
+  registerFileDrop(container: JQuery, callback: Function) {
     function handleelect(e: any) {
       e.stopPropagation();
       e.preventDefault();
@@ -175,8 +173,13 @@ export class ModelerComponent implements OnInit {
       e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     }
     // TODO: Fixme
-    container.get(0).addEventListener('dragover', handleDragOver, false);
-    container.get(0).addEventListener('drop', handleelect, false);
+    const firstElementInContainer = container.get(0);
+    if (firstElementInContainer) {
+      container.get(0).addEventListener('dragover', handleDragOver, false);
+      container.get(0).addEventListener('drop', handleelect, false);
+    } else {
+      console.error("firstElementInContainer is undefined", container)
+    }
   }
 
   private resetDiagram() {
@@ -185,8 +188,8 @@ export class ModelerComponent implements OnInit {
   }
 
   private toggleTermsNormal() {
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
 
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
@@ -202,7 +205,7 @@ createNewDiagram() {
 }
  openDiagram(xml: string) {
     this.lastDiagramXML = xml;
-    modeler.importXML(xml, (err: any) => {
+    this.modeler.importXML(xml, (err: any) => {
       if (err) {
         this.container
           .removeClass('with-diagram')
@@ -218,11 +221,11 @@ createNewDiagram() {
   }
 
   private createModeler() {
-    // console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
-    this.modeler = new modeler({
-      container: containerRef,
+    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
+    this.modeler = new this.modeler({
+      container: this.containerRef,
       propertiesPanel: {
-        parent: propsPanelRef
+        parent: this.propsPanelRef
       },
       additionalModules: [
         { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
@@ -263,9 +266,9 @@ createNewDiagram() {
   }
 
   private writeInputModalValues() {
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     //Alle Elemente durchlaufen um Variablen zu finden
@@ -288,9 +291,9 @@ createNewDiagram() {
   }
 
   private fillVariableModal() {
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     const element = elements[0];
@@ -325,9 +328,9 @@ createNewDiagram() {
   }
 
   private fillInputModal() {
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     //Alle Elemente durchlaufen um Variablen zu finden
@@ -355,10 +358,10 @@ createNewDiagram() {
 
   private writeVariableModalValues() {
     //get moddle Object
-    const elementRegistry = modeler.get('elementRegistry');
-    const moddle = modeler.get('moddle');
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const moddle = this.modeler.get('moddle');
 
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const elements = elementRegistry.getAll();
     const element = elements[0];
     //reset camunda extension properties
@@ -391,9 +394,9 @@ createNewDiagram() {
 
   private writeTermModalValues() {
     //get moddle Object
-    const moddle = modeler.get('moddle');
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
-    const elements = modeler.get('selection').get();
+    const moddle = this.modeler.get('moddle');
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    const elements = this.modeler.get('selection').get();
     //Alle Elemente durchlaufen um Variablen zu finden
     elements.forEach((element: any) => {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
@@ -431,11 +434,11 @@ createNewDiagram() {
   }
 
   private getTermList = (scope: string) => {
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
     scope === 'selection'
-      ? elements = modeler.get(scope).get()
-      : elements = modeler.get(scope).getAll();
+      ? elements = this.modeler.get(scope).get()
+      : elements = this.modeler.get(scope).getAll();
     const terms: string[] = new Array();
     //Alle Elemente durchlaufen um Variablen zu finden
     elements.forEach((element: any) => {
@@ -477,7 +480,7 @@ createNewDiagram() {
     }
   }
 
-  private ClearInputModal() {
+  private clearInputModal() {
     //Bereich zum löschen per getElement abfragen
     const inpNode = document.getElementById('inputfset');
     //Solange es noch ein firstChild gibt, wird dieses entfernt!
@@ -490,9 +493,9 @@ createNewDiagram() {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
-    modeler.saveXML({ format: true }, (err: any, xml: string) => {
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
+    this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
       if (err) {
         console.error(err);
         return;
@@ -567,18 +570,35 @@ createNewDiagram() {
 
   private openFileDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-      const inp = (<HTMLInputElement> $('#')[0]).files;
-      for (let i = 0; i < inp.length; i++) {
-        const fr = new FileReader();
-        fr.onload = (e: any) => {
-          this.openDiagram(e.target.result);
-          this.lastDiagramXML = e.target.result;
-        };
-        fr.readAsText(inp[i]);
-      }
-    } else {
-      alert('The File APIs are not fully supported in this browser.');
+      // TODO : fixme because files is undefined / null
+      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
+      const file = (<HTMLInputElement >document.getElementById('file')).files[0];
+      file ? this.getAsFile(file) : console.error('could not reach selected file..', file)
+      
+    //   const inp = (<HTMLInputElement> $('#file')[0]).files;
+    //   for (let i = 0; i < inp.length; i++) {
+    //     const fr = new FileReader();
+    //     fr.onload = (e: any) => {
+    //       this.openDiagram(e.target.result);
+    //       this.lastDiagramXML = e.target.result;
+    //     };
+    //     fr.readAsText(inp[i]);
+    //   }
+    // } else {
+    //   alert('The File APIs are not fully supported in this browser.');
     }
+  }
+
+  private getAsFile(file: any) {
+    const reader = new FileReader();
+    reader.readAsText(file); // , 'UTF-16')
+    reader.onerror = (err : ErrorEvent) => {
+      console.error('error during reading file');
+    };
+    reader.onload = (e : any) => {
+      this.lastDiagramXML = reader.result;
+      this.openDiagram(this.lastDiagramXML);
+    } 
   }
 
   private toggleTermsColored() {
@@ -590,12 +610,12 @@ createNewDiagram() {
     //const B = document.getElementById("IPIMuserInputB").value;
     //const C = document.getElementById("IPIMuserInputC").value;
 
-    //Objekte vom Modeler holen um nicht immer so viel tippen zu müssen.
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
 
     //const ipimcolors = $('.ipimcolors').css('color');    //CSS auslesen
 
-    const elementRegistry = modeler.get('elementRegistry');
-    const modeling = modeler.get('modeling');
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
