@@ -719,7 +719,5 @@ createNewDiagram() {
     //document.getElementById(pform).appendChild(br);
     document.getElementById(pform).appendChild(br);
     document.getElementById(pform).appendChild(document.createElement('hr'));
-
   }
-
 }

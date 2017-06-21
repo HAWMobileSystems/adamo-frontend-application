@@ -1,9 +1,11 @@
+<title>IPIM Adaptive Modeler
+</title>
 <h1>Modeler / editor</h1>
-<select [(ngModel)]="url">
+<!--<select [(ngModel)]="url">
     <option *ngFor="let url of urls" value="{{url.href}}">{{url.text}}</option>
 </select>
-<button (click)="loadBPMN()">Load BPMN-XML</button> 
-<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />
+<button (click)="loadBPMN()">Load BPMN-XML</button> -->
+<!--<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />-->
 
 <input type="file" id="file" (change)="openFileDiagram()">
 <div id="js-drop-zone" class="with-diagram modeler">
@@ -51,7 +53,8 @@
         </div>
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
+        <button type="button" class="
+         btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
         <button type="button" class="btn btn-primary" (click)="this.termModalClose()">Ok</button>
     </modal-footer>
 </modal>
