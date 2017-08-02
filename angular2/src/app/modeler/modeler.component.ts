@@ -8,13 +8,14 @@ import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 
 const propertiesPanelModule = require('bpmn-js-properties-panel');
-const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
+const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
 
 import { CustomModdle } from './custom-moddle';
+import { CamundaModdle } from './camunda-moddle';
 import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
-import { FileReaderEvent } from './interfaces'
+import { FileReaderEvent } from './interfaces';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
@@ -105,14 +106,35 @@ export class ModelerComponent implements OnInit {
     if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
     this.openDiagram(this.lastDiagramXML);
   }
+ private saveDiagram = () => {
+    console.log('savediagram')
+    const downloadLink = $('#js-download-diagram');
+    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+      console.log('xml:', xml, 'err', err);
+      setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+    });
 
+    function setEncoded(link: any, name: any, data: any) {
+      const encodedData = encodeURIComponent(data);
+
+      if (data) {
+        link.addClass('active').attr({
+          href: 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
+          download: name
+        });
+      } else {
+        link.removeClass('active');
+      }
+    }
+  }
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openInputModal,
     [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openVariableModal,
     [COMMANDS.SET_TERM]: this.openTermModal,
     [COMMANDS.HIGHLIGHT]: this.highlightTerms,
     [COMMANDS.RESET]: this.resetDiagram,
-    [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick
+    [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick,
+    [COMMANDS.SAVE]: this.saveDiagram
   };
 
   /**
@@ -133,8 +155,6 @@ export class ModelerComponent implements OnInit {
         func();
       }
     });
-
-
 
     // this.commandQueue
     //   .filter(cmd => COMMANDS.SAVE === cmd.action)
@@ -165,7 +185,7 @@ export class ModelerComponent implements OnInit {
 
     $('#IPIM-Load').click(function () {
       //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-      (<HTMLInputElement>document.getElementById('')).value = "";
+      (<HTMLInputElement>document.getElementById('')).value = '';
       document.getElementById('').click();
     });
   }
@@ -184,7 +204,7 @@ export class ModelerComponent implements OnInit {
       };
 
       if (file.name.indexOf('.bpmn') !== -1) {
-        console.log(file.name)
+        console.log(file.name);
         reader.readAsText(file);
       }
     }
@@ -219,6 +239,22 @@ export class ModelerComponent implements OnInit {
     });
   }
 
+ 
+  // import {debounce} from 'lodash';
+  // const exportArtifacts = debounce(() => {
+
+  // this.modeler.on('commandStack.changed', this.exportArtifacts);
+  //   const downloadLink = $('#js-download-diagram');
+  //   const downloadSvgLink = $('#js-download-svg');
+  //   //saveSVG((err : any, svg : any) => {
+  //   // setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+  //   // });
+
+  //   this.saveDiagram((err: any, xml: any) => {
+  //     this.modeler.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+  //   });
+  // }, 500);
+
   private createNewDiagram() {
     this.openDiagram(this.newDiagramXML);
   }
@@ -252,11 +288,11 @@ export class ModelerComponent implements OnInit {
         { commandQueue: ['type', () => this.commandQueue] },
         propertiesPanelModule,
         propertiesProviderModule,
-        customPropertiesProviderModule,
+       //customPropertiesProviderModule,
         customPaletteModule
       ],
       moddleExtensions: {
-        ne: CustomModdle
+        camunda: CamundaModdle
       }
     });
 
@@ -269,8 +305,8 @@ export class ModelerComponent implements OnInit {
     // console.log('load', this.url, this.store);
     const canvas = this.modeler.get('canvas');
     this.http.get(this.url)
-      .map(response => response.text())
-      .map(data => this.modeler.importXML(data, this.handleError))
+      .map((response: any) => response.text())
+      .map((data: any) => this.modeler.importXML(data, this.handleError))
       .subscribe(x => x ? this.handleError(x) : this.postLoad());
   }
 
