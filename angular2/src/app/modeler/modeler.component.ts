@@ -96,17 +96,21 @@ export class ModelerComponent implements OnInit {
   }
 
   private highlightTerms = () => {
-    this.termsColored
-      ? this.toggleTermsColored()
-      : this.toggleTermsNormal();
-    this.termsColored = !this.termsColored;
+    if (this.lastDiagramXML !== '') {
+      this.termsColored
+        ? this.toggleTermsNormal()
+        : this.toggleTermsColored();
+      this.termsColored = !this.termsColored;
+    } else {
+      console.error('There is no Diagram to highlight');
+    }
   }
 
   private resetDiagram = () => {
     if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
     this.openDiagram(this.lastDiagramXML);
   }
- private saveDiagram = () => {
+  private saveDiagram = () => {
     console.log('savediagram')
     const downloadLink = $('#js-download-diagram');
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
@@ -227,6 +231,7 @@ export class ModelerComponent implements OnInit {
   }
 
   private toggleTermsNormal = () => {
+    console.log('toggleTermsNormal');
     const elementRegistry = this.modeler.get('elementRegistry');
     const modeling = this.modeler.get('modeling');
 
@@ -239,7 +244,7 @@ export class ModelerComponent implements OnInit {
     });
   }
 
- 
+
   // import {debounce} from 'lodash';
   // const exportArtifacts = debounce(() => {
 
@@ -288,7 +293,7 @@ export class ModelerComponent implements OnInit {
         { commandQueue: ['type', () => this.commandQueue] },
         propertiesPanelModule,
         propertiesProviderModule,
-       //customPropertiesProviderModule,
+        //customPropertiesProviderModule,
         customPaletteModule
       ],
       moddleExtensions: {
@@ -654,10 +659,12 @@ export class ModelerComponent implements OnInit {
     reader.onload = (e: any) => {
       this.lastDiagramXML = reader.result;
       this.openDiagram(this.lastDiagramXML);
-    }
+    };
   }
 
   private toggleTermsColored() {
+
+    console.log('toggleTermscolored');
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
