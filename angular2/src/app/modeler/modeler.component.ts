@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Http } from '@angular/http';
 
@@ -41,7 +41,7 @@ export class ModelerComponent implements OnInit {
   private _urls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
-  private container: JQuery = $('#js-drop-zone');
+  private container: JQuery;// = '#js-drop-zone';
   private containerRef = '#js-canvas';
   private propsPanelRef = '#js-properties-panel';
   private newDiagramXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" id=\"sample-diagram\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n  <bpmn2:process id=\"Process_1\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"Process_1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"412.0\" y=\"240.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
@@ -103,6 +103,11 @@ export class ModelerComponent implements OnInit {
     this.termsColored = !this.termsColored;
   }
 
+  private resetDiagram = () => {
+    if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
+    this.openDiagram(this.lastDiagramXML);
+  }
+
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openInputModal,
     [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openVariableModal,
@@ -112,6 +117,11 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick
   };
 
+  /**
+   * Using fat Arrow function here manipulates binding of this. 
+   * While do not using openDiagram here the "this.modeler.importXML" gets affected by this..
+   * and is no longer recognized as a function
+   */
   public ngOnInit() {
     this.commandQueue = new Subject();
     this.store.listDiagrams()
@@ -120,26 +130,33 @@ export class ModelerComponent implements OnInit {
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => this.createModeler());
     this.commandQueue.subscribe(cmd => {
-        const func = this.funcMap[cmd.action];
-        if (func) {
-          func();
-        }
-      });
+      const func = this.funcMap[cmd.action];
+      if (func) {
+        func();
+      }
+    });
 
-    if (!window.FileList || !window.FileReader) {
-      window.alert(
-        'Looks Flike you use an older browser that does not support drag and drop. ' +
-        'Try using Chrome, Firefox or the Internet Explorer > 10.');
-    } else {
-      console.log(this.container);
-      this.container.
-      this.registerFileDrop(this.containerRef, this.openDiagram);
-    }
+
 
     // this.commandQueue
     //   .filter(cmd => COMMANDS.SAVE === cmd.action)
     //   .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
     //   .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
+  }
+
+  public ngAfterViewInit(): void {
+    // this is scary as fuck -.-
+    $(document).ready(() => {
+      this.container = $('#js-drop-zone');
+      if (!window.FileList || !window.FileReader) {
+        window.alert(
+          'Looks Flike you use an older browser that does not support drag and drop. ' +
+          'Try using Chrome, Firefox or the Internet Explorer > 10.');
+      } else {
+        console.log(this.container);
+        this.registerFileDrop(this.container, this.openDiagram);
+      }
+    });
   }
 
   openBPMN() {
@@ -176,41 +193,43 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-  registerFileDrop(container: JQuery, callback: Function) {
-    function handleelect(e: any) {
+  registerFileDrop = (container: JQuery, callback: Function) => {
+    // let containerJQ = $(this.containerID);
+    const handleelect = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
-      var files = e.dataTransfer.files;
-      var file = files[0];
-      var reader = new FileReader();
+      let files = e.dataTransfer.files;
+      let file: File = files[0];
+      let reader = new FileReader();
       reader.onload = function (e) {
-        var xml = (<FileReaderEvent>e).target.result;
+        let xml = (<FileReaderEvent>e).target.result;
         callback(xml);
       };
-      reader.readAsText(file);
+
+      if (file.name.indexOf('.bpmn') !== -1) {
+        console.log(file.name)
+        reader.readAsText(file);
+      }
     }
 
-    function handleDragOver(e: any) {
+    const handleDragOver = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     }
     // TODO: Fixme
+
     const firstElementInContainer = container.get(0);
+
     if (firstElementInContainer) {
       container.get(0).addEventListener('dragover', handleDragOver, false);
       container.get(0).addEventListener('drop', handleelect, false);
     } else {
-      console.error("firstElementInContainer is undefined", container)
+      console.error("firstElementInContainer is undefined", container);
     }
   }
 
-  private resetDiagram() {
-    if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
-    this.openDiagram(this.lastDiagramXML);
-  }
-
-  private toggleTermsNormal() {
+  private toggleTermsNormal = () => {
     const elementRegistry = this.modeler.get('elementRegistry');
     const modeling = this.modeler.get('modeling');
 
@@ -223,23 +242,24 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-createNewDiagram() {
- this. openDiagram(this.newDiagramXML);
-}
- openDiagram(xml: string) {
+  private createNewDiagram() {
+    this.openDiagram(this.newDiagramXML);
+  }
+
+  private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
     this.modeler.importXML(xml, (err: any) => {
-      if (err) {
-        this.container
-          .removeClass('with-diagram')
-          .addClass('with-error');
-        this.container.find('.error pre').text(err.message);
-        console.error(err);
-      } else {
-        this.container
-          .removeClass('with-error')
-          .addClass('with-diagram');
-      }
+      // if (err) {
+      //   this.container
+      //     .removeClass('with-diagram')
+      //     .addClass('with-error');
+      //   this.container.find('.error pre').text(err.message);
+      //   console.error(err);
+      // } else {
+      //   this.container
+      //     .removeClass('with-error')
+      //     .addClass('with-diagram');
+      // }
     });
   }
 
@@ -551,16 +571,16 @@ createNewDiagram() {
       }
     });
 
-   const ipimTags = {
-     META : 'ipim_meta_', 
-     VAL : 'ipim_val_', 
-     CALC : 'ipim_calc_'
-   }
+    const ipimTags = {
+      META: 'ipim_meta_',
+      VAL: 'ipim_val_',
+      CALC: 'ipim_calc_'
+    }
 
-   const lookup = {
-     MODELING: 'modeling', 
-     ELEMENTREGISTRY: 'elementRegistry'
-   }
+    const lookup = {
+      MODELING: 'modeling',
+      ELEMENTREGISTRY: 'elementRegistry'
+    }
     //Alle Elemente durchlaufen um Evaluationsterme auszuwerten
     elements.forEach((element: any) => {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
@@ -595,33 +615,33 @@ createNewDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       // TODO : fixme because files is undefined / null
       // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
-      const file = (<HTMLInputElement >document.getElementById('file')).files[0];
+      const file = (<HTMLInputElement>document.getElementById('file')).files[0];
       file ? this.getAsFile(file) : console.error('could not reach selected file..', file)
-      
-    //   const inp = (<HTMLInputElement> $('#file')[0]).files;
-    //   for (let i = 0; i < inp.length; i++) {
-    //     const fr = new FileReader();
-    //     fr.onload = (e: any) => {
-    //       this.openDiagram(e.target.result);
-    //       this.lastDiagramXML = e.target.result;
-    //     };
-    //     fr.readAsText(inp[i]);
-    //   }
-    // } else {
-    //   alert('The File APIs are not fully supported in this browser.');
+
+      //   const inp = (<HTMLInputElement> $('#file')[0]).files;
+      //   for (let i = 0; i < inp.length; i++) {
+      //     const fr = new FileReader();
+      //     fr.onload = (e: any) => {
+      //       this.openDiagram(e.target.result);
+      //       this.lastDiagramXML = e.target.result;
+      //     };
+      //     fr.readAsText(inp[i]);
+      //   }
+      // } else {
+      //   alert('The File APIs are not fully supported in this browser.');
     }
   }
 
   private getAsFile(file: any) {
     const reader = new FileReader();
     reader.readAsText(file); // , 'UTF-16')
-    reader.onerror = (err : ErrorEvent) => {
+    reader.onerror = (err: ErrorEvent) => {
       console.error('error during reading file');
     };
-    reader.onload = (e : any) => {
+    reader.onload = (e: any) => {
       this.lastDiagramXML = reader.result;
       this.openDiagram(this.lastDiagramXML);
-    } 
+    }
   }
 
   private toggleTermsColored() {
@@ -699,7 +719,7 @@ createNewDiagram() {
 
   }
 
-// TODO: FIxme in a template?
+  // TODO: FIxme in a template?
   private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
     const inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
