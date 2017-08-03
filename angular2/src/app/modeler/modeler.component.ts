@@ -41,9 +41,9 @@ export class ModelerComponent implements OnInit {
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
   private container: JQuery;// = '#js-drop-zone';
-  private containerRef = '#js-canvas';
-  private propsPanelRef = '#js-properties-panel';
-  private newDiagramXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" id=\"sample-diagram\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n  <bpmn2:process id=\"Process_1\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"Process_1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"412.0\" y=\"240.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
+  private containerRef : any = '#js-canvas';
+  private propsPanelRef : any = '#js-properties-panel';
+  private newDiagramXML : string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
 
   @ViewChild('variableModal')
   private variableModal: ModalComponent;
@@ -97,9 +97,11 @@ export class ModelerComponent implements OnInit {
 
   private highlightTerms = () => {
     if (this.lastDiagramXML !== '') {
+      const elementRegistry = this.modeler.get('elementRegistry');
+      const modeling = this.modeler.get('modeling');
       this.termsColored
-        ? this.toggleTermsNormal()
-        : this.toggleTermsColored();
+        ? this.toggleTermsNormal(elementRegistry, modeling)
+        : this.toggleTermsColored(elementRegistry, modeling);
       this.termsColored = !this.termsColored;
     } else {
       console.error('There is no Diagram to highlight');
@@ -181,29 +183,29 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-  openBPMN() {
-    $('#IPIM-Load').addClass('IPIM').attr({
-      'href': 'data:application/bpmn20-xml;charset=UTF-8,',
-      'download': 'Openfile'
-    });
+  // openBPMN() {
+  //   $('#IPIM-Load').addClass('IPIM').attr({
+  //     'href': 'data:application/bpmn20-xml;charset=UTF-8,',
+  //     'download': 'Openfile'
+  //   });
 
-    $('#IPIM-Load').click(function () {
-      //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-      (<HTMLInputElement>document.getElementById('')).value = '';
-      document.getElementById('').click();
-    });
-  }
+  //   $('#IPIM-Load').click(function () {
+  //     //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+  //     (<HTMLInputElement>document.getElementById('')).value = '';
+  //     document.getElementById('').click();
+  //   });
+  // }
 
-  registerFileDrop = (container: JQuery, callback: Function) => {
+  private registerFileDrop = (container: JQuery, callback: Function) => {
     // let containerJQ = $(this.containerID);
     const handleelect = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
-      let files = e.dataTransfer.files;
-      let file: File = files[0];
-      let reader = new FileReader();
-      reader.onload = function (e) {
-        let xml = (<FileReaderEvent>e).target.result;
+      const files = e.dataTransfer.files;
+      const file: File = files[0];
+      const reader = new FileReader();
+      reader.onload = (onLoadEvent : any) => {
+        const xml = (<FileReaderEvent>onLoadEvent).target.result;
         callback(xml);
       };
 
@@ -211,13 +213,13 @@ export class ModelerComponent implements OnInit {
         console.log(file.name);
         reader.readAsText(file);
       }
-    }
+    };
 
     const handleDragOver = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-    }
+    };
     // TODO: Fixme
 
     const firstElementInContainer = container.get(0);
@@ -226,24 +228,18 @@ export class ModelerComponent implements OnInit {
       container.get(0).addEventListener('dragover', handleDragOver, false);
       container.get(0).addEventListener('drop', handleelect, false);
     } else {
-      console.error("firstElementInContainer is undefined", container);
+      console.error('firstElementInContainer is undefined', container);
     }
   }
 
-  private toggleTermsNormal = () => {
+  private toggleTermsNormal = (elementRegistry: any, modeling: any) => {
     console.log('toggleTermsNormal');
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
-
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
-
     modeling.setColor(elements, {
-      stroke: 'black' //,
-      //fill: 'green'
+      stroke: 'black'
     });
   }
-
 
   // import {debounce} from 'lodash';
   // const exportArtifacts = debounce(() => {
@@ -311,7 +307,10 @@ export class ModelerComponent implements OnInit {
     const canvas = this.modeler.get('canvas');
     this.http.get(this.url)
       .map((response: any) => response.text())
-      .map((data: any) => this.modeler.importXML(data, this.handleError))
+      .map((data: any) => {
+        this.lastDiagramXML = data;
+        return this.modeler.importXML(data, this.handleError);
+      })
       .subscribe(x => x ? this.handleError(x) : this.postLoad());
   }
 
@@ -489,9 +488,9 @@ export class ModelerComponent implements OnInit {
       }
     });
 
-    this.termsColored
-      ? this.toggleTermsColored()
-      : this.toggleTermsNormal();
+    // this.termsColored
+    //   ? this.toggleTermsColored()
+    //   : this.toggleTermsNormal();
   }
 
   private getTermList = (scope: string) => {
@@ -662,23 +661,17 @@ export class ModelerComponent implements OnInit {
     };
   }
 
-  private toggleTermsColored() {
+  private toggleTermsColored( elementRegistry : any, modeling: any) {
 
     console.log('toggleTermscolored');
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
-    // Daten zuweisen aus Input Boxen.
-    //const A = document.getElementById("IPIMuserInputA").value;
-    //const B = document.getElementById("IPIMuserInputB").value;
-    //const C = document.getElementById("IPIMuserInputC").value;
 
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
 
     //const ipimcolors = $('.ipimcolors').css('color');    //CSS auslesen
 
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
@@ -754,12 +747,11 @@ export class ModelerComponent implements OnInit {
     valueField.setAttribute('class', 'maxwid');
     valueField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
 
-
     // (<HTMLElement> checkingBox).attr({"data-test-1":'num1', "data-test-2": 'num2'});
     // $('#pform').append('<input>').attr({});
 
     const checkingbox = document.createElement('input');
-    checkingbox.attributes
+    checkingbox.attributes;
     checkingbox.setAttribute('type', 'checkbox');
     checkingbox.setAttribute('name', 'checkbox');
     checkingbox.setAttribute('value', 'Meta?');
