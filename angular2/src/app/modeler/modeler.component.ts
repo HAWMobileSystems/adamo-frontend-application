@@ -290,6 +290,11 @@ export class ModelerComponent implements OnInit {
     });
   }
 
+/**
+ * Creates the modeler Object from camunda bpmn-js package. 
+ * adds the extraPaletteEntries from the bpmn-store
+ * 
+ */
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.modeler = new this.modeler({
@@ -313,8 +318,19 @@ export class ModelerComponent implements OnInit {
 
     // Start with an empty diagram:
     this.url = this.urls[0].href;
-    this.loadBPMN();
+    // this.loadBPMN();
   }
+/**
+ * 
+ */
+  // private loadBPMN() {
+  //   const canvas = this.modeler.get('canvas');
+  //   this.http.get('/diagrams/scrum.bpmn')
+  //   // this.http.get(this.url)
+  //     .map(response => response.text())
+  //     .map(data => this.modeler.importXML(data, this.handleError))
+  //     .subscribe(x => x ? this.handleError(x) : this.postLoad());
+  // }
 
   private loadBPMN() {
     // console.log('load', this.url, this.store);
