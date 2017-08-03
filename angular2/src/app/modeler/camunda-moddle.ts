@@ -1,51 +1,51 @@
-// declare module namespace {
+// // declare module namespace {
 
-export interface Xml {
-    tagAlias: string;
-}
+// export interface Xml {
+//     tagAlias: string;
+// }
 
-export interface Property {
-    name: string;
-    isAttr?: boolean;
-    type: string;
-    default?: any;
-    isMany?: boolean;
-    isBody?: boolean;
-}
+// export interface Property {
+//     name: string;
+//     isAttr?: boolean;
+//     type: string;
+//     default?: any;
+//     isMany?: boolean;
+//     isBody?: boolean;
+// }
 
-export interface Meta {
-    allowedIn: string[];
-}
+// export interface Meta {
+//     allowedIn: string[];
+// }
 
-export interface ModdleType {
-    name?: string;
-    superClass?: string[];
-    isAbstract?: boolean;
-    properties?: any[];
-    meta?: any;
-    extends?: string[];
-}
+// export interface ModdleType {
+//     name?: string;
+//     superClass?: string[];
+//     isAbstract?: boolean;
+//     properties?: any[];
+//     meta?: any;
+//     extends?: string[];
+// }
 
-export interface Moddle {
-    name: string;
-    uri: string;
-    prefix: string;
-    xml: Xml;
-    associations: any[];
-    types: ModdleType[];
-    emumerations: any[];
-}
+// export interface Moddle {
+//     name: string;
+//     uri: string;
+//     prefix: string;
+//     xml: Xml;
+//     associations: any[];
+//     types: ModdleType[];
+//     emumerations: any[];
+// }
 
 // }
 
-export const CamundaModdle: Moddle = {
+export const CamundaModdle = {
     "name": "Camunda",
     "uri": "http://camunda.org/schema/1.0/bpmn",
     "prefix": "camunda",
     "xml": {
         "tagAlias": "lowerCase"
     },
-    "associations": [],
+    "associations": new Array(),
     "types": [
         {
             "name": "InOutBinding",
@@ -1092,5 +1092,5 @@ export const CamundaModdle: Moddle = {
             ]
         }
     ],
-    "emumerations": []
+    "emumerations": new Array()
 }

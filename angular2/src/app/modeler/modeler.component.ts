@@ -6,6 +6,12 @@ import { Http } from '@angular/http';
 import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
+
+const propertiesPanelModule = require('bpmn-js-properties-panel');
+// const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
+const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
+// const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
+
 import { CustomModdle } from './custom-moddle';
 import { CamundaModdle } from './camunda-moddle';
 import { Observable, Subject } from 'rxjs';
@@ -202,12 +208,33 @@ export class ModelerComponent implements OnInit {
   //     'download': 'Openfile'
   //   });
 
-  //   $('#IPIM-Load').click(function () {
-  //     //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-  //     (<HTMLInputElement>document.getElementById('')).value = '';
-  //     document.getElementById('').click();
-  //   });
-  // }
+    createModeler() {
+        console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
+        this.modeler = new modeler({
+            container: containerRef,
+            propertiesPanel: {
+                parent: propsPanelRef
+            },
+            additionalModules: [
+                { 'extraPaletteEntries': ['type', () => this.extraPaletteEntries] },
+                { 'commandQueue': ['type', () => this.commandQueue] },
+                propertiesPanelModule,
+                propertiesProviderModule,
+                customPropertiesProviderModule,
+                customPaletteModule,
+            ],
+            moddleExtensions: {
+                //  ne: CustomModdle, 
+                ne: CamundaModdle
+                // camunda: camundaModdleDescriptor
+            },
+        });
+    $('#IPIM-Load').click(function () {
+      //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+      (<HTMLInputElement>document.getElementById('')).value = "";
+      document.getElementById('').click();
+    });
+  }
 
   private registerFileDrop = (container: JQuery, callback: Function) => {
     // let containerJQ = $(this.containerID);
