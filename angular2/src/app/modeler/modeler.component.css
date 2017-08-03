@@ -5,7 +5,6 @@
 @import './modeler.less';
 @import './properties/props.less';
 @import './palette/palette.less';
-
 @import './../components/Modal/modal.less';
 @import './ipim/ipim.less';
 

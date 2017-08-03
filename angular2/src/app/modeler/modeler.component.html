@@ -24,8 +24,8 @@
     </modal-header>
     <modal-body>
         this.loadVariableModalValues()
-        	<fieldset id="inputfset">
-                </fieldset>
+        <fieldset id="inputfset">
+        </fieldset>
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
@@ -37,10 +37,9 @@
         <h4 class="modal-title">IPIM Evaluation!</h4>
     </modal-header>
     <modal-body>
-        this.loadInputModalValues()
-        ?? dynamic load values
-       	<fieldset id="inputfset">
-       	</fieldset>
+        this.loadInputModalValues() ?? dynamic load values
+        <fieldset id="inputfset">
+        </fieldset>
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
@@ -54,12 +53,11 @@
     <modal-body>
         <div class="form-group">
             <label for="term">Insert new Term for all Elements</label>
-            <input type="text" class="form-control" required [(ngModel)]="this.termModal.term" name="term" id="term">
+            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
         </div>
     </modal-body>
     <modal-footer>
-        <button type="button" class="
-         btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
         <button type="button" class="btn btn-primary" (click)="this.termModalClose()">Ok</button>
     </modal-footer>
 </modal>

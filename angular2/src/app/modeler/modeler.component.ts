@@ -6,10 +6,6 @@ import { Http } from '@angular/http';
 import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
-
-const propertiesPanelModule = require('bpmn-js-properties-panel');
-const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-
 import { CustomModdle } from './custom-moddle';
 import { CamundaModdle } from './camunda-moddle';
 import { Observable, Subject } from 'rxjs';
@@ -33,6 +29,8 @@ const customPropertiesProviderModule = {
 })
 export class ModelerComponent implements OnInit {
   private modeler: any = require('bpmn-js/lib/Modeler.js');
+  private propertiesPanelModule = require('bpmn-js-properties-panel');
+  private propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
   private termsColored: boolean = false;
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
   private lastDiagramXML: string = '';
@@ -40,17 +38,28 @@ export class ModelerComponent implements OnInit {
   private _urls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
-  private container: JQuery;// = '#js-drop-zone';
-  private containerRef : any = '#js-canvas';
-  private propsPanelRef : any = '#js-properties-panel';
-  private newDiagramXML : string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
-
+  private container: JQuery; // = '#js-drop-zone';
+  private containerRef: string = '#js-canvas';
+  private propsPanelRef: string = '#js-properties-panel';
+  private newDiagramXML: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
   @ViewChild('variableModal')
   private variableModal: ModalComponent;
   @ViewChild('inputModal')
   private inputModal: ModalComponent;
   @ViewChild('termModal')
   private termModal: ModalComponent;
+  private ipimTags: any = {
+    META: 'IPIM_meta_',
+    VAL: 'IPIM_Val_',
+    CALC: 'ipim_calc'
+  };
+
+  private lookup: any = {
+    MODELING: 'modeling',
+    ELEMENTREGISTRY: 'elementRegistry',
+    SELECTION: 'selection'
+  };
 
   constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) { }
 
@@ -66,13 +75,16 @@ export class ModelerComponent implements OnInit {
 
   // Extract the following to the separate controler
   public openTermModal = () => {
+    this.fillTermModal();
     this.termModal.open();
   }
 
   public openInputModal = () => {
+    this.fillInputModal();
     this.inputModal.open();
   }
   public openVariableModal = () => {
+    this.fillVariableModal();
     this.variableModal.open();
   }
 
@@ -157,6 +169,7 @@ export class ModelerComponent implements OnInit {
       .subscribe(() => this.createModeler());
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
+      console.log(cmd.action, func);
       if (func) {
         func();
       }
@@ -287,13 +300,14 @@ export class ModelerComponent implements OnInit {
       additionalModules: [
         { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
         { commandQueue: ['type', () => this.commandQueue] },
-        propertiesPanelModule,
-        propertiesProviderModule,
-        //customPropertiesProviderModule,
+        this.propertiesPanelModule,
+        this.propertiesProviderModule,
+        // customPropertiesProviderModule,
         customPaletteModule
       ],
       moddleExtensions: {
-        camunda: CamundaModdle
+        camunda: this.camundaModdleDescriptor
+        // ne: CustomModdle
       }
     });
 
@@ -366,7 +380,8 @@ export class ModelerComponent implements OnInit {
         //Prüfen ob der Name des Elementes IPIM_Val entspricht
         const extrasValues = extras[0].values[i];
         const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-        const ipimVal: boolean = extrasValueNameLowerCase.startsWith('IPIM_Val_'.toLowerCase());
+        const ipimVal: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.VAL + '_'.toLowerCase());
+        const ipimMeta: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.META + '_'.toLowerCase());
 
         if (ipimVal) {
           this.insertVariableField(
@@ -376,7 +391,7 @@ export class ModelerComponent implements OnInit {
             false);
         }
 
-        if (ipimVal) {
+        if (ipimMeta) {
           this.insertVariableField(
             extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
             extrasValues.value.toLowerCase(),
@@ -394,6 +409,20 @@ export class ModelerComponent implements OnInit {
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     //Alle Elemente durchlaufen um Variablen zu finden
+    for (const element of elements) {
+      if (element.businessObject.extensionElement) {
+        const extras = element.businessObject.extensionElements.get(this.lookup.VALUES); //'values');
+        extras[0].values.map((extra: any, index: number) => {
+          if (extras[0].values[index].name.toLowerCase().startsWith(this.ipimTags.VAL + '_'.toLowerCase())) {
+            this.insertInputField(
+              extras[0].values[index].name.toLowerCase().replace(this.ipimTags.VAL + '_'.toLowerCase(), ''),
+              extras[0].values[index].value.toLowerCase(),
+              'inputfset');
+          }
+        }
+        );
+      }
+    }
     elements.forEach((element: any) => {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (typeof element.businessObject.extensionElements !== 'undefined') {
@@ -401,6 +430,7 @@ export class ModelerComponent implements OnInit {
         const extras = element.businessObject.extensionElements.get('values');
         //Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
+
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
           if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
             this.insertInputField(
@@ -438,16 +468,13 @@ export class ModelerComponent implements OnInit {
     for (let fieldi = 0; fieldi < fields.length; fieldi++) {
       if ((<HTMLInputElement>fields[fieldi]).value !== '') {
         extras[0].values.push(moddle.create('camunda:Property'));
-        if (!(<HTMLInputElement>checkboxes[fieldi]).checked) {
-          extras[0].values[fieldi].name = 'IPIM_Val_' + (<HTMLInputElement>fields[fieldi]).value.trim();
-        } else {
-          extras[0].values[fieldi].name = 'IPIM_META_' + (<HTMLInputElement>fields[fieldi]).value.trim();
-        }
-        if ((<HTMLInputElement>valueboxes[fieldi]).value !== '') {
-          extras[0].values[fieldi].value = (<HTMLInputElement>valueboxes[fieldi]).value.trim();
-        } else {
-          extras[0].values[fieldi].value = ' ';
-        }
+        (<HTMLInputElement>checkboxes[fieldi]).checked
+          ? extras[0].values[fieldi].name = this.ipimTags.META + '_' + (<HTMLInputElement>fields[fieldi]).value.trim()
+          : extras[0].values[fieldi].name = this.ipimTags.VAL + + '_' + (<HTMLInputElement>fields[fieldi]).value.trim();
+
+        (<HTMLInputElement>valueboxes[fieldi]).value !== ''
+          ? extras[0].values[fieldi].value = (<HTMLInputElement>valueboxes[fieldi]).value.trim()
+          : extras[0].values[fieldi].value = ' ';
       }
     }
   }
@@ -496,42 +523,45 @@ export class ModelerComponent implements OnInit {
   private getTermList = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
-    scope === 'selection'
+    scope === this.lookup.SELECTION
       ? elements = this.modeler.get(scope).get()
       : elements = this.modeler.get(scope).getAll();
     const terms: string[] = new Array();
     //Alle Elemente durchlaufen um Variablen zu finden
-    elements.forEach((element: any) => {
+    for (const element of elements) {
+      console.log(element, typeof element.businessObject.extensionElements);
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
+      if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
         //Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Calc'.toLowerCase())) {
-            if (-1 === terms.indexOf(extras[0].values[i].value)) {
+          if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.CALC)) {
+            if (terms.indexOf(extras[0].values[i].value) === -1) {
               terms.push(extras[0].values[i].value);
             }
           }
         }
       }
-    });
+    }
     return terms;
   }
 
   private fillTermModal() {
-    const terms = this.getTermList('selection');
+    const terms = this.getTermList(this.lookup.SELECTION);
     if (terms.length > 1) {
       window.alert('Attention selected Elements already have different Terms!');
     }
     const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
-    terms.length > 0
-      ? element.value = terms[0]
-      : element.value = '';
+   !element
+      ? console.error('no such element')
+      : (terms.length > 0)
+        ? element.value = terms[0]
+        : element.value = '';
   }
 
-  private ClearVariableModal() {
+  private clearVariableModal() {
     //Bereich zum löschen per getElement abfragen
     const inpNode = document.getElementById('variablefset');
     //Solange es noch ein firstChild gibt, wird dieses entfernt!
@@ -553,8 +583,9 @@ export class ModelerComponent implements OnInit {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
+    debugger;
+    const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
+    const modeling = this.modeler.get(this.lookup.MODELING);
     this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
       if (err) {
         console.error(err);
@@ -566,9 +597,10 @@ export class ModelerComponent implements OnInit {
     const elements = elementRegistry.getAll();
     const varValMap = {};
     //Alle Elemente durchlaufen um Variablen zu finden
-    elements.forEach((element: any) => {
+    // elements.forEach((element: any) => {
+    for (const element of elements) {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
+      if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
         //Schleife über alle Elemente
@@ -586,20 +618,9 @@ export class ModelerComponent implements OnInit {
           }
         }
       }
-    });
-
-    const ipimTags = {
-      META: 'ipim_meta_',
-      VAL: 'ipim_val_',
-      CALC: 'ipim_calc_'
-    }
-
-    const lookup = {
-      MODELING: 'modeling',
-      ELEMENTREGISTRY: 'elementRegistry'
     }
     //Alle Elemente durchlaufen um Evaluationsterme auszuwerten
-    elements.forEach((element: any) => {
+    for (const element of elements) {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
@@ -607,7 +628,7 @@ export class ModelerComponent implements OnInit {
         //Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
-          if (extras[0].values[i].name.toLowerCase() == ipimTags.CALC) {
+          if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
             //Stringoperationen um den Wert anzupassen.
             let evalterm = extras[0].values[i].value.toLowerCase();
             //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
@@ -625,31 +646,10 @@ export class ModelerComponent implements OnInit {
           }
         }
       }
-    });
-  }
-
-  private openFileDiagram() {
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-      // TODO : fixme because files is undefined / null
-      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
-      const file = (<HTMLInputElement>document.getElementById('file')).files[0];
-      file ? this.getAsFile(file) : console.error('could not reach selected file..', file)
-
-      //   const inp = (<HTMLInputElement> $('#file')[0]).files;
-      //   for (let i = 0; i < inp.length; i++) {
-      //     const fr = new FileReader();
-      //     fr.onload = (e: any) => {
-      //       this.openDiagram(e.target.result);
-      //       this.lastDiagramXML = e.target.result;
-      //     };
-      //     fr.readAsText(inp[i]);
-      //   }
-      // } else {
-      //   alert('The File APIs are not fully supported in this browser.');
     }
   }
 
-  private getAsFile(file: any) {
+  private getAsFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsText(file); // , 'UTF-16')
     reader.onerror = (err: ErrorEvent) => {
@@ -666,6 +666,7 @@ export class ModelerComponent implements OnInit {
     console.log('toggleTermscolored');
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
+      return;
     }
 
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
@@ -675,20 +676,25 @@ export class ModelerComponent implements OnInit {
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
-    const colorelements: any[] = [];
+    console.log('after elementRegistry');
 
-    for (let i = 0; i < this.ipimColors.length; i++) {
-      colorelements.push([]);
-    }
-    elements.forEach((element: any) => {
+    const colorelements = this.ipimColors.map(() => []);
+    for (const element of elements) {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
+      if (element.businessObject.extensionElements) {
+        // if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
+        console.log('extras ' + extras);
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
-          if (extras[0].values[i].name === 'IPIM_Calc') {
+          if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+            console.log( colorelements,
+              'values[i].value' + extras[0].values[i].value, 'i ' + i,
+              'length' + this.ipimColors.length,
+              'terms' + terms,
+              'indexOf' + terms.indexOf(extras[0].values[i].value),
+              'indexOf % length' + terms.indexOf(extras[0].values[i].value) % this.ipimColors.length);
             colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
             // const endEventNode = document.querySelector('[data-element-id="sid-52EB1772-F36E-433E-8F5B-D5DFD26E6F26"]');
             // endEventNode.setAttribute('title', "HELPT!");
@@ -699,14 +705,21 @@ export class ModelerComponent implements OnInit {
           }
         }
       }
-    });
-    for (let i = 0; i < this.ipimColors.length; i++) {
-      if (colorelements[i].length > 0) {
-        modeling.setColor(colorelements[i], {
-          stroke: this.ipimColors[i]
+    }
+    this.ipimColors.map((elem, index) => {
+      if (colorelements[index].length > 0) {
+        modeling.setColor(colorelements[index], {
+          stroke: this.ipimColors[index]
         });
       }
-    }
+    });
+    // for (let i = 0; i < this.ipimColors.length; i++) {
+    //   if (colorelements[i].length > 0) {
+    //     modeling.setColor(colorelements[i], {
+    //       stroke: this.ipimColors[i]
+    //     });
+    //   }
+    // }
   }
 
   // <div>
@@ -751,7 +764,7 @@ export class ModelerComponent implements OnInit {
     // $('#pform').append('<input>').attr({});
 
     const checkingbox = document.createElement('input');
-    checkingbox.attributes;
+    // checkingbox.attributes;
     checkingbox.setAttribute('type', 'checkbox');
     checkingbox.setAttribute('name', 'checkbox');
     checkingbox.setAttribute('value', 'Meta?');

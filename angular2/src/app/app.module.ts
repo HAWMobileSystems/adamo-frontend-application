@@ -9,6 +9,10 @@ import { FrontPageComponent } from './front-page/front-page.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { ModelerComponent } from './modeler/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { provideRoutes} from '@angular/router';
+
+import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
+import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 
 @NgModule({
     imports: [
@@ -20,6 +24,8 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
     ],
     declarations: [
         AppComponent,
+        AppFooterComponent,
+        AppHeaderComponent,
         FrontPageComponent,
         ViewerComponent,
         ModelerComponent
