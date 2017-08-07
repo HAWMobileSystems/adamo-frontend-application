@@ -23,6 +23,7 @@
         <h4 class="modal-title">IPIM Variables!</h4>
     </modal-header>
     <modal-body>
+        This should not appear!
         this.loadVariableModalValues()
         <fieldset id="inputfset">
         </fieldset>
@@ -37,6 +38,7 @@
         <h4 class="modal-title">IPIM Evaluation!</h4>
     </modal-header>
     <modal-body>
+        This should not appear!
         this.loadInputModalValues() ?? dynamic load values
         <fieldset id="inputfset">
         </fieldset>
@@ -58,6 +60,6 @@
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="this.termModalClose()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="this.termModal.accept()">Ok</button>
     </modal-footer>
 </modal>

@@ -18,6 +18,7 @@ import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
 import { FileReaderEvent } from './interfaces';
+import {TermModal} from './TermModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
@@ -35,8 +36,8 @@ const customPropertiesProviderModule = {
 })
 export class ModelerComponent implements OnInit {
   private modeler: any = require('bpmn-js/lib/Modeler.js');
-  private propertiesPanelModule = require('bpmn-js-properties-panel');
-  private propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
+  private propertiesPanelModule: any = require('bpmn-js-properties-panel');
+  private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
   private termsColored: boolean = false;
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
   private lastDiagramXML: string = '';
@@ -64,7 +65,8 @@ export class ModelerComponent implements OnInit {
   private lookup: any = {
     MODELING: 'modeling',
     ELEMENTREGISTRY: 'elementRegistry',
-    SELECTION: 'selection'
+    SELECTION: 'selection',
+    VALUES: 'values'
   };
 
   constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) { }
@@ -81,7 +83,7 @@ export class ModelerComponent implements OnInit {
 
   // Extract the following to the separate controler
   public openTermModal = () => {
-    this.fillTermModal();
+    const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
     this.termModal.open();
   }
 
@@ -131,7 +133,7 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(this.lastDiagramXML);
   }
   private saveDiagram = () => {
-    console.log('savediagram')
+    console.log('savediagram');
     const downloadLink = $('#js-download-diagram');
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
       console.log('xml:', xml, 'err', err);
@@ -208,33 +210,41 @@ export class ModelerComponent implements OnInit {
   //     'download': 'Openfile'
   //   });
 
-    createModeler() {
-        console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
-        this.modeler = new modeler({
-            container: containerRef,
-            propertiesPanel: {
-                parent: propsPanelRef
-            },
-            additionalModules: [
-                { 'extraPaletteEntries': ['type', () => this.extraPaletteEntries] },
-                { 'commandQueue': ['type', () => this.commandQueue] },
-                propertiesPanelModule,
-                propertiesProviderModule,
-                customPropertiesProviderModule,
-                customPaletteModule,
-            ],
-            moddleExtensions: {
-                //  ne: CustomModdle, 
-                ne: CamundaModdle
-                // camunda: camundaModdleDescriptor
-            },
-        });
-    $('#IPIM-Load').click(function () {
-      //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-      (<HTMLInputElement>document.getElementById('')).value = "";
-      document.getElementById('').click();
+
+  /**
+ * Creates the modeler Object from camunda bpmn-js package. 
+ * adds the extraPaletteEntries from the bpmn-store
+ * 
+ */
+  private createModeler() {
+    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
+    this.modeler = new this.modeler({
+      container: this.containerRef,
+      propertiesPanel: {
+        parent: this.propsPanelRef
+      },
+      additionalModules: [
+        { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
+        { commandQueue: ['type', () => this.commandQueue] },
+        this.propertiesPanelModule,
+        this.propertiesProviderModule,
+        // customPropertiesProviderModule,
+        customPaletteModule
+      ],
+      moddleExtensions: {
+        camunda: this.camundaModdleDescriptor
+        // ne: CustomModdle
+      }
     });
+
+    // Start with an empty diagram:
+    this.url = this.urls[0].href;
+    this.loadBPMN();
   }
+  //$('#IPIM-Load').click(function () {
+  //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+  // (<HTMLInputElement>document.getElementById('')).value = "";
+  // document.getElementById('').click();
 
   private registerFileDrop = (container: JQuery, callback: Function) => {
     // let containerJQ = $(this.containerID);
@@ -244,7 +254,7 @@ export class ModelerComponent implements OnInit {
       const files = e.dataTransfer.files;
       const file: File = files[0];
       const reader = new FileReader();
-      reader.onload = (onLoadEvent : any) => {
+      reader.onload = (onLoadEvent: any) => {
         const xml = (<FileReaderEvent>onLoadEvent).target.result;
         callback(xml);
       };
@@ -317,47 +327,10 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-/**
- * Creates the modeler Object from camunda bpmn-js package. 
- * adds the extraPaletteEntries from the bpmn-store
- * 
- */
-  private createModeler() {
-    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
-    this.modeler = new this.modeler({
-      container: this.containerRef,
-      propertiesPanel: {
-        parent: this.propsPanelRef
-      },
-      additionalModules: [
-        { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
-        { commandQueue: ['type', () => this.commandQueue] },
-        this.propertiesPanelModule,
-        this.propertiesProviderModule,
-        // customPropertiesProviderModule,
-        customPaletteModule
-      ],
-      moddleExtensions: {
-        camunda: this.camundaModdleDescriptor
-        // ne: CustomModdle
-      }
-    });
+  /**
+   * 
+   */
 
-    // Start with an empty diagram:
-    this.url = this.urls[0].href;
-    // this.loadBPMN();
-  }
-/**
- * 
- */
-  // private loadBPMN() {
-  //   const canvas = this.modeler.get('canvas');
-  //   this.http.get('/diagrams/scrum.bpmn')
-  //   // this.http.get(this.url)
-  //     .map(response => response.text())
-  //     .map(data => this.modeler.importXML(data, this.handleError))
-  //     .subscribe(x => x ? this.handleError(x) : this.postLoad());
-  // }
 
   private loadBPMN() {
     // console.log('load', this.url, this.store);
@@ -380,187 +353,6 @@ export class ModelerComponent implements OnInit {
     if (err) {
       console.log('error rendering', err);
     }
-  }
-
-  private writeInputModalValues() {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
-    //Alle Elemente der ElementRegistry holen
-    const elements = elementRegistry.getAll();
-    //Alle Elemente durchlaufen um Variablen zu finden
-    elements.forEach((element: any) => {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
-        //Wenn vorhandne die Elemente auslesen
-        const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
-            const inpelement = 'Input_' + extras[0].values[i].name;
-            //Variablen aus Inputfeld zurückschreiben
-            extras[0].values[i].value = (<HTMLInputElement>document.getElementById(inpelement.toLowerCase())).value;
-          }
-        }
-      }
-    });
-  }
-
-  private fillVariableModal() {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
-    //Alle Elemente der ElementRegistry holen
-    const elements = elementRegistry.getAll();
-    const element = elements[0];
-    //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-    if (typeof element.businessObject.extensionElements !== 'undefined') {
-      //Wenn vorhandne die Elemente auslesen
-      const extras = element.businessObject.extensionElements.get('values');
-      //Schleife über alle Elemente
-      for (let i = 0; i < extras[0].values.length; i++) {
-        //Prüfen ob der Name des Elementes IPIM_Val entspricht
-        const extrasValues = extras[0].values[i];
-        const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-        const ipimVal: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.VAL + '_'.toLowerCase());
-        const ipimMeta: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.META + '_'.toLowerCase());
-
-        if (ipimVal) {
-          this.insertVariableField(
-            extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-            extrasValues.value.toLowerCase(),
-            'variablefset',
-            false);
-        }
-
-        if (ipimMeta) {
-          this.insertVariableField(
-            extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
-            extrasValues.value.toLowerCase(),
-            'variablefset',
-            true);
-        }
-      }
-    }
-  }
-
-  private fillInputModal() {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const modeling = this.modeler.get('modeling');
-    //Alle Elemente der ElementRegistry holen
-    const elements = elementRegistry.getAll();
-    //Alle Elemente durchlaufen um Variablen zu finden
-    for (const element of elements) {
-      if (element.businessObject.extensionElement) {
-        const extras = element.businessObject.extensionElements.get(this.lookup.VALUES); //'values');
-        extras[0].values.map((extra: any, index: number) => {
-          if (extras[0].values[index].name.toLowerCase().startsWith(this.ipimTags.VAL + '_'.toLowerCase())) {
-            this.insertInputField(
-              extras[0].values[index].name.toLowerCase().replace(this.ipimTags.VAL + '_'.toLowerCase(), ''),
-              extras[0].values[index].value.toLowerCase(),
-              'inputfset');
-          }
-        }
-        );
-      }
-    }
-    elements.forEach((element: any) => {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
-        //Wenn vorhandne die Elemente auslesen
-        const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
-            this.insertInputField(
-              extras[0].values[i].name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-              extras[0].values[i].value.toLowerCase(),
-              'inputfset');
-            //Variablen als Key mit Wert in Map übernehmen
-            //VarValMap[extras[0].values[i].name.toLowerCase().replace("IPIM_Val_".toLowerCase(),"")]
-            // = extras[0].values[i].value.toLowerCase();
-          }
-        }
-      }
-    });
-  }
-
-  private writeVariableModalValues() {
-    //get moddle Object
-    const elementRegistry = this.modeler.get('elementRegistry');
-    const moddle = this.modeler.get('moddle');
-
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const elements = elementRegistry.getAll();
-    const element = elements[0];
-    //reset camunda extension properties
-    element.businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
-    const extras = element.businessObject.extensionElements.get('values');
-    extras.push(moddle.create('camunda:Properties'));
-    extras[0].values = [];
-
-    //Alle Elemente des Eingabefeldes durchlaufen um Variablen zu finden und dem Root Element hinzuzufügen
-    //const fieldset= document.getElementById('variablefset');
-    const fields = document.getElementsByName('textbox');
-    const checkboxes = document.getElementsByName('checkbox');
-    const valueboxes = document.getElementsByName('valuebox');
-    for (let fieldi = 0; fieldi < fields.length; fieldi++) {
-      if ((<HTMLInputElement>fields[fieldi]).value !== '') {
-        extras[0].values.push(moddle.create('camunda:Property'));
-        (<HTMLInputElement>checkboxes[fieldi]).checked
-          ? extras[0].values[fieldi].name = this.ipimTags.META + '_' + (<HTMLInputElement>fields[fieldi]).value.trim()
-          : extras[0].values[fieldi].name = this.ipimTags.VAL + + '_' + (<HTMLInputElement>fields[fieldi]).value.trim();
-
-        (<HTMLInputElement>valueboxes[fieldi]).value !== ''
-          ? extras[0].values[fieldi].value = (<HTMLInputElement>valueboxes[fieldi]).value.trim()
-          : extras[0].values[fieldi].value = ' ';
-      }
-    }
-  }
-
-  private writeTermModalValues() {
-    //get moddle Object
-    const moddle = this.modeler.get('moddle');
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const elements = this.modeler.get('selection').get();
-    //Alle Elemente durchlaufen um Variablen zu finden
-    elements.forEach((element: any) => {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-      if (typeof element.businessObject.extensionElements !== 'undefined') {
-        //Wenn vorhandne die Elemente auslesen
-        const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Calc entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Calc'.toLowerCase())) {
-            if ((<HTMLInputElement>document.getElementById('inputFieldTerm')).value !== '') {
-              extras[0].values[i].value = (<HTMLInputElement>document.getElementById('inputFieldTerm')).value;
-            } else {
-              extras[0].values.splice(i, 1);
-            }
-            break;
-          }
-        }
-      } else {
-        if ((<HTMLInputElement>document.getElementById('inputFieldTerm')).value !== '') {
-          element.businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
-          const extras = element.businessObject.extensionElements.get('values');
-          extras.push(moddle.create('camunda:Properties'));
-          extras[0].values = [];
-          extras[0].values.push(moddle.create('camunda:Property'));
-          extras[0].values[0].name = 'IPIM_Calc';
-          extras[0].values[0].value = (<HTMLInputElement>document.getElementById('inputFieldTerm')).value;
-        }
-      }
-    });
-
-    // this.termsColored
-    //   ? this.toggleTermsColored()
-    //   : this.toggleTermsNormal();
   }
 
   private getTermList = (scope: string) => {
@@ -589,37 +381,6 @@ export class ModelerComponent implements OnInit {
       }
     }
     return terms;
-  }
-
-  private fillTermModal() {
-    const terms = this.getTermList(this.lookup.SELECTION);
-    if (terms.length > 1) {
-      window.alert('Attention selected Elements already have different Terms!');
-    }
-    const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
-   !element
-      ? console.error('no such element')
-      : (terms.length > 0)
-        ? element.value = terms[0]
-        : element.value = '';
-  }
-
-  private clearVariableModal() {
-    //Bereich zum löschen per getElement abfragen
-    const inpNode = document.getElementById('variablefset');
-    //Solange es noch ein firstChild gibt, wird dieses entfernt!
-    while (inpNode.firstChild) {
-      inpNode.removeChild(inpNode.firstChild);
-    }
-  }
-
-  private clearInputModal() {
-    //Bereich zum löschen per getElement abfragen
-    const inpNode = document.getElementById('inputfset');
-    //Solange es noch ein firstChild gibt, wird dieses entfernt!
-    while (inpNode.firstChild) {
-      inpNode.removeChild(inpNode.firstChild);
-    }
   }
 
   private evaluateProcess = () => {
@@ -704,7 +465,7 @@ export class ModelerComponent implements OnInit {
     };
   }
 
-  private toggleTermsColored( elementRegistry : any, modeling: any) {
+  private toggleTermsColored(elementRegistry: any, modeling: any) {
 
     console.log('toggleTermscolored');
     if (this.lastDiagramXML === '') {
@@ -732,7 +493,7 @@ export class ModelerComponent implements OnInit {
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
           if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
-            console.log( colorelements,
+            console.log(colorelements,
               'values[i].value' + extras[0].values[i].value, 'i ' + i,
               'length' + this.ipimColors.length,
               'terms' + terms,
@@ -763,72 +524,5 @@ export class ModelerComponent implements OnInit {
     //     });
     //   }
     // }
-  }
-
-  // <div>
-  //   <label value="Variable + {{pname}}: ">
-  //   <input type="text" name={{pname}} value={{inpval}} id={{generateID(inputVal, pname)}}/>
-  //   <br>
-  // </div>
-  private insertInputField(pname: string, inpval: string, pform: string) {
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('name', pname);
-    inputField.setAttribute('value', inpval);
-    inputField.setAttribute('id', 'Input_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-    const br = document.createElement('br');
-
-    const node = document.createTextNode('Variable ' + pname + ':     ');
-
-    document.getElementById(pform).appendChild(node);
-    document.getElementById(pform).appendChild(document.createElement('br'));
-    document.getElementById(pform).appendChild(inputField);
-    //document.getElementById(pform).appendChild(br);
-    document.getElementById(pform).appendChild(br);
-
-  }
-
-  // TODO: FIxme in a template?
-  private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('name', 'textbox');
-    inputField.setAttribute('value', pname);
-    inputField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-    const valueField = document.createElement('input');
-    valueField.setAttribute('type', 'text');
-    valueField.setAttribute('name', 'valuebox');
-    valueField.setAttribute('value', inpval);
-    valueField.setAttribute('class', 'maxwid');
-    valueField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-    // (<HTMLElement> checkingBox).attr({"data-test-1":'num1', "data-test-2": 'num2'});
-    // $('#pform').append('<input>').attr({});
-
-    const checkingbox = document.createElement('input');
-    // checkingbox.attributes;
-    checkingbox.setAttribute('type', 'checkbox');
-    checkingbox.setAttribute('name', 'checkbox');
-    checkingbox.setAttribute('value', 'Meta?');
-    if (meta) {
-      checkingbox.setAttribute('checked', meta.toString());
-    }
-    checkingbox.setAttribute('id', 'Variable_IPIM_'.toLowerCase() + pname.toLowerCase());
-
-    const br = document.createElement('br');
-
-    const node = document.createTextNode('Variable:     ');
-
-    document.getElementById(pform).appendChild(node);
-    document.getElementById(pform).appendChild(inputField);
-    document.getElementById(pform).appendChild(document.createTextNode('    Meta?:'));
-    document.getElementById(pform).appendChild(checkingbox);
-    document.getElementById(pform).appendChild(document.createElement('br'));
-    document.getElementById(pform).appendChild(document.createTextNode('    Default:'));
-    document.getElementById(pform).appendChild(valueField);
-    //document.getElementById(pform).appendChild(br);
-    document.getElementById(pform).appendChild(br);
-    document.getElementById(pform).appendChild(document.createElement('hr'));
   }
 }
