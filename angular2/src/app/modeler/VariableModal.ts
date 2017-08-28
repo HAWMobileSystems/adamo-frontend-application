@@ -1,17 +1,17 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
+import { Component, Input } from '@angular/core';
 
 export class VariableModal extends AbstractCustomModal {
 
-    // private IPIM_VAL : string = 'IPIM_Val';
-    // private IPIM_META : string = 'IPIM_Meta';
-
-    constructor(modeler: any) {
-        super(modeler);
+    @Input() private modeler : any;
+  /*   constructor() {
+        super();
         console.log('VariableModal constructor');
-        this.fillModal(modeler);
-    }
+        this.fillModal();
 
-    protected fillModal(): void {
+    } */
+
+    public fillModal(): void {
         console.log('VariableModal fillModal');
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
         const elementRegistry = this.modeler.get('elementRegistry');
@@ -34,17 +34,13 @@ export class VariableModal extends AbstractCustomModal {
                 if (startsWithIpimVal) {
                     this.insertVariableField(
                         extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(),
-                        'variablefset',
-                        false);
+                        extrasValues.value.toLowerCase(), 'variablefset', false);
                 }
 
                 if (startsWithIpimMeta) {
                     this.insertVariableField(
                         extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(),
-                        'variablefset',
-                        true);
+                        extrasValues.value.toLowerCase(), 'variablefset', true);
                 }
             }
         }
@@ -57,20 +53,12 @@ export class VariableModal extends AbstractCustomModal {
 
     public accept(): void {
         console.log('VariableModal accept');
+        this.writeVariableModalValues();
     }
 
-    private clearVariableModal() {
-
-        console.log('VariableModal clearVariableModal');
-        //Bereich zum löschen per getElement abfragen
-        const inpNode = document.getElementById('variablefset');
-        //Solange es noch ein firstChild gibt, wird dieses entfernt!
-        while (inpNode.firstChild) {
-            inpNode.removeChild(inpNode.firstChild);
-        }
-    }
     // TODO: FIxme in a template?
     private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
+        console.log('Variablemodal insertVariableField');
         const inputField = document.createElement('input');
         inputField.setAttribute('type', 'text');
         inputField.setAttribute('name', 'textbox');
@@ -112,70 +100,6 @@ export class VariableModal extends AbstractCustomModal {
         document.getElementById(pform).appendChild(br);
         document.getElementById(pform).appendChild(document.createElement('hr'));
     }
-
-
-
-    // <div>
-    //   <label value="Variable + {{pname}}: ">
-    //   <input type="text" name={{pname}} value={{inpval}} id={{generateID(inputVal, pname)}}/>
-    //   <br>
-    // </div>
-
-    // TODO: FIxme in a template?
-
-    // function createSomething(name: string, attributes: object) {
-    //     const elem = document.createElement(name);
-    //     for (let (key, value) of attributes) {
-    //         elem.setAttribute(key, value);
-    //     }
-    //     return elem;
-    //     return attributes.reduce((elem, key, value) => elem.setAttribute(key, value), document.createElement(name));
-    // }
-
-    private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
-        const inputField = document.createElement('input');
-        inputField.setAttribute('type', 'text');
-        inputField.setAttribute('name', 'textbox');
-        inputField.setAttribute('value', pname);
-        inputField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-        const valueField = document.createElement('input');
-        valueField.setAttribute('type', 'text');
-        valueField.setAttribute('name', 'valuebox');
-        valueField.setAttribute('value', inpval);
-        valueField.setAttribute('class', 'maxwid');
-        valueField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-        // (<HTMLElement> checkingBox).attr({"data-test-1":'num1', "data-test-2": 'num2'});
-        // $('#pform').append('<input>').attr({});
-
-        const checkingbox = document.createElement('input');
-        // checkingbox.attributes;
-        checkingbox.setAttribute('type', 'checkbox');
-        checkingbox.setAttribute('name', 'checkbox');
-        checkingbox.setAttribute('value', 'Meta?');
-        if (meta) {
-            checkingbox.setAttribute('checked', meta.toString());
-        }
-        checkingbox.setAttribute('id', 'Variable_IPIM_'.toLowerCase() + pname.toLowerCase());
-
-        const br = document.createElement('br');
-
-        const node = document.createTextNode('Variable:     ');
-
-        document.getElementById(pform).appendChild(node);
-        document.getElementById(pform).appendChild(inputField);
-        document.getElementById(pform).appendChild(document.createTextNode('    Meta?:'));
-        document.getElementById(pform).appendChild(checkingbox);
-        document.getElementById(pform).appendChild(document.createElement('br'));
-        document.getElementById(pform).appendChild(document.createTextNode('    Default:'));
-        document.getElementById(pform).appendChild(valueField);
-        //document.getElementById(pform).appendChild(br);
-        document.getElementById(pform).appendChild(br);
-        document.getElementById(pform).appendChild(document.createElement('hr'));
-    }
-    //!! 
-
 
     private fillVariableModal() {
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
@@ -193,8 +117,8 @@ export class VariableModal extends AbstractCustomModal {
                 //Prüfen ob der Name des Elementes IPIM_Val entspricht
                 const extrasValues = extras[0].values[i];
                 const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-                const ipimVal: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.VAL + '_'.toLowerCase());
-                const ipimMeta: boolean = extrasValueNameLowerCase.startsWith(this.ipimTags.META + '_'.toLowerCase());
+                const ipimVal: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_VAL + '_'.toLowerCase());
+                const ipimMeta: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_META + '_'.toLowerCase());
 
                 if (ipimVal) {
                     this.insertVariableField(
@@ -214,7 +138,6 @@ export class VariableModal extends AbstractCustomModal {
             }
         }
     }
-
 
     private writeVariableModalValues() {
         //get moddle Object
@@ -239,8 +162,8 @@ export class VariableModal extends AbstractCustomModal {
             if ((<HTMLInputElement>fields[fieldi]).value !== '') {
                 extras[0].values.push(moddle.create('camunda:Property'));
                 (<HTMLInputElement>checkboxes[fieldi]).checked
-                    ? extras[0].values[fieldi].name = this.ipimTags.META + '_' + (<HTMLInputElement>fields[fieldi]).value.trim()
-                    : extras[0].values[fieldi].name = this.ipimTags.VAL + + '_' + (<HTMLInputElement>fields[fieldi]).value.trim();
+                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (<HTMLInputElement>fields[fieldi]).value.trim()
+                    : extras[0].values[fieldi].name = this.IPIM_VAL + + '_' + (<HTMLInputElement>fields[fieldi]).value.trim();
 
                 (<HTMLInputElement>valueboxes[fieldi]).value !== ''
                     ? extras[0].values[fieldi].value = (<HTMLInputElement>valueboxes[fieldi]).value.trim()
@@ -248,6 +171,4 @@ export class VariableModal extends AbstractCustomModal {
             }
         }
     }
-
-
 }

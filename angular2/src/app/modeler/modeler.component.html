@@ -18,7 +18,7 @@
     <button type="button" class="btn btn-large btn-block btn-default">button3</button>
 </div>
 
-<modal #variableModal>
+<modal #variableModal  >
     <modal-header>
         <h4 class="modal-title">IPIM Variables!</h4>
     </modal-header>
@@ -47,8 +47,10 @@
         <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
     </modal-footer>
 </modal>
+ <term-modal #termModal>
+    </term-modal>/> 
 
-<modal #termModal>
+    <!--  <modal #termModal>
     <modal-header>
         <h4 class="modal-title">TermModal!</h4>
     </modal-header>
@@ -60,6 +62,10 @@
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="this.termModal.accept()">Ok</button>
+        <button type="button" class="btn btn-default" (click)="this.termModal.accept()">Ok</button>
     </modal-footer>
-</modal>
+</modal> -->
+<!-- <term-modal [modeler]="modeler" [termList]="getTermList(lookup.SELECTION)"> -->
+<!-- <term-modal [modeler]="modeler" [termList]="this.modeler, this.getTermList(this.lookup.SELECTION)"> -->
+
+

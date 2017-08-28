@@ -10,7 +10,7 @@ import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 const propertiesPanelModule = require('bpmn-js-properties-panel');
 // const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-// const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
+const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
 
 import { CustomModdle } from './custom-moddle';
 import { CamundaModdle } from './camunda-moddle';
@@ -19,6 +19,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
 import { FileReaderEvent } from './interfaces';
 import {TermModal} from './TermModal';
+import {InputModal} from './InputModal';
+import {VariableModal} from './VariableModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
@@ -51,11 +53,11 @@ export class ModelerComponent implements OnInit {
   private newDiagramXML: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
   private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
   @ViewChild('variableModal')
-  private variableModal: ModalComponent;
+  private variableModal: VariableModal;
   @ViewChild('inputModal')
-  private inputModal: ModalComponent;
+  private inputModal: InputModal;
   @ViewChild('termModal')
-  private termModal: ModalComponent;
+  private termModal: TermModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
@@ -69,7 +71,10 @@ export class ModelerComponent implements OnInit {
     VALUES: 'values'
   };
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) { }
+  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
+
+    //this.initializeModeler();
+   }
 
   get urls(): Link[] {
     return this._urls;
@@ -83,16 +88,21 @@ export class ModelerComponent implements OnInit {
 
   // Extract the following to the separate controler
   public openTermModal = () => {
-    const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+  //  const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
+  //  this.termModal.instance.termList =  this.getTermList(this.lookup.SELECTION);
+    //  this.termModal.instance.modeler = this.modeler;
     this.termModal.open();
   }
 
   public openInputModal = () => {
-    this.fillInputModal();
+   // const inputModal = new InputModal(this.modeler);
+   this.inputModal.fillModal();
     this.inputModal.open();
   }
   public openVariableModal = () => {
-    this.fillVariableModal();
+    this.variableModal.fillModal();
+   // const variableModal = new VariableModal(this.modeler);
     this.variableModal.open();
   }
 
@@ -209,8 +219,77 @@ export class ModelerComponent implements OnInit {
   //     'href': 'data:application/bpmn20-xml;charset=UTF-8,',
   //     'download': 'Openfile'
   //   });
+ private createModeler() { 
+    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries); 
+    this.modeler = new this.modeler({ 
+      container: this.containerRef, 
+      propertiesPanel: { 
+        parent: this.propsPanelRef 
+      }, 
+      additionalModules: [ 
+        { extraPaletteEntries: ['type', () => this.extraPaletteEntries] }, 
+        { commandQueue: ['type', () => this.commandQueue] }, 
+        this.propertiesPanelModule, 
+        this.propertiesProviderModule, 
+        // customPropertiesProviderModule, 
+        customPaletteModule 
+      ], 
+      moddleExtensions: { 
+        camunda: this.camundaModdleDescriptor 
+        // ne: CustomModdle 
+      } 
+    }); 
+ }
+  //   createModeler() {
+  //       console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
+  //       this.modeler = new modeler({
+  //           container: containerRef,
+  //           propertiesPanel: {
+  //               parent: propsPanelRef
+  //           },
+  //           additionalModules: [
+  //               { 'extraPaletteEntries': ['type', () => this.extraPaletteEntries] },
+  //               { 'commandQueue': ['type', () => this.commandQueue] },
+  //               propertiesPanelModule,
+  //               propertiesProviderModule,
+  //               customPropertiesProviderModule,
+  //               customPaletteModule,
+  //           ],
+  //           moddleExtensions: {
+  //               //  ne: CustomModdle, 
+  //               ne: CamundaModdle
+  //               // camunda: camundaModdleDescriptor
+  //           },
+  //       });
+  //   $('#IPIM-Load').click(function () {
+  //     //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
+  //     (<HTMLInputElement>document.getElementById('')).value = "";
+  //     document.getElementById('').click();
+  //   });
+  // }
 
 
+
+  private initializeModeler() {
+    this.modeler = new this.modeler({
+          container: this.containerRef,
+          propertiesPanel: {
+            parent: this.propsPanelRef
+          },
+          additionalModules: [
+            { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
+            { commandQueue: ['type', () => this.commandQueue] },
+            this.propertiesPanelModule,
+            this.propertiesProviderModule,
+            // customPropertiesProviderModule,
+            customPaletteModule
+          ],
+          moddleExtensions: {
+            camunda: this.camundaModdleDescriptor
+            // ne: CustomModdle
+          }
+        });
+    }
   /**
  * Creates the modeler Object from camunda bpmn-js package. 
  * adds the extraPaletteEntries from the bpmn-store
@@ -218,24 +297,7 @@ export class ModelerComponent implements OnInit {
  */
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
-    this.modeler = new this.modeler({
-      container: this.containerRef,
-      propertiesPanel: {
-        parent: this.propsPanelRef
-      },
-      additionalModules: [
-        { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
-        { commandQueue: ['type', () => this.commandQueue] },
-        this.propertiesPanelModule,
-        this.propertiesProviderModule,
-        // customPropertiesProviderModule,
-        customPaletteModule
-      ],
-      moddleExtensions: {
-        camunda: this.camundaModdleDescriptor
-        // ne: CustomModdle
-      }
-    });
+    this.initializeModeler();
 
     // Start with an empty diagram:
     this.url = this.urls[0].href;

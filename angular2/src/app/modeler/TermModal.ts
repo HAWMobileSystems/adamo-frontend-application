@@ -1,36 +1,67 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
-
+import { Component, Input } from '@angular/core';
+//import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+@Component({
+  selector: 'term-modal',
+  template: `
+  <modal>
+    <modal-header>
+        <h4 class="modal-title">TermModal!</h4>
+    </modal-header>
+    <modal-body>
+        <div class="form-group">
+            <label for="term">Insert new Term for all Elements</label>
+            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="this" (click)="this.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="this.accept()">Ok</button>
+    </modal-footer>
+</modal>
+  `
+})
 export class TermModal extends AbstractCustomModal {
+  //@Input()
+  /* @ViewChild('modal')
+    modal: ModalComponent; */
+  public modeler: any;
+  // private IPIM_VAL : string = 'IPIM_Val';
+  // private IPIM_META : string = 'IPIM_Meta';
+  //@Input()
+  public termList: any;
 
-    // private IPIM_VAL : string = 'IPIM_Val';
-    // private IPIM_META : string = 'IPIM_Meta';
-    private termList : any ;
-    constructor(modeler: any, termList: any) {
-        super(modeler);
-        console.log('TermModal Constructor');
-        this.termList = termList;
-        // this.fillModal(termList);
-    }
-    protected fillModal() : void {
-        console.log('TermModal fillModal');
-    }
+  public setProps(modeler: any, termList: any) {
+    this.termList = termList;
+    this.modeler = modeler;
+  }
+  /* constructor(modeler: any, termList: any) {
+    super(modeler);
+    console.log(this.constructor.name + ' Constructor');
+    this.termList = termList;
 
-    public cancel() : void {
-        this.dismiss();
-    }
-    public accept() {
-        console.log('TermModal fillModal');
-        if (this.termList.length > 1) {
-            window.alert('Attention selected Elements already have different Terms!');
-        }
-        const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
-        !element
-            ? console.error('no such element')
-            : (this.termList.length > 0)
-                ? element.value = this.termList[0]
-                : element.value = '';
-    }
+    // this.fillModal(termList);
+  } */
 
+  protected fillModal(): void {
+    console.log(this.constructor.name + ' fillModal');
+  }
+
+  public cancel(): void {
+    this.dismiss();
+  }
+  public accept() {
+    console.log(this.constructor.name + ' fillModal');
+    if (this.termList.length > 1) {
+      window.alert('Attention selected Elements already have different Terms!');
+    }
+    const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
+    !element
+      ? console.error('no such element')
+      : (this.termList.length > 0)
+        ? element.value = this.termList[0]
+        : element.value = '';
+  }
 
   private writeTermModalValues() {
     //get moddle Object
@@ -67,9 +98,5 @@ export class TermModal extends AbstractCustomModal {
         }
       }
     });
-
-    // this.termsColored
-    //   ? this.toggleTermsColored()
-    //   : this.toggleTermsNormal();
   }
 }
