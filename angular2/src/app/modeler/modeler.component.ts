@@ -464,7 +464,13 @@ export class ModelerComponent implements OnInit {
       }
     }
   }
-
+private openFileDiagram() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/ 
+      const file = (<HTMLInputElement>document.getElementById('file')).files[0];
+      file ? this.getAsFile(file) : console.error('could not reach selected file..', file);
+    }
+  }
   private getAsFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsText(file); // , 'UTF-16')
