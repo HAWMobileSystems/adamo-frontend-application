@@ -10,7 +10,7 @@ import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
 const propertiesPanelModule = require('bpmn-js-properties-panel');
 // const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
+//const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
 
 import { CustomModdle } from './custom-moddle';
 import { CamundaModdle } from './camunda-moddle';
@@ -219,56 +219,6 @@ export class ModelerComponent implements OnInit {
   //     'href': 'data:application/bpmn20-xml;charset=UTF-8,',
   //     'download': 'Openfile'
   //   });
- private createModeler() { 
-    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries); 
-    this.modeler = new this.modeler({ 
-      container: this.containerRef, 
-      propertiesPanel: { 
-        parent: this.propsPanelRef 
-      }, 
-      additionalModules: [ 
-        { extraPaletteEntries: ['type', () => this.extraPaletteEntries] }, 
-        { commandQueue: ['type', () => this.commandQueue] }, 
-        this.propertiesPanelModule, 
-        this.propertiesProviderModule, 
-        // customPropertiesProviderModule, 
-        customPaletteModule 
-      ], 
-      moddleExtensions: { 
-        camunda: this.camundaModdleDescriptor 
-        // ne: CustomModdle 
-      } 
-    }); 
- }
-  //   createModeler() {
-  //       console.log('Creating modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
-  //       this.modeler = new modeler({
-  //           container: containerRef,
-  //           propertiesPanel: {
-  //               parent: propsPanelRef
-  //           },
-  //           additionalModules: [
-  //               { 'extraPaletteEntries': ['type', () => this.extraPaletteEntries] },
-  //               { 'commandQueue': ['type', () => this.commandQueue] },
-  //               propertiesPanelModule,
-  //               propertiesProviderModule,
-  //               customPropertiesProviderModule,
-  //               customPaletteModule,
-  //           ],
-  //           moddleExtensions: {
-  //               //  ne: CustomModdle, 
-  //               ne: CamundaModdle
-  //               // camunda: camundaModdleDescriptor
-  //           },
-  //       });
-  //   $('#IPIM-Load').click(function () {
-  //     //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-  //     (<HTMLInputElement>document.getElementById('')).value = "";
-  //     document.getElementById('').click();
-  //   });
-  // }
-
-
 
   private initializeModeler() {
     this.modeler = new this.modeler({
