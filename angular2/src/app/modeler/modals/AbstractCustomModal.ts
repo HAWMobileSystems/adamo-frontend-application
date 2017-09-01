@@ -14,11 +14,6 @@ export abstract class AbstractCustomModal extends ModalComponent {
   // private abstract fillModal = (modeler : any) => {};
 
   protected clearModal(elementName: string) {
-    //Bereich zum löschen per getElement abfragen
-    const inpNode = document.getElementById(elementName);
-    //Solange es noch ein firstChild gibt, wird dieses entfernt!
-    while (inpNode.firstChild) {
-      inpNode.removeChild(inpNode.firstChild);
-    }
+    document.getElementById(elementName).innerHTML = '';
   }
 }

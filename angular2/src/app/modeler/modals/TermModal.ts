@@ -1,30 +1,42 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
-import { Component, Input } from '@angular/core';
-//import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { Component, Input , ViewChild} from '@angular/core';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 @Component({
   selector: 'term-modal',
   template: `
-  <modal>
-    <modal-header>
-        <h4 class="modal-title">TermModal!</h4>
-    </modal-header>
-    <modal-body>
-        <div class="form-group">
-            <label for="term">Insert new Term for all Elements</label>
-            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
-        </div>
-    </modal-body>
-    <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="this" (click)="this.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="this.accept()">Ok</button>
-    </modal-footer>
-</modal>
+  <div>ASSHOLE</div>
+
+  <div id="TermModal" class="modal">
+
+  <!-- Modal content  Header-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" id ="TermClose">&times;</span>
+      <h2>IPIM Terms</h2>
+    </div>
+    <div class="modal-body">
+      <p>Please insert new Term for all Elements:</p>
+	  <form>
+	    
+		<!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
+		<textarea value="" id="inputFieldTerm" class="maxwid"> 
+		</textarea>
+		<br>
+		
+	  </form>
+	  <br>
+    </div>
+    <div class="modal-footer">
+      <input type="button" value=" Set Term " id="SetTermModal">
+    </div>
+  </div>
+
+</div>
   `
 })
 export class TermModal extends AbstractCustomModal {
   //@Input()
-  /* @ViewChild('modal')
-    modal: ModalComponent; */
+  //@ViewChild('termModalModalComponent') private modal: ModalComponent;
   public modeler: any;
   // private IPIM_VAL : string = 'IPIM_Val';
   // private IPIM_META : string = 'IPIM_Meta';
@@ -100,3 +112,23 @@ export class TermModal extends AbstractCustomModal {
     });
   }
 }
+
+
+/**
+ * 
+  <modal>
+    <modal-header>
+        <h4 class="modal-title">TermModal!</h4>
+    </modal-header>
+    <modal-body>
+        <div class="form-group">
+            <label for="term">Insert new Term for all Elements</label>
+            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="this" (click)="this.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="this.accept()">Ok</button>
+    </modal-footer>
+</modal>
+ */

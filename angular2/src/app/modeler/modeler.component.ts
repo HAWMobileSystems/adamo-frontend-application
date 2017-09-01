@@ -18,9 +18,10 @@ import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
 import { FileReaderEvent } from './interfaces';
-import {TermModal} from './TermModal';
-import {InputModal} from './InputModal';
-import {VariableModal} from './VariableModal';
+import {TermModal} from './modals/TermModal';
+import {InputModal} from './modals/InputModal';
+import { VariableModal } from './modals/VariableModal';
+
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
