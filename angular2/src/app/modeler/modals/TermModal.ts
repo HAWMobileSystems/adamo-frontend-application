@@ -1,40 +1,29 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
 import { Component, Input , ViewChild} from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'term-modal',
   template: `
-  <div>ASSHOLE</div>
-
-  <div id="TermModal" class="modal">
-
-  <!-- Modal content  Header-->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close" id ="TermClose">&times;</span>
-      <h2>IPIM Terms</h2>
-    </div>
-    <div class="modal-body">
-      <p>Please insert new Term for all Elements:</p>
-	  <form>
-	    
-		<!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
-		<textarea value="" id="inputFieldTerm" class="maxwid"> 
-		</textarea>
-		<br>
-		
-	  </form>
-	  <br>
-    </div>
-    <div class="modal-footer">
-      <input type="button" value=" Set Term " id="SetTermModal">
-    </div>
-  </div>
-
-</div>
+  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+  <modal-header [show-close]="true">
+      <h4 class="modal-title">I'm a modal!</h4>
+  </modal-header>
+  <modal-body>
+      <ul>
+          <li *ngFor="let item of items">
+              <a href="#" (click)="$event.preventDefault(); selected = item">{{ item }}</a>
+          </li>
+      </ul>
+      <p *ngIf="selected">Selected: <b>{{ selected }}</b></p>
+  </modal-body>
+  <modal-footer [show-default-buttons]="true"></modal-footer>
+</modal>
   `
 })
-export class TermModal extends AbstractCustomModal {
+export class TermModal extends ModalComponent {
   //@Input()
   //@ViewChild('termModalModalComponent') private modal: ModalComponent;
   public modeler: any;
@@ -43,10 +32,24 @@ export class TermModal extends AbstractCustomModal {
   //@Input()
   public termList: any;
 
+  @ViewChild('modal')
+  public modal: ModalComponent;
+  public items: string[] = ['item1', 'item2', 'item3'];
+  public selected: string;
+  public output: string;
+  public index: number = 0;
+  public cssClass: string = '';
+
+  public  animation: boolean = true;
+  public  keyboard: boolean = true;
+  public backdrop: string | boolean = true;
+  public css: boolean = false;
+
   public setProps(modeler: any, termList: any) {
     this.termList = termList;
     this.modeler = modeler;
   }
+
   /* constructor(modeler: any, termList: any) {
     super(modeler);
     console.log(this.constructor.name + ' Constructor');
@@ -54,6 +57,7 @@ export class TermModal extends AbstractCustomModal {
 
     // this.fillModal(termList);
   } */
+
 
   protected fillModal(): void {
     console.log(this.constructor.name + ' fillModal');
@@ -132,3 +136,31 @@ export class TermModal extends AbstractCustomModal {
     </modal-footer>
 </modal>
  */
+
+
+/* <div id="TermModal" class="modal" display:block #TermMod>
+
+  <!-- Modal content  Header-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" id ="TermClose">&times;</span>
+      <h2>IPIM Terms</h2>
+    </div>
+    <div class="modal-body">
+      <p>Please insert new Term for all Elements:</p>
+	  <form>
+	    
+		<!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
+		<textarea value="" id="inputFieldTerm" class="maxwid"> 
+		</textarea>
+		<br>
+		
+	  </form>
+	  <br>
+    </div>
+    <div class="modal-footer">
+      <input type="button" value=" Set Term " id="SetTermModal">
+    </div>
+  </div>
+
+</div> */

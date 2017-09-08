@@ -10,7 +10,7 @@ import { ViewerComponent } from './viewer/viewer.component';
 import { ModelerComponent } from './modeler/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
-import { TermModal} from './modeler/TermModal';
+import { TermModal} from './modeler/modals/TermModal';
 
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';

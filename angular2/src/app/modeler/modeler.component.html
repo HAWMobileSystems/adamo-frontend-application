@@ -14,11 +14,13 @@
 </div>
 <div class="buttons"> 
     <button type="button" class="btn btn-large btn-block btn-default" (click)="saveDiagram()">button1</button>
-    <button type="button" class="btn btn-large btn-block btn-default">button2</button>
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="openTermModal()">button2</button>
     <button type="button" class="btn btn-large btn-block btn-default">button3</button>
+    <term-modal></term-modal>
+    <button type="button" class="btn btn-large btn-block btn-default">button4</button>
 </div>
 
-<modal #variableModal  >
+<!-- <modal #variableModal  >
     <modal-header>
         <h4 class="modal-title">IPIM Variables!</h4>
     </modal-header>
@@ -46,7 +48,7 @@
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
     </modal-footer>
-</modal>
+</modal> -->
  <term-modal #termModal>
     </term-modal> 
 

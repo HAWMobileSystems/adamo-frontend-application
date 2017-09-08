@@ -22,7 +22,6 @@ import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import { VariableModal } from './modals/VariableModal';
 
-
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -93,7 +92,7 @@ export class ModelerComponent implements OnInit {
   //  const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
   //  this.termModal.instance.termList =  this.getTermList(this.lookup.SELECTION);
     //  this.termModal.instance.modeler = this.modeler;
-    this.termModal.open();
+    this.termModal.modal.open();
   }
 
   public openInputModal = () => {
