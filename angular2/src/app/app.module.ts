@@ -15,6 +15,8 @@ import { TermModal} from './modeler/modals/TermModal';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 
+//check for correct branch!
+
 @NgModule({
     imports: [
         BrowserModule,
