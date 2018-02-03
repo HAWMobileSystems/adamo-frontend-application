@@ -8,26 +8,26 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // used to create fake backend
 import { fakeBackendProvider } from './helpers/fake-backend';
+import { ReCaptchaModule} from 'angular2-recaptcha';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FrontPageComponent } from './front-page/front-page.component';
-import { RegisterComponent } from './register/register.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { ModelerComponent } from './modeler/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
 
-import { AlertComponent } from './alert/alert.component';
+// import { AlertComponent } from './alert/index';
+import {AlertComponent} from "./components/Alert/alert.component";
 import { AuthGuard } from './guards/auth.guard';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 import { AlertService } from './services/alert.service';
-import { AuthenticationService } from './services/authentification.service';
-import { UserService } from './services/user.service'
 
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
+import {ApiService} from "./services/api.service";
 
 //check for correct branch!
 
@@ -39,22 +39,22 @@ import {AppHeaderComponent} from './components/AppHeaderComponent/header.compone
         FormsModule,
         Ng2Bs3ModalModule,
         HttpClientModule,
+        ReCaptchaModule
     ],
     declarations: [
         AppComponent,
         AppFooterComponent,
         AppHeaderComponent,
         FrontPageComponent,
-        RegisterComponent,
         ViewerComponent,
         ModelerComponent,
+        AlertComponent,
         TermModal
     ],
     providers: [
         AuthGuard,
         AlertService,
-        AuthenticationService,
-        UserService,
+        ApiService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,

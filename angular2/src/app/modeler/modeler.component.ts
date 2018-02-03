@@ -3,6 +3,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Http } from '@angular/http';
 
+import {Router} from '@angular/router';
+
 import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
@@ -71,7 +73,7 @@ export class ModelerComponent implements OnInit {
     VALUES: 'values'
   };
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
+  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef, private router: Router) {
 
     //this.initializeModeler();
    }
@@ -543,4 +545,27 @@ private openFileDiagram() {
     //   }
     // }
   }
+
+    logout() {
+        // reset login status
+        this.http.get('http://localhost:3000/logout')
+            .subscribe(response => {
+                console.log(response);
+                this.router.navigate(['/']);
+            }, error => {
+                console.log(error);
+            });
+    }
+
+    login_status() {
+        // reset login status
+        this.http.get('http://localhost:3000/login_status')
+            .subscribe(response => {
+                console.log(response);
+            }, error => {
+                console.log(error);
+            });
+    }
+
+
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Http, Response} from "@angular/http";
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router,} from '@angular/router';
 
-import { AlertService } from '../services/alert.service';
-import { AuthenticationService } from '../services/authentification.service';
+import {AlertService} from '../services/alert.service';
+import {ApiService} from '../services/api.service';
+
 
 @Component({
     selector: 'front-page',
@@ -14,48 +14,62 @@ export class FrontPageComponent implements OnInit {
     title: string = 'Angular 2 with BPMN-JS';
     model: any = {};
     loading = false;
-    returnUrl: string;
 
-    constructor(private route: ActivatedRoute,
-                private router: Router,
-                private authenticationService: AuthenticationService,
+    constructor(private router: Router,
                 private alertService: AlertService,
-                private http: Http) {
+                private apiService: ApiService) {
 
     }
 
     ngOnInit() {
         // reset login status
-        this.authenticationService.logout();
-
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/modeler';
+        this.apiService.logout()
+            .subscribe(response => {
+            }, error => {
+                console.log(error);
+                this.alertService.error(error)
+            });
     }
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(
-                data => {
-                    this.router.navigate([this.returnUrl]);
+        this.apiService.authenticate(this.model.username, this.model.password, this.model.captcha)
+            .subscribe(response => {
+                    if (response.success){
+                        console.log(JSON.stringify(response, null, 2));
+                        this.router.navigate(['/modeler']);
+                    }
+                    else {
+                        this.alertService.error(response.error)
+                    }
                 },
                 error => {
-                    this.alertService.error(error);
-                    console.log('loginerror:', error);
+                    this.alertService.error(error.statusText);
+                    console.log('loginerror: ', error);
                     this.loading = false;
                 });
     }
 
-    getUser() {
-        return this.http.get(`https://conduit.productionready.io/api/profiles/eric`)
-            .map((res: Response) => res.json());
+    debug1() {
+        this.apiService.authenticate('1', '12341234', '1234')
+            .subscribe(response => {
+                    console.log(response)
+                    this.router.navigate(['/modeler']);
+                },
+                error => {
+                    console.log('loginerror: ', error);
+                });
     }
 
-    debug() {
-        var a: any;
-        this.getUser().subscribe(data => a = data);
-        console.log('debug!:', a);
-        // this.getUser().subscribe(console.log(''));
+
+    debug2() {
+        this.apiService.authenticate('2', '12341234', '1234')
+            .subscribe(response => {
+                    this.router.navigate(['/modeler']);
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
 }
