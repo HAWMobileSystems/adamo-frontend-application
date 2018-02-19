@@ -3,8 +3,6 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Http } from '@angular/http';
 
-import {Router} from '@angular/router';
-
 import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
 import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
@@ -14,6 +12,11 @@ const propertiesPanelModule = require('bpmn-js-properties-panel');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
 //const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
 
+//const inherits = require('inherits');
+//const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
+// import { Inherits } from 'inherits';
+// import { CommandInterceptor } from 'diagram-js/lib/command/CommandInterceptor';
+import { CommandStack  } from './command/CommandStack';
 import { CustomModdle } from './custom-moddle';
 import { CamundaModdle } from './camunda-moddle';
 import { Observable, Subject } from 'rxjs';
@@ -46,6 +49,7 @@ export class ModelerComponent implements OnInit {
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
   private lastDiagramXML: string = '';
   private url: string;
+  private commandStack : any;
   private _urls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
@@ -73,7 +77,7 @@ export class ModelerComponent implements OnInit {
     VALUES: 'values'
   };
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef, private router: Router) {
+  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
 
     //this.initializeModeler();
    }
@@ -181,12 +185,16 @@ export class ModelerComponent implements OnInit {
    * and is no longer recognized as a function
    */
   public ngOnInit() {
+
     this.commandQueue = new Subject();
     this.store.listDiagrams()
       .do(links => this.urls = links)
       .flatMap(() => this.store.paletteEntries())
       .do(entries => this.extraPaletteEntries = entries)
-      .subscribe(() => this.createModeler());
+      .subscribe(() => {
+      //  debugger;
+       return this.createModeler()
+      });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
       console.log(cmd.action, func);
@@ -250,7 +258,8 @@ export class ModelerComponent implements OnInit {
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.initializeModeler();
-
+    this.commandStack = new CommandStack(this.modeler);
+   // debugger;
     // Start with an empty diagram:
     this.url = this.urls[0].href;
     this.loadBPMN();
@@ -304,6 +313,26 @@ export class ModelerComponent implements OnInit {
       stroke: 'black'
     });
   }
+
+   private commandTest = () => {
+     debugger;
+     this.commandStack.commandTest();
+  //   const COMMANDSTACK : string = 'commandStack';
+  //   const cs = this.modeler.get(COMMANDSTACK);
+
+  //   const testTerm = cs._stack[0];
+
+  //   cs.execute(testTerm.command, testTerm.context);
+
+   }
+
+  //  private commandLogger = (eventBus: any) => {
+  //     CommandInterceptor.call(this, eventBus);
+  //     CommandInterceptor.preExecute( ( event : any ) =>  {
+  //      console.log('command pre-execute', event);
+  //     });
+  //  }
+   //inherits(commandLogger, commandInterceptor);
 
   // import {debounce} from 'lodash';
   // const exportArtifacts = debounce(() => {
@@ -369,6 +398,9 @@ export class ModelerComponent implements OnInit {
     }
   }
 
+  /**
+   * 
+   */
   private getTermList = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
@@ -382,7 +414,7 @@ export class ModelerComponent implements OnInit {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
-        const extras = element.businessObject.extensionElements.get('values');
+        const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
         //Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
@@ -545,27 +577,4 @@ private openFileDiagram() {
     //   }
     // }
   }
-
-    logout() {
-        // reset login status
-        this.http.get('http://localhost:3000/logout')
-            .subscribe(response => {
-                console.log(response);
-                this.router.navigate(['/']);
-            }, error => {
-                console.log(error);
-            });
-    }
-
-    login_status() {
-        // reset login status
-        this.http.get('http://localhost:3000/login_status')
-            .subscribe(response => {
-                console.log(response);
-            }, error => {
-                console.log(error);
-            });
-    }
-
-
 }

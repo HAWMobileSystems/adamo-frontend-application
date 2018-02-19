@@ -368,6 +368,21 @@ app.get('/models', function (req, res) {
 
 });
 
+app.get('/model', function (req, res) {
+    const id = req.query.id;
+    db.one('SELECT $1 AS value', 123)
+        .then(function (data) {
+            console.log('DATA:', data.value)
+            res.send(data.value);
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available ID:" + id + " Name:" + name);
+        })
+
+
+});
+
 app.get('/getallModels', function (req, res) {
     res.send("Here you will get all Modles from DB");
 });
