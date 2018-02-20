@@ -19,20 +19,18 @@ export class CommandStack {
       }
 
       public commandLogger = (eventBus: any) => {
-          debugger;
-       //   const commandInterceptor : any = new CommandInterceptor();
+       //Call Constructor for CommandInterceptor, Call function gets the Object itself and the required eventbus
        commandInterceptor.call(commandInterceptor, eventBus);
-       // where belongs preexecute
-       // how to instantiate commandInterceptor corretly
 
-       // direct ... works but has no eventBus variable from call above
-       //commandInterceptor.prototpye.preExecute( ( event : any ) =>  {
-       // console.log('command pre-execute', event);
-       // });
+       //Small trick to get the jquery class working with angular. Prototype functions are added as direct variable...
+       commandInterceptor.preExecute = commandInterceptor.prototype.preExecute;
+       commandInterceptor.execute = commandInterceptor.prototype.execute;
+       commandInterceptor.on = commandInterceptor.prototype.on;
 
-       //indirect call has the variable from above but is unable to call the .on function as it expects prototype.on ...
-       //commandInterceptor.prototype.preExecute.call(commandInterceptor, ( event : any ) =>  {
-       //  console.log('command pre-execute', event);
-       // });
+       //finally implement the hook and be happy!
+       commandInterceptor.prototype.execute.call(commandInterceptor, ( event : any ) =>  {
+           event.context.IPIMremote = 'yes';
+         console.log('IPIM command execute logger', event);
+        });
      }
 }
