@@ -1,3 +1,50 @@
+
+ .loading {
+  animation-play-state: paused;
+  transition: opacity .8s ease-in-out;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  /* z-index: -1; */
+}
+
+/* .loading screen is visible when app is not bootstrapped yet, my-app is empty */
+my-app:empty + .loading {
+  opacity: 1;
+  animation-play-state: running;
+  /* z-index: 100; */
+}
+my-app:not(:empty) .landing {
+  opacity: 0;
+}
+.sk-three-bounce {
+  margin: 50% auto;
+  text-align: center;
+}
+
+my-app:empty .sk-child {
+  animation-play-state: running;
+}
+.sk-child {
+  animation-play-state: paused;
+  background-color: rgb(201, 36, 36);
+  width: 400px / 2;
+  height: 400px / 2;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+}
+.sk-bounce1 { animation-delay: -0.32s; }
+.sk-bounce2 { animation-delay: -0.32s / 2; }
+
+@keyframes sk-three-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+  }
+}
 main {
     padding: 1em;
     font-family: Arial, Helvetica, sans-serif;
