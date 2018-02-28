@@ -28,6 +28,7 @@ import { AlertService } from './services/alert.service';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from "./services/api.service";
+import { LoadingService } from './helpers/LoadingComponent/loading.service';
 
 //check for correct branch!
 
@@ -55,6 +56,7 @@ import {ApiService} from "./services/api.service";
         AuthGuard,
         AlertService,
         ApiService,
+        LoadingService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,
