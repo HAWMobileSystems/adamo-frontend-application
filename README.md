@@ -1,28 +1,18 @@
-# IntSys (Intelligente Systeme) 
+# IPIM Modeler
 
-Teilprojekt aus dem EFRE geförderten Projekt Intelligente Produktionssysteme
+Das Softwarewerkzeug IPIM Modeler wird im Rahmen des Teilprojekts Intelligente Systeme (IntSys) des EFRE geförderten Projekt Intelligente Produktionssysteme entwickelt. 
 
-Ziel ist es durch Zugriff auf digitalisiertes Expertenwissen und einer (Teil-) Automatisierung von Routineaufgaben 
-eine Entlastung für Logistikplaner herbeizuführen.
+Ziel ist es durch Zugriff auf digitalisiertes Expertenwissen und einer (Teil-) Automatisierung von Routineaufgaben eine Entlastung für Logistikplaner herbeizuführen.
 
 
-## Abhängigkeiten:
+## Credits:
+Als Basis des IPIM Modeler wird das Open Source Tool Campunda Modeler verwendet. (https://github.com/camunda/camunda-modeler)
+Dieses wurde unter der MIT Lizenz veröffentlicht - wobei Softwarebibliothekten von Camunda verwendet werden, welche unter der bpmn.io Lizenz veröffentlicht wurden. (http://bpmn.io/license/)
 
-https://github.com/bpmn-io/bpmn-js (https://bpmn.io/)
+## Entwicklung
+Ein funktionisfähiger Prototyp findet sich im Unterordner jQuery. Dieser Version ist als Standalone-Version ausführbar und verfügt über die meisten Modellierungsfunktionen.
 
-bpmn-js is a BPMN 2.0 diagram rendering toolkit and web modeler.
+Die Weiterentwicklung des Tools findet in Angular statt. Deshalb findet ein vollständiger Re-Write in TypeScript statt, um Typischerheit zu gewährleisten.
 
-## Weiterer Entwicklungsverlauf
 
-Die derzeitige Version im Ordner jQuery nutzt das bpmn-js Tool der Firma Camunda. 
-Dieses wird mit jQuery erweitert.
-
-Die weitere Entwicklung wird unter Einsatz aktuellerer Tools geschehen. 
-Eine Idee ist die Nutzung von TypeScript in Kombination mit React, um typsicheren Javascript Code zu schreiben und diesen in Komponenten zu gliedern.
-
-## React
-Benötigt:
-    Yarn
-    node-js
-
-ps. Developing with MacOs would work like charm.. (thanks to windows...)
+...More to come...
