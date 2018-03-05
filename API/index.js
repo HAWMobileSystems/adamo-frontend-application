@@ -45,7 +45,7 @@ var pgp = require('pg-promise')(/*options*/)
 var cn = {
     host: 'localhost',
     port: 5432,
-    database: 'postgres',
+    database: 'ipim',
     user: 'postgres',
     password: '12341234'
 };
@@ -103,7 +103,7 @@ app.post('/authenticate', function (req, res) {
         else throw({status: 400, data: {message: 'missing password', success: false}});
         // if (req.body.captcha) var captcha = req.body.captcha;
         // else throw({status: 400, data: {message: 'missing captcha', success: false}});
-        //TODO what to do when client is allready logged in with different credentials?
+        //TODO what to do when client is already logged in with different credentials?
         //TODO validate captcha could be the first thing to do
         db.one('select id, username, password, firstname, lastname, role from users where username = $1', username)
             .then(function (user) {
@@ -383,21 +383,113 @@ app.get('/model', function (req, res) {
 
 });
 
+/*
+* URL:              /getallModels
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
 app.get('/getallModels', function (req, res) {
-    res.send("Here you will get all Modles from DB");
+    let x = '7411';
+    res.send(x);
 });
+
+/*
+* URL:              /users
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/users', function (req, res) {
+
+    try{
+        console.log(req.body.username);
+
+        db.one('SELECT password AS value from users where username =' + req.body.username)
+        .then(function (data) {
+            console.log('DATA:', data.value)
+            res.send(data.value);
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+
+        /*res.cookie('demoCookie', 123, { maxAge: 900000, httpOnly: true });
+        var response = {};
+        
+        if (req.body.username) var username = req.body.username;
+        else throw({status: 400, data: {message: 'missing username', success: false}});
+        if (req.body.email) var email = req.body.email;
+        else throw({status: 400, data: {message: 'missing email', success: false}});
+        if (req.body.password) var password = req.body.password;
+        else throw({status: 400, data: {message: 'missing password', success: false}});
+        
+        db.one('insert into users (uid, username, email, password)', username)
+            .then(function (user) {
+                if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
+            }
+            )}*/
+    }
+    catch (error) {}
+});
+
+app.put('/users', function (req, res) {
+    res.send('Got a PUT request at /user')
+});
+
+app.delete('/users', function (req, res) {
+    res.send('Got a DELETE request at /user')
+});
+
+app.get('/getallUsers', function (req, res) {
+
+});
+
+app.put('/role', function (req, res) {
+    res.send('Got a PUT request at /user')
+});
+
+app.post('/role', function (req, res) {
+    res.send('Got a PUT request at /user')
+});
+
+app.delete('/role', function (req, res) {
+    res.send('Got a DELETE request at /user')
+});
+
+app.put('/permission', function (req, res) {
+    res.send('Got a PUT request at /user')
+});
+
+app.post('/permission', function (req, res) {
+    res.send('Got a PUT request at /user')
+});
+
+app.delete('/permission', function (req, res) {
+    res.send('Got a DELETE request at /user')
+});
+
 
 app.post('/', function (req, res) {
     res.send('Got a POST request')
-})
-
-app.put('/user', function (req, res) {
-    res.send('Got a PUT request at /user')
-})
-
-app.delete('/user', function (req, res) {
-    res.send('Got a DELETE request at /user')
-})
+});
 
 app.listen(3000);
 
