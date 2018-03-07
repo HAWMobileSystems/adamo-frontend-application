@@ -945,27 +945,45 @@ app.delete('/roledelete', function (req, res) {
 
 app.post('/permissioncreate', function (req, res) {
 
-    const role = req.body.role;
-    const read = req.body.read;
-    const write = req.body.write;
-    const admin = req.body.admin;
+    if(!req.body.modelid) {
+        res.send({ status: 'Model may not be empty!'});
+        return;
+    }  
+    if(!req.body.userid) {
+        res.send({ status: 'User may not be empty!'});
+        return;
+    }  
+    if(!req.body.roleid) {
+        res.send({ status: 'Role may not be empty!'});
+        return;
+    }  
 
-    console.log(role + ' ' + read + ' ' + write + ' ' + admin);
+    const mid = req.body.modelid;
+    const uid = req.body.userid;
+    const rid = req.body.roleid;
+
+    console.log(mid + ' ' + uid + ' ' + rid);
    
-    db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Role inserted successfully'});
-            }
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
+    db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
+    .then(function (data) {
+        if(data){
+            res.send({ status: 'Permission already exists'})
+        } else {
+            db.oneOrNone('insert into permission (mid, id, rid) values ($1, $2, $3)', [mid, uid, rid])
+                .then(function (data) {
+                     res.send({ status: 'Permission created successfully'});
+                    })
+                    .catch(function (error) {
+                        console.log('ERROR POSTGRES:', error)
+                        res.send({ status: 'Database not available'});
+                    })
+                }
+            })
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'Database not available'});
+            })
+        });
 
 
     /*
@@ -984,28 +1002,46 @@ app.post('/permissioncreate', function (req, res) {
 
 app.post('/permissionupdate', function (req, res) {
 
-    const rid = req.query.roleid;
-    const role = req.body.role;
-    const read = req.body.read;
-    const write = req.body.write;
-    const admin = req.body.admin;
+    if(!req.body.modelid) {
+        res.send({ status: 'Model may not be empty!'});
+        return;
+    }  
+    if(!req.body.userid) {
+        res.send({ status: 'User may not be empty!'});
+        return;
+    }  
+    if(!req.body.roleid) {
+        res.send({ status: 'Role may not be empty!'});
+        return;
+    }  
 
-    console.log(rid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
-    
-    db.oneOrNone('update role set role' == role, 'and read' == read, ' and write' == write, 'and admin' == admin, 'where rid' == rid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Role updated successfully'});
-            }       
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
+    const pid = req.body.permissionid;
+    const mid = req.body.modelid;
+    const uid = req.body.userid;
+    const rid = req.body.roleid;
+
+    console.log(pid + ' ' + mid + ' ' + uid + ' ' + rid);
+   
+    db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
+    .then(function (data) {
+        if(data){
+            res.send({ status: 'Permission already exists'})
+        } else {
+            db.oneOrNone('update permission set mid = $1, id = $2, rid = $3 where pid = $4', [mid, uid, rid, pid])
+                .then(function (data) {
+                     res.send({ status: 'Permission updated successfully'});
+                    })
+                    .catch(function (error) {
+                        console.log('ERROR POSTGRES:', error)
+                        res.send({ status: 'Database not available'});
+                    })
+                }
+            })
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'Database not available'});
+            })
+        });
 
 
 /*
@@ -1024,24 +1060,20 @@ app.post('/permissionupdate', function (req, res) {
 
 app.delete('/permissiondelete', function (req, res) {
 
-    const rid = req.query.roleid;
+    const pid = req.body.permissionid;
 
-    console.log(rid);
+    console.log(pid);
 
-    db.oneOrNone('delete * from users where rid' == rid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Role deleted successfully'});
-            }  
-        })
-        .catch(function (error) {
+    db.oneOrNone('delete from permission where pid = $1', [pid])
+         .then(function (data) {
+            res.send({ status: 'Permission deleted successfully'});
+          })
+         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
+            res.send({ status: 'Database not available'});
+          })
     });
+
 
 
 
