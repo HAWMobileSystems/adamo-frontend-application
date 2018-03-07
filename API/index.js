@@ -657,28 +657,53 @@ app.get('/getallUsers', function (req, res) {
 
 app.post('/usercreate', function (req, res) {
 
-    const name = req.body.name;
-    const pw = req.body.password;
+    if(!req.body.firstname) {
+        res.send({ status: 'First name may not be empty!'});
+        return;
+    }   
+    if(!req.body.lastname) {
+        res.send({ status: 'Last name may not be empty!'});
+        return;
+    }
+    if(!req.body.name) {
+        res.send({ status: 'Username may not be empty!'});
+        return;
+    }
+    if(!req.body.password) {
+        res.send({ status: 'Password may not be empty!'});
+        return;
+    }    
+
     const fname = req.body.firstname;
     const lname = req.body.lastname;
+    const name = req.body.name;
+    const pw = req.body.password;
 
-    console.log(name + ' ' + pw + ' ' + fname + ' ' + lname);
 
-    db.oneOrNone('insert into users (username, password, firstname, lastname) values ($1, $2, $3, $4)', [name, pw, fname, lname])
+    console.log(fname + ' ' + lname + ' ' + name + ' ' + pw);
+
+    db.oneOrNone('select from users where username = $1', [name])
         .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
+            if(data){
+                res.send({ status: 'Username already exists'})
             } else {
-                res.send({ status: 'User inserted successfully'});
-            }            
+                db.oneOrNone('insert into users (firstname, lastname, username, password) values ($1, $2, $3, $4)', [fname, lname, name, pw])
+                .then(function (data) {
+                    res.send({ status: 'User created successfully'}); 
+                })
+                .catch(function (error) {
+                    console.log('ERROR POSTGRES:', error)
+                    res.send({ status: 'Database not available'});
+                })
+            }
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
 
+    
 /*
 * URL:              /userupdate
 * Method:           post
@@ -695,28 +720,51 @@ app.post('/usercreate', function (req, res) {
 
 app.post('/userupdate', function (req, res) {
 
+    if(!req.body.firstname) {
+        res.send({ status: 'First name may not be empty!'});
+        return;
+    }   
+    if(!req.body.lastname) {
+        res.send({ status: 'Last name may not be empty!'});
+        return;
+    }
+    if(!req.body.name) {
+        res.send({ status: 'Username may not be empty!'});
+        return;
+    }
+    if(!req.body.password) {
+        res.send({ status: 'Password may not be empty!'});
+        return;
+    }    
+
     const uid = req.body.userid;
-    const name = req.body.name;
-    const pw = req.body.password;
     const fname = req.body.firstname;
     const lname = req.body.lastname;
+    const name = req.body.name;
+    const pw = req.body.password;
 
-    console.log(uid + ' ' + name + ' ' + pw + ' ' + fname + ' ' + lname);
+    console.log(uid + ' ' + fname + ' ' + lname + ' ' + name + ' ' + pw );
     
-    db.oneOrNone('update users set username = $1, password = $2, firstname = $3, lastname = $4 where id = $5', [name, pw, fname, lname, uid])
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'User updated successfully'});
-            }       
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
+    db.oneOrNone('select from users where username = $1', [name])
+    .then(function (data) {
+        if(data){
+            res.send({ status: 'Username already exists'})
+        } else {
+             db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where id = $5', [fname, lname, name, pw, uid])
+             .then(function (data) {
+                res.send({ status: 'User updated successfully'}); 
+            })
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.send({ status: 'Database not available'});
+    })
+});
 
 
 /*
@@ -741,12 +789,7 @@ app.delete('/userdelete', function (req, res) {
 
     db.oneOrNone('delete from users where id = $1', [uid])
         .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'User deleted successfully'});
-            }  
+            res.send({ status: 'User deleted successfully'}); 
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
