@@ -384,7 +384,7 @@ app.get('/model', function (req, res) {
 });
 
 /*
-* URL:              /getallModels
+* URL:              /getallmodels
 * Method:           get
 * URL Params:
 *   Required:       none
@@ -397,13 +397,14 @@ app.get('/model', function (req, res) {
 * Description:      
 * */
 
-app.get('/getallModels', function (req, res) {
+app.get('/getallmodels', function (req, res) {
     let x = '7411';
     res.send(x);
 });
 
+
 /*
-* URL:              /users
+* URL:              /modelcreate
 * Method:           post
 * URL Params:
 *   Required:       none
@@ -416,9 +417,581 @@ app.get('/getallModels', function (req, res) {
 * Description:      
 * */
 
-app.post('/users', function (req, res) {
+app.post('/modelcreate', function (req, res) {
 
-    try{
+    const name = req.body.name;
+    const lc = req.body.lastchange;
+    const xml = req.body.modelxml;
+    const version = req.body.version;
+
+    console.log(name + ' ' + lc + ' ' + xml + ' ' + version);
+
+    db.oneOrNone('insert into model (modelname, lastchange, modelxml, version) values ($1, $2, $3, $4)', [name, lc, xml, version])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model inserted successfully'});
+            }            
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /modelupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/modelupdate', function (req, res) {
+
+    const mid = req.query.modelid;
+    const name = req.body.name;
+    const lc = req.body.lastchange;
+    const xml = req.body.modelxml;
+    const version = req.body.version;
+
+    console.log(mid + ' ' + name + ' ' + lc + ' ' + xml + ' ' + version);
+    
+    db.oneOrNone('update model set modelname' == name, 'and lastchange' == lc, ' and modelxml' == xml, 'and version' == version, 'where mid' == mid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /modeldelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/modeldelete', function (req, res) {
+
+    const mid = req.query.modelid;
+
+    console.log(mid);
+
+    db.oneOrNone('delete * from model where mid' == mid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model deleted successfully'});
+            }  
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /getpartmodel
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.get('/getpartmodel', function (req, res) {
+
+    const pmid = req.query.partmodelid;
+    const mid = req.query.modelid;
+    
+    console.log(pmid + ' ' + mid);
+    
+    db.oneOrNone('update model set modelname' == name, 'and lastchange' == lc, ' and modelxml' == xml, 'and version' == version, 'where mid' == mid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /partmodelcreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/partmodelcreate', function (req, res) {
+
+    const mid = req.body.modelid;
+
+    console.log(mid);
+
+    db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Partialmodel inserted successfully'});
+            }            
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /partmodeldelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/partmodeldelete', function (req, res) {
+
+    const mid = req.query.modelid;
+
+    console.log(mid);
+
+    db.oneOrNone('delete * from model where mid' == mid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model deleted successfully'});
+            }  
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /getallusers
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.get('/getallUsers', function (req, res) {
+});
+
+
+/*
+* URL:              /usercreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/usercreate', function (req, res) {
+
+    const name = req.body.name;
+    const pw = req.body.password;
+    const fname = req.body.firstname;
+    const lname = req.body.lastname;
+
+    console.log(name + ' ' + pw + ' ' + fname + ' ' + lname);
+
+    db.oneOrNone('insert into users (username, password, firstname, lastname) values ($1, $2, $3, $4)', [name, pw, fname, lname])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'User inserted successfully'});
+            }            
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /userupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/userupdate', function (req, res) {
+
+    const uid = req.body.userid;
+    const name = req.body.name;
+    const pw = req.body.password;
+    const fname = req.body.firstname;
+    const lname = req.body.lastname;
+
+    console.log(uid + ' ' + name + ' ' + pw + ' ' + fname + ' ' + lname);
+    
+    db.oneOrNone('update users set username = $1, password = $2, firstname = $3, lastname = $4 where id = $5', [name, pw, fname, lname, uid])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'User updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /userdelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/userdelete', function (req, res) {
+
+    const uid = req.body.userid;
+
+    console.log(uid);
+
+    db.oneOrNone('delete from users where id = $1', [uid])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'User deleted successfully'});
+            }  
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+/*
+* URL:              /rolecreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/rolecreate', function (req, res) {
+
+    const role = req.body.role;
+    const read = req.body.read;
+    const write = req.body.write;
+    const admin = req.body.admin;
+
+    console.log(role + ' ' + read + ' ' + write + ' ' + admin);
+   
+    db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role inserted successfully'});
+            }
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+    /*
+* URL:              /roleupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/roleupdate', function (req, res) {
+
+    const rid = req.query.roleid;
+    const role = req.body.role;
+    const read = req.body.read;
+    const write = req.body.write;
+    const admin = req.body.admin;
+
+    console.log(rid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
+    
+    db.oneOrNone('update role set role' == role, 'and read' == read, ' and write' == write, 'and admin' == admin, 'where rid' == rid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /roledelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/roledelete', function (req, res) {
+
+    const rid = req.query.roleid;
+
+    console.log(rid);
+
+    db.oneOrNone('delete * from users where rid' == rid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role deleted successfully'});
+            }  
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /permissioncreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/permissioncreate', function (req, res) {
+
+    const role = req.body.role;
+    const read = req.body.read;
+    const write = req.body.write;
+    const admin = req.body.admin;
+
+    console.log(role + ' ' + read + ' ' + write + ' ' + admin);
+   
+    db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role inserted successfully'});
+            }
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+    /*
+* URL:              /permissionupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/permissionupdate', function (req, res) {
+
+    const rid = req.query.roleid;
+    const role = req.body.role;
+    const read = req.body.read;
+    const write = req.body.write;
+    const admin = req.body.admin;
+
+    console.log(rid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
+    
+    db.oneOrNone('update role set role' == role, 'and read' == read, ' and write' == write, 'and admin' == admin, 'where rid' == rid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+/*
+* URL:              /permissiondelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/permissiondelete', function (req, res) {
+
+    const rid = req.query.roleid;
+
+    console.log(rid);
+
+    db.oneOrNone('delete * from users where rid' == rid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Role deleted successfully'});
+            }  
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
+
+
+
+app.post('/', function (req, res) {
+    res.send('Got a POST request')
+});
+
+app.listen(3000);
+
+
+    /*try{
         console.log(req.body.username);
 
         db.one('SELECT password AS value from users where username =' + req.body.username)
@@ -429,7 +1002,7 @@ app.post('/users', function (req, res) {
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
             res.send("Database not available");
-        })
+        })*/
 
         /*res.cookie('demoCookie', 123, { maxAge: 900000, httpOnly: true });
         var response = {};
@@ -446,52 +1019,7 @@ app.post('/users', function (req, res) {
                 if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
             }
             )}*/
-    }
-    catch (error) {}
-});
 
-app.put('/users', function (req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.delete('/users', function (req, res) {
-    res.send('Got a DELETE request at /user')
-});
-
-app.get('/getallUsers', function (req, res) {
-
-});
-
-app.put('/role', function (req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.post('/role', function (req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.delete('/role', function (req, res) {
-    res.send('Got a DELETE request at /user')
-});
-
-app.put('/permission', function (req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.post('/permission', function (req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.delete('/permission', function (req, res) {
-    res.send('Got a DELETE request at /user')
-});
-
-
-app.post('/', function (req, res) {
-    res.send('Got a POST request')
-});
-
-app.listen(3000);
 
 
 
