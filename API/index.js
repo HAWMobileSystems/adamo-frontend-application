@@ -793,7 +793,7 @@ app.delete('/userdelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
 
@@ -813,6 +813,11 @@ app.delete('/userdelete', function (req, res) {
 
 app.post('/rolecreate', function (req, res) {
 
+    if(!req.body.role) {
+        res.send({ status: 'Role name may not be empty!'});
+        return;
+    }   
+
     const role = req.body.role;
     const read = req.body.read;
     const write = req.body.write;
@@ -820,20 +825,27 @@ app.post('/rolecreate', function (req, res) {
 
     console.log(role + ' ' + read + ' ' + write + ' ' + admin);
    
-    db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
+    db.oneOrNone('select from role where role = $1', [role])
         .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
+            if(data){
+                res.send({ status: 'Role name already exists'})
             } else {
-                res.send({ status: 'Role inserted successfully'});
+                  db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
+                  .then(function (data) {
+                    res.send({ status: 'Role created successfully'}); 
+                })
+                .catch(function (error) {
+                    console.log('ERROR POSTGRES:', error)
+                    res.send({ status: 'Database not available'});
+                })
             }
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
+    
 
     /*
 * URL:              /roleupdate
@@ -850,8 +862,13 @@ app.post('/rolecreate', function (req, res) {
 * */
 
 app.post('/roleupdate', function (req, res) {
+    
+    if(!req.body.role) {
+        res.send({ status: 'Role name may not be empty!'});
+        return;
+    }  
 
-    const rid = req.query.roleid;
+    const rid = req.body.roleid;
     const role = req.body.role;
     const read = req.body.read;
     const write = req.body.write;
@@ -859,20 +876,26 @@ app.post('/roleupdate', function (req, res) {
 
     console.log(rid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
     
-    db.oneOrNone('update role set role' == role, 'and read' == read, ' and write' == write, 'and admin' == admin, 'where rid' == rid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Role updated successfully'});
-            }       
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
+    db.oneOrNone('select from role where role = $1', [role])
+    .then(function (data) {
+        if(data){
+            res.send({ status: 'Role name already exists'})
+        } else {
+             db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, rid])
+             .then(function (data) {
+                res.send({ status: 'Role updated successfully'}); 
+            })
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.send({ status: 'Database not available'});
+    })
+});
 
 
 /*
@@ -891,22 +914,17 @@ app.post('/roleupdate', function (req, res) {
 
 app.delete('/roledelete', function (req, res) {
 
-    const rid = req.query.roleid;
+    const rid = req.body.roleid;
 
     console.log(rid);
 
-    db.oneOrNone('delete * from users where rid' == rid)
+    db.oneOrNone('delete from role where rid =$1', [rid])
         .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Role deleted successfully'});
-            }  
+            res.send({ status: 'Role deleted successfully'});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
 
