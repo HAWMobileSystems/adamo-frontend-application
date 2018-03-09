@@ -105,7 +105,7 @@ app.post('/authenticate', function (req, res) {
         // else throw({status: 400, data: {message: 'missing captcha', success: false}});
         //TODO what to do when client is already logged in with different credentials?
         //TODO validate captcha could be the first thing to do
-        db.one('select id, username, password, firstname, lastname, role from users where username = $1', username)
+        db.one('select uid, username, password, firstname, lastname, role from users where username = $1', username)
             .then(function (user) {
                 if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
 
@@ -128,7 +128,7 @@ app.post('/authenticate', function (req, res) {
                                         response.message = 'success';
                                         response.success = true;
                                         req.session.user = {
-                                            id: user.id,
+                                            id: user.uid,
                                             username: user.username,
                                             firstname: user.firstname,
                                             lastname: user.lastname,
@@ -146,7 +146,7 @@ app.post('/authenticate', function (req, res) {
                                     response.message = 'success';
                                     response.success = true;
                                     req.session.user = {
-                                        id: user.id,
+                                        id: user.uid,
                                         username: user.username,
                                         firstname: user.firstname,
                                         lastname: user.lastname,
