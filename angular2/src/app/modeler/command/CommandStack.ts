@@ -12,9 +12,17 @@ export class CommandStack {
     constructor(modeler : any) {
         this.modeler = modeler;
         this.commandStack = this.modeler.get(this.COMMANDSTACK);
+        const cs = this.commandStack;
         this.commandLogger(this.modeler.get(this.EVENTBUS));
-        this.client  = mqtt.connect('mqtt://test.mosquitto.org');  //  mqtt://localhost:1883
+        this.client  = mqtt.connect('mqtt://localhost:4711');  //  mqtt://test.mosquitto.org
         this.client.subscribe('IPIM');
+        this.client.on('message', function(topic: any, message: any) {
+            console.log('Test from remote:' + message.toString());
+
+            const event = JSON.parse(message);
+            console.log( event);
+            //cs.execute(event.command, event.context);
+          });
         console.log('Client publishing.. ');
     }
 
@@ -23,7 +31,7 @@ export class CommandStack {
         this.commandStack.execute(testTerm.command, testTerm.context);
       }
 
-      public commandLogger = (eventBus: any) => {
+    public commandLogger = (eventBus: any) => {
        //Call Constructor for CommandInterceptor, Call function gets the Object itself and the required eventbus
        commandInterceptor.call(commandInterceptor, eventBus);
 
@@ -34,10 +42,11 @@ export class CommandStack {
 
        //finally implement the hook and be happy!
        commandInterceptor.prototype.execute.call(commandInterceptor, ( event : any ) =>  {
-           event.context.IPIMremote = 'yes';
-           console.log('IPIM command execute logger', event);
-           //TODO Send to MQTT
-           this.client.publish('IPIM', 'Just some text!');
+            if (typeof event.context.IPIMremote === 'undefined') { //&& event.command === 'shape.create') {  //lane.updateRefs
+                event.context.IPIMremote = 'yes';
+                console.log('IPIM command execute logger', event);
+                this.client.publish('IPIM', JSON.stringify(event));
+          }
         });
-     }
+    }
 }
