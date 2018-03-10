@@ -12,18 +12,31 @@ export class CommandStack {
     constructor(modeler : any) {
         this.modeler = modeler;
         this.commandStack = this.modeler.get(this.COMMANDSTACK);
-        const cs = this.commandStack;
-        this.commandLogger(this.modeler.get(this.EVENTBUS));
+        const tempmodeler = this.modeler;
+        //this.commandLogger(this.modeler.get(this.EVENTBUS));
         this.client  = mqtt.connect('mqtt://localhost:4711');  //  mqtt://test.mosquitto.org
         this.client.subscribe('IPIM');
+        const tempclient = this.client;
         this.client.on('message', function(topic: any, message: any) {
-            console.log('Test from remote:' + message.toString());
+            //console.log('Test from remote:' + message.toString());
 
-            const event = JSON.parse(message);
-            console.log( event);
+            tempmodeler.importXML(message.toString(), (err: any) => {
+                console.log(err);
+            });
+            //const event = JSON.parse(message);
+            //console.log( event);
             //cs.execute(event.command, event.context);
           });
         console.log('Client publishing.. ');
+        this.modeler.on('element.changed', function() {
+            // user modeled something or
+            // performed a undo/redo operation
+            tempmodeler.saveXML({ format: true }, (err: any, xml: any) => {
+                //       console.log('xml:', xml, 'err', err);
+                       tempclient.publish('IPIM', xml);
+                   });
+          });
+
     }
 
     public commandTest = () => {
@@ -36,16 +49,23 @@ export class CommandStack {
        commandInterceptor.call(commandInterceptor, eventBus);
 
        //Small trick to get the jquery class working with angular. Prototype functions are added as direct variable...
-       commandInterceptor.preExecute = commandInterceptor.prototype.preExecute;
+       commandInterceptor.postExecuted = commandInterceptor.prototype.postExecuted;
        commandInterceptor.execute = commandInterceptor.prototype.execute;
        commandInterceptor.on = commandInterceptor.prototype.on;
 
        //finally implement the hook and be happy!
-       commandInterceptor.prototype.execute.call(commandInterceptor, ( event : any ) =>  {
+       commandInterceptor.prototype.postExecuted.call(commandInterceptor, ( event : any ) =>  {
             if (typeof event.context.IPIMremote === 'undefined') { //&& event.command === 'shape.create') {  //lane.updateRefs
                 event.context.IPIMremote = 'yes';
                 console.log('IPIM command execute logger', event);
-                this.client.publish('IPIM', JSON.stringify(event));
+
+                this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+             //       console.log('xml:', xml, 'err', err);
+                    this.client.publish('IPIM', xml);
+                });
+                //console.log(this.modeler.saveXML());
+//                this.client.publish('IPIM', JSON.stringify(event));
+                //this.client.publish('IPIM', this.modeler.saveXML());
           }
         });
     }
