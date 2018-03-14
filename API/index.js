@@ -425,7 +425,7 @@ app.get('/getallmodels', function (req, res) {
 * Description:      
 * */
 
-app.get('/getpartmodel', function (req, res) {
+app.post('/getpartmodel', function (req, res) {
 
     const pmid = req.body.partmodelid
 
