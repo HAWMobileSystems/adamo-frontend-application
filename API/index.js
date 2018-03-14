@@ -398,121 +398,15 @@ app.get('/model', function (req, res) {
 * */
 
 app.get('/getallmodels', function (req, res) {
-    let x = '7411';
-    res.send(x);
-});
 
-
-/*
-* URL:              /modelcreate
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
-app.post('/modelcreate', function (req, res) {
-
-    const name = req.body.name;
-    const lc = req.body.lastchange;
-    const xml = req.body.modelxml;
-    const version = req.body.version;
-
-    console.log(name + ' ' + lc + ' ' + xml + ' ' + version);
-
-    db.oneOrNone('insert into model (modelname, lastchange, modelxml, version) values ($1, $2, $3, $4)', [name, lc, xml, version])
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Model inserted successfully'});
-            }            
+    db.query('select * from model')
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
-
-/*
-* URL:              /modelupdate
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
-app.post('/modelupdate', function (req, res) {
-
-    const mid = req.query.modelid;
-    const name = req.body.name;
-    const lc = req.body.lastchange;
-    const xml = req.body.modelxml;
-    const version = req.body.version;
-
-    console.log(mid + ' ' + name + ' ' + lc + ' ' + xml + ' ' + version);
-    
-    db.oneOrNone('update model set modelname' == name, 'and lastchange' == lc, ' and modelxml' == xml, 'and version' == version, 'where mid' == mid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Model updated successfully'});
-            }       
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
-
-
-/*
-* URL:              /modeldelete
-* Method:           delete
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
-app.delete('/modeldelete', function (req, res) {
-
-    const mid = req.query.modelid;
-
-    console.log(mid);
-
-    db.oneOrNone('delete * from model where mid' == mid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Model deleted successfully'});
-            }  
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
 
@@ -533,95 +427,19 @@ app.delete('/modeldelete', function (req, res) {
 
 app.get('/getpartmodel', function (req, res) {
 
-    const pmid = req.query.partmodelid;
-    const mid = req.query.modelid;
-    
-    console.log(pmid + ' ' + mid);
-    
-    db.oneOrNone('update model set modelname' == name, 'and lastchange' == lc, ' and modelxml' == xml, 'and version' == version, 'where mid' == mid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Model updated successfully'});
-            }       
+    const pmid = req.body.partmodelid
+
+    db.query('select * from partialmodel where pmid = $1', [pmid])
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
+            res.send({ status: 'Database not available'});
         })
     });
 
-/*
-* URL:              /partmodelcreate
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
-app.post('/partmodelcreate', function (req, res) {
-
-    const mid = req.body.modelid;
-
-    console.log(mid);
-
-    db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Partialmodel inserted successfully'});
-            }            
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
-
-/*
-* URL:              /partmodeldelete
-* Method:           delete
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
-app.delete('/partmodeldelete', function (req, res) {
-
-    const mid = req.query.modelid;
-
-    console.log(mid);
-
-    db.oneOrNone('delete * from model where mid' == mid)
-        .then(function (data) {
-            if(data) {
-                console.log('DATA:', data.value)
-                res.send(data.value);
-            } else {
-                res.send({ status: 'Model deleted successfully'});
-            }  
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.send("Database not available");
-        })
-    });
 
 /*
 * URL:              /getallusers
@@ -637,8 +455,18 @@ app.delete('/partmodeldelete', function (req, res) {
 * Description:      
 * */
 
-app.get('/getallUsers', function (req, res) {
-});
+app.get('/getallusers', function (req, res) {
+    
+    db.query('select * from users')
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Database not available'});
+        })
+    });
 
 
 /*

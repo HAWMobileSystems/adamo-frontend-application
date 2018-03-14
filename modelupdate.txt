@@ -1,0 +1,38 @@
+/*
+* URL:              /modelupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/modelupdate', function (req, res) {
+
+    const mid = req.query.modelid;
+    const name = req.body.name;
+    const lc = req.body.lastchange;
+    const xml = req.body.modelxml;
+    const version = req.body.version;
+
+    console.log(mid + ' ' + name + ' ' + lc + ' ' + xml + ' ' + version);
+    
+    db.oneOrNone('update model set modelname' == name, 'and lastchange' == lc, ' and modelxml' == xml, 'and version' == version, 'where mid' == mid)
+        .then(function (data) {
+            if(data) {
+                console.log('DATA:', data.value)
+                res.send(data.value);
+            } else {
+                res.send({ status: 'Model updated successfully'});
+            }       
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send("Database not available");
+        })
+    });
