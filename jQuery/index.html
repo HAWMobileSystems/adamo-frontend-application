@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="vendor/bpmn-font/css/bpmn-embedded.css" />
   <link rel="stylesheet" href="css/app.css" />
   <link rel="stylesheet" href="css/ipim.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   
@@ -59,20 +59,11 @@
   
   
   <!-- CHANGEMS Steuerelemente für IPIM Logik -->
-<!--
-  <a     style="position:absolute; top:2%; left:5%; font-size:160%;"> IPIM Values </a>
-  <a     style="position:absolute; top:2%; left:14%; font-size:160%; "> A= </a>
-  <input style="position:absolute; top:2%; left:16%; width:5%;" type="text" id="IPIMuserInputA" />
-  <a     style="position:absolute; top:2%; left:22%; font-size:160%;"> B= </a>
-  <input style="position:absolute; top:2%; left:24%; width:5%;" type="text" id="IPIMuserInputB" />
-  <a     style="position:absolute; top:2%; left:30%; font-size:160%;"> C= </a>
-  <input style="position:absolute; top:2%; left:32%; width:5%;" type="text" id="IPIMuserInputC" />
--->  
+ 
   
-<!--  <input style="position:absolute; top:2%; left:5%; width:7%;" type="button" value="Evaluate" id="IPIMButtonEval" >
--->  <input style="position:absolute; top:2%; left:12%; width:5%; display: none;" type="button" value="Reset" id="IPIMButtonReset" >
-     <input style="position:absolute; top:2%; left:18%; width:8%; display: none;" type="button" value="SetValues" id="IPIMButtonEval2" >
-	 <input style="position:absolute; top:2%; left:28%; width:8%; display: none;" type="button"   value="Open File" id="OpenFile" >
+     <input style="position:absolute; top:2%; left:12%; width:5%; " type="button" value="Reset" id="ResetNew" >
+     <input style="position:absolute; top:2%; left:18%; width:8%; " type="button" value="getComStack" id="getComStack" >
+	 <input style="position:absolute; top:2%; left:28%; width:8%; " type="button"   value="exeComStack" id="exeComStack" >
 	 <input style="position:absolute; top:2%; left:28%; display: none;" type="file" id="files" name="files[]" />
      <input style="position:absolute; top:2%; left:38%; width:8%; display: none;" type="button"   value="Toggle Terms" id="IPIMShowTerms" >
 	 <input style="position:absolute; top:2%; left:48%; width:8%; display: none;" type="button"   value="Set Term" id="IPIMButtonTermSet" >
@@ -163,8 +154,6 @@
 
 </div>
 
-<!-- Dummy div, da classe verwendet sein muss um mit jQuery auslesen zu können -->
-  
   <script src="index.js"></script>
   
 </html>
