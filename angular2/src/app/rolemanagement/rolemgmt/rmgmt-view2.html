@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Role Management</title>
+    <h1>Role Management</h1>
+    <body>
+        <form>
+            <div class="form-group">
+
+                <label for="id">ID:</label>
+                <input id="id" #id="ng-model" (change)="log()" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="Name">Name:</label>
+                <input id="Name" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="vorname">Vorname:</label>
+                <input vorname="vorname" #vorname="ng-model" (change)="log()" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="vorName">Read:</label>
+                <input type="checkbox">
+            </div>
+
+            <div class="form-group">
+                <label for="write">Write:</label>
+                <input type="checkbox">
+            </div>
+
+            <div class="form-group">
+                <label for="admin">Admin:</label>
+                <input type="checkbox">
+            </div>
+            <p></p>
+            <button type="save">Speichern</button>
+        </form>
+    </body>
+
+</head>
+<body>
+
+</body>
+</html>
