@@ -538,7 +538,7 @@ app.delete('/modeldelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Model cannot be deleted as it is still part of another model'});
+            res.send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
         })
     });
 
@@ -569,6 +569,82 @@ app.post('/getpartmodel', function (req, res) {
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
             res.send({ status: 'Database not available'});
+        })
+    });
+
+    /*
+    * URL:              /partmodelcreate
+    * Method:           post
+    * URL Params:
+    *   Required:       none
+    *   Optional:       none
+    * Data Params:
+    *   Required:       none
+    *   Optional:       none
+    * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+    * Error Response:   Code 400, Content: {message: [string], success: [bool]}
+    * Description:      
+    * */
+    
+    app.post('/partmodelcreate', function (req, res) {
+    
+        if(!req.body.modelid) {
+            res.send({ status: 'Model may not be empty!'});
+            return;
+        }  
+        
+        const mid = req.body.modelid;
+    
+        console.log(mid);
+    
+        db.oneOrNone('select from partialmodel where mid = $1', [mid])
+        .then(function (data) {
+            if(data){
+                res.send({ status: 'Partial model already exists'})
+            } else {
+                db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
+                .then(function (data) {
+                         res.send({ status: 'Model created successfully as a partial model'});
+                        })
+                        .catch(function (error) {
+                            console.log('ERROR POSTGRES:', error)
+                            res.send({ status: 'Database not available'});
+                        })
+                    }
+                })
+                .catch(function (error) {
+                    console.log('ERROR POSTGRES:', error)
+                    res.send({ status: 'Database not available'});
+        })
+    });
+
+/*
+* URL:              /partmodeldelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/partmodeldelete', function (req, res) {
+
+    const pmid = req.body.pmid;
+
+    console.log(pmid);
+
+    db.oneOrNone('delete from partialmodel where pmid = $1', [pmid])
+        .then(function (data) {
+            res.send({ status: 'Partial model deleted successfully'}); 
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Partial model cannot be deleted as it is maintained in another model'});
         })
     });
 
@@ -756,6 +832,135 @@ app.delete('/userdelete', function (req, res) {
             res.send({ status: 'Database not available'});
         })
     });
+
+
+/*
+* URL:              /profilecreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/profilecreate', function (req, res) {
+
+    if(!req.body.profile) {
+        res.send({ status: 'Profile name may not be empty!'});
+        return;
+    }   
+
+    const profile = req.body.profile;
+    const permission = req.body.permission;
+
+    console.log(profile + ' ' + permission);
+   
+    db.oneOrNone('select from userprofile where profile = $1', [profile])
+        .then(function (data) {
+            if(data){
+                res.send({ status: 'User profile already exists'})
+            } else {
+                  db.oneOrNone('insert into userprofile (profile, permission) values ($1, $2)', [profile, permission])
+                  .then(function (data) {
+                    res.send({ status: 'User profile created successfully'}); 
+                })
+                .catch(function (error) {
+                    console.log('ERROR POSTGRES:', error)
+                    res.send({ status: 'Database not available'});
+                })
+            }
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Database not available'});
+        })
+    });
+    
+
+    /*
+* URL:              /profileupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/profileupdate', function (req, res) {
+    
+    if(!req.body.profile) {
+        res.send({ status: 'Profile name may not be empty!'});
+        return;
+    }  
+
+    const upid = req.body.upid;
+    const profile = req.body.profile;
+    const permission = req.body.permission;
+
+    console.log(upid + ' ' + profile + ' ' + permission);
+    
+    db.oneOrNone('select from userprofile where profile = $1', [profile])
+    .then(function (data) {
+        if(data){
+            res.send({ status: 'User profile already exists'})
+        } else {
+             db.oneOrNone('update userprofile set profile = $1, permission = $2 where upid = $3', [profile, permission, upid])
+             .then(function (data) {
+                res.send({ status: 'User profile updated successfully'}); 
+            })
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.send({ status: 'Database not available'});
+    })
+});
+
+
+/*
+* URL:              /profiledelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/profiledelete', function (req, res) {
+
+    const upid = req.body.upid;
+
+    console.log(upid);
+
+    db.oneOrNone('delete from userprofile where upid =$1', [upid])
+        .then(function (data) {
+            res.send({ status: 'User profile deleted successfully'});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Database not available'});
+        })
+    });
+
 
 /*
 * URL:              /rolecreate
