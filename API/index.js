@@ -834,6 +834,34 @@ app.delete('/userdelete', function (req, res) {
     });
 
 
+    /*
+* URL:              /getallprofiles
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.get('/getallprofiles', function (req, res) {
+    
+    db.query('select * from userprofile')
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Database not available'});
+        })
+    });
+
+
 /*
 * URL:              /profilecreate
 * Method:           post
@@ -954,6 +982,34 @@ app.delete('/profiledelete', function (req, res) {
     db.oneOrNone('delete from userprofile where upid =$1', [upid])
         .then(function (data) {
             res.send({ status: 'User profile deleted successfully'});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Database not available'});
+        })
+    });
+
+
+    /*
+* URL:              /getallroles
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.get('/getallroles', function (req, res) {
+    
+    db.query('select * from role')
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
