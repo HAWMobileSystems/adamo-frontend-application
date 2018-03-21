@@ -412,6 +412,138 @@ app.get('/getallmodels', function (req, res) {
 
 
 /*
+* URL:              /modelcreate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/modelcreate', function (req, res) {
+
+    if(!req.body.modelname) {
+         res.send({ status: 'Model name may not be empty!'});
+         return;
+     }   
+ 
+     const name = req.body.modelname;
+     const lc = req.body.lastchange;
+     const xml = req.body.modelxml;
+     const version = req.body.version;
+ 
+     console.log(name + ' ' + lc + ' ' + xml + ' ' + version);
+ 
+     db.oneOrNone('select from model where modelname = $1', [name])
+         .then(function (data) {
+             if(data){
+                 res.send({ status: 'Model name already exists'})
+             } else {
+                 db.oneOrNone('insert into model (modelname, lastchange, modelxml, version) values ($1, $2, $3, $4)', [name, lc, xml, version])
+               .then(function (data) {
+                     res.send({ status: 'Model created successfully'}); 
+                 })
+                 .catch(function (error) {
+                     console.log('ERROR POSTGRES:', error)
+                     res.send({ status: 'Database not available'});
+                 })
+             }
+         })
+         .catch(function (error) {
+             console.log('ERROR POSTGRES:', error)
+             res.send({ status: 'Database not available'});
+         })
+     });
+
+
+/*
+* URL:              /modelupdate
+* Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.post('/modelupdate', function (req, res) {
+
+    if(!req.body.modelname) {
+         res.send({ status: 'Model name may not be empty!'});
+         return;
+     }   
+ 
+     const mid = req.body.modelid;
+     const name = req.body.modelname;
+     const lc = req.body.lastchange;
+     const xml = req.body.modelxml;
+     const version = req.body.version;
+ 
+     console.log(mid + ' ' + name + ' ' + lc + ' ' + xml + ' ' + version);
+     
+         db.oneOrNone('select from model where modelname = $1', [name])
+         .then(function (data) {
+             if(data){
+                 res.send({ status: 'Model name already exists'})
+             } else {
+                 db.oneOrNone('update model set modelname = $1, lastchange = $2, modelxml = $3, version= $4 where mid = $5', [name, lc, xml, version, mid])
+                 .then(function (data) {
+                     res.send({ status: 'Model updated successfully'}); 
+             })
+             .catch(function (error) {
+                 console.log('ERROR POSTGRES:', error)
+                 res.send({ status: 'Database not available'});
+             })
+         }
+     })
+     .catch(function (error) {
+         console.log('ERROR POSTGRES:', error)
+         res.send({ status: 'Database not available'});
+     })
+ });
+
+
+/*
+* URL:              /modeldelete
+* Method:           delete
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+app.delete('/modeldelete', function (req, res) {
+
+    const mid = req.body.modelid;
+
+    console.log(mid);
+
+    db.oneOrNone('delete from model where mid = $1', [mid])
+        .then(function (data) {
+            res.send({ status: 'Model deleted successfully'}); 
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.send({ status: 'Model cannot be deleted as it is still part of another model'});
+        })
+    });
+
+
+/*
 * URL:              /getpartmodel
 * Method:           post
 * URL Params:
@@ -513,7 +645,7 @@ app.post('/usercreate', function (req, res) {
     db.oneOrNone('select from users where username = $1', [name])
         .then(function (data) {
             if(data){
-                res.send({ status: 'Username already exists'})
+                res.send({ status: 'User already exists'})
             } else {
                 db.oneOrNone('insert into users (firstname, lastname, username, password) values ($1, $2, $3, $4)', [fname, lname, name, pw])
                 .then(function (data) {
@@ -576,7 +708,7 @@ app.post('/userupdate', function (req, res) {
     db.oneOrNone('select from users where username = $1', [name])
     .then(function (data) {
         if(data){
-            res.send({ status: 'Username already exists'})
+            res.send({ status: 'User already exists'})
         } else {
              db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where id = $5', [fname, lname, name, pw, uid])
              .then(function (data) {
