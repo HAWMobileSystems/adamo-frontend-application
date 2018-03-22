@@ -315,8 +315,8 @@ export class ModelerComponent implements OnInit {
   }
 
    private commandTest = () => {
-     debugger;
-     this.commandStack.commandTest();
+    const elements = this.modeler.get('elementRegistry');
+    debugger;
   //   const COMMANDSTACK : string = 'commandStack';
   //   const cs = this.modeler.get(COMMANDSTACK);
 
@@ -326,6 +326,29 @@ export class ModelerComponent implements OnInit {
 
    }
 
+   private commandReset = () => {
+    debugger;
+    this.commandStack.commandTest();
+ //   const COMMANDSTACK : string = 'commandStack';
+ //   const cs = this.modeler.get(COMMANDSTACK);
+
+ //   const testTerm = cs._stack[0];
+
+ //   cs.execute(testTerm.command, testTerm.context);
+
+  }
+
+  private commandGet = () => {
+    debugger;
+    this.commandStack.commandTest();
+ //   const COMMANDSTACK : string = 'commandStack';
+ //   const cs = this.modeler.get(COMMANDSTACK);
+
+ //   const testTerm = cs._stack[0];
+
+ //   cs.execute(testTerm.command, testTerm.context);
+
+  }
   //  private commandLogger = (eventBus: any) => {
   //     CommandInterceptor.call(this, eventBus);
   //     CommandInterceptor.preExecute( ( event : any ) =>  {

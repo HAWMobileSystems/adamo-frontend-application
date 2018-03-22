@@ -37,7 +37,7 @@ export class CommandStack {
                 debugger;
                 const tempsize = cs._stackIdx;
                 for (let i = 0; i < event.stack.length; i++) {
-                    cs._internalExecute(event.stack[i], true);
+                    cs._internalExecute(event.stack[i], false);
                 }
                 cs._stackIdx = tempsize;
             }
