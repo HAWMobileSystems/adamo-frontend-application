@@ -19,7 +19,7 @@ import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
 
 // import { AlertComponent } from './alert/index';
-import {AlertComponent} from "./components/Alert/alert.component";
+import {AlertComponent} from './components/Alert/alert.component';
 import { AuthGuard } from './guards/auth.guard';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
@@ -27,8 +27,8 @@ import { AlertService } from './services/alert.service';
 
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
-import {ApiService} from "./services/api.service";
-import {TestComponent} from "./test/test.component";
+import {ApiService} from './services/api.service';
+//import {TestComponent} from "./test/test.component";
 
 //check for correct branch!
 
@@ -47,7 +47,7 @@ import {TestComponent} from "./test/test.component";
         AppFooterComponent,
         AppHeaderComponent,
         FrontPageComponent,
-        TestComponent,
+        //TestComponent,
         ViewerComponent,
         ModelerComponent,
         AlertComponent,
