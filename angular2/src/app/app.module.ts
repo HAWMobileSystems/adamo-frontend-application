@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-
 // used to create fake backend
 import { fakeBackendProvider } from './helpers/fake-backend';
 import { ReCaptchaModule} from 'angular2-recaptcha';
