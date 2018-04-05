@@ -27,7 +27,13 @@ import { AlertService } from './services/alert.service';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from './services/api.service';
-//import {TestComponent} from "./test/test.component";
+import {TestComponent} from "./test/test.component";
+import {ModelpermissionComponent} from './modelPermissioManagement/modelpermission.component';
+import {RolemanagementComponent} from './rolemanagement/rolemanagement.component';
+import {RolemanagementComponent2} from './rolemanagement/rolemanagement2.component';
+import {UsermanagementComponent} from './usermanagement/usermanagement.component';
+import {Usermanagement2Component} from "./usermanagement/usermanagement2.component";
+
 
 //check for correct branch!
 
@@ -46,7 +52,12 @@ import {ApiService} from './services/api.service';
         AppFooterComponent,
         AppHeaderComponent,
         FrontPageComponent,
-        //TestComponent,
+        UsermanagementComponent,
+        Usermanagement2Component,
+        RolemanagementComponent2,
+        RolemanagementComponent,
+        ModelpermissionComponent,
+        TestComponent,
         ViewerComponent,
         ModelerComponent,
         AlertComponent,
