@@ -39,8 +39,12 @@ const routes: Routes = [
     //{ path: '',   redirectTo: '/test', pathMatch: 'full' },
    //{ path: '**', redirectTo: '/test', pathMatch: 'full' },
 
-    {path: '', redirectTo: '/userManagement', pathMatch: 'full'},
-    {path: '**', redirectTo: '/userManagement', pathMatch: 'full'},
+    //{path: '', redirectTo: '/userManagement', pathMatch: 'full'},
+    //{path: '**', redirectTo: '/userManagement', pathMatch: 'full'},
+
+
+    {path: '', redirectTo: '/userManagement2', pathMatch: 'full'},
+    {path: '**', redirectTo: '/userManagement2', pathMatch: 'full'},
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
