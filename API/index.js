@@ -406,7 +406,7 @@ app.get('/getallmodels', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -442,7 +442,7 @@ app.post('/modelcreate', function (req, res) {
      db.oneOrNone('select from model where modelname = $1', [name])
          .then(function (data) {
              if(data){
-                 res.send({ status: 'Model name already exists'})
+                res.status(400).send({ status: 'Model name already exists'})
              } else {
                  db.oneOrNone('insert into model (modelname, lastchange, modelxml, version) values ($1, $2, $3, $4)', [name, lc, xml, version])
                .then(function (data) {
@@ -450,13 +450,13 @@ app.post('/modelcreate', function (req, res) {
                  })
                  .catch(function (error) {
                      console.log('ERROR POSTGRES:', error)
-                     res.send({ status: 'Database not available'});
+                     res.status(400).send({ status: 'Database not available'});
                  })
              }
          })
          .catch(function (error) {
              console.log('ERROR POSTGRES:', error)
-             res.send({ status: 'Database not available'});
+             res.status(400).send({ status: 'Database not available'});
          })
      });
 
@@ -493,7 +493,7 @@ app.post('/modelupdate', function (req, res) {
          db.oneOrNone('select from model where modelname = $1', [name])
          .then(function (data) {
              if(data){
-                 res.send({ status: 'Model name already exists'})
+                res.status(400).send({ status: 'Model name already exists'})
              } else {
                  db.oneOrNone('update model set modelname = $1, lastchange = $2, modelxml = $3, version= $4 where mid = $5', [name, lc, xml, version, mid])
                  .then(function (data) {
@@ -501,13 +501,13 @@ app.post('/modelupdate', function (req, res) {
              })
              .catch(function (error) {
                  console.log('ERROR POSTGRES:', error)
-                 res.send({ status: 'Database not available'});
+                 res.status(400).send({ status: 'Database not available'});
              })
          }
      })
      .catch(function (error) {
          console.log('ERROR POSTGRES:', error)
-         res.send({ status: 'Database not available'});
+         res.status(400).send({ status: 'Database not available'});
      })
  });
 
@@ -538,7 +538,7 @@ app.delete('/modeldelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
+            res.status(400).send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
         })
     });
 
@@ -568,7 +568,7 @@ app.post('/getpartmodel', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -600,7 +600,7 @@ app.post('/getpartmodel', function (req, res) {
         db.oneOrNone('select from partialmodel where mid = $1', [mid])
         .then(function (data) {
             if(data){
-                res.send({ status: 'Partial model already exists'})
+                res.status(400).send({ status: 'Partial model already exists'})
             } else {
                 db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
                 .then(function (data) {
@@ -608,13 +608,13 @@ app.post('/getpartmodel', function (req, res) {
                         })
                         .catch(function (error) {
                             console.log('ERROR POSTGRES:', error)
-                            res.send({ status: 'Database not available'});
+                            res.status(400).send({ status: 'Database not available'});
                         })
                     }
                 })
                 .catch(function (error) {
                     console.log('ERROR POSTGRES:', error)
-                    res.send({ status: 'Database not available'});
+                    res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -644,7 +644,7 @@ app.delete('/partmodeldelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Partial model cannot be deleted as it is maintained in another model'});
+            res.status(400).send({ status: 'Partial model cannot be deleted as it is maintained in another model'});
         })
     });
 
@@ -672,7 +672,7 @@ app.get('/getallusers', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -721,7 +721,7 @@ app.post('/usercreate', function (req, res) {
     db.oneOrNone('select from users where username = $1', [name])
         .then(function (data) {
             if(data){
-                res.send({ status: 'User already exists'})
+                res.status(400).send({ status: 'User already exists'})
             } else {
                 db.oneOrNone('insert into users (firstname, lastname, username, password) values ($1, $2, $3, $4)', [fname, lname, name, pw])
                 .then(function (data) {
@@ -729,13 +729,13 @@ app.post('/usercreate', function (req, res) {
                 })
                 .catch(function (error) {
                     console.log('ERROR POSTGRES:', error)
-                    res.send({ status: 'Database not available'});
+                    res.status(400).send({ status: 'Database not available'});
                 })
             }
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -784,7 +784,7 @@ app.post('/userupdate', function (req, res) {
     db.oneOrNone('select from users where username = $1', [name])
     .then(function (data) {
         if(data){
-            res.send({ status: 'User already exists'})
+            res.status(400).send({ status: 'User already exists'})
         } else {
              db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where id = $5', [fname, lname, name, pw, uid])
              .then(function (data) {
@@ -792,13 +792,13 @@ app.post('/userupdate', function (req, res) {
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Database not available'});
             })
         }
     })
     .catch(function (error) {
         console.log('ERROR POSTGRES:', error)
-        res.send({ status: 'Database not available'});
+        res.status(400).send({ status: 'Database not available'});
     })
 });
 
@@ -829,7 +829,7 @@ app.delete('/userdelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -857,7 +857,7 @@ app.get('/getallprofiles', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -891,7 +891,7 @@ app.post('/profilecreate', function (req, res) {
     db.oneOrNone('select from userprofile where profile = $1', [profile])
         .then(function (data) {
             if(data){
-                res.send({ status: 'User profile already exists'})
+                res.status(400).send({ status: 'User profile already exists'})
             } else {
                   db.oneOrNone('insert into userprofile (profile, permission) values ($1, $2)', [profile, permission])
                   .then(function (data) {
@@ -899,13 +899,13 @@ app.post('/profilecreate', function (req, res) {
                 })
                 .catch(function (error) {
                     console.log('ERROR POSTGRES:', error)
-                    res.send({ status: 'Database not available'});
+                    res.status(400).send({ status: 'Database not available'});
                 })
             }
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
     
@@ -940,7 +940,7 @@ app.post('/profileupdate', function (req, res) {
     db.oneOrNone('select from userprofile where profile = $1', [profile])
     .then(function (data) {
         if(data){
-            res.send({ status: 'User profile already exists'})
+            res.status(400).send({ status: 'User profile already exists'})
         } else {
              db.oneOrNone('update userprofile set profile = $1, permission = $2 where upid = $3', [profile, permission, upid])
              .then(function (data) {
@@ -948,13 +948,13 @@ app.post('/profileupdate', function (req, res) {
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Database not available'});
             })
         }
     })
     .catch(function (error) {
         console.log('ERROR POSTGRES:', error)
-        res.send({ status: 'Database not available'});
+        res.status(400).send({ status: 'Database not available'});
     })
 });
 
@@ -985,7 +985,7 @@ app.delete('/profiledelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -1013,7 +1013,7 @@ app.get('/getallroles', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -1049,7 +1049,7 @@ app.post('/rolecreate', function (req, res) {
     db.oneOrNone('select from role where role = $1', [role])
         .then(function (data) {
             if(data){
-                res.send({ status: 'Role name already exists'})
+                res.status(400).send({ status: 'Role name already exists'})
             } else {
                   db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
                   .then(function (data) {
@@ -1057,13 +1057,13 @@ app.post('/rolecreate', function (req, res) {
                 })
                 .catch(function (error) {
                     console.log('ERROR POSTGRES:', error)
-                    res.send({ status: 'Database not available'});
+                    res.status(400).send({ status: 'Database not available'});
                 })
             }
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
     
@@ -1100,7 +1100,7 @@ app.post('/roleupdate', function (req, res) {
     db.oneOrNone('select from role where role = $1', [role])
     .then(function (data) {
         if(data){
-            res.send({ status: 'Role name already exists'})
+            res.status(400).send({ status: 'Role name already exists'})
         } else {
              db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, rid])
              .then(function (data) {
@@ -1108,13 +1108,13 @@ app.post('/roleupdate', function (req, res) {
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Database not available'});
             })
         }
     })
     .catch(function (error) {
         console.log('ERROR POSTGRES:', error)
-        res.send({ status: 'Database not available'});
+        res.status(400).send({ status: 'Database not available'});
     })
 });
 
@@ -1145,7 +1145,7 @@ app.delete('/roledelete', function (req, res) {
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
         })
     });
 
@@ -1188,7 +1188,7 @@ app.post('/permissioncreate', function (req, res) {
     db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
     .then(function (data) {
         if(data){
-            res.send({ status: 'Permission already exists'})
+            res.status(400).send({ status: 'Permission already exists'})
         } else {
             db.oneOrNone('insert into permission (mid, id, rid) values ($1, $2, $3)', [mid, uid, rid])
                 .then(function (data) {
@@ -1196,13 +1196,13 @@ app.post('/permissioncreate', function (req, res) {
                     })
                     .catch(function (error) {
                         console.log('ERROR POSTGRES:', error)
-                        res.send({ status: 'Database not available'});
+                        res.status(400).send({ status: 'Database not available'});
                     })
                 }
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Database not available'});
             })
         });
 
@@ -1246,7 +1246,7 @@ app.post('/permissionupdate', function (req, res) {
     db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
     .then(function (data) {
         if(data){
-            res.send({ status: 'Permission already exists'})
+            res.status(400).send({ status: 'Permission already exists'})
         } else {
             db.oneOrNone('update permission set mid = $1, id = $2, rid = $3 where pid = $4', [mid, uid, rid, pid])
                 .then(function (data) {
@@ -1254,13 +1254,13 @@ app.post('/permissionupdate', function (req, res) {
                     })
                     .catch(function (error) {
                         console.log('ERROR POSTGRES:', error)
-                        res.send({ status: 'Database not available'});
+                        res.status(400).send({ status: 'Database not available'});
                     })
                 }
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Database not available'});
             })
         });
 
@@ -1291,7 +1291,7 @@ app.delete('/permissiondelete', function (req, res) {
           })
          .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available'});
           })
     });
 
