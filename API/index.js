@@ -428,7 +428,7 @@ app.get('/getallmodels', function (req, res) {
 app.post('/modelcreate', function (req, res) {
 
     if(!req.body.modelname) {
-         res.send({ status: 'Model name may not be empty!'});
+        res.status(400).send({ status: 'Model name may not be empty!'});
          return;
      }   
  
@@ -478,7 +478,7 @@ app.post('/modelcreate', function (req, res) {
 app.post('/modelupdate', function (req, res) {
 
     if(!req.body.modelname) {
-         res.send({ status: 'Model name may not be empty!'});
+        res.status(400).send({ status: 'Model name may not be empty!'});
          return;
      }   
  
@@ -589,7 +589,7 @@ app.post('/getpartmodel', function (req, res) {
     app.post('/partmodelcreate', function (req, res) {
     
         if(!req.body.modelid) {
-            res.send({ status: 'Model may not be empty!'});
+            res.status(400).send({ status: 'Model may not be empty!'});
             return;
         }  
         
@@ -694,19 +694,19 @@ app.get('/getallusers', function (req, res) {
 app.post('/usercreate', function (req, res) {
 
     if(!req.body.firstname) {
-        res.send({ status: 'First name may not be empty!'});
+        res.status(400).send({ status: 'First name may not be empty!'});
         return;
     }   
     if(!req.body.lastname) {
-        res.send({ status: 'Last name may not be empty!'});
+        res.status(400).send({ status: 'Last name may not be empty!'});
         return;
     }
     if(!req.body.name) {
-        res.send({ status: 'Username may not be empty!'});
+        res.status(400).send({ status: 'Username may not be empty!'});
         return;
     }
     if(!req.body.password) {
-        res.send({ status: 'Password may not be empty!'});
+        res.status(400).send({ status: 'Password may not be empty!'});
         return;
     }    
 
@@ -757,19 +757,19 @@ app.post('/usercreate', function (req, res) {
 app.post('/userupdate', function (req, res) {
 
     if(!req.body.firstname) {
-        res.send({ status: 'First name may not be empty!'});
+        res.status(400).send({ status: 'First name may not be empty!'});
         return;
     }   
     if(!req.body.lastname) {
-        res.send({ status: 'Last name may not be empty!'});
+        res.status(400).send({ status: 'Last name may not be empty!'});
         return;
     }
     if(!req.body.name) {
-        res.send({ status: 'Username may not be empty!'});
+        res.status(400).send({ status: 'Username may not be empty!'});
         return;
     }
     if(!req.body.password) {
-        res.send({ status: 'Password may not be empty!'});
+        res.status(400).send({ status: 'Password may not be empty!'});
         return;
     }    
 
@@ -879,7 +879,7 @@ app.get('/getallprofiles', function (req, res) {
 app.post('/profilecreate', function (req, res) {
 
     if(!req.body.profile) {
-        res.send({ status: 'Profile name may not be empty!'});
+        res.status(400).send({ status: 'Profile name may not be empty!'});
         return;
     }   
 
@@ -927,7 +927,7 @@ app.post('/profilecreate', function (req, res) {
 app.post('/profileupdate', function (req, res) {
     
     if(!req.body.profile) {
-        res.send({ status: 'Profile name may not be empty!'});
+        res.status(400).send({ status: 'Profile name may not be empty!'});
         return;
     }  
 
@@ -1035,7 +1035,7 @@ app.get('/getallroles', function (req, res) {
 app.post('/rolecreate', function (req, res) {
 
     if(!req.body.role) {
-        res.send({ status: 'Role name may not be empty!'});
+        res.status(400).send({ status: 'Role name may not be empty!'});
         return;
     }   
 
@@ -1085,7 +1085,7 @@ app.post('/rolecreate', function (req, res) {
 app.post('/roleupdate', function (req, res) {
     
     if(!req.body.role) {
-        res.send({ status: 'Role name may not be empty!'});
+        res.status(400).send({ status: 'Role name may not be empty!'});
         return;
     }  
 
@@ -1167,15 +1167,15 @@ app.delete('/roledelete', function (req, res) {
 app.post('/permissioncreate', function (req, res) {
 
     if(!req.body.modelid) {
-        res.send({ status: 'Model may not be empty!'});
+        res.status(400).send({ status: 'Model may not be empty!'});
         return;
     }  
     if(!req.body.userid) {
-        res.send({ status: 'User may not be empty!'});
+        res.status(400).send({ status: 'User may not be empty!'});
         return;
     }  
     if(!req.body.roleid) {
-        res.send({ status: 'Role may not be empty!'});
+        res.status(400).send({ status: 'Role may not be empty!'});
         return;
     }  
 
@@ -1224,15 +1224,15 @@ app.post('/permissioncreate', function (req, res) {
 app.post('/permissionupdate', function (req, res) {
 
     if(!req.body.modelid) {
-        res.send({ status: 'Model may not be empty!'});
+        res.status(400).send({ status: 'Model may not be empty!'});
         return;
     }  
     if(!req.body.userid) {
-        res.send({ status: 'User may not be empty!'});
+        res.status(400).send({ status: 'User may not be empty!'});
         return;
     }  
     if(!req.body.roleid) {
-        res.send({ status: 'Role may not be empty!'});
+        res.status(400).send({ status: 'Role may not be empty!'});
         return;
     }  
 
