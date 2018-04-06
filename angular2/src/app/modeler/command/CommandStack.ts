@@ -9,6 +9,8 @@ export class CommandStack {
     private commandStack : any;
     private client: any;
 
+    //Commandstack Class
+
     constructor(modeler : any) {
         this.modeler = modeler;
         this.commandStack = this.modeler.get(this.COMMANDSTACK);

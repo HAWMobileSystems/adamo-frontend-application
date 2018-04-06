@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 var pgp = require('pg-promise')(/*options*/)
 
 var cn = {
-    host: 'localhost',
+    host: 'ipim-intsys.lab.if.haw-landshut.de',   //localhost for testing
     port: 5432,
     database: 'ipim',
     user: 'postgres',

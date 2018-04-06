@@ -23,8 +23,8 @@ const routes: Routes = [
     {path: 'userManagement', component: UsermanagementComponent},
     {path: 'userManagement2', component: Usermanagement2Component},
 
-  // { path: '',   redirectTo: '/front-page', pathMatch: 'full' },
-   //{ path: '**', redirectTo: '/front-page', pathMatch: 'full' },
+   { path: '',   redirectTo: '/front-page', pathMatch: 'full' },
+   { path: '**', redirectTo: '/front-page', pathMatch: 'full' },
 
     //{path: '', redirectTo: '/modelPermission', pathMatch: 'full'},
     //{path: '**', redirectTo: '/modelPermission', pathMatch: 'full'},
@@ -43,8 +43,8 @@ const routes: Routes = [
     //{path: '**', redirectTo: '/userManagement', pathMatch: 'full'},
 
 
-    {path: '', redirectTo: '/userManagement2', pathMatch: 'full'},
-    {path: '**', redirectTo: '/userManagement2', pathMatch: 'full'},
+    // {path: '', redirectTo: '/userManagement2', pathMatch: 'full'},
+    // {path: '**', redirectTo: '/userManagement2', pathMatch: 'full'},
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
