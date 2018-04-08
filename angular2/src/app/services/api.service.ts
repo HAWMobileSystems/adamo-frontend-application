@@ -34,4 +34,21 @@ export class ApiService {
         return this.http.get('http://localhost:3000/logout', options)
             .map((response: Response) => response.json());
     }
+
+    getAllUsers(){
+        return this.http.get('http://localhost:3000/getallusers', options)
+            .map((response: Response) => response.json());
+    }
+
+    userCreate(firstname, lastname, name, password){
+        return this.http.post(
+            'http://localhost:3000/usercreate',
+            {
+                username: username,
+                password: password,
+                captcha: captcha
+            },
+            options)
+            .map((response: Response) => response.json());
+    }
 }

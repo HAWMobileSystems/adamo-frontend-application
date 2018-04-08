@@ -668,11 +668,11 @@ app.get('/getallusers', function (req, res) {
     db.query('select * from users')
     .then(function (data) {
         console.log('DATA:', data)
-        res.send({ data: data});
+        res.send({ data: data, success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Database not available'});
+            res.status(400).send({ status: 'Database not available', error: 'Database not available', success: false});
         })
     });
 
