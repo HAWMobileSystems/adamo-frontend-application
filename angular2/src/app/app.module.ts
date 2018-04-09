@@ -11,6 +11,7 @@ import { ReCaptchaModule} from 'angular2-recaptcha';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FrontPageComponent } from './front-page/front-page.component';
+import {AdministrationPageComponent} from "./administration-page/administration-page.component";
 import { ViewerComponent } from './viewer/viewer.component';
 import { ModelerComponent } from './modeler/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -34,6 +35,10 @@ import {RolemanagementComponent2} from './rolemanagement/rolemanagement2.compone
 import {UsermanagementComponent} from './usermanagement/usermanagement.component';
 import {Usermanagement2Component} from "./usermanagement/usermanagement2.component";
 
+import {UserComponent} from "./components/UserComponent/user.component";
+import {ModelComponent} from "./components/ModelComponent/model.component";
+import {RoleComponent} from "./components/RoleComponent/role.component";
+
 
 //check for correct branch!
 
@@ -52,6 +57,10 @@ import {Usermanagement2Component} from "./usermanagement/usermanagement2.compone
         AppFooterComponent,
         AppHeaderComponent,
         FrontPageComponent,
+        AdministrationPageComponent,
+        UserComponent,
+        ModelComponent,
+        RoleComponent,
         UsermanagementComponent,
         Usermanagement2Component,
         RolemanagementComponent2,

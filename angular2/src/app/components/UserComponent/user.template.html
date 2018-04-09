@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">User</h3>
+    </div>
+    <div class="panel-body">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>UserID</th>
+                <th>UserName</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody ></tbody>
+            <tr (click)="selected = newUser">
+                <td></td>
+                <td>NewUser</td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let user of users" (click)="selected = user">
+                <td>{{user.uid}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+            <tfoot></tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{(selected.username === '' ? 'NewUser' : selected.username)}}</h3>
+    </div>
+    <div class="panel-body">
+
+
+
+        <form>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="username">Username</label>
+                <input required type="text" class="form-control" id="username" placeholder="Username" name="username" [(ngModel)]="selected.username">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="email">Email</label>
+                <input required type="email" class="form-control" id="email" placeholder="Email"  name="email" [(ngModel)]="selected.email">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="firstname">Firstname</label>
+                <input required type="text" class="form-control" id="firstname" placeholder="Firstname" name="firstname" [(ngModel)]="selected.firstname">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="lastname">Lastname</label>
+                <input required type="text" class="form-control" id="lastname" placeholder="Lastname" name="lastname" [(ngModel)]="selected.lastname">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="role">role</label>
+                <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [(ngModel)]="selected.role">
+            </div>
+            <button *ngIf="selected.uid === ''" type="submit" class="btn btn-primary" (click)="userCreate()">Create</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-primary" (click)="userUpdate()">Change</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-primary" (click)="userDelete()">Delete</button>
+        </form>
+        {{selected.username}}
+
+    </div>
+</div>
+
