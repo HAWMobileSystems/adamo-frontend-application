@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 // used to create fake backend
 import { fakeBackendProvider } from './helpers/fake-backend';
@@ -50,7 +51,8 @@ import {RoleComponent} from "./components/RoleComponent/role.component";
         FormsModule,
         Ng2Bs3ModalModule,
         HttpClientModule,
-        ReCaptchaModule
+        ReCaptchaModule,
+        Ng2SearchPipeModule
     ],
     declarations: [
         AppComponent,

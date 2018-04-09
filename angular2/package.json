@@ -38,6 +38,7 @@
     "mosca": "^2.7.0",
     "mqtt": "^2.16.0",
     "ng2-bs3-modal": "^0.10.4",
+    "ng2-search-filter": "^0.4.7",
     "node-uuid": "^1.4.8",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",

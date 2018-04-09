@@ -724,17 +724,17 @@ app.post('/usercreate', function (req, res) {
                 res.status(400).send({ status: 'User already exists'})
             } else {
                 db.oneOrNone('insert into users (firstname, lastname, username, password) values ($1, $2, $3, $4)', [fname, lname, name, pw])
-                .then(function (data) {
-                    res.send({ status: 'User created successfully'}); 
+                .then(function () {
+                    res.send({ status: 'User created successfully', success: true});
                 })
                 .catch(function (error) {
-                    console.log('ERROR POSTGRES:', error)
+                    console.log('ERROR POSTGRES:', error);
                     res.status(400).send({ status: 'Database not available'});
                 })
             }
         })
         .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
+            console.log('ERROR POSTGRES:', error);
             res.status(400).send({ status: 'Database not available'});
         })
     });
@@ -792,7 +792,8 @@ app.post('/userupdate', function (req, res) {
         } else {
              db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where uid = $5', [fname, lname, name, pw, uid])
              .then(function (data) {
-                res.send({ status: 'User updated successfully'}); 
+                 console.log('data is ', data);
+                res.send({ status: 'User updated successfully', success: true});
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
@@ -830,7 +831,7 @@ app.delete('/userdelete', function (req, res) {
     db.oneOrNone('delete from users where uid = $1', [uid])
         .then(function (data) {
             console.log(data)
-            res.send({ status: 'User deleted successfully'}); 
+            res.send({ status: 'User deleted successfully', success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -858,7 +859,7 @@ app.get('/getallprofiles', function (req, res) {
     db.query('select * from userprofile')
     .then(function (data) {
         console.log('DATA:', data)
-        res.send({ data: data});
+        res.send({ data: data, success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
