@@ -45,28 +45,29 @@
         <form>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="username">Username</label>
-                <input required type="text" class="form-control" id="username" placeholder="Username" name="username" [ngModel]="selected.username">
+                <input required type="text" class="form-control" id="username" placeholder="Username" name="username" [(ngModel)]="selected.username">
             </div>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="email">Email</label>
-                <input required type="email" class="form-control" id="email" placeholder="Email"  name="email" [ngModel]="selected.email">
+                <input required type="email" class="form-control" id="email" placeholder="Email"  name="email" [(ngModel)]="selected.email">
             </div>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="firstname">Firstname</label>
-                <input required type="text" class="form-control" id="firstname" placeholder="Firstname" name="firstname" [ngModel]="selected.firstname">
+                <input required type="text" class="form-control" id="firstname" placeholder="Firstname" name="firstname" [(ngModel)]="selected.firstname">
             </div>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="lastname">Lastname</label>
-                <input required type="text" class="form-control" id="lastname" placeholder="Lastname" name="lastname" [ngModel]="selected.lastname">
+                <input required type="text" class="form-control" id="lastname" placeholder="Lastname" name="lastname" [(ngModel)]="selected.lastname">
             </div>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="role">role</label>
-                <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [ngModel]="selected.role">
+                <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [(ngModel)]="selected.role">
             </div>
             <button *ngIf="selected.username === ''" type="submit" class="btn btn-primary" (click)="apiService.createuser()">Create</button>
-            <button *ngIf="selected.username !== ''" type="submit" class="btn btn-primary">Change</button>
+            <button *ngIf="selected.username !== ''" type="submit" class="btn btn-primary" (click)="userUpdate()">Change</button>
             <button *ngIf="selected.username !== ''" type="submit" class="btn btn-primary">Delete</button>
         </form>
+        {{selected.username}}
 
     </div>
 </div>

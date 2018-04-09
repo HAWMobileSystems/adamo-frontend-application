@@ -31,7 +31,7 @@ export class UserComponent {
             role: ''
         };
 
-        this.selected = this.newUser
+        this.selected = this.newUser;
 
         this.apiService.getAllUsers()
             .subscribe(response => {
@@ -46,5 +46,24 @@ export class UserComponent {
                     console.log(error);
                 });
     }
+
+    userUpdate(){
+        console.log(this.selected);
+        this.apiService.userUpdate(this.selected.uid, this.selected.firstname, this.selected.lastname, this.selected.username, '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi')
+            .subscribe(response => {
+                    if (response.success){
+                        console.log(JSON.stringify(response, null, 2), 'success');
+                        // this.router.navigate(['/modeler']);
+                    }
+                    else {
+                        this.alertService.error(response.error + 'something went wrong')
+                    }
+                },
+                error => {
+                    this.alertService.error(error.statusText + 'something went wrong');
+                    console.log(error);
+                });
+    }
+
 
 }

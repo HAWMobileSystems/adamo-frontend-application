@@ -756,6 +756,10 @@ app.post('/usercreate', function (req, res) {
 
 app.post('/userupdate', function (req, res) {
 
+    if(!req.body.userid) {
+        res.status(400).send({ status: 'userid may not be empty!'});
+        return;
+    }
     if(!req.body.firstname) {
         res.status(400).send({ status: 'First name may not be empty!'});
         return;
@@ -786,7 +790,7 @@ app.post('/userupdate', function (req, res) {
         if(data){
             res.status(400).send({ status: 'User already exists'})
         } else {
-             db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where id = $5', [fname, lname, name, pw, uid])
+             db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where uid = $5', [fname, lname, name, pw, uid])
              .then(function (data) {
                 res.send({ status: 'User updated successfully'}); 
             })
@@ -823,8 +827,9 @@ app.delete('/userdelete', function (req, res) {
 
     console.log(uid);
 
-    db.oneOrNone('delete from users where id = $1', [uid])
+    db.oneOrNone('delete from users where uid = $1', [uid])
         .then(function (data) {
+            console.log(data)
             res.send({ status: 'User deleted successfully'}); 
         })
         .catch(function (error) {
