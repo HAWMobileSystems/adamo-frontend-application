@@ -41,7 +41,9 @@ export class ApiService {
     }
 
     userDelete(uid: number) {
-        return this.http.delete('http://localhost:3000/userdelete', options)
+        var deleteOptions = options;
+        deleteOptions.body = {userid: uid}
+        return this.http.delete('http://localhost:3000/userdelete', deleteOptions)
             .map((response: Response) => response.json());
     }
 
@@ -54,7 +56,16 @@ export class ApiService {
             password: password
         }, options)
             .map((response: Response) => response.json());
+    }
 
+    userCreate(firstname: string, lastname: string, name: string, password: string){
+        return this.http.post('http://localhost:3000/usercreate', {
+            firstname: firstname,
+            lastname: lastname,
+            name: name,
+            password: password
+        }, options)
+            .map((response: Response) => response.json());
     }
 
     // userCreate(firstname, lastname, name, password){
