@@ -33,6 +33,25 @@ export class UserComponent {
 
         this.selected = this.newUser;
 
+        // this.apiService.getAllUsers()
+        //     .subscribe(response => {
+        //             if (response.success) {
+        //                 this.users = response.data;
+        //             }
+        //             else {
+        //                 this.alertService.error(response.error)
+        //             }
+        //         },
+        //         error => {
+        //             console.log(error);
+        //         });
+
+        this.getAllUsers();
+    }
+
+    getAllUsers(){
+        this.users = [];
+
         this.apiService.getAllUsers()
             .subscribe(response => {
                     if (response.success) {
@@ -48,22 +67,58 @@ export class UserComponent {
     }
 
     userUpdate(){
-        console.log(this.selected);
         this.apiService.userUpdate(this.selected.uid, this.selected.firstname, this.selected.lastname, this.selected.username, '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi')
             .subscribe(response => {
                     if (response.success){
                         console.log(JSON.stringify(response, null, 2), 'success');
-                        // this.router.navigate(['/modeler']);
+                        this.getAllUsers();
                     }
                     else {
-                        this.alertService.error(response.error + 'something went wrong')
+                        this.alertService.error(response.error)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText + 'something went wrong');
+                    this.alertService.error(error.statusText);
                     console.log(error);
                 });
     }
 
+    userCreate(){
+        this.apiService.userCreate(this.selected.firstname, this.selected.lastname, this.selected.username, '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi')
+            .subscribe(response => {
+                    if (response.success){
+                        console.log(JSON.stringify(response, null, 2), 'success');
+                        this.getAllUsers();
+                    }
+                    else {
+                        this.alertService.error(response.error)
+                    }
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+                    console.log(error);
+                });
+    }
 
+    userDelete(){
+        console.log('debug');
+        this.apiService.userDelete(this.selected.uid)
+            .subscribe(response => {
+                console.log(response);
+                    if (response.success){
+                        console.log('debug1');
+                        console.log(JSON.stringify(response, null, 2), 'success');
+                        this.getAllUsers();
+                    }
+                    else {
+                        console.log('debug2');
+                        this.alertService.error(response.error)
+                    }
+                },
+                error => {
+                    console.log('debug3');
+                    this.alertService.error(error.statusText);
+                    console.log(error);
+                });
+    }
 }

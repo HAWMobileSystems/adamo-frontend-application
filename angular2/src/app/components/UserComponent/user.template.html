@@ -63,9 +63,9 @@
                 <label class="col-md-4" style="text-align: left" for="role">role</label>
                 <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [(ngModel)]="selected.role">
             </div>
-            <button *ngIf="selected.username === ''" type="submit" class="btn btn-primary" (click)="apiService.createuser()">Create</button>
-            <button *ngIf="selected.username !== ''" type="submit" class="btn btn-primary" (click)="userUpdate()">Change</button>
-            <button *ngIf="selected.username !== ''" type="submit" class="btn btn-primary">Delete</button>
+            <button *ngIf="selected.uid === ''" type="submit" class="btn btn-primary" (click)="userCreate()">Create</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-primary" (click)="userUpdate()">Change</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-primary" (click)="userDelete()">Delete</button>
         </form>
         {{selected.username}}
 
