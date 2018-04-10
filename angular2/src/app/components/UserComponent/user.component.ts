@@ -22,7 +22,9 @@ const mqtt = require('mqtt');
 
 @Component({
     selector: 'user-management',
-    templateUrl: './user.template.html'
+    templateUrl: './user.template.html',
+    styleUrls: ['./user.component.css']
+
 })
 
 export class UserComponent {
