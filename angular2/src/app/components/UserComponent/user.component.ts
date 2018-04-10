@@ -3,18 +3,36 @@ import {AlertService} from '../../services/alert.service';
 import {ApiService} from "../../services/api.service";
 
 
-// import { ActivatedRoute } from '@angular/router';
 
+
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({ name: 'category' })
+export class CategoryPipe implements PipeTransform {
+    transform(categories: any, searchText: any): any {
+        if(searchText == null) return categories;
+
+        return categories.filter(function(category: any){
+            return category.CategoryName.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+        })
+    }
+}
+
+
+const mqtt = require('mqtt');
 
 @Component({
     selector: 'user-management',
-    templateUrl: './user.template.html'
+    templateUrl: './user.template.html',
+    styleUrls: ['./user.component.css']
+
 })
 
 export class UserComponent {
     private selected: any;
     private newUser: any;
     private users: any;
+    private mqtt: any;
+
 
     constructor(private apiService: ApiService, private alertService: AlertService) {
     }
@@ -31,31 +49,26 @@ export class UserComponent {
             role: ''
         };
 
-        this.selected = this.newUser;
-
-        // this.apiService.getAllUsers()
-        //     .subscribe(response => {
-        //             if (response.success) {
-        //                 this.users = response.data;
-        //             }
-        //             else {
-        //                 this.alertService.error(response.error)
-        //             }
-        //         },
-        //         error => {
-        //             console.log(error);
-        //         });
-
         this.getAllUsers();
+
+
+        this.mqtt = mqtt.connect('mqtt://localhost:4711');
+        this.mqtt.subscribe('USER');
+        const i = this;
+        this.mqtt.on('message', function (topic: any, message: any) {
+            console.log('Test from remote:' + message.toString());
+            i.getAllUsers();
+        });
     }
 
-    getAllUsers(){
+    public getAllUsers() {
         this.users = [];
 
         this.apiService.getAllUsers()
             .subscribe(response => {
                     if (response.success) {
                         this.users = response.data;
+                        this.selected = null;
                     }
                     else {
                         this.alertService.error(response.error)
@@ -66,12 +79,11 @@ export class UserComponent {
                 });
     }
 
-    userUpdate(){
+    public userUpdate() {
         this.apiService.userUpdate(this.selected.uid, this.selected.firstname, this.selected.lastname, this.selected.username, '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi')
             .subscribe(response => {
-                    if (response.success){
-                        console.log(JSON.stringify(response, null, 2), 'success');
-                        this.getAllUsers();
+                    if (response.success) {
+                        this.mqtt.publish('USER');
                     }
                     else {
                         this.alertService.error(response.error)
@@ -83,12 +95,11 @@ export class UserComponent {
                 });
     }
 
-    userCreate(){
+    public userCreate() {
         this.apiService.userCreate(this.selected.firstname, this.selected.lastname, this.selected.username, '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi')
             .subscribe(response => {
-                    if (response.success){
-                        console.log(JSON.stringify(response, null, 2), 'success');
-                        this.getAllUsers();
+                    if (response.success) {
+                        this.mqtt.publish('USER');
                     }
                     else {
                         this.alertService.error(response.error)
@@ -100,23 +111,18 @@ export class UserComponent {
                 });
     }
 
-    userDelete(){
-        console.log('debug');
+    public userDelete() {
         this.apiService.userDelete(this.selected.uid)
             .subscribe(response => {
-                console.log(response);
-                    if (response.success){
-                        console.log('debug1');
-                        console.log(JSON.stringify(response, null, 2), 'success');
-                        this.getAllUsers();
+                    console.log(response);
+                    if (response.success) {
+                        this.mqtt.publish('USER');
                     }
                     else {
-                        console.log('debug2');
                         this.alertService.error(response.error)
                     }
                 },
                 error => {
-                    console.log('debug3');
                     this.alertService.error(error.statusText);
                     console.log(error);
                 });

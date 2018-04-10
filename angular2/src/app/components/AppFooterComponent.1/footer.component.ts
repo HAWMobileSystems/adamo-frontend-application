@@ -9,7 +9,7 @@
 //   providers: [StoreService]
 // })
 
-// export class AppFooterComponent {
+// export class AppFooterComponents {
 //   private _route: ActivatedRoute;
 //   private _todoStore: StoreService;
 //   private currentStatus: string;
