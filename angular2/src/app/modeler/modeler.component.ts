@@ -81,7 +81,6 @@ export class ModelerComponent implements OnInit {
     VALUES: 'values'
   };
   private hideLoader = true;
-
   onNotify(message:string):void {
       this.hideLoader = true;
       this.openDiagram(message);
@@ -161,7 +160,12 @@ export class ModelerComponent implements OnInit {
   private debug = () => {
     console.log(this.modeler);
     console.log(this)
-  }
+  };
+
+  private toggleLoader = () => {
+      this.hideLoader = !this.hideLoader;
+  };
+
   private saveDiagram = () => {
     console.log('savediagram');
     const downloadLink = $('#js-download-diagram');
@@ -190,7 +194,8 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.HIGHLIGHT]: this.highlightTerms,
     [COMMANDS.RESET]: this.resetDiagram,
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick,
-    [COMMANDS.SAVE]: this.saveDiagram
+    [COMMANDS.SAVE]: this.saveDiagram,
+    [COMMANDS.LOAD]: this.toggleLoader
   };
 
   /**

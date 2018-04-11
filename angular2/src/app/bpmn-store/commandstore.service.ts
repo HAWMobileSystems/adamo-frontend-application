@@ -7,5 +7,6 @@ export const COMMANDS = {
     RESET: 'reset',
     SET_TERM: 'set-term',
     HIGHLIGHT: 'highlight',
-    EXTRA: 'extra'
-}
+    EXTRA: 'extra',
+    LOAD: 'load'
+};
