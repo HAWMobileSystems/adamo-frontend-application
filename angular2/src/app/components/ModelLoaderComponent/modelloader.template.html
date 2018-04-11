@@ -1,0 +1,32 @@
+<div class="panel panel-default col-md-6">
+    <div class="panel-body">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"
+                   [(ngModel)]="search">
+        </div>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr class="active">
+                <th>ModelID</th>
+                <th>ModelName</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+            <tr (click)="selected = newModel" [ngClass]="{'info': selected === newModel}">
+                <td></td>
+                <td>NewModel</td>
+            </tr>
+            <tr *ngFor="let model of models | filter:search" (click)="selected = model"
+                [ngClass]="{'info': selected === model}">
+                <td>{{model.mid}}</td>
+                <td>{{model.modelname}}</td>
+                <!--<td><button class="btn" (click)="debug()">Load</button></td>-->
+            </tr>
+            <tfoot></tfoot>
+        </table>
+        <button *ngIf="selected" class="btn" (click)="loadSelected()">Load</button>
+    </div>
+</div>
+
+
+

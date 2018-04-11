@@ -5,19 +5,6 @@ import {ApiService} from "../../services/api.service";
 
 
 
-import { Pipe, PipeTransform } from '@angular/core';
-@Pipe({ name: 'category' })
-export class CategoryPipe implements PipeTransform {
-    transform(categories: any, searchText: any): any {
-        if(searchText == null) return categories;
-
-        return categories.filter(function(category: any){
-            return category.CategoryName.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-        })
-    }
-}
-
-
 const mqtt = require('mqtt');
 
 @Component({
