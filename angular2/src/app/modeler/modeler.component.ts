@@ -28,6 +28,10 @@ import {InputModal} from './modals/InputModal';
 import { VariableModal } from './modals/VariableModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
+
+import {ApiService} from "../services/api.service";
+
+
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
 };
@@ -76,8 +80,14 @@ export class ModelerComponent implements OnInit {
     SELECTION: 'selection',
     VALUES: 'values'
   };
+  private hideLoader = true;
 
-  constructor(private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
+  onNotify(message:string):void {
+      this.hideLoader = true;
+      this.openDiagram(message);
+  }
+
+  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
 
     //this.initializeModeler();
    }
@@ -147,6 +157,10 @@ export class ModelerComponent implements OnInit {
   private resetDiagram = () => {
     if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
     this.openDiagram(this.lastDiagramXML);
+  };
+  private debug = () => {
+    console.log(this.modeler);
+    console.log(this)
   }
   private saveDiagram = () => {
     console.log('savediagram');
@@ -180,7 +194,7 @@ export class ModelerComponent implements OnInit {
   };
 
   /**
-   * Using fat Arrow function here manipulates binding of this. 
+   * Using fat Arrow function here manipulates binding of this.
    * While do not using openDiagram here the "this.modeler.importXML" gets affected by this..
    * and is no longer recognized as a function
    */
@@ -251,9 +265,9 @@ export class ModelerComponent implements OnInit {
         });
     }
   /**
- * Creates the modeler Object from camunda bpmn-js package. 
+ * Creates the modeler Object from camunda bpmn-js package.
  * adds the extraPaletteEntries from the bpmn-store
- * 
+ *
  */
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
@@ -376,6 +390,22 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(this.newDiagramXML);
   }
 
+  private loadDiagram() {
+      this.apiService.getModel('test')
+          .subscribe(response => {
+                  if (response.success) {
+                    console.log(response.data);
+                    this.openDiagram(response.data.modelxml);
+                  }
+                  else {
+                  }
+              },
+              error => {
+                  console.log(error);
+              });
+       // this.openDiagram()
+  }
+
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
     this.modeler.importXML(xml, (err: any) => {
@@ -391,10 +421,10 @@ export class ModelerComponent implements OnInit {
       //     .addClass('with-diagram');
       // }
     });
-  }
+  };
 
   /**
-   * 
+   *
    */
 
 
@@ -422,7 +452,7 @@ export class ModelerComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   private getTermList = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
@@ -450,7 +480,7 @@ export class ModelerComponent implements OnInit {
       }
     }
     return terms;
-  }
+  };
 
   private evaluateProcess = () => {
     if (this.lastDiagramXML === '') {
@@ -523,7 +553,7 @@ export class ModelerComponent implements OnInit {
   }
 private openFileDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/ 
+      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
       const file = (<HTMLInputElement>document.getElementById('file')).files[0];
       file ? this.getAsFile(file) : console.error('could not reach selected file..', file);
     }

@@ -384,6 +384,35 @@ app.get('/model', function (req, res) {
 });
 
 /*
+* URL:              /getmodel/:mid
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:
+* */
+app.get('/getmodel/:mid', function (req, res) {
+
+    const mid = req.params.mid;
+    console.log(req.params)
+    db.one('select * from model where mid = $1', [mid])
+        .then(function (data) {
+            console.log('DATA:', data)
+            res.send({ data: data, success: true});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error);
+            res.status(400).send({ status: 'Database not available'});
+        })
+});
+
+
+/*
 * URL:              /getallmodels
 * Method:           get
 * URL Params:
@@ -396,13 +425,12 @@ app.get('/model', function (req, res) {
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
 * */
-
 app.get('/getallmodels', function (req, res) {
 
     db.query('select * from model')
     .then(function (data) {
         console.log('DATA:', data)
-        res.send({ data: data});
+        res.send({ data: data, success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -444,9 +472,9 @@ app.post('/modelcreate', function (req, res) {
              if(data){
                 res.status(400).send({ status: 'Model name already exists'})
              } else {
-                 db.oneOrNone('insert into model (modelname, lastchange, modelxml, version) values ($1, $2, $3, $4)', [name, lc, xml, version])
+                 db.oneOrNone('insert into model (modelname, modelxml, version) values ($1, $2, $3)', [name, xml, version])
                .then(function (data) {
-                     res.send({ status: 'Model created successfully'}); 
+                     res.send({ status: 'Model created successfully', success: true});
                  })
                  .catch(function (error) {
                      console.log('ERROR POSTGRES:', error)
@@ -495,9 +523,9 @@ app.post('/modelupdate', function (req, res) {
              if(data){
                 res.status(400).send({ status: 'Model name already exists'})
              } else {
-                 db.oneOrNone('update model set modelname = $1, lastchange = $2, modelxml = $3, version= $4 where mid = $5', [name, lc, xml, version, mid])
+                 db.oneOrNone('update model set modelname = $1, modelxml = $2, version= $3 where mid = $4', [name, xml, version, mid])
                  .then(function (data) {
-                     res.send({ status: 'Model updated successfully'}); 
+                     res.send({ status: 'Model updated successfully', success: true});
              })
              .catch(function (error) {
                  console.log('ERROR POSTGRES:', error)
@@ -534,7 +562,7 @@ app.delete('/modeldelete', function (req, res) {
 
     db.oneOrNone('delete from model where mid = $1', [mid])
         .then(function (data) {
-            res.send({ status: 'Model deleted successfully'}); 
+            res.send({ status: 'Model deleted successfully', success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -564,7 +592,7 @@ app.post('/getpartmodel', function (req, res) {
     db.query('select * from partialmodel where pmid = $1', [pmid])
     .then(function (data) {
         console.log('DATA:', data)
-        res.send({ data: data});
+        res.send({ data: data, success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -604,7 +632,7 @@ app.post('/getpartmodel', function (req, res) {
             } else {
                 db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
                 .then(function (data) {
-                         res.send({ status: 'Model created successfully as a partial model'});
+                         res.send({ status: 'Model created successfully as a partial model', success: true});
                         })
                         .catch(function (error) {
                             console.log('ERROR POSTGRES:', error)
@@ -640,7 +668,7 @@ app.delete('/partmodeldelete', function (req, res) {
 
     db.oneOrNone('delete from partialmodel where pmid = $1', [pmid])
         .then(function (data) {
-            res.send({ status: 'Partial model deleted successfully'}); 
+            res.send({ status: 'Partial model deleted successfully', success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -1015,7 +1043,7 @@ app.get('/getallroles', function (req, res) {
     db.query('select * from role')
     .then(function (data) {
         console.log('DATA:', data)
-        res.send({ data: data});
+        res.send({ data: data, success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -1073,8 +1101,7 @@ app.post('/rolecreate', function (req, res) {
         })
     });
     
-
-    /*
+/*
 * URL:              /roleupdate
 * Method:           post
 * URL Params:
@@ -1110,7 +1137,7 @@ app.post('/roleupdate', function (req, res) {
         } else {
              db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, rid])
              .then(function (data) {
-                res.send({ status: 'Role updated successfully'}); 
+                res.send({ status: 'Role updated successfully', success: true});
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
@@ -1147,7 +1174,7 @@ app.delete('/roledelete', function (req, res) {
 
     db.oneOrNone('delete from role where rid =$1', [rid])
         .then(function (data) {
-            res.send({ status: 'Role deleted successfully'});
+            res.send({ status: 'Role deleted successfully', success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -1198,7 +1225,7 @@ app.post('/permissioncreate', function (req, res) {
         } else {
             db.oneOrNone('insert into permission (mid, id, rid) values ($1, $2, $3)', [mid, uid, rid])
                 .then(function (data) {
-                     res.send({ status: 'Permission created successfully'});
+                     res.send({ status: 'Permission created successfully', success: true});
                     })
                     .catch(function (error) {
                         console.log('ERROR POSTGRES:', error)
@@ -1256,7 +1283,7 @@ app.post('/permissionupdate', function (req, res) {
         } else {
             db.oneOrNone('update permission set mid = $1, id = $2, rid = $3 where pid = $4', [mid, uid, rid, pid])
                 .then(function (data) {
-                     res.send({ status: 'Permission updated successfully'});
+                     res.send({ status: 'Permission updated successfully', success: true});
                     })
                     .catch(function (error) {
                         console.log('ERROR POSTGRES:', error)
@@ -1293,7 +1320,7 @@ app.delete('/permissiondelete', function (req, res) {
 
     db.oneOrNone('delete from permission where pid = $1', [pid])
          .then(function (data) {
-            res.send({ status: 'Permission deleted successfully'});
+            res.send({ status: 'Permission deleted successfully', success: true});
           })
          .catch(function (error) {
             console.log('ERROR POSTGRES:', error)

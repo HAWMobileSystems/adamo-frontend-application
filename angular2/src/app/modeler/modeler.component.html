@@ -7,15 +7,29 @@
 <button (click)="loadBPMN()">Load BPMN-XML</button> -->
 <!--<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />-->
 
-<input type="file" id="file" (change)="openFileDiagram()" accept=".bpmn">
+
+
+<div class="container">
+
+    <modelloader [hidden]="hideLoader" (notify)="onNotify($event)"></modelloader>
+
+
+</div>
+
+
+
+<button type="button" (click)="hideLoader = !hideLoader">LoadModel</button>
+<!--<input type="file" id="file" (change)="openFileDiagram()" accept=".bpmn">-->
 <div id="js-drop-zone" class="with-diagram modeler">
     <div id="js-canvas" class="canvas .section-to-print"></div>
     <div id="js-properties-panel" class="properties"></div>
 </div>
-<div class="buttons"> 
-    <button type="button" class="btn btn-large btn-block btn-default" (click)="saveDiagram()">button1</button>
+<div class="buttons">
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="createNewDiagram()">createNewDiagram</button>
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="saveDiagram()">saveDiagram</button>
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="loadDiagram()">loadDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="openTermModal()">button2</button>
-    <button type="button" class="btn btn-large btn-block btn-default" (click)="login_status()">button3</button>
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="debug()">button3</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandTest()">commandstack</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandReset()">commandReset</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandGet()">commandGet</button>

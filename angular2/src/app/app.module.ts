@@ -38,6 +38,7 @@ import {Usermanagement2Component} from "./usermanagement/usermanagement2.compone
 
 import {UserComponent} from "./components/UserComponent/user.component";
 import {ModelComponent} from "./components/ModelComponent/model.component";
+import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
 
 
@@ -62,6 +63,7 @@ import {RoleComponent} from "./components/RoleComponent/role.component";
         AdministrationPageComponent,
         UserComponent,
         ModelComponent,
+        ModelLoaderComponent,
         RoleComponent,
         UsermanagementComponent,
         Usermanagement2Component,
