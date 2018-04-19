@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
   (onOpen)="opened()" [cssClass]="cssClass" #modal  >
   <modal-header [show-close]="true">
-      <h4 class="modal-title">I'm a modal!</h4>
+      <h4 class="modal-title">I'm a popup!</h4>
   </modal-header>
   <modal-body>
       <ul>
