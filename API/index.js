@@ -801,29 +801,34 @@ app.post('/userupdate', function (req, res) {
         res.status(400).send({ status: 'Last name may not be empty!'});
         return;
     }
-    if(!req.body.name) {
-        res.status(400).send({ status: 'Username may not be empty!'});
+    if(!req.body.email) {
+        res.status(400).send({ status: 'E-Mail may not be empty!'});
         return;
     }
     if(!req.body.password) {
         res.status(400).send({ status: 'Password may not be empty!'});
         return;
     }    
+    if(!req.body.upid) {
+        res.status(400).send({ status: 'User profile may not be empty!'});
+        return;
+    }  
 
     const uid = req.body.userid;
     const fname = req.body.firstname;
     const lname = req.body.lastname;
-    const name = req.body.name;
+    const email = req.body.email;
     const pw = req.body.password;
+    const upid = req.body.upid;
 
-    console.log(uid + ' ' + fname + ' ' + lname + ' ' + name + ' ' + pw );
+    console.log(uid + ' ' + fname + ' ' + lname + ' ' + email + ' ' + pw + ' ' + upid );
     
-    db.oneOrNone('select from users where username = $1', [name])
+    db.oneOrNone('select from users where email = $1', [email])
     .then(function (data) {
         if(data){
             res.status(400).send({ status: 'User already exists'})
         } else {
-             db.oneOrNone('update users set firstname = $1, lastname = $2, username = $3, password = $4 where uid = $5', [fname, lname, name, pw, uid])
+             db.oneOrNone('update users set firstname = $1, lastname = $2, email = $3, password = $4, upid = $5 where uid = $6', [fname, lname, email, pw, upid, uid])
              .then(function (data) {
                  console.log('data is ', data);
                 res.send({ status: 'User updated successfully', success: true});
