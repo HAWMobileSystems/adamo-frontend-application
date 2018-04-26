@@ -790,7 +790,7 @@ app.post('/usercreate', function (req, res) {
 app.post('/userupdate', function (req, res) {
 
     if(!req.body.userid) {
-        res.status(400).send({ status: 'userid may not be empty!'});
+        res.status(400).send({ status: 'Userid may not be empty!'});
         return;
     }
     if(!req.body.firstname) {
@@ -862,20 +862,35 @@ app.post('/userupdate', function (req, res) {
 
 app.delete('/userdelete', function (req, res) {
 
+    if(!req.body.userid) {
+        res.status(400).send({ status: 'Userid may not be empty!'});
+        return;
+    }
+
     const uid = req.body.userid;
 
-    console.log(uid);
+    console.log(uid); 
 
-    db.oneOrNone('delete from users where uid = $1', [uid])
-        .then(function (data) {
-            console.log(data)
+    db.oneOrNone('select from users where uid = $1', [uid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from users where uid = $1', [uid])
+            console.log('data is ', data);
             res.send({ status: 'User deleted successfully', success: true});
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Database not available'});
-        })
-    });
+        } else {
+            res.status(400).send({ status: 'User does not exist'})
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.status(400).send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
+
 
 
     /*
