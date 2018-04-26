@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 var pgp = require('pg-promise')(/*options*/)
 
 var cn = {
-    host: 'localhost',   //localhost for testing  else ipim-intsys.lab.if.haw-landshut.de
+    host: 'ipim-intsys.lab.if.haw-landshut.de',   //localhost for testing  else ipim-intsys.lab.if.haw-landshut.de
     port: 5432,
     database: 'ipim',
     user: 'postgres',
@@ -729,29 +729,34 @@ app.post('/usercreate', function (req, res) {
         res.status(400).send({ status: 'Last name may not be empty!'});
         return;
     }
-    if(!req.body.name) {
-        res.status(400).send({ status: 'Username may not be empty!'});
+    if(!req.body.email) {
+        res.status(400).send({ status: 'E-Mail may not be empty!'});
         return;
     }
     if(!req.body.password) {
         res.status(400).send({ status: 'Password may not be empty!'});
         return;
     }    
+    if(!req.body.upid) {
+        res.status(400).send({ status: 'User profile may not be empty!'});
+        return;
+    }   
 
     const fname = req.body.firstname;
     const lname = req.body.lastname;
-    const name = req.body.name;
+    const email = req.body.email;
     const pw = req.body.password;
+    const upid = req.body.upid;
 
 
-    console.log(fname + ' ' + lname + ' ' + name + ' ' + pw);
+    console.log(fname + ' ' + lname + ' ' + email + ' ' + pw);
 
-    db.oneOrNone('select from users where username = $1', [name])
+    db.oneOrNone('select from users where email = $1', [email])
         .then(function (data) {
             if(data){
                 res.status(400).send({ status: 'User already exists'})
             } else {
-                db.oneOrNone('insert into users (firstname, lastname, username, password) values ($1, $2, $3, $4)', [fname, lname, name, pw])
+                db.oneOrNone('insert into users (firstname, lastname, email, password, upid) values ($1, $2, $3, $4, $5)', [fname, lname, email, pw, upid])
                 .then(function () {
                     res.send({ status: 'User created successfully', success: true});
                 })
