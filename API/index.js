@@ -989,6 +989,10 @@ app.post('/profileupdate', function (req, res) {
         res.status(400).send({ status: 'Profile name may not be empty!'});
         return;
     }  
+    if(!req.body.upid) {
+        res.status(400).send({ status: 'User profile id may not be empty!'});
+        return;
+    }  
 
     const upid = req.body.upid;
     const profile = req.body.profile;
@@ -1034,20 +1038,37 @@ app.post('/profileupdate', function (req, res) {
 
 app.delete('/profiledelete', function (req, res) {
 
+    if(!req.body.upid) {
+        res.status(400).send({ status: 'User profile id may not be empty!'});
+        return;
+    }
     const upid = req.body.upid;
 
     console.log(upid);
 
-    db.oneOrNone('delete from userprofile where upid =$1', [upid])
-        .then(function (data) {
-            res.send({ status: 'User profile deleted successfully'});
+    db.oneOrNone('select from userprofile where upid = $1', [upid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from userprofile where upid =$1', [upid])
+            .then(function (data) {
+            res.send({ status: 'User profile deleted successfully', success: true});
         })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Database not available'});
+            res.status(400).send({ status: 'User profile cannot be deleted as it is used by other users'});
         })
-    });
-
+        } else {
+            res.status(400).send({ status: 'User profile does not exist'})
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
 
     /*
 * URL:              /getallroles
