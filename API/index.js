@@ -1282,31 +1282,31 @@ app.delete('/roledelete', function (req, res) {
 
 app.post('/permissioncreate', function (req, res) {
 
-    if(!req.body.modelid) {
+    if(!req.body.mid) {
         res.status(400).send({ status: 'Model may not be empty!'});
         return;
     }  
-    if(!req.body.userid) {
+    if(!req.body.uid) {
         res.status(400).send({ status: 'User may not be empty!'});
         return;
     }  
-    if(!req.body.roleid) {
+    if(!req.body.rid) {
         res.status(400).send({ status: 'Role may not be empty!'});
         return;
     }  
 
-    const mid = req.body.modelid;
-    const uid = req.body.userid;
-    const rid = req.body.roleid;
+    const mid = req.body.mid;
+    const uid = req.body.uid;
+    const rid = req.body.rid;
 
     console.log(mid + ' ' + uid + ' ' + rid);
    
-    db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
+    db.oneOrNone('select from permission where mid = $1 and uid = $2 and rid = $3', [mid, uid, rid])
     .then(function (data) {
         if(data){
             res.status(400).send({ status: 'Permission already exists'})
         } else {
-            db.oneOrNone('insert into permission (mid, id, rid) values ($1, $2, $3)', [mid, uid, rid])
+            db.oneOrNone('insert into permission (mid, uid, rid) values ($1, $2, $3)', [mid, uid, rid])
                 .then(function (data) {
                      res.send({ status: 'Permission created successfully', success: true});
                     })
@@ -1339,32 +1339,32 @@ app.post('/permissioncreate', function (req, res) {
 
 app.post('/permissionupdate', function (req, res) {
 
-    if(!req.body.modelid) {
+    if(!req.body.mid) {
         res.status(400).send({ status: 'Model may not be empty!'});
         return;
     }  
-    if(!req.body.userid) {
+    if(!req.body.uid) {
         res.status(400).send({ status: 'User may not be empty!'});
         return;
     }  
-    if(!req.body.roleid) {
+    if(!req.body.rid) {
         res.status(400).send({ status: 'Role may not be empty!'});
         return;
     }  
 
-    const pid = req.body.permissionid;
-    const mid = req.body.modelid;
-    const uid = req.body.userid;
-    const rid = req.body.roleid;
+    const pid = req.body.pid;
+    const mid = req.body.mid;
+    const uid = req.body.uid;
+    const rid = req.body.rid;
 
     console.log(pid + ' ' + mid + ' ' + uid + ' ' + rid);
    
-    db.oneOrNone('select from permission where mid = $1 and id = $2 and rid = $3', [mid, uid, rid])
+    db.oneOrNone('select from permission where mid = $1 and uid = $2 and rid = $3', [mid, uid, rid])
     .then(function (data) {
         if(data){
             res.status(400).send({ status: 'Permission already exists'})
         } else {
-            db.oneOrNone('update permission set mid = $1, id = $2, rid = $3 where pid = $4', [mid, uid, rid, pid])
+            db.oneOrNone('update permission set mid = $1, uid = $2, rid = $3 where pid = $4', [mid, uid, rid, pid])
                 .then(function (data) {
                      res.send({ status: 'Permission updated successfully', success: true});
                     })
@@ -1397,7 +1397,7 @@ app.post('/permissionupdate', function (req, res) {
 
 app.delete('/permissiondelete', function (req, res) {
 
-    const pid = req.body.permissionid;
+    const pid = req.body.pid;
 
     console.log(pid);
 
