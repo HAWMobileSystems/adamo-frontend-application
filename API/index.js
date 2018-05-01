@@ -1195,7 +1195,7 @@ app.post('/roleupdate', function (req, res) {
         return;
     }  
 
-    const rid = req.body.roleid;
+    const rid = req.body.rid;
     const role = req.body.role;
     const read = req.body.read;
     const write = req.body.write;
@@ -1241,19 +1241,29 @@ app.post('/roleupdate', function (req, res) {
 
 app.delete('/roledelete', function (req, res) {
 
-    const rid = req.body.roleid;
+    const rid = req.body.rid;
 
     console.log(rid);
 
-    db.oneOrNone('delete from role where rid =$1', [rid])
-        .then(function (data) {
+    db.oneOrNone('select from role where rid =$1', [rid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from role where rid =$1', [rid])
+            console.log('data is ', data);
             res.send({ status: 'Role deleted successfully', success: true});
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Database not available'});
-        })
-    });
+        } else {
+            res.status(400).send({ status: 'Role does not exist'})
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.status(400).send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
 
 
 /*
