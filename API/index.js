@@ -460,19 +460,18 @@ app.post('/modelcreate', function (req, res) {
          return;
      }   
  
-     const name = req.body.modelname;
-     const lc = req.body.lastchange;
-     const xml = req.body.modelxml;
+     const modelname = req.body.modelname;
+     const modelxml = req.body.modelxml;
      const version = req.body.version;
  
-     console.log(name + ' ' + lc + ' ' + xml + ' ' + version);
+     console.log(modelname + ' ' + modelxml + ' ' + version);
  
-     db.oneOrNone('select from model where modelname = $1', [name])
+     db.oneOrNone('select from model where modelname = $1', [modelname])
          .then(function (data) {
              if(data){
                 res.status(400).send({ status: 'Model name already exists'})
              } else {
-                 db.oneOrNone('insert into model (modelname, modelxml, version) values ($1, $2, $3)', [name, xml, version])
+                 db.oneOrNone('insert into model (modelname, modelxml, version) values ($1, $2, $3)', [modelname, modelxml, version])
                .then(function (data) {
                      res.send({ status: 'Model created successfully', success: true});
                  })
@@ -510,20 +509,20 @@ app.post('/modelupdate', function (req, res) {
          return;
      }   
  
-     const mid = req.body.modelid;
-     const name = req.body.modelname;
-     const lc = req.body.lastchange;
-     const xml = req.body.modelxml;
+     const mid = req.body.mid;
+     const modelname = req.body.modelname;
+     const lastchange = req.body.lastchange;
+     const modelxml = req.body.modelxml;
      const version = req.body.version;
  
-     console.log(mid + ' ' + name + ' ' + lc + ' ' + xml + ' ' + version);
+     console.log(mid + ' ' + modelname + ' ' + modelxml + ' ' + version);
      
-         db.oneOrNone('select from model where modelname = $1', [name])
+         db.oneOrNone('select from model where modelname = $1', [modelname])
          .then(function (data) {
              if(data){
                 res.status(400).send({ status: 'Model name already exists'})
              } else {
-                 db.oneOrNone('update model set modelname = $1, modelxml = $2, version= $3 where mid = $4', [name, xml, version, mid])
+                 db.oneOrNone('update model set modelname = $1, modelxml = $2, version= $3 where mid = $4', [modelname, modelxml, version, mid])
                  .then(function (data) {
                      res.send({ status: 'Model updated successfully', success: true});
              })
@@ -556,19 +555,34 @@ app.post('/modelupdate', function (req, res) {
 
 app.delete('/modeldelete', function (req, res) {
 
-    const mid = req.body.modelid;
+    if(!req.body.mid) {
+        res.status(400).send({ status: 'Model may not be empty!'});
+        return;
+    }
+    const mid = req.body.mid;
 
     console.log(mid);
 
-    db.oneOrNone('delete from model where mid = $1', [mid])
-        .then(function (data) {
-            res.send({ status: 'Model deleted successfully', success: true});
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
-        })
-    });
+    db.oneOrNone('select from model where mid = $1', [mid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from model where mid = $1', [mid])
+            .then(function (data) {
+                res.send({ status: 'Model deleted successfully', success: true});
+            })
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error)
+                res.status(400).send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
+            })
+    } else {
+        res.status(400).send({ status: 'Model does not exist'})
+     }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
 
 
 /*
@@ -587,7 +601,7 @@ app.delete('/modeldelete', function (req, res) {
 
 app.post('/getpartmodel', function (req, res) {
 
-    const pmid = req.body.partmodelid
+    const pmid = req.body.pmid
 
     db.query('select * from partialmodel where pmid = $1', [pmid])
     .then(function (data) {
@@ -616,12 +630,12 @@ app.post('/getpartmodel', function (req, res) {
     
     app.post('/partmodelcreate', function (req, res) {
     
-        if(!req.body.modelid) {
+        if(!req.body.mid) {
             res.status(400).send({ status: 'Model may not be empty!'});
             return;
         }  
         
-        const mid = req.body.modelid;
+        const mid = req.body.mid;
     
         console.log(mid);
     
@@ -666,15 +680,25 @@ app.delete('/partmodeldelete', function (req, res) {
 
     console.log(pmid);
 
-    db.oneOrNone('delete from partialmodel where pmid = $1', [pmid])
-        .then(function (data) {
+    db.oneOrNone('select from partialmodel where pmid = $1', [pmid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from partialmodel where pmid = $1', [pmid])
+            console.log('data is ', data);
             res.send({ status: 'Partial model deleted successfully', success: true});
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Partial model cannot be deleted as it is maintained in another model'});
-        })
-    });
+        } else {
+            res.status(400).send({ status: 'Partial model does not exist'})
+            .catch(function (error) {
+                console.log('ERROR POSTGRES:', error)
+                res.status(400).send({ status: 'Database not available'});
+            })
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
 
 
 /*
