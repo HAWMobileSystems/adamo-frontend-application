@@ -676,6 +676,10 @@ app.post('/getpartmodel', function (req, res) {
 
 app.delete('/partmodeldelete', function (req, res) {
 
+    if(!req.body.pmid) {
+        res.status(400).send({ status: 'Part model may not be empty!'});
+        return;
+    }
     const pmid = req.body.pmid;
 
     console.log(pmid);
@@ -766,21 +770,21 @@ app.post('/usercreate', function (req, res) {
         return;
     }   
 
-    const fname = req.body.firstname;
-    const lname = req.body.lastname;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
     const email = req.body.email;
-    const pw = req.body.password;
+    const password = req.body.password;
     const upid = req.body.upid;
 
 
-    console.log(fname + ' ' + lname + ' ' + email + ' ' + pw);
+    console.log(firstname + ' ' + lastname + ' ' + email + ' ' + password);
 
     db.oneOrNone('select from users where email = $1', [email])
         .then(function (data) {
             if(data){
                 res.status(400).send({ status: 'User already exists'})
             } else {
-                db.oneOrNone('insert into users (firstname, lastname, email, password, upid) values ($1, $2, $3, $4, $5)', [fname, lname, email, pw, upid])
+                db.oneOrNone('insert into users (firstname, lastname, email, password, upid) values ($1, $2, $3, $4, $5)', [firstname, lastname, email, password, upid])
                 .then(function () {
                     res.send({ status: 'User created successfully', success: true});
                 })
@@ -813,8 +817,8 @@ app.post('/usercreate', function (req, res) {
 
 app.post('/userupdate', function (req, res) {
 
-    if(!req.body.userid) {
-        res.status(400).send({ status: 'Userid may not be empty!'});
+    if(!req.body.uid) {
+        res.status(400).send({ status: 'User may not be empty!'});
         return;
     }
     if(!req.body.firstname) {
@@ -838,21 +842,21 @@ app.post('/userupdate', function (req, res) {
         return;
     }  
 
-    const uid = req.body.userid;
-    const fname = req.body.firstname;
-    const lname = req.body.lastname;
+    const uid = req.body.uid;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
     const email = req.body.email;
-    const pw = req.body.password;
+    const password = req.body.password;
     const upid = req.body.upid;
 
-    console.log(uid + ' ' + fname + ' ' + lname + ' ' + email + ' ' + pw + ' ' + upid );
+    console.log(uid + ' ' + firstname + ' ' + lastname + ' ' + email + ' ' + password + ' ' + upid );
     
     db.oneOrNone('select from users where email = $1', [email])
     .then(function (data) {
         if(data){
             res.status(400).send({ status: 'User already exists'})
         } else {
-             db.oneOrNone('update users set firstname = $1, lastname = $2, email = $3, password = $4, upid = $5 where uid = $6', [fname, lname, email, pw, upid, uid])
+             db.oneOrNone('update users set firstname = $1, lastname = $2, email = $3, password = $4, upid = $5 where uid = $6', [firstname, lastname, email, password, upid, uid])
              .then(function (data) {
                  console.log('data is ', data);
                 res.send({ status: 'User updated successfully', success: true});
@@ -886,12 +890,12 @@ app.post('/userupdate', function (req, res) {
 
 app.delete('/userdelete', function (req, res) {
 
-    if(!req.body.userid) {
-        res.status(400).send({ status: 'Userid may not be empty!'});
+    if(!req.body.uid) {
+        res.status(400).send({ status: 'User may not be empty!'});
         return;
     }
 
-    const uid = req.body.userid;
+    const uid = req.body.uid;
 
     console.log(uid); 
 
