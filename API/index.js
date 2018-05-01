@@ -1018,7 +1018,7 @@ app.post('/profileupdate', function (req, res) {
         return;
     }  
     if(!req.body.upid) {
-        res.status(400).send({ status: 'User profile id may not be empty!'});
+        res.status(400).send({ status: 'User profile may not be empty!'});
         return;
     }  
 
@@ -1027,6 +1027,7 @@ app.post('/profileupdate', function (req, res) {
     const permission = req.body.permission;
 
     console.log(upid + ' ' + profile + ' ' + permission);
+
     
     db.oneOrNone('select from userprofile where profile = $1', [profile])
     .then(function (data) {
@@ -1067,7 +1068,7 @@ app.post('/profileupdate', function (req, res) {
 app.delete('/profiledelete', function (req, res) {
 
     if(!req.body.upid) {
-        res.status(400).send({ status: 'User profile id may not be empty!'});
+        res.status(400).send({ status: 'User profile may not be empty!'});
         return;
     }
     const upid = req.body.upid;
@@ -1079,18 +1080,15 @@ app.delete('/profiledelete', function (req, res) {
         if(data){
             db.oneOrNone('delete from userprofile where upid =$1', [upid])
             .then(function (data) {
-            res.send({ status: 'User profile deleted successfully', success: true});
-        })
-        .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'User profile cannot be deleted as it is used by other users'});
-        })
-        } else {
-            res.status(400).send({ status: 'User profile does not exist'})
-            .catch(function (error) {
-                console.log('ERROR POSTGRES:', error)
+                res.send({ status: 'User profile deleted successfully', success: true});
             })
-        }
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error)
+                res.status(400).send({ status: 'User profile cannot be deleted as it is used by other users'});
+            })
+    } else {
+        res.status(400).send({ status: 'User profile does not exist'})
+     }
     })
     .catch(function (error) {
         console.log('ERROR POSTGRES:', error)
@@ -1098,7 +1096,8 @@ app.delete('/profiledelete', function (req, res) {
     })
 });
 
-    /*
+
+/*
 * URL:              /getallroles
 * Method:           get
 * URL Params:
