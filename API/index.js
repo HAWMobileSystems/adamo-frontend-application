@@ -566,12 +566,13 @@ app.delete('/modeldelete', function (req, res) {
     db.oneOrNone('select from model where mid = $1', [mid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from model where mid = $1', [mid])
+            db.oneOrNone(/*'delete from partialmodel where mid = $1;*/'delete from permission where mid = $1; delete from model where mid = $1', [mid])
             .then(function (data) {
+                console.log('Model deleted ');
                 res.send({ status: 'Model deleted successfully', success: true});
             })
             .catch(function (error) {
-              console.log('ERROR POSTGRES:', error)
+                console.log('ERROR POSTGRES:', error)
                 res.status(400).send({ status: 'Model cannot be deleted as it is maintained as a partial model'});
             })
     } else {
@@ -692,10 +693,6 @@ app.delete('/partmodeldelete', function (req, res) {
             res.send({ status: 'Partial model deleted successfully', success: true});
         } else {
             res.status(400).send({ status: 'Partial model does not exist'})
-            .catch(function (error) {
-                console.log('ERROR POSTGRES:', error)
-                res.status(400).send({ status: 'Database not available'});
-            })
         }
     })
     .catch(function (error) {
@@ -902,15 +899,17 @@ app.delete('/userdelete', function (req, res) {
     db.oneOrNone('select from users where uid = $1', [uid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from users where uid = $1', [uid])
-            console.log('data is ', data);
-            res.send({ status: 'User deleted successfully', success: true});
-        } else {
-            res.status(400).send({ status: 'User does not exist'})
+            db.oneOrNone('delete from permission where uid = $1; delete from users where uid = $1', [uid])
+            .then(function (data) {
+                console.log('User deleted ');
+                res.send({ status: 'User deleted successfully', success: true});
+            })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.status(400).send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Error while deleting user'});
             })
+        } else {
+            res.status(400).send({ status: 'User does not exist'})
         }
     })
     .catch(function (error) {
@@ -1078,7 +1077,7 @@ app.delete('/profiledelete', function (req, res) {
     db.oneOrNone('select from userprofile where upid = $1', [upid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from userprofile where upid =$1', [upid])
+            db.oneOrNone(/*'delete from users where upid = $1; */ 'delete from userprofile where upid =$1', [upid])
             .then(function (data) {
                 res.send({ status: 'User profile deleted successfully', success: true});
             })
@@ -1248,15 +1247,17 @@ app.delete('/roledelete', function (req, res) {
     db.oneOrNone('select from role where rid =$1', [rid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from role where rid =$1', [rid])
-            console.log('data is ', data);
-            res.send({ status: 'Role deleted successfully', success: true});
-        } else {
-            res.status(400).send({ status: 'Role does not exist'})
+            db.oneOrNone('delete from permission where rid = $1; delete from role where rid =$1', [rid])
+            .then(function (data) {
+                console.log('Role deleted ');
+                res.send({ status: 'Role deleted successfully', success: true});
+            })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.status(400).send({ status: 'Database not available'});
+                res.status(400).send({ status: 'Error while deleting role'});
             })
+        } else {
+            res.status(400).send({ status: 'Role does not exist'})
         }
     })
     .catch(function (error) {
@@ -1401,17 +1402,21 @@ app.delete('/permissiondelete', function (req, res) {
 
     console.log(pid);
 
-    db.oneOrNone('delete from permission where pid = $1', [pid])
-         .then(function (data) {
+    db.oneOrNone('select from permission where pid = $1', [pid])
+    .then(function (data) {
+        if(data){
+            db.oneOrNone('delete from permission where pid = $1', [pid])
+            console.log('data is ', data);
             res.send({ status: 'Permission deleted successfully', success: true});
-          })
-         .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
-            res.status(400).send({ status: 'Database not available'});
-          })
-    });
-
-
+        } else {
+            res.status(400).send({ status: 'Permission does not exist'})
+        }
+    })
+    .catch(function (error) {
+        console.log('ERROR POSTGRES:', error)
+        res.status(400).send({ status: 'Database not available'});
+    })
+});
 
 
 app.post('/', function (req, res) {
