@@ -566,7 +566,7 @@ app.delete('/modeldelete', function (req, res) {
     db.oneOrNone('select from model where mid = $1', [mid])
     .then(function (data) {
         if(data){
-            db.oneOrNone(/*'delete from partialmodel where mid = $1;*/'delete from permission where mid = $1; delete from model where mid = $1', [mid])
+            db.oneOrNone('delete from permission where mid = $1; delete from model where mid = $1', [mid])
             .then(function (data) {
                 console.log('Model deleted ');
                 res.send({ status: 'Model deleted successfully', success: true});
@@ -770,7 +770,7 @@ app.post('/usercreate', function (req, res) {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const email = req.body.email;
-    const password = req.body.password;
+    const password = bcrypt.hash(req.body.password, 72);
     const upid = req.body.upid;
 
 
@@ -1077,7 +1077,7 @@ app.delete('/profiledelete', function (req, res) {
     db.oneOrNone('select from userprofile where upid = $1', [upid])
     .then(function (data) {
         if(data){
-            db.oneOrNone(/*'delete from users where upid = $1; */ 'delete from userprofile where upid =$1', [upid])
+            db.oneOrNone('delete from userprofile where upid =$1', [upid])
             .then(function (data) {
                 res.send({ status: 'User profile deleted successfully', success: true});
             })
@@ -1247,14 +1247,14 @@ app.delete('/roledelete', function (req, res) {
     db.oneOrNone('select from role where rid =$1', [rid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from permission where rid = $1; delete from role where rid =$1', [rid])
+            db.oneOrNone('delete from role where rid =$1', [rid])
             .then(function (data) {
                 console.log('Role deleted ');
                 res.send({ status: 'Role deleted successfully', success: true});
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.status(400).send({ status: 'Error while deleting role'});
+                res.status(400).send({ status: 'Role cannot be deleted as there are still permissions maintained'});
             })
         } else {
             res.status(400).send({ status: 'Role does not exist'})
