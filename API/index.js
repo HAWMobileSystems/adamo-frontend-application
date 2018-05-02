@@ -517,9 +517,9 @@ app.post('/modelupdate', function (req, res) {
  
      console.log(mid + ' ' + modelname + ' ' + modelxml + ' ' + version);
      
-         db.oneOrNone('select from model where modelname = $1', [modelname])
+         db.oneOrNone('select * from model where modelname = $1', [modelname])
          .then(function (data) {
-             if(data){
+             if(data && data.mid !== +mid){
                 res.status(400).send({ status: 'Model name already exists'})
              } else {
                  db.oneOrNone('update model set modelname = $1, modelxml = $2, version= $3 where mid = $4', [modelname, modelxml, version, mid])
