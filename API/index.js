@@ -97,15 +97,15 @@ app.post('/authenticate', function (req, res) {
 
         res.cookie('demoCookie', 123, { maxAge: 900000, httpOnly: true });
         var response = {};
-        if (req.body.username) var username = req.body.username;
-        else throw({status: 400, data: {message: 'missing username', success: false}});
+        if (req.body.email) var email = req.body.email;
+        else throw({status: 400, data: {message: 'missing email', success: false}});
         if (req.body.password) var password = req.body.password;
         else throw({status: 400, data: {message: 'missing password', success: false}});
         // if (req.body.captcha) var captcha = req.body.captcha;
         // else throw({status: 400, data: {message: 'missing captcha', success: false}});
         //TODO what to do when client is already logged in with different credentials?
         //TODO validate captcha could be the first thing to do
-        db.one('select uid, username, password, firstname, lastname, role from users where username = $1', username)
+        db.one('select uid, email, password, firstname, lastname, role from users where email = $1', email)
             .then(function (user) {
                 if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
 
@@ -118,9 +118,9 @@ app.post('/authenticate', function (req, res) {
                             .then(function (sessions) {
                                 var users = [];
                                 for (var e in sessions) {
-                                    if (sessions[e].sess.user) users.push(sessions[e].sess.user.username);
+                                    if (sessions[e].sess.user) users.push(sessions[e].sess.user.email);
                                 }
-                                if ((index = users.indexOf(user.username)) >= 0) {
+                                if ((index = users.indexOf(user.email)) >= 0) {
                                     store.destroy(sessions[index].sid, function (error) {
                                         if (error){
                                             console.log(error);
@@ -129,7 +129,7 @@ app.post('/authenticate', function (req, res) {
                                         response.success = true;
                                         req.session.user = {
                                             id: user.uid,
-                                            username: user.username,
+                                            email: user.email,
                                             firstname: user.firstname,
                                             lastname: user.lastname,
                                             role: user.role
@@ -147,7 +147,7 @@ app.post('/authenticate', function (req, res) {
                                     response.success = true;
                                     req.session.user = {
                                         id: user.uid,
-                                        username: user.username,
+                                        email: user.email,
                                         firstname: user.firstname,
                                         lastname: user.lastname,
                                         role: user.role
