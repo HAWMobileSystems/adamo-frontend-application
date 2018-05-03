@@ -1,15 +1,74 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { Variable } from './variables.component';
 
-export class VariableModal extends AbstractCustomModal {
+@Component({
+    selector: 'variable-modal',
+    template: `
+    <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+    (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+      <modal-header [show-close]="true">
+        <h2>IPIM Variables</h2>
+      </modal-header>
+      <modal-body>
+        <p>Please specify the variables used:</p>
+            <form>
+            <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
+                <fieldset id="variablefset" *ngFor="let variable of variables">
+                    {{ variable.name }}
+                </fieldset>  
+                
+            </form>
+      </modal-body>
+      <modal-footer [show-default-buttons]="false">
+         <button type="button" class="btn btn-large btn-block btn-default" (click)="insertVariables()">Add Variable</button>
+         <!-- <input type="button" value=" Add Variable " id="IPIMButtonAddVariable" (click) = "insertVariableField()"> -->
+         <input type="button" value=" Set " id="VariableModalButton">
+      </modal-footer>
+    </modal>
+    `
+  })
 
-    @Input() private modeler : any;
+export class VariableModal extends ModalComponent {
+    private IPIM_VAL : string = 'IPIM_Val';
+    private IPIM_META : string = 'IPIM_Meta';
+
+    //private variables: Variable[];
+
+    private variables = [
+        new Variable(1, 'Windstorm'),
+        new Variable(13, 'Bombasto'),
+        new Variable(15, 'Magneta'),
+        new Variable(20, 'Tornado')
+      ];
+
+
+    private modeler : any;
+    public termList: any;
   /*   constructor() {
         super();
         console.log('VariableModal constructor');
         this.fillModal();
 
     } */
+
+    @ViewChild('modal')
+    public modal: ModalComponent;
+    public selected: string;
+    public output: string;
+    public index: number = 0;
+    public cssClass: string = '';
+
+    public  animation: boolean = true;
+    public  keyboard: boolean = true;
+    public backdrop: string | boolean = true;
+    public css: boolean = false;
+
+    public setProps(modeler: any, termList: any) {
+        this.termList = termList;
+        this.modeler = modeler;
+    }
 
     public fillModal(): void {
         console.log('VariableModal fillModal');
@@ -51,14 +110,29 @@ export class VariableModal extends AbstractCustomModal {
         this.dismiss();
     }
 
+    public clearModal(s: string){
+        //Bereich zum Löschen per getElement abfragen
+        var inpNode = document.getElementById(s);
+        //Solange es noch ein firstChild gibt, wird dieses entfernt!
+        while (inpNode.firstChild) {
+          inpNode.removeChild(inpNode.firstChild);
+        }
+    }
+
     public accept(): void {
         console.log('VariableModal accept');
         this.writeVariableModalValues();
     }
 
+    public insertVariables(): void{
+        console.log('insertVariables');
+        this.insertVariableField('newField','NewVariable','variablefset', false);
+    }
+
     // TODO: FIxme in a template?
     private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
-        console.log('Variablemodal insertVariableField');
+        console.log('Variablemodal insertVariableField clicked');
+        debugger;
         const inputField = document.createElement('input');
         inputField.setAttribute('type', 'text');
         inputField.setAttribute('name', 'textbox');
@@ -89,16 +163,19 @@ export class VariableModal extends AbstractCustomModal {
 
         const node = document.createTextNode('Variable:     ');
 
-        document.getElementById(pform).appendChild(node);
-        document.getElementById(pform).appendChild(inputField);
-        document.getElementById(pform).appendChild(document.createTextNode('    Meta?:'));
-        document.getElementById(pform).appendChild(checkingbox);
-        document.getElementById(pform).appendChild(document.createElement('br'));
-        document.getElementById(pform).appendChild(document.createTextNode('    Default:'));
-        document.getElementById(pform).appendChild(valueField);
+        const field = document.getElementById(pform);
+
+        field.appendChild(node);
+        field.appendChild(inputField);
+        field.appendChild(document.createTextNode('    Meta?:'));
+        field.appendChild(checkingbox);
+        field.appendChild(document.createElement('br'));
+        field.appendChild(document.createTextNode('    Default:'));
+        field.appendChild(valueField);
         //document.getElementById(pform).appendChild(br);
-        document.getElementById(pform).appendChild(br);
-        document.getElementById(pform).appendChild(document.createElement('hr'));
+        field.appendChild(br);
+        field.appendChild(document.createElement('hr'));
+
     }
 
     private fillVariableModal() {

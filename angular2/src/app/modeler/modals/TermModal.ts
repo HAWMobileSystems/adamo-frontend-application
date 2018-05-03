@@ -1,5 +1,5 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
-import { Component, Input , ViewChild} from '@angular/core';
+import { Component, Input , ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
 
@@ -8,21 +8,26 @@ import { Router } from '@angular/router';
   template: `
   <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
   (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-  <modal-header [show-close]="true">
-      <h4 class="modal-title">I'm a popup!</h4>
-  </modal-header>
-  <modal-body>
-      <ul>
-          <li *ngFor="let item of items">
-              <a href="#" (click)="$event.preventDefault(); selected = item">{{ item }}</a>
-          </li>
-      </ul>
-      <p *ngIf="selected">Selected: <b>{{ selected }}</b></p>
-  </modal-body>
-  <modal-footer [show-default-buttons]="true"></modal-footer>
-</modal>
+    <modal-header [show-close]="true">
+      <h2>IPIM Terms</h2>
+    </modal-header>
+    <modal-body>
+      <p>Please define a new term for all elements:</p>
+      <form>
+        <!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
+        <textarea value="" id="inputFieldTerm" class="maxwid"> 
+        </textarea>
+        <br>
+      </form>
+      <br> 
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+        <input type="button" value=" Set Term " id="SetTermModal">
+    </modal-footer>
+  </modal>
   `
 })
+
 export class TermModal extends ModalComponent {
   //@Input()
   //@ViewChild('termModalModalComponent') private modal: ModalComponent;
@@ -34,7 +39,6 @@ export class TermModal extends ModalComponent {
 
   @ViewChild('modal')
   public modal: ModalComponent;
-  public items: string[] = ['item1', 'item2', 'item3'];
   public selected: string;
   public output: string;
   public index: number = 0;

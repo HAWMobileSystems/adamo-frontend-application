@@ -1,25 +1,77 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { Router } from '@angular/router';
 
-export class InputModal extends AbstractCustomModal {
-    // private IPIM_VAL : string = 'IPIM_Val';
-    // private IPIM_META : string = 'IPIM_Meta';
+@Component({
+  selector: 'input-modal',
+  template: `
+  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+    <modal-header [show-close]="true">
+      <h2>IPIM Evaluation</h2>
+    </modal-header>
+    <modal-body>
+      <p>Please specify the values used:</p>
+      <form>
+        <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
+        <fieldset id="inputfset">
+        </fieldset>
+      </form>
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+      <input type="button" value=" Evaluate " id="EvalModal">
+    </modal-footer>
+  </modal>
+  `
+})
 
-    @Input() private modeler : any;
-    /* constructor(modeler: any) {
-        super(modeler);
-        console.log('InputModal Constructor');
-        this.fillModal();
-    } */
+export class InputModal extends ModalComponent {
+  private IPIM_VAL : string = 'IPIM_Val';
+  private IPIM_META : string = 'IPIM_Meta';
 
-    public cancel() : void {
-        this.clearModal('inputfset');
-        this.dismiss();
+  private modeler : any;
+  public termList: any;
+  /* constructor(modeler: any) {
+      super(modeler);
+      console.log('InputModal Constructor');
+      this.fillModal();
+  } */
+
+  @ViewChild('modal')
+  public modal: ModalComponent;
+  public selected: string;
+  public output: string;
+  public index: number = 0;
+  public cssClass: string = '';
+
+  public  animation: boolean = true;
+  public  keyboard: boolean = true;
+  public backdrop: string | boolean = true;
+  public css: boolean = false;
+
+  public setProps(modeler: any, termList: any) {
+    this.termList = termList;
+    this.modeler = modeler;
+  }
+
+  public cancel() : void {
+      this.clearModal('inputfset');
+      this.dismiss();
+  }
+
+  public accept(): void {
+      this.writeInputModalValues();
+  }
+
+  public clearModal(s: string){
+    //Bereich zum Löschen per getElement abfragen
+    var inpNode = document.getElementById(s);
+    //Solange es noch ein firstChild gibt, wird dieses entfernt!
+    while (inpNode.firstChild) {
+      inpNode.removeChild(inpNode.firstChild);
     }
-
-    public accept(): void {
-        this.writeInputModalValues();
-    }
+  }
 
   private writeInputModalValues() {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
