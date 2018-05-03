@@ -15,8 +15,8 @@ import { Variable } from './variables.component';
         <p>Please specify the variables used:</p>
             <form>
             <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-                <fieldset id="variablefset" *ngFor="let variable of variables">
-                    {{ variable.name }}
+                <fieldset id="variablefset" >
+                   
                 </fieldset>  
                 
             </form>

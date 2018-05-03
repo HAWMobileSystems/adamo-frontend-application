@@ -42,6 +42,7 @@ import {UserComponent} from "./components/UserComponent/user.component";
 import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
+import {Variable} from "./modeler/modals/variables.component";
 
 
 //check for correct branch!
@@ -78,7 +79,8 @@ import {RoleComponent} from "./components/RoleComponent/role.component";
         AlertComponent,
         TermModal,
         VariableModal,
-        InputModal
+        InputModal,
+        Variable
     ],
     providers: [
         AuthGuard,
