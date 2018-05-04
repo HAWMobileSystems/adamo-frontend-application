@@ -42,7 +42,7 @@ import {UserComponent} from "./components/UserComponent/user.component";
 import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
-import {Variable} from "./modeler/modals/variables.component";
+import {VariableComponent} from "./modeler/modals/variables.component";
 
 
 //check for correct branch!
@@ -80,7 +80,7 @@ import {Variable} from "./modeler/modals/variables.component";
         TermModal,
         VariableModal,
         InputModal,
-        Variable
+        VariableComponent
     ],
     providers: [
         AuthGuard,

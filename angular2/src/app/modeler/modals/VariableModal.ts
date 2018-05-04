@@ -1,7 +1,8 @@
 import { AbstractCustomModal } from './AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { Variable } from './variables.component';
+import { VariableComponent } from './variables.component';
+import { Variable } from './variable';
 
 @Component({
     selector: 'variable-modal',
@@ -16,15 +17,15 @@ import { Variable } from './variables.component';
             <form>
             <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
                 <fieldset id="variablefset" >
-                   
-                </fieldset>  
-                
+                <variable-comp *ngFor="let variable of variables" [varName]="variable"> </variable-comp>
+                </fieldset>
             </form>
       </modal-body>
       <modal-footer [show-default-buttons]="false">
-         <button type="button" class="btn btn-large btn-block btn-default" (click)="insertVariables()">Add Variable</button>
+         <button type="button" class="btn btn-large btn-block btn-default" (click)="addNewVar()">Add Variable</button>
+         <button type="button" class="btn btn-large btn-block btn-default" (click)="writeVariableModalValues()">Set</button>
          <!-- <input type="button" value=" Add Variable " id="IPIMButtonAddVariable" (click) = "insertVariableField()"> -->
-         <input type="button" value=" Set " id="VariableModalButton">
+         <!-- <input type="button" value=" Set " id="VariableModalButton">  -->
       </modal-footer>
     </modal>
     `
@@ -36,13 +37,11 @@ export class VariableModal extends ModalComponent {
 
     //private variables: Variable[];
 
-    private variables = [
-        new Variable(1, 'Windstorm'),
-        new Variable(13, 'Bombasto'),
-        new Variable(15, 'Magneta'),
-        new Variable(20, 'Tornado')
+    public variables: Variable[] = [
+        // new Variable('prepacked', 'yes', true),
+        // new Variable('bookonwithdrawal', 'yes', true),
+        // new Variable('noOperation', 'no', false)
       ];
-
 
     private modeler : any;
     public termList: any;
@@ -65,13 +64,28 @@ export class VariableModal extends ModalComponent {
     public backdrop: string | boolean = true;
     public css: boolean = false;
 
+    public opened() {
+        console.log('opened Variable Modal');
+        this.fillModal();
+    }
+
     public setProps(modeler: any, termList: any) {
+        console.log('Variable Modal Set Props');
         this.termList = termList;
         this.modeler = modeler;
     }
 
+    public addNewVar(): void {
+        this.addVar('newVariable', 'newValue', false);
+    }
+
+    public addVar(name: string, value: string, meta: boolean): void{
+        this.variables.push(new Variable(name, value, meta));
+    }
+
     public fillModal(): void {
         console.log('VariableModal fillModal');
+        debugger;
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
         const elementRegistry = this.modeler.get('elementRegistry');
         const modeling = this.modeler.get('modeling');
@@ -87,19 +101,19 @@ export class VariableModal extends ModalComponent {
                 //Prüfen ob der Name des Elementes IPIM_Val entspricht
                 const extrasValues = extras[0].values[i];
                 const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-                const startsWithIpimVal: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_VAL + '_'.toLowerCase());
-                const startsWithIpimMeta: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_META + '_'.toLowerCase());
+                const startsWithIpimVal: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_VAL + '_').toLowerCase());
+                const startsWithIpimMeta: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_META + '_').toLowerCase());
 
                 if (startsWithIpimVal) {
-                    this.insertVariableField(
+                    this.addVar(
                         extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(), 'variablefset', false);
+                        extrasValues.value.toLowerCase(), false);
                 }
 
                 if (startsWithIpimMeta) {
-                    this.insertVariableField(
+                    this.addVar(
                         extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(), 'variablefset', true);
+                        extrasValues.value.toLowerCase(), true);
                 }
             }
         }
@@ -112,7 +126,7 @@ export class VariableModal extends ModalComponent {
 
     public clearModal(s: string){
         //Bereich zum Löschen per getElement abfragen
-        var inpNode = document.getElementById(s);
+        let inpNode = document.getElementById(s);
         //Solange es noch ein firstChild gibt, wird dieses entfernt!
         while (inpNode.firstChild) {
           inpNode.removeChild(inpNode.firstChild);
@@ -126,7 +140,7 @@ export class VariableModal extends ModalComponent {
 
     public insertVariables(): void{
         console.log('insertVariables');
-        this.insertVariableField('newField','NewVariable','variablefset', false);
+        this.insertVariableField('newField', 'NewVariable', 'variablefset', false);
     }
 
     // TODO: FIxme in a template?
@@ -235,15 +249,17 @@ export class VariableModal extends ModalComponent {
         const fields = document.getElementsByName('textbox');
         const checkboxes = document.getElementsByName('checkbox');
         const valueboxes = document.getElementsByName('valuebox');
-        for (let fieldi = 0; fieldi < fields.length; fieldi++) {
-            if ((<HTMLInputElement>fields[fieldi]).value !== '') {
-                extras[0].values.push(moddle.create('camunda:Property'));
-                (<HTMLInputElement>checkboxes[fieldi]).checked
-                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (<HTMLInputElement>fields[fieldi]).value.trim()
-                    : extras[0].values[fieldi].name = this.IPIM_VAL + + '_' + (<HTMLInputElement>fields[fieldi]).value.trim();
 
-                (<HTMLInputElement>valueboxes[fieldi]).value !== ''
-                    ? extras[0].values[fieldi].value = (<HTMLInputElement>valueboxes[fieldi]).value.trim()
+
+        for (let fieldi = 0; fieldi < this.variables.length; fieldi++) {
+            if ((this.variables[fieldi]).value !== '') {
+                extras[0].values.push(moddle.create('camunda:Property'));
+                this.variables[fieldi].meta
+                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (this.variables[fieldi]).value.trim()
+                    : extras[0].values[fieldi].name = this.IPIM_VAL + + '_' + (this.variables[fieldi]).value.trim();
+
+                this.variables[fieldi].value !== ''
+                    ? extras[0].values[fieldi].value = (this.variables[fieldi]).value.trim()
                     : extras[0].values[fieldi].value = ' ';
             }
         }

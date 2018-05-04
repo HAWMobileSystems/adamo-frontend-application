@@ -1,18 +1,15 @@
-import { Component, Input, ViewChild } from '@angular/core';
-
+import {Component, Input} from '@angular/core';
+import {Variable} from './variable';
 @Component({
-  selector: 'variableEntry',
-  template: `
-  <div>
-    <p>Variable: </p>
-  </div>
-    `
+    selector: 'variable-comp',
+    template: `
+    <span>
+      Variable: <input type="text" [(ngModel)]="varName.name"> <input type="checkbox" value="Meta?" [(ngModel)]="varName.meta"> Meta?
+    </span>
+    <br>
+    <span> Value:  <input type="text" [(ngModel)]="varName.value"> </span>
+	  `
 })
-
-export class Variable {
-
-    constructor(
-      public id: number,
-      public name: string) { }
-
-  }
+export class VariableComponent {
+  @Input() public varName : Variable;
+}

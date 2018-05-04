@@ -29,8 +29,7 @@ import { VariableModal } from './modals/VariableModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 
-import {ApiService} from "../services/api.service";
-
+import {ApiService} from '../services/api.service';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -111,13 +110,13 @@ export class ModelerComponent implements OnInit {
   }
 
   public openInputModal = () => {
-    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
    // const inputModal = new InputModal(this.modeler);
    //this.inputModal.fillModal();
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
    // this.variableModal.fillModal();
    // const variableModal = new VariableModal(this.modeler);
     this.variableModal.modal.open();
