@@ -18,6 +18,8 @@ import { ModelerComponent } from './modeler/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
+import { VariableModal} from './modeler/modals/VariableModal';
+import { InputModal} from './modeler/modals/InputModal';
 
 // import { AlertComponent } from './alert/index';
 import {AlertComponent} from './components/Alert/alert.component';
@@ -41,6 +43,7 @@ import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
 import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
+import {VariableComponent} from "./modeler/modals/variables.component";
 
 
 //check for correct branch!
@@ -76,7 +79,10 @@ import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
         ViewerComponent,
         ModelerComponent,
         AlertComponent,
-        TermModal
+        TermModal,
+        VariableModal,
+        InputModal,
+        VariableComponent
     ],
     providers: [
         AuthGuard,

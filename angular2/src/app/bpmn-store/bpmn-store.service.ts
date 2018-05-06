@@ -51,9 +51,9 @@ export class BPMNStore {
             [COMMANDS.SET_IPIM_VALUES]: {
                 group: 'ipim',
                 className: ['fa-cog', 'fa'],
-                title: 'Multi Row',
+                title: COMMANDS.SET_IPIM_VALUES,
                 action: {
-                    click: () => console.log('two-column')
+                    click: () => console.log('openVariableModal')
                 }
             },
              [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
@@ -61,7 +61,7 @@ export class BPMNStore {
                 className: ['fa-cogs', 'fa'],
                 title: COMMANDS.SET_IPIM_VALUES_EVALUATE,
                 action: {
-                    click: () => console.log('two-column')
+                    click: () => console.log('openInputModal')
                 }
             },
             [COMMANDS.RESET]: {
@@ -77,7 +77,7 @@ export class BPMNStore {
                 className: ['fa-tasks', 'fa'],
                 title: COMMANDS.SET_TERM,
                 action: {
-                    click: () => console.log('two-column')
+                    click: () => console.log('openTermModal') 
                 }
             },
             [COMMANDS.HIGHLIGHT]: {

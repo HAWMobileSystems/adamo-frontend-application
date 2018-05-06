@@ -27,12 +27,13 @@
     <button type="button" class="btn btn-large btn-block btn-default" (click)="createNewDiagram()">createNewDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="saveDiagram()">saveDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="loadDiagram()">loadDiagram</button>
-    <button type="button" class="btn btn-large btn-block btn-default" (click)="openTermModal()">button2</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="debug()">button3</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandTest()">commandstack</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandReset()">commandReset</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandGet()">commandGet</button>
     <term-modal></term-modal>
+    <input-modal></input-modal>
+    <variable-modal></variable-modal> 
     <button type="button" class="btn btn-large btn-block btn-default" (click)="logout()">logout</button>
 </div>
 
@@ -65,8 +66,12 @@
         <button type="button" class="btn btn-default" data-dismiss="this.inputModal" (click)="this.evaluateProcess()">Evaluate</button>
     </modal-footer>
 </modal> -->
- <term-modal #termModal>
-    </term-modal> 
+<term-modal #termModal>
+</term-modal> 
+<input-modal #inputModal>
+</input-modal>
+<variable-modal #variableModal>
+</variable-modal> 
 
     <!--  <modal #termModal>
     <modal-header>

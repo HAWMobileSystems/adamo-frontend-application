@@ -23,14 +23,13 @@ import { Observable, Subject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import * as $ from 'jquery';
 import { FileReaderEvent } from './interfaces';
-import {TermModal} from './modals/TermModal';
-import {InputModal} from './modals/InputModal';
+import { TermModal } from './modals/TermModal';
+import { InputModal } from './modals/InputModal';
 import { VariableModal } from './modals/VariableModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 
-import {ApiService} from "../services/api.service";
-
+import {ApiService} from '../services/api.service';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -111,14 +110,16 @@ export class ModelerComponent implements OnInit {
   }
 
   public openInputModal = () => {
+    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
    // const inputModal = new InputModal(this.modeler);
-   this.inputModal.fillModal();
-    this.inputModal.open();
+   //this.inputModal.fillModal();
+    this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.variableModal.fillModal();
+    this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+   // this.variableModal.fillModal();
    // const variableModal = new VariableModal(this.modeler);
-    this.variableModal.open();
+    this.variableModal.modal.open();
   }
 
   public closeTermController = () => {
@@ -188,8 +189,8 @@ export class ModelerComponent implements OnInit {
     }
   }
   private funcMap: any = {
-    [COMMANDS.SET_IPIM_VALUES]: this.openInputModal,
-    [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openVariableModal,
+    [COMMANDS.SET_IPIM_VALUES]: this.openVariableModal,
+    [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openInputModal,
     [COMMANDS.SET_TERM]: this.openTermModal,
     [COMMANDS.HIGHLIGHT]: this.highlightTerms,
     [COMMANDS.RESET]: this.resetDiagram,
