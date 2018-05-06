@@ -44,6 +44,7 @@ import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloade
 import {RoleComponent} from "./components/RoleComponent/role.component";
 import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from "./modeler/modals/variables.component";
+import { InputVarComponent } from './modeler/modals/input.component';
 
 
 //check for correct branch!
@@ -82,7 +83,8 @@ import {VariableComponent} from "./modeler/modals/variables.component";
         TermModal,
         VariableModal,
         InputModal,
-        VariableComponent
+        VariableComponent,
+        InputVarComponent
     ],
     providers: [
         AuthGuard,

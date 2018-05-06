@@ -66,6 +66,7 @@ export class VariableModal extends ModalComponent {
 
     public opened() {
         console.log('opened Variable Modal');
+        this.variables = [];
         this.fillModal();
     }
 
@@ -255,13 +256,15 @@ export class VariableModal extends ModalComponent {
             if ((this.variables[fieldi]).value !== '') {
                 extras[0].values.push(moddle.create('camunda:Property'));
                 this.variables[fieldi].meta
-                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (this.variables[fieldi]).value.trim()
-                    : extras[0].values[fieldi].name = this.IPIM_VAL + + '_' + (this.variables[fieldi]).value.trim();
+                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (this.variables[fieldi]).name.trim()
+                    : extras[0].values[fieldi].name = this.IPIM_VAL + '_' + (this.variables[fieldi]).name.trim();
 
                 this.variables[fieldi].value !== ''
                     ? extras[0].values[fieldi].value = (this.variables[fieldi]).value.trim()
                     : extras[0].values[fieldi].value = ' ';
             }
         }
+
+        this.modal.close();
     }
 }
