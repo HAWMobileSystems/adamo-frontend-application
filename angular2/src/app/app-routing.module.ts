@@ -27,11 +27,11 @@ const routes: Routes = [
     {path: 'administration-page', component: AdministrationPageComponent},
     {path: 'expFrontpage' , component: Exp_frontpageComponent},
 
-    //{path: '', redirectTo: '/front-page', pathMatch: 'full'},
-    //{path: '**', redirectTo: '/front-page', pathMatch: 'full'},
+    {path: '', redirectTo: '/front-page', pathMatch: 'full'},
+    {path: '**', redirectTo: '/front-page', pathMatch: 'full'},
 
-    {path: '', redirectTo: '/expFrontpage', pathMatch: 'full'},
-    {path: '**', redirectTo: '/expFrontpage', pathMatch: 'full'},
+    /*{path: '', redirectTo: '/expFrontpage', pathMatch: 'full'},
+    {path: '**', redirectTo: '/expFrontpage', pathMatch: 'full'},*/
 
     //{path: '', redirectTo: '/modelPermission', pathMatch: 'full'},
     //{path: '**', redirectTo: '/modelPermission', pathMatch: 'full'},
