@@ -40,6 +40,7 @@ import {UserComponent} from "./components/UserComponent/user.component";
 import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
+import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 
 
 //check for correct branch!
@@ -65,6 +66,7 @@ import {RoleComponent} from "./components/RoleComponent/role.component";
         ModelComponent,
         ModelLoaderComponent,
         RoleComponent,
+        Exp_frontpageComponent,
         UsermanagementComponent,
         Usermanagement2Component,
         RolemanagementComponent2,
