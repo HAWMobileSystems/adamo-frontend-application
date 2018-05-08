@@ -15,14 +15,15 @@ import { Router } from '@angular/router';
       <p>Please define a new term for all elements:</p>
       <form>
         <!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
-        <textarea value="" id="inputFieldTerm" class="maxwid"> 
+        <textarea value="" [(ngModel)]="firstTerm" id="inputFieldTerm" class="maxwid" name="inputFieldTerm">
         </textarea>
         <br>
       </form>
-      <br> 
+      <br>
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-        <input type="button" value=" Set Term " id="SetTermModal">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeTermModalValues()">Set Term</button>
+        <!-- <input type="button" value=" Set Term " id="SetTermModal"> -->
     </modal-footer>
   </modal>
   `
@@ -36,6 +37,7 @@ export class TermModal extends ModalComponent {
   // private IPIM_META : string = 'IPIM_Meta';
   //@Input()
   public termList: any;
+  public firstTerm: any;
 
   @ViewChild('modal')
   public modal: ModalComponent;
@@ -52,6 +54,7 @@ export class TermModal extends ModalComponent {
   public setProps(modeler: any, termList: any) {
     this.termList = termList;
     this.modeler = modeler;
+    if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '}
   }
 
   /* constructor(modeler: any, termList: any) {
@@ -62,14 +65,35 @@ export class TermModal extends ModalComponent {
     // this.fillModal(termList);
   } */
 
+  private opened() {
+    console.log('TermModal Opended');
+    this.fillTermModal();
+  }
 
   protected fillModal(): void {
     console.log(this.constructor.name + ' fillModal');
   }
 
+  private dismissed() {
+    console.log('TermModal dismissed');
+  }
+
+  private closed() {
+    console.log('TermModal closed');
+  }
+
   public cancel(): void {
     this.dismiss();
   }
+
+  private  fillTermModal() {
+
+    const terms = this.termList;
+
+    if (terms.length > 1) {window.alert('Attention! Selected Elements already have different Terms!'); }
+
+  }
+
   public accept() {
     console.log(this.constructor.name + ' fillModal');
     if (this.termList.length > 1) {
@@ -98,8 +122,8 @@ export class TermModal extends ModalComponent {
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM_Calc entspricht
           if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Calc'.toLowerCase())) {
-            if ((<HTMLInputElement>document.getElementById('inputFieldTerm')).value !== '') {
-              extras[0].values[i].value = (<HTMLInputElement>document.getElementById('inputFieldTerm')).value;
+            if (this.firstTerm !== '') {
+              extras[0].values[i].value = this.firstTerm;
             } else {
               extras[0].values.splice(i, 1);
             }
@@ -107,23 +131,23 @@ export class TermModal extends ModalComponent {
           }
         }
       } else {
-        if ((<HTMLInputElement>document.getElementById('inputFieldTerm')).value !== '') {
+        if (this.firstTerm !== '') {
           element.businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
           const extras = element.businessObject.extensionElements.get('values');
           extras.push(moddle.create('camunda:Properties'));
           extras[0].values = [];
           extras[0].values.push(moddle.create('camunda:Property'));
           extras[0].values[0].name = 'IPIM_Calc';
-          extras[0].values[0].value = (<HTMLInputElement>document.getElementById('inputFieldTerm')).value;
+          extras[0].values[0].value = this.firstTerm;
         }
       }
     });
+    this.modal.close();
   }
 }
 
-
 /**
- * 
+ *
   <modal>
     <modal-header>
         <h4 class="modal-title">TermModal!</h4>
@@ -141,7 +165,6 @@ export class TermModal extends ModalComponent {
 </modal>
  */
 
-
 /* <div id="TermModal" class="modal" display:block #TermMod>
 
   <!-- Modal content  Header-->
@@ -153,12 +176,12 @@ export class TermModal extends ModalComponent {
     <div class="modal-body">
       <p>Please insert new Term for all Elements:</p>
 	  <form>
-	    
+
 		<!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
-		<textarea value="" id="inputFieldTerm" class="maxwid"> 
+		<textarea value="" id="inputFieldTerm" class="maxwid">
 		</textarea>
 		<br>
-		
+
 	  </form>
 	  <br>
     </div>

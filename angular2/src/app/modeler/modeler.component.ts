@@ -110,7 +110,7 @@ export class ModelerComponent implements OnInit {
   }
 
   public openInputModal = () => {
-    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
    // const inputModal = new InputModal(this.modeler);
    //this.inputModal.fillModal();
     this.inputModal.modal.open();
@@ -492,7 +492,6 @@ export class ModelerComponent implements OnInit {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
-    debugger;
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
     this.modeler.saveXML({ format: true }, (err: any, xml: string) => {

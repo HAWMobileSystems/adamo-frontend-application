@@ -2,6 +2,8 @@ import { AbstractCustomModal } from './AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
+import { Variable } from './variable';
+import { InputVarComponent } from './input.component';
 
 @Component({
   selector: 'input-modal',
@@ -16,11 +18,13 @@ import { Router } from '@angular/router';
       <form>
         <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
         <fieldset id="inputfset">
+          <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
         </fieldset>
       </form>
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-      <input type="button" value=" Evaluate " id="EvalModal">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
+    <!--<input type="button" value=" Evaluate " id="EvalModal"> -->
     </modal-footer>
   </modal>
   `
@@ -32,11 +36,14 @@ export class InputModal extends ModalComponent {
 
   private modeler : any;
   public termList: any;
+  private root : any;
   /* constructor(modeler: any) {
       super(modeler);
       console.log('InputModal Constructor');
       this.fillModal();
   } */
+
+  public variables: Variable[] = [];
 
   @ViewChild('modal')
   public modal: ModalComponent;
@@ -50,9 +57,11 @@ export class InputModal extends ModalComponent {
   public backdrop: string | boolean = true;
   public css: boolean = false;
 
-  public setProps(modeler: any, termList: any) {
+  public setProps(modeler: any, termList: any, root: any) {
     this.termList = termList;
     this.modeler = modeler;
+    this.variables = [];
+    this.root = root;
   }
 
   public cancel() : void {
@@ -64,9 +73,21 @@ export class InputModal extends ModalComponent {
       this.writeInputModalValues();
   }
 
+  private opened() {
+    this.fillModal();
+  }
+
+  private dismissed() {
+    console.log('InputModal Dissmissed');
+  }
+
+  private closed() {
+    console.log('InputModal closed');
+  }
+
   public clearModal(s: string){
     //Bereich zum Löschen per getElement abfragen
-    var inpNode = document.getElementById(s);
+    const inpNode = document.getElementById(s);
     //Solange es noch ein firstChild gibt, wird dieses entfernt!
     while (inpNode.firstChild) {
       inpNode.removeChild(inpNode.firstChild);
@@ -89,13 +110,23 @@ export class InputModal extends ModalComponent {
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
           if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
-            const inpelement = 'Input_' + extras[0].values[i].name;
+            let inpelement = 'Error Variable not found';
+
+            for (let u = 0; u < this.variables.length; u++) {
+              if (('IPIM_Val_' + this.variables[u].name).toLowerCase() === extras[0].values[i].name.toLowerCase()) {
+                inpelement = this.variables[u].value;
+                break;
+              }
+            }
+
             //Variablen aus Inputfeld zurückschreiben
-            extras[0].values[i].value = (<HTMLInputElement>document.getElementById(inpelement.toLowerCase())).value;
+            extras[0].values[i].value = inpelement;
           }
         }
       }
     });
+    this.root.evaluateProcess();
+    this.modal.close();
   }
 
   public fillModal() {
@@ -110,14 +141,18 @@ export class InputModal extends ModalComponent {
         const extras = element.businessObject.extensionElements.get('values'); //'values');
         extras[0].values.map((extra: any, index: number) => {
           if (extras[0].values[index].name.toLowerCase().startsWith(this.IPIM_VAL.toLowerCase() + '_')) {
-            this.insertInputField(
+            this.addVar(
               extras[0].values[index].name.toLowerCase().replace(this.IPIM_VAL.toLowerCase()  + '_', ''),
-              extras[0].values[index].value.toLowerCase(), 'inputfset');
+              extras[0].values[index].value.toLowerCase(), false);
           }
         }
         );
       }
     }
+  }
+
+  public addVar(name: string, value: string, meta: boolean): void {
+    this.variables.push(new Variable(name, value, meta));
   }
 
    private insertInputField(pname: string, inpval: string, pform: string) {
