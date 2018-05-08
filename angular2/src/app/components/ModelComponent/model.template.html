@@ -22,11 +22,11 @@
             </tr>
             </thead>
             <tbody ></tbody>
-            <tr (click)="selected = newModel" [ngClass]="{'info': selected === newModel}">
+            <!--<tr (click)="selected = newModel" [ngClass]="{'info': selected === newModel}">
                 <td></td>
                 <td>NewModel</td>
                 <td></td>
-            </tr>
+            </tr>-->
             <tr *ngFor="let model of models | filter:search" (click)="selected = model" [ngClass]="{'info': selected === model}">
                 <td>{{model.mid}}</td>
                 <td>{{model.modelname}}</td>
@@ -34,6 +34,9 @@
             </tr>
             <tfoot></tfoot>
         </table>
+        <!-- Neues Modell Button hinzugefuegt -->
+        <button type="submit" class="btn" (click)="selected = newModel" [ngClass]="{'info': selected === newModel}"><i
+                class="fa fa-plus"></i> New Model</button>
     </div>
 </div>
 

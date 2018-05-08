@@ -21,16 +21,19 @@
             </tr>
             </thead>
             <tbody ></tbody>
-            <tr (click)="selected = newRole" [ngClass]="{'info': selected === newRole}">
+            <!--<tr (click)="selected = newRole" [ngClass]="{'info': selected === newRole}">
                 <td></td>
                 <td>NewRole</td>
-            </tr>
+            </tr>-->
             <tr *ngFor="let role of roles | filter:search" (click)="selected = role" [ngClass]="{'info': selected === role}">
                 <td>{{role.rid}}</td>
                 <td>{{role.role}}</td>
             </tr>
             <tfoot></tfoot>
         </table>
+        <!-- Neue Rolle Button hinzugefuegt -->
+        <button type="submit" class="btn" (click)="selected = newRole" [ngClass]="{'info': selected === newRole}"><i
+                class="fa fa-plus"></i> New Role</button>
     </div>
 </div>
 
@@ -39,7 +42,6 @@
         <h3 class="panel-title">{{(selected.rolename === '' ? 'NewRole' : selected.rolename)}}</h3>
     </div>
     <div class="panel-body">
-
 
 
         <form>
@@ -60,7 +62,7 @@
                 <label class="col-md-4" style="text-align: left" for="admin">Admin</label>
                 <input required type="checkbox" class="form-control" id="admin" name="admin" [(ngModel)]="selected.admin">
             </div>
-            <button type="submit" *ngIf="selected.rid === ''" type="submit" class="btn" (click)="roleCreate()">Create</button>
+            <button *ngIf="selected.rid === ''" type="submit" class="btn" (click)="roleCreate()">Create</button>
             <button *ngIf="selected.rid !== ''" type="submit" class="btn" (click)="roleUpdate()">Change</button>
             <button *ngIf="selected.rid !== ''" type="submit" class="btn" (click)="roleDelete()">Delete</button>
         </form>
