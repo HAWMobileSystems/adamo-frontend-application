@@ -26,6 +26,7 @@ import { FileReaderEvent } from './interfaces';
 import { TermModal } from './modals/TermModal';
 import { InputModal } from './modals/InputModal';
 import { VariableModal } from './modals/VariableModal';
+import { SubprocessModal } from './modals/SubprocessModal';
 
 import { COMMANDS } from './../bpmn-store/commandstore.service';
 
@@ -67,10 +68,13 @@ export class ModelerComponent implements OnInit {
   private inputModal: InputModal;
   @ViewChild('termModal')
   private termModal: TermModal;
+  @ViewChild('subprocessModal')
+  private subprocessModal: SubprocessModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
-    CALC: 'ipim_calc'
+    CALC: 'ipim_calc',
+    SUBP: 'IPIM_SUBP'
   };
 
   private lookup: any = {
@@ -120,6 +124,13 @@ export class ModelerComponent implements OnInit {
    // this.variableModal.fillModal();
    // const variableModal = new VariableModal(this.modeler);
     this.variableModal.modal.open();
+  }
+
+  public openSubprocessModal = () => {
+    this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+   // this.variableModal.fillModal();
+   // const variableModal = new VariableModal(this.modeler);
+    this.subprocessModal.modal.open();
   }
 
   public closeTermController = () => {

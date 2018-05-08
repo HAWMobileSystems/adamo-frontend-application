@@ -80,6 +80,14 @@ export class BPMNStore {
                     click: () => console.log('openTermModal') 
                 }
             },
+            [COMMANDS.SET_SUBPROCESS]: {
+                group: 'ipim',
+                className: ['fa-tasks', 'fa'],
+                title: COMMANDS.SET_SUBPROCESS,
+                action: {
+                    click: () => console.log('openSubprocessModal') 
+                }
+            },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
                 className: ['fa-lightbulb-o', 'fa'],

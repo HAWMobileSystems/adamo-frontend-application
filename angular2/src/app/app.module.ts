@@ -45,6 +45,7 @@ import {RoleComponent} from "./components/RoleComponent/role.component";
 import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from "./modeler/modals/variables.component";
 import { InputVarComponent } from './modeler/modals/input.component';
+import { SubprocessModal } from './modeler/modals/SubprocessModal';
 
 
 //check for correct branch!
@@ -83,6 +84,7 @@ import { InputVarComponent } from './modeler/modals/input.component';
         TermModal,
         VariableModal,
         InputModal,
+        SubprocessModal,
         VariableComponent,
         InputVarComponent
     ],
