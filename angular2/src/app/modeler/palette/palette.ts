@@ -77,6 +77,22 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 click: () => commandQueue.next({action: 'load'})
             }
         },
+        'administrate': {
+            group: 'storage',
+            className: ['fa-lock', 'fa'],
+            title: 'ADMINISTRATE',
+            action: {
+                click: () => commandQueue.next({action: 'administrate'})
+            }
+        },
+        'logout': {
+            group: 'storage',
+            className: ['fa-sign-out', 'fa'],
+            title: 'LOGOUT',
+            action: {
+                click: () => commandQueue.next({action: 'logout'})
+            }
+        },
         'export-svg': {
             group: 'storage',
             className: ['fa-print', 'fa'],

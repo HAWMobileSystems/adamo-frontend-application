@@ -1,11 +1,11 @@
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import {Http} from '@angular/http';
 
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { Http } from '@angular/http';
-
-import { PaletteProvider } from './palette/palette';
-import { CustomPropertiesProvider } from './properties/props-provider';
-import { BPMNStore, Link } from '../bpmn-store/bpmn-store.service';
+import {PaletteProvider} from './palette/palette';
+import {CustomPropertiesProvider} from './properties/props-provider';
+import {BPMNStore, Link} from '../bpmn-store/bpmn-store.service';
 
 const propertiesPanelModule = require('bpmn-js-properties-panel');
 // const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
@@ -16,18 +16,18 @@ const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/
 //const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 // import { Inherits } from 'inherits';
 // import { CommandInterceptor } from 'diagram-js/lib/command/CommandInterceptor';
-import { CommandStack  } from './command/CommandStack';
-import { CustomModdle } from './custom-moddle';
-import { CamundaModdle } from './camunda-moddle';
-import { Observable, Subject } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
+import {CommandStack} from './command/CommandStack';
+import {CustomModdle} from './custom-moddle';
+import {CamundaModdle} from './camunda-moddle';
+import {Observable, Subject} from 'rxjs';
+import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
-import { FileReaderEvent } from './interfaces';
-import { TermModal } from './modals/TermModal';
-import { InputModal } from './modals/InputModal';
-import { VariableModal } from './modals/VariableModal';
+import {FileReaderEvent} from './interfaces';
+import {TermModal} from './modals/TermModal';
+import {InputModal} from './modals/InputModal';
+import {VariableModal} from './modals/VariableModal';
 
-import { COMMANDS } from './../bpmn-store/commandstore.service';
+import {COMMANDS} from './../bpmn-store/commandstore.service';
 
 import {ApiService} from '../services/api.service';
 
@@ -52,7 +52,7 @@ export class ModelerComponent implements OnInit {
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
   private lastDiagramXML: string = '';
   private url: string;
-  private commandStack : any;
+  private commandStack: any;
   private _urls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
@@ -80,15 +80,16 @@ export class ModelerComponent implements OnInit {
     VALUES: 'values'
   };
   private hideLoader = true;
-  onNotify(message:string):void {
-      this.hideLoader = true;
-      this.openDiagram(message);
+
+  onNotify(message: string): void {
+    this.hideLoader = true;
+    this.openDiagram(message);
   }
 
-  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef) {
+  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef, private router: Router) {
 
     //this.initializeModeler();
-   }
+  }
 
   get urls(): Link[] {
     return this._urls;
@@ -103,22 +104,22 @@ export class ModelerComponent implements OnInit {
   // Extract the following to the separate controler
   public openTermModal = () => {
     this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
-  //  const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
-  //  this.termModal.instance.termList =  this.getTermList(this.lookup.SELECTION);
+    //  const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
+    //  this.termModal.instance.termList =  this.getTermList(this.lookup.SELECTION);
     //  this.termModal.instance.modeler = this.modeler;
     this.termModal.modal.open();
   }
 
   public openInputModal = () => {
     this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
-   // const inputModal = new InputModal(this.modeler);
-   //this.inputModal.fillModal();
+    // const inputModal = new InputModal(this.modeler);
+    //this.inputModal.fillModal();
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
     this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
-   // this.variableModal.fillModal();
-   // const variableModal = new VariableModal(this.modeler);
+    // this.variableModal.fillModal();
+    // const variableModal = new VariableModal(this.modeler);
     this.variableModal.modal.open();
   }
 
@@ -155,7 +156,10 @@ export class ModelerComponent implements OnInit {
   }
 
   private resetDiagram = () => {
-    if (this.lastDiagramXML === '') { window.alert('No Diagram loaded!'); };
+    if (this.lastDiagramXML === '') {
+      window.alert('No Diagram loaded!');
+    }
+    ;
     this.openDiagram(this.lastDiagramXML);
   };
   private debug = () => {
@@ -164,13 +168,13 @@ export class ModelerComponent implements OnInit {
   };
 
   private toggleLoader = () => {
-      this.hideLoader = !this.hideLoader;
+    this.hideLoader = !this.hideLoader;
   };
 
   private saveDiagram = () => {
     console.log('savediagram');
     const downloadLink = $('#js-download-diagram');
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       console.log('xml:', xml, 'err', err);
       setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
     });
@@ -187,7 +191,24 @@ export class ModelerComponent implements OnInit {
         link.removeClass('active');
       }
     }
-  }
+  };
+
+  private administrate = () => {
+    this.router.navigate(['/administration-page']);
+  };
+
+  private logout = () => {
+    this.apiService.logout()
+      .subscribe(response => {
+        this.router.navigate(['/front-page']);
+      }, error => {
+
+        +
+          console.log(error);
+        // this.alertService.error(error)
+      });
+  };
+
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openVariableModal,
     [COMMANDS.SET_IPIM_VALUES_EVALUATE]: this.openInputModal,
@@ -196,7 +217,9 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.RESET]: this.resetDiagram,
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick,
     [COMMANDS.SAVE]: this.saveDiagram,
-    [COMMANDS.LOAD]: this.toggleLoader
+    [COMMANDS.LOAD]: this.toggleLoader,
+    [COMMANDS.ADMINISTRATE]: this.administrate,
+    [COMMANDS.LOGOUT]: this.logout
   };
 
   /**
@@ -212,8 +235,8 @@ export class ModelerComponent implements OnInit {
       .flatMap(() => this.store.paletteEntries())
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
-      //  debugger;
-       return this.createModeler()
+        //  debugger;
+        return this.createModeler()
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
@@ -252,38 +275,40 @@ export class ModelerComponent implements OnInit {
 
   private initializeModeler() {
     this.modeler = new this.modeler({
-          container: this.containerRef,
-          propertiesPanel: {
-            parent: this.propsPanelRef
-          },
-          additionalModules: [
-            { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
-            { commandQueue: ['type', () => this.commandQueue] },
-            this.propertiesPanelModule,
-            this.propertiesProviderModule,
-            // customPropertiesProviderModule,
-            customPaletteModule
-          ],
-          moddleExtensions: {
-            camunda: this.camundaModdleDescriptor
-            // ne: CustomModdle
-          }
-        });
-    }
+      container: this.containerRef,
+      propertiesPanel: {
+        parent: this.propsPanelRef
+      },
+      additionalModules: [
+        {extraPaletteEntries: ['type', () => this.extraPaletteEntries]},
+        {commandQueue: ['type', () => this.commandQueue]},
+        this.propertiesPanelModule,
+        this.propertiesProviderModule,
+        // customPropertiesProviderModule,
+        customPaletteModule
+      ],
+      moddleExtensions: {
+        camunda: this.camundaModdleDescriptor
+        // ne: CustomModdle
+      }
+    });
+  }
+
   /**
- * Creates the modeler Object from camunda bpmn-js package.
- * adds the extraPaletteEntries from the bpmn-store
- *
- */
+   * Creates the modeler Object from camunda bpmn-js package.
+   * adds the extraPaletteEntries from the bpmn-store
+   *
+   */
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.initializeModeler();
     this.commandStack = new CommandStack(this.modeler);
-   // debugger;
+    // debugger;
     // Start with an empty diagram:
     this.url = this.urls[0].href;
     this.loadBPMN();
   }
+
   //$('#IPIM-Load').click(function () {
   //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
   // (<HTMLInputElement>document.getElementById('')).value = "";
@@ -334,48 +359,48 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-   private commandTest = () => {
+  private commandTest = () => {
     const elements = this.modeler.get('elementRegistry');
     debugger;
-  //   const COMMANDSTACK : string = 'commandStack';
-  //   const cs = this.modeler.get(COMMANDSTACK);
+    //   const COMMANDSTACK : string = 'commandStack';
+    //   const cs = this.modeler.get(COMMANDSTACK);
 
-  //   const testTerm = cs._stack[0];
+    //   const testTerm = cs._stack[0];
 
-  //   cs.execute(testTerm.command, testTerm.context);
+    //   cs.execute(testTerm.command, testTerm.context);
 
-   }
+  }
 
-   private commandReset = () => {
+  private commandReset = () => {
     debugger;
     this.commandStack.commandTest();
- //   const COMMANDSTACK : string = 'commandStack';
- //   const cs = this.modeler.get(COMMANDSTACK);
+    //   const COMMANDSTACK : string = 'commandStack';
+    //   const cs = this.modeler.get(COMMANDSTACK);
 
- //   const testTerm = cs._stack[0];
+    //   const testTerm = cs._stack[0];
 
- //   cs.execute(testTerm.command, testTerm.context);
+    //   cs.execute(testTerm.command, testTerm.context);
 
   }
 
   private commandGet = () => {
     debugger;
     this.commandStack.commandTest();
- //   const COMMANDSTACK : string = 'commandStack';
- //   const cs = this.modeler.get(COMMANDSTACK);
+    //   const COMMANDSTACK : string = 'commandStack';
+    //   const cs = this.modeler.get(COMMANDSTACK);
 
- //   const testTerm = cs._stack[0];
+    //   const testTerm = cs._stack[0];
 
- //   cs.execute(testTerm.command, testTerm.context);
+    //   cs.execute(testTerm.command, testTerm.context);
 
-  }
+  };
   //  private commandLogger = (eventBus: any) => {
   //     CommandInterceptor.call(this, eventBus);
   //     CommandInterceptor.preExecute( ( event : any ) =>  {
   //      console.log('command pre-execute', event);
   //     });
   //  }
-   //inherits(commandLogger, commandInterceptor);
+  //inherits(commandLogger, commandInterceptor);
 
   // import {debounce} from 'lodash';
   // const exportArtifacts = debounce(() => {
@@ -397,19 +422,19 @@ export class ModelerComponent implements OnInit {
   }
 
   private loadDiagram() {
-      this.apiService.getModel('test')
-          .subscribe(response => {
-                  if (response.success) {
-                    console.log(response.data);
-                    this.openDiagram(response.data.modelxml);
-                  }
-                  else {
-                  }
-              },
-              error => {
-                  console.log(error);
-              });
-       // this.openDiagram()
+    this.apiService.getModel('test')
+      .subscribe(response => {
+          if (response.success) {
+            console.log(response.data);
+            this.openDiagram(response.data.modelxml);
+          }
+          else {
+          }
+        },
+        error => {
+          console.log(error);
+        });
+    // this.openDiagram()
   }
 
   private openDiagram = (xml: string) => {
@@ -494,7 +519,7 @@ export class ModelerComponent implements OnInit {
     }
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
-    this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
+    this.modeler.saveXML({format: true}, (err: any, xml: string) => {
       if (err) {
         console.error(err);
         return;
@@ -556,13 +581,15 @@ export class ModelerComponent implements OnInit {
       }
     }
   }
-private openFileDiagram() {
+
+  private openFileDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
       const file = (<HTMLInputElement>document.getElementById('file')).files[0];
       file ? this.getAsFile(file) : console.error('could not reach selected file..', file);
     }
   }
+
   private getAsFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsText(file); // , 'UTF-16')
