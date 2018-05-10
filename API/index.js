@@ -578,7 +578,7 @@ app.delete('/modeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+*
 
 app.post('/getpartmodel', function (req, res) {
 
@@ -607,7 +607,7 @@ app.post('/getpartmodel', function (req, res) {
     * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
     * Error Response:   Code 400, Content: {message: [string], success: [bool]}
     * Description:      
-    * */
+    * 
     
     app.post('/partmodelcreate', function (req, res) {
     
@@ -653,7 +653,7 @@ app.post('/getpartmodel', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/partmodeldelete', function (req, res) {
 
