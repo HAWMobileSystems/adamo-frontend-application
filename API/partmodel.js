@@ -7,7 +7,7 @@ router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 /*
-* URL:              /partmodel
+* URL:              /all
 * Method:           post
 * URL Params:
 *   Required:       none
@@ -20,7 +20,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 * Description:      
 * */
 
-router.get('/partmodel', function (req, res) {
+router.get('/all', function (req, res) {
 
     db.query('select * from partialmodel')
     .then(function (data) {
@@ -35,8 +35,42 @@ router.get('/partmodel', function (req, res) {
 
 
 /*
-* URL:              /partmodelcreate
+* URL:              /partmodel
 * Method:           post
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* */
+
+router.post('/partmodel', function (req, res) {
+
+    const mid = req.body.mid;
+
+    db.query('select * from partialmodel where mid = $1', [mid])
+        .then(function (data) {
+            if(data){
+                console.log('data is ', data);
+                res.send({ data: data, success: true});
+            } else {
+                res.status(400).send({ status: 'Model does not exist'})
+            }
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.status(400).send({ status: 'Database not available'});
+        })
+    });
+
+
+/*
+* URL:            /create
+* Method:         post
 * URL Params:
 * Required:       none
 * Optional:       none
@@ -48,7 +82,7 @@ router.get('/partmodel', function (req, res) {
 * Description:      
 * */
     
-router.post('/partmodelcreate', function (req, res) {
+router.post('/create', function (req, res) {
     
     if(!req.body.mid) {
         res.status(400).send({ status: 'Model may not be empty!'});
@@ -56,15 +90,10 @@ router.post('/partmodelcreate', function (req, res) {
     }  
         
     const mid = req.body.mid;
-    
-    console.log(mid);
-    
-    db.oneOrNone('select from partialmodel where mid = $1', [mid])
+        
+    db.oneOrNone('select * from partialmodel where mid = $1', [mid])
         .then(function (data) {
-            if(data){
-                res.status(400).send({ status: 'Partial model already exists'})
-            } else {
-                db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
+            db.oneOrNone('insert into partialmodel (mid) values ($1)', [mid])
                 .then(function (data) {
                     res.send({ status: 'Model created successfully as a partial model', success: true});
                     })
@@ -72,7 +101,6 @@ router.post('/partmodelcreate', function (req, res) {
                     console.log('ERROR POSTGRES:', error)
                     res.status(400).send({ status: 'Database not available'});
                     })
-                }
             })
         .catch(function (error) {
             console.log('ERROR POSTGRES:', error)
@@ -81,8 +109,8 @@ router.post('/partmodelcreate', function (req, res) {
     });
 
 /*
-* URL:              /partmodeldelete
-* Method:           delete
+* URL:              /delete
+* Method:           post
 * URL Params:
 *   Required:       none
 *   Optional:       none
@@ -94,17 +122,17 @@ router.post('/partmodelcreate', function (req, res) {
 * Description:      
 * */
 
-router.delete('/partmodeldelete', function (req, res) {
+router.post('/delete', function (req, res) {
 
     if(!req.body.pmid) {
-        res.status(400).send({ status: 'Part model may not be empty!'});
+        res.status(400).send({ status: 'Partial model may not be empty!'});
         return;
     }
     const pmid = req.body.pmid;
 
     console.log(pmid);
 
-    db.oneOrNone('select from partialmodel where pmid = $1', [pmid])
+    db.oneOrNone('select * from partialmodel where pmid = $1', [pmid])
     .then(function (data) {
         if(data){
             db.oneOrNone('delete from partialmodel where pmid = $1', [pmid])
