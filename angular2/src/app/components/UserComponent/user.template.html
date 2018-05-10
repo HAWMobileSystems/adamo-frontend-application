@@ -22,11 +22,11 @@
             </tr>
             </thead>
             <tbody ></tbody>
-            <tr (click)="selected = newUser" [ngClass]="{'info': selected === newUser}">
+            <!--<tr (click)="selected = newUser" [ngClass]="{'info': selected === newUser}">
                 <td></td>
                 <td>NewUser</td>
                 <td></td>
-            </tr>
+            </tr>-->
             <tr *ngFor="let user of users | filter:search" (click)="selected = user" [ngClass]="{'info': selected === user}">
                 <td>{{user.uid}}</td>
                 <td>{{user.username}}</td>
@@ -34,6 +34,9 @@
             </tr>
             <tfoot></tfoot>
         </table>
+        <!-- Neuer User Button hinzugefuegt -->
+        <button type="submit" class="btn" (click)="selected = newUser" [ngClass]="{'info': selected === newUser}"><i
+                class="fa fa-plus"></i> New User</button>
     </div>
 </div>
 
@@ -66,7 +69,7 @@
                 <label class="col-md-4" style="text-align: left" for="role">role</label>
                 <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [(ngModel)]="selected.role">
             </div>
-            <button *ngIf="selected.uid === ''" type="submit" class="btn" (click)="userCreate()">Create</button>
+            <button *ngIf="selected.uid === ''" type="submit" class="btn" id="newUser" (click)="userCreate()">Create</button>
             <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userUpdate()">Change</button>
             <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userDelete()">Delete</button>
         </form>

@@ -9,5 +9,7 @@ export const COMMANDS = {
     SET_SUBPROCESS: 'set-subprocess',
     HIGHLIGHT: 'highlight',
     EXTRA: 'extra',
-    LOAD: 'load'
+    LOAD: 'load',
+    ADMINISTRATE: 'administrate',
+    LOGOUT: 'logout'
 };
