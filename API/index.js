@@ -681,7 +681,7 @@ app.delete('/partmodeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.get('/getallusers', function (req, res) {
     
@@ -712,7 +712,7 @@ app.get('/getallusers', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/usercreate', function (req, res) {
 
@@ -780,7 +780,7 @@ app.post('/usercreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/userupdate', function (req, res) {
 
@@ -853,7 +853,7 @@ app.post('/userupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/userdelete', function (req, res) {
 
