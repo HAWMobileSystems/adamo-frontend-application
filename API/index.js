@@ -1,5 +1,14 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const db = require('./database');
+const userRouter = require('./user');
+const permissionRouter = require('./permission');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const modelRouter = require('./model');
+
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
@@ -18,51 +27,16 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-// app.use(function (req, res, next) {
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-//
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'Authorization, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-//
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//
-//     // Pass to next layer of middleware
-//     next();
-// })
-
-
-
-// Database Part
-
-var pgp = require('pg-promise')(/*options*/)
-
-var cn = {
-    host: 'ipim-intsys.lab.if.haw-landshut.de',   //localhost for testing  else ipim-intsys.lab.if.haw-landshut.de
-    port: 5432,
-    database: 'ipim',
-    user: 'postgres',
-    password: '12341234'
-};
-
-var db = pgp(cn);
-
-
-var bodyParser = require('body-parser');
+app.use('/user', userRouter);
+app.use('/permission', permissionRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
-var bcrypt = require('bcrypt');
+app.use('/model', modelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
-
-var session = require('express-session');
-var pgSession = require('connect-pg-simple')(session)
-var store = new pgSession({
+const store = new pgSession({
     pgPromise: db
 });
 app.use(session({
@@ -94,11 +68,10 @@ app.use(session({
 //TODO reCaptcha
 app.post('/authenticate', function (req, res) {
     try {
-
         res.cookie('demoCookie', 123, { maxAge: 900000, httpOnly: true });
         var response = {};
         console.log(req);
-        if (req.body.username) var email = req.body.username;
+        if (req.body.email) var email = req.body.email;
         else throw({status: 400, data: {message: 'missing email', success: false}});
         if (req.body.password) var password = req.body.password;
         else throw({status: 400, data: {message: 'missing password', success: false}});
@@ -425,7 +398,7 @@ app.get('/getmodel/:mid', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 app.get('/getallmodels', function (req, res) {
 
     db.query('select * from model')
@@ -452,7 +425,7 @@ app.get('/getallmodels', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/modelcreate', function (req, res) {
 
@@ -501,7 +474,7 @@ app.post('/modelcreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/modelupdate', function (req, res) {
 
@@ -552,7 +525,7 @@ app.post('/modelupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/modeldelete', function (req, res) {
 
@@ -715,11 +688,14 @@ app.delete('/partmodeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.get('/getallusers', function (req, res) {
     
-    db.query('select * from users')
+    db.query('' +
+      'SELECT * ' +
+      'FROM users ' +
+      'LEFT JOIN userprofile ON users.upid = userprofile.upid')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
@@ -743,7 +719,7 @@ app.get('/getallusers', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/usercreate', function (req, res) {
 
@@ -811,7 +787,7 @@ app.post('/usercreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/userupdate', function (req, res) {
 
@@ -884,7 +860,7 @@ app.post('/userupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/userdelete', function (req, res) {
 
@@ -1428,9 +1404,9 @@ app.listen(3000);
 
 
     /*try{
-        console.log(req.body.username);
+        console.log(req.body.email);
 
-        db.one('SELECT password AS value from users where username =' + req.body.username)
+        db.one('SELECT password AS value from users where username =' + req.body.email)
         .then(function (data) {
             console.log('DATA:', data.value)
             res.send(data.value);
@@ -1443,7 +1419,7 @@ app.listen(3000);
         /*res.cookie('demoCookie', 123, { maxAge: 900000, httpOnly: true });
         var response = {};
         
-        if (req.body.username) var username = req.body.username;
+        if (req.body.email) var username = req.body.email;
         else throw({status: 400, data: {message: 'missing username', success: false}});
         if (req.body.email) var email = req.body.email;
         else throw({status: 400, data: {message: 'missing email', success: false}});

@@ -1,6 +1,9 @@
 <title>IPIM Adaptive Modeler
 </title>
-<h1>Modeler / Editor</h1>
+<div class="container height-10">
+    <h1>Modeler / Editor</h1>
+    <input type="file" id="file" (change)="openFileDiagram()" accept=".bpmn">
+</div>
 <!--<select [(ngModel)]="url">
     <option *ngFor="let url of urls" value="{{url.href}}">{{url.text}}</option>
 </select>
@@ -8,21 +11,17 @@
 <!--<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />-->
 
 
-
-<div class="container">
-
+<div class="with-diagram modeler height-90">
     <modelloader [hidden]="hideLoader" (notify)="onNotify($event)"></modelloader>
-
-
+    <div id="js-drop-zone" >
+        <div id="js-canvas" class="canvas .section-to-print"></div>
+        <div id="js-properties-panel" class="properties"></div>
+    </div>
 </div>
 
 
 
-<input type="file" id="file" (change)="openFileDiagram()" accept=".bpmn">
-<div id="js-drop-zone" class="with-diagram modeler">
-    <div id="js-canvas" class="canvas .section-to-print"></div>
-    <div id="js-properties-panel" class="properties"></div>
-</div>
+
 <div class="buttons">
     <!-- 
     <button type="button" class="btn btn-large btn-block btn-default" (click)="createNewDiagram()">createNewDiagram</button>
@@ -33,10 +32,10 @@
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandReset()">commandReset</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandGet()">commandGet</button> 
     -->
-    <term-modal></term-modal>
-    <input-modal></input-modal>
-    <variable-modal></variable-modal> 
-    <button type="button" class="btn btn-large btn-block btn-default" (click)="logout()">logout</button>
+    <!--<term-modal></term-modal>-->
+    <!--<input-modal></input-modal>-->
+    <!--<variable-modal></variable-modal> -->
+    <!--<button type="button" class="btn btn-large btn-block btn-default" (click)="logout()">logout</button>-->
 </div>
 
 <!-- <modal #variableModal  >
@@ -69,26 +68,26 @@
     </modal-footer>
 </modal> -->
 <term-modal #termModal>
-</term-modal> 
+</term-modal>
 <input-modal #inputModal>
 </input-modal>
 <variable-modal #variableModal>
-</variable-modal> 
+</variable-modal>
 
-    <!--  <modal #termModal>
-    <modal-header>
-        <h4 class="modal-title">TermModal!</h4>
-    </modal-header>
-    <modal-body>
-        <div class="form-group">
-            <label for="term">Insert new Term for all Elements</label>
-            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
-        </div>
-    </modal-body>
-    <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-default" (click)="this.termModal.accept()">Ok</button>
-    </modal-footer>
+<!--  <modal #termModal>
+<modal-header>
+    <h4 class="modal-title">TermModal!</h4>
+</modal-header>
+<modal-body>
+    <div class="form-group">
+        <label for="term">Insert new Term for all Elements</label>
+        <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
+    </div>
+</modal-body>
+<modal-footer>
+    <button type="button" class="btn btn-default" data-dismiss="this.termModal" (click)="this.termModal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-default" (click)="this.termModal.accept()">Ok</button>
+</modal-footer>
 </modal> -->
 <!-- <term-modal [modeler]="modeler" [termList]="getTermList(lookup.SELECTION)"> -->
 <!-- <term-modal [modeler]="modeler" [termList]="this.modeler, this.getTermList(this.lookup.SELECTION)"> -->

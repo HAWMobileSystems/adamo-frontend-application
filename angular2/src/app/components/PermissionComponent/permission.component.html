@@ -1,0 +1,93 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Permission</h3>
+    </div>
+    <div class="panel-body row">
+        <div class="col-md-6">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr class="active">
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tr *ngFor="let user of users | filter:search" (click)="select_user(user)"
+                    [ngClass]="{'info': selected_user === user}">
+                    <td>{{user.email}}</td>
+                </tr>
+                <tfoot></tfoot>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr class="active">
+                    <th>ModelName</th>
+                    <th>Version</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tr *ngFor="let model of models | filter:search" (click)="select_model(model)"
+                    [ngClass]="{'info': selected_model === model}">
+                    <td>{{model.modelname}}</td>
+                    <td>{{model.version}}</td>
+                </tr>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--<div class="panel panel-default" *ngIf="selected_user && selected_model">-->
+<div class="panel panel-default" *ngIf="selected_permission">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{selected_user.email}} - {{selected_model.modelname}} {{selected_model.version}}</h3>
+    </div>
+    <!--<div class="panel-body" *ngIf="selected_permission?.length === 0">-->
+        <!--<div class="form-group form-inline">-->
+            <!--<label class="col-md-4" style="text-align: left">Role</label>-->
+            <!--<select required class="form-control" name="role" [(ngModel)]="selected_selected">-->
+                <!--<option *ngFor="let role of roles">{{role.role}}</option>-->
+            <!--</select>-->
+            <!--<button class="btn" (click)="permissionCreate(selected_user.uid, selected_model.mid, selected_selected)">-->
+                <!--create relation-->
+            <!--</button>-->
+        <!--</div>-->
+        <!--<div class="form-group form-inline" *ngIf="selected_permission?.length !== 0">-->
+            <!--<label class="col-md-4" style="text-align: left">Role</label>-->
+            <!--<select required class="form-control" name="role" [(ngModel)]="selected_permission[0].role">-->
+                <!--<option *ngFor="let role of roles">{{role.role}}</option>-->
+            <!--</select>-->
+            <!--<button class="btn" (click)="permissionUpdate(selected_permission.pid, selected_permission.role)">change-->
+                <!--relation-->
+            <!--</button>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="panel-body" >
+        <div *ngIf="selected_permission?.length === 0">
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left">Role</label>
+                <select required class="form-control" name="role" [(ngModel)]="selected_permission.role">
+                    <option *ngFor="let role of roles">{{role.role}}</option>
+                </select>
+            </div>
+            <button class="btn" (click)="permissionCreate(selected_user.uid, selected_model.mid, selected_permission.role)">
+                create relation
+            </button>
+        </div>
+        <div *ngIf="selected_permission?.length !== 0">
+            <div class="form-group form-inline" *ngIf="selected_permission?.length !== 0">
+                <label class="col-md-4" style="text-align: left">Role</label>
+                <select required class="form-control" name="role" [(ngModel)]="selected_permission[0].role">
+                    <option *ngFor="let role of roles">{{role.role}}</option>
+                </select>
+            </div>
+            <button class="btn" (click)="permissionUpdate(selected_permission.pid, selected_permission.role)">change
+                relation
+            </button>
+        </div>
+    </div>
+
+
+</div>

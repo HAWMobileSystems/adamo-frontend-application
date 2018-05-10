@@ -20,6 +20,9 @@ main {
  */
 body, html {
     height: 100%;
+}
+
+.login-form{
     background-repeat: no-repeat;
     /*background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
     background-image: linear-gradient(rgb(255, 102, 102), rgb(105, 102, 92))

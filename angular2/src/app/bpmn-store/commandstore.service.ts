@@ -8,5 +8,7 @@ export const COMMANDS = {
     SET_TERM: 'set-term',
     HIGHLIGHT: 'highlight',
     EXTRA: 'extra',
-    LOAD: 'load'
+    LOAD: 'load',
+    ADMINISTRATE: 'administrate',
+    LOGOUT: 'logout'
 };
