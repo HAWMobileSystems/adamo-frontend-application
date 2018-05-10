@@ -31,7 +31,7 @@
             <tfoot></tfoot>
         </table>
         <!-- Neuer User Button hinzugefuegt -->
-        <button type="submit" class="btn" (click)="selected = newUser" [ngClass]="{'info': selected === newUser}"><i
+        <button type="submit" class="btn btn-success" (click)="selected = newUser" [ngClass]="{'info': selected === newUser}"><i
                 class="fa fa-plus"></i> New User
         </button>
     </div>
@@ -77,10 +77,10 @@
                     <option *ngFor="let profile of profiles">{{profile.profile}}</option>
                 </select>
             </div>
-            <button *ngIf="selected.uid === ''" type="submit" class="btn" id="newUser" (click)="userCreate()">Create
+            <button *ngIf="selected.uid === ''" type="submit" class="btn btn-success" id="newUser" (click)="userCreate()">Create
             </button>
-            <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userUpdate()">Change</button>
-            <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userDelete()">Delete</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-success" (click)="userUpdate()">Change</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-danger" (click)="userDelete()">Delete</button>
             <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userPassword()">Change Password</button>
         </form>
     </div>

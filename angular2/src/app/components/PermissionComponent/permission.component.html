@@ -72,7 +72,7 @@
                     <option *ngFor="let role of roles">{{role.role}}</option>
                 </select>
             </div>
-            <button class="btn" (click)="permissionCreate(selected_user.uid, selected_model.mid, selected_permission.role)">
+            <button class="btn btn-success" (click)="permissionCreate(selected_user.uid, selected_model.mid, selected_permission.role)">
                 create relation
             </button>
         </div>
@@ -83,7 +83,7 @@
                     <option *ngFor="let role of roles">{{role.role}}</option>
                 </select>
             </div>
-            <button class="btn" (click)="permissionUpdate(selected_permission.pid, selected_permission.role)">change
+            <button class="btn btn-primary" (click)="permissionUpdate(selected_permission.pid, selected_permission.role)">change
                 relation
             </button>
         </div>
