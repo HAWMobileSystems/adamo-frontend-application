@@ -185,4 +185,13 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
+  getPermission(user: any, model: any){
+    return this.http.get('http://localhost:3000/permission/'+user+'/'+model, options)
+      .map((response: Response) => response.json());
+  }
+
+  permissionCreate(uid: any, mid: any, role:any){
+    return this.http.post('http://localhost:3000/permission/create', {uid: uid, mid: mid, role: role}, options)
+      .map((response: Response) => response.json());
+  }
 }

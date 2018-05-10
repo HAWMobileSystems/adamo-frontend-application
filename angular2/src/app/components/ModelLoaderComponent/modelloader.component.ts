@@ -82,7 +82,7 @@ export class ModelLoaderComponent {
     }
 
     public modelCreate() {
-        this.apiService.modelCreate(this.selected.mid, this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
+        this.apiService.modelCreate(this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
             .subscribe(response => {
                     if (response.success) {
                         this.mqtt.publish('MODEL');

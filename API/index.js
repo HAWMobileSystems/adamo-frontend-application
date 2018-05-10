@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const db = require('./database');
 const userRouter = require('./user');
+const permissionRouter = require('./permission');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use('/user', userRouter);
+app.use('/permission', permissionRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
