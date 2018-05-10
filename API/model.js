@@ -194,14 +194,11 @@ router.post('/delete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* 
+* */
 
 router.get('/changes', function (req, res) {
-
-    const lastchange = req.body.lastchange;
-    
-    db.query('select * from model where lastchange = $1', [lastchange] + 
-    '>= NOW() - interval 7 days order by lastchange desc')
+   
+    db.query('select * from model where lastchange >= NOW() - interval \'7 days\' order by lastchange desc')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
