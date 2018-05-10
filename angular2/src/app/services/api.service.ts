@@ -152,20 +152,20 @@ export class ApiService {
   }
 
   getAllModels() {
-    return this.http.get('http://localhost:3000/getallmodels', options)
+    return this.http.get('http://localhost:3000/model/all', options)
       .map((response: Response) => response.json());
   }
 
   modelDelete(mid: number) {
     const deleteOptions = options;
     deleteOptions.body = {modelid: mid};
-    return this.http.delete('http://localhost:3000/modeldelete', deleteOptions)
+    return this.http.delete('http://localhost:3000/model/delete', deleteOptions)
       .map((response: Response) => response.json());
   }
 
 
   modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/modelupdate', {
+    return this.http.post('http://localhost:3000/model/update', {
       modelid: mid,
       modelname: modelname,
       lastchange: lastchange,
@@ -176,7 +176,7 @@ export class ApiService {
   }
 
   modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/modelcreate', {
+    return this.http.post('http://localhost:3000/model/create', {
       modelname: modelname,
       lastchange: lastchange,
       modelxml: modelxml,
