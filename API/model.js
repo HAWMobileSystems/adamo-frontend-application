@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
+
 /*
 * URL:              /all
 * Method:           get
@@ -19,6 +20,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
 * */
+
 router.get('/all', function (req, res) {
 
     db.query('select * from model')
@@ -178,6 +180,37 @@ router.post('/delete', function (req, res) {
         res.status(400).send({ status: 'Database not available'});
     })
 });
+
+
+/*
+* URL:              /changes
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:      
+* 
+
+router.get('/changes', function (req, res) {
+
+    const lastchange = req.body.lastchange;
+    
+    db.query('select * from model where lastchange = $1', [lastchange] + 
+    '>= NOW() - interval 7 days order by lastchange desc')
+    .then(function (data) {
+        console.log('DATA:', data)
+        res.send({ data: data, success: true});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error)
+            res.status(400).send({ status: 'Database not available'});
+        })
+    });
 
 
 /*
