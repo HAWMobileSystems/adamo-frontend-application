@@ -35,7 +35,7 @@
             <tfoot></tfoot>
         </table>
         <!-- Neuer User Button hinzugefuegt -->
-        <button type="submit" class="btn" (click)="selected = newUser" [ngClass]="{'info': selected === newUser}"><i
+        <button type="submit" class="btn btn-success" (click)="selected = newUser" [ngClass]="{'info': selected === newUser}"><i
                 class="fa fa-plus"></i> New User</button>
     </div>
 </div>
@@ -69,9 +69,9 @@
                 <label class="col-md-4" style="text-align: left" for="role">role</label>
                 <input required type="text" class="form-control" id="role" placeholder="Role" name="role" [(ngModel)]="selected.role">
             </div>
-            <button *ngIf="selected.uid === ''" type="submit" class="btn" id="newUser" (click)="userCreate()">Create</button>
-            <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userUpdate()">Change</button>
-            <button *ngIf="selected.uid !== ''" type="submit" class="btn" (click)="userDelete()">Delete</button>
+            <button *ngIf="selected.uid === ''" type="submit" class="btn btn-success" id="newUser" (click)="userCreate()">Create</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-primary" (click)="userUpdate()">Change</button>
+            <button *ngIf="selected.uid !== ''" type="submit" class="btn btn-danger" (click)="userDelete()">Delete</button>
         </form>
     </div>
 </div>
