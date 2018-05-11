@@ -32,7 +32,7 @@
             <tfoot></tfoot>
         </table>
         <!-- Neue Rolle Button hinzugefuegt -->
-        <button type="submit" class="btn" (click)="selected = newRole" [ngClass]="{'info': selected === newRole}"><i
+        <button type="submit" class="btn btn-success" (click)="selected = newRole" [ngClass]="{'info': selected === newRole}"><i
                 class="fa fa-plus"></i> New Role</button>
     </div>
 </div>
@@ -62,9 +62,9 @@
                 <label class="col-md-4" style="text-align: left" for="admin">Admin</label>
                 <input required type="checkbox" class="form-control" id="admin" name="admin" [(ngModel)]="selected.admin">
             </div>
-            <button *ngIf="selected.rid === ''" type="submit" class="btn" (click)="roleCreate()">Create</button>
-            <button *ngIf="selected.rid !== ''" type="submit" class="btn" (click)="roleUpdate()">Change</button>
-            <button *ngIf="selected.rid !== ''" type="submit" class="btn" (click)="roleDelete()">Delete</button>
+            <button *ngIf="selected.rid === ''" type="submit" class="btn btn-success" (click)="roleCreate()">Create</button>
+            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-primary" (click)="roleUpdate()">Change</button>
+            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-danger" (click)="roleDelete()">Delete</button>
         </form>
     </div>
 </div>

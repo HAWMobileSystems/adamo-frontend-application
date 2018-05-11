@@ -41,19 +41,27 @@ export class ApiService {
   }
 
   userDelete(uid: number) {
-    const deleteOptions = options;
-    deleteOptions.body = {uid: uid};
-    return this.http.delete('http://localhost:3000/user/delete', deleteOptions)
+    // var deleteOptions = options;
+    // deleteOptions.body = {uid: uid};
+    return this.http.post('http://localhost:3000/user/delete', {uid: uid}, options)
       .map((response: Response) => response.json());
   }
 
-  userUpdate(uid: number, firstname: string, lastname: string, password: string, profile: string) {
+  userUpdate(uid: number, email:string, firstname: string, lastname: string, profile: string) {
     return this.http.post('http://localhost:3000/user/update', {
       uid: uid,
+      email: email,
       firstname: firstname,
       lastname: lastname,
+      profile: profile,
+    }, options)
+      .map((response: Response) => response.json());
+  }
+
+  userPassword(uid: number, password: string) {
+    return this.http.post('http://localhost:3000/user/update', {
+      uid: uid,
       password: password,
-      profile: name
     }, options)
       .map((response: Response) => response.json());
   }
@@ -144,20 +152,20 @@ export class ApiService {
   }
 
   getAllModels() {
-    return this.http.get('http://localhost:3000/getallmodels', options)
+    return this.http.get('http://localhost:3000/model/all', options)
       .map((response: Response) => response.json());
   }
 
   modelDelete(mid: number) {
     const deleteOptions = options;
     deleteOptions.body = {modelid: mid};
-    return this.http.delete('http://localhost:3000/modeldelete', deleteOptions)
+    return this.http.delete('http://localhost:3000/model/delete', deleteOptions)
       .map((response: Response) => response.json());
   }
 
 
   modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/modelupdate', {
+    return this.http.post('http://localhost:3000/model/update', {
       modelid: mid,
       modelname: modelname,
       lastchange: lastchange,
@@ -168,7 +176,7 @@ export class ApiService {
   }
 
   modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/modelcreate', {
+    return this.http.post('http://localhost:3000/model/create', {
       modelname: modelname,
       lastchange: lastchange,
       modelxml: modelxml,
@@ -177,4 +185,13 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
+  getPermission(user: any, model: any){
+    return this.http.get('http://localhost:3000/permission/'+user+'/'+model, options)
+      .map((response: Response) => response.json());
+  }
+
+  permissionCreate(uid: any, mid: any, role:any){
+    return this.http.post('http://localhost:3000/permission/create', {uid: uid, mid: mid, role: role}, options)
+      .map((response: Response) => response.json());
+  }
 }

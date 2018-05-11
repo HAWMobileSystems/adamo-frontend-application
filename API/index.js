@@ -2,10 +2,13 @@ const express = require('express');
 const app = express();
 const db = require('./database');
 const userRouter = require('./user');
+const permissionRouter = require('./permission');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
+const modelRouter = require('./model');
+const partmodelRouter = require('./partmodel');
 
 
 app.use(function (req, res, next) {
@@ -26,8 +29,18 @@ app.use(function (req, res, next) {
     next();
 });
 app.use('/user', userRouter);
+app.use('/permission', permissionRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/model', modelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/partmodel', partmodelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
 
 const store = new pgSession({
     pgPromise: db
@@ -391,7 +404,7 @@ app.get('/getmodel/:mid', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 app.get('/getallmodels', function (req, res) {
 
     db.query('select * from model')
@@ -418,7 +431,7 @@ app.get('/getallmodels', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/modelcreate', function (req, res) {
 
@@ -467,7 +480,7 @@ app.post('/modelcreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/modelupdate', function (req, res) {
 
@@ -518,7 +531,7 @@ app.post('/modelupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/modeldelete', function (req, res) {
 
@@ -565,7 +578,7 @@ app.delete('/modeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+*
 
 app.post('/getpartmodel', function (req, res) {
 
@@ -594,7 +607,7 @@ app.post('/getpartmodel', function (req, res) {
     * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
     * Error Response:   Code 400, Content: {message: [string], success: [bool]}
     * Description:      
-    * */
+    * 
     
     app.post('/partmodelcreate', function (req, res) {
     
@@ -640,7 +653,7 @@ app.post('/getpartmodel', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/partmodeldelete', function (req, res) {
 
@@ -681,7 +694,7 @@ app.delete('/partmodeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.get('/getallusers', function (req, res) {
     
@@ -712,7 +725,7 @@ app.get('/getallusers', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/usercreate', function (req, res) {
 
@@ -780,7 +793,7 @@ app.post('/usercreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/userupdate', function (req, res) {
 
@@ -853,7 +866,7 @@ app.post('/userupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/userdelete', function (req, res) {
 

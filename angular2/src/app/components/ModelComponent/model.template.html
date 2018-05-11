@@ -35,7 +35,7 @@
             <tfoot></tfoot>
         </table>
         <!-- Neues Modell Button hinzugefuegt -->
-        <button type="submit" class="btn" (click)="selected = newModel" [ngClass]="{'info': selected === newModel}"><i
+        <button type="submit" class="btn btn-success" (click)="selected = newModel" [ngClass]="{'info': selected === newModel}"><i
                 class="fa fa-plus"></i> New Model</button>
     </div>
 </div>
@@ -65,9 +65,9 @@
                 <label class="col-md-4" style="text-align: left" for="mid">Mid</label>
                 <input required type="text" class="form-control" id="mid" placeholder="Mid" name="mid" [(ngModel)]="selected.mid">
             </div>
-            <button *ngIf="selected.mid === ''" type="submit" class="btn" (click)="modelCreate()">Create</button>
-            <button *ngIf="selected.mid !== ''" type="submit" class="btn" (click)="modelUpdate()">Change</button>
-            <button *ngIf="selected.mid !== ''" type="submit" class="btn" (click)="modelDelete()">Delete</button>
+            <button *ngIf="selected.mid === ''" type="submit" class="btn btn-success" (click)="modelCreate()">Create</button>
+            <button *ngIf="selected.mid !== ''" type="submit" class="btn btn-primary" (click)="modelUpdate()">Change</button>
+            <button *ngIf="selected.mid !== ''" type="submit" class="btn btn-danger" (click)="modelDelete()">Delete</button>
         </form>
     </div>
 </div>
