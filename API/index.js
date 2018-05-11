@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const modelRouter = require('./model');
+const partmodelRouter = require('./partmodel');
 
 
 app.use(function (req, res, next) {
@@ -35,6 +36,11 @@ app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 app.use('/model', modelRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/partmodel', partmodelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
 
 const store = new pgSession({
     pgPromise: db
@@ -572,7 +578,7 @@ app.delete('/modeldelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+*
 
 app.post('/getpartmodel', function (req, res) {
 
@@ -601,7 +607,7 @@ app.post('/getpartmodel', function (req, res) {
     * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
     * Error Response:   Code 400, Content: {message: [string], success: [bool]}
     * Description:      
-    * */
+    * 
     
     app.post('/partmodelcreate', function (req, res) {
     
@@ -647,7 +653,7 @@ app.post('/getpartmodel', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/partmodeldelete', function (req, res) {
 
