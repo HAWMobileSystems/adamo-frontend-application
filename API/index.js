@@ -314,6 +314,7 @@ app.get('/', function (req, res) {
     res.send("IPIM Server is Running");
 });
 
+/*
 app.get('/models/:id/:name', function (req, res) {
 
     const name = req.params.name;
@@ -375,7 +376,7 @@ app.get('/model', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:
-* */
+*
 app.get('/getmodel/:mid', function (req, res) {
 
     const mid = req.params.mid;
@@ -903,7 +904,7 @@ app.delete('/userdelete', function (req, res) {
 
 
 
-    /*
+/*
 * URL:              /getallprofiles
 * Method:           get
 * URL Params:
@@ -915,7 +916,7 @@ app.delete('/userdelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.get('/getallprofiles', function (req, res) {
     
@@ -943,7 +944,7 @@ app.get('/getallprofiles', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/profilecreate', function (req, res) {
 
@@ -991,7 +992,7 @@ app.post('/profilecreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/profileupdate', function (req, res) {
     
@@ -1045,7 +1046,7 @@ app.post('/profileupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/profiledelete', function (req, res) {
 
