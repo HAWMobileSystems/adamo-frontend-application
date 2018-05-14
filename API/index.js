@@ -9,6 +9,7 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const modelRouter = require('./model');
 const partmodelRouter = require('./partmodel');
+const profileRouter = require('./profile');
 
 
 app.use(function (req, res, next) {
@@ -38,6 +39,10 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 app.use('/partmodel', partmodelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/profile', profileRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
