@@ -328,6 +328,9 @@ app.get('/', function (req, res) {
     res.send("IPIM Server is Running");
 });
 
+app.listen(3000);
+
+
 /*
 app.get('/models/:id/:name', function (req, res) {
 
@@ -1277,7 +1280,7 @@ app.delete('/roledelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/permissioncreate', function (req, res) {
 
@@ -1334,7 +1337,7 @@ app.post('/permissioncreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/permissionupdate', function (req, res) {
 
@@ -1392,7 +1395,7 @@ app.post('/permissionupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/permissiondelete', function (req, res) {
 
@@ -1420,8 +1423,6 @@ app.delete('/permissiondelete', function (req, res) {
 app.post('/', function (req, res) {
     res.send('Got a POST request')
 });
-
-app.listen(3000);
 
 
     /*try{
