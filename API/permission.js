@@ -239,9 +239,4 @@ router.post('/delete', function (req, res) {
 });
 
 
-app.post('/', function (req, res) {
-  res.send('Got a POST request')
-});
-
-
 module.exports = router;
