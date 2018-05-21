@@ -5,6 +5,7 @@ import {FrontPageComponent} from './front-page/front-page.component';
 import {ModelerComponent} from './modeler/modeler.component';
 import {AuthGuard} from './guards/auth.guard';
 import {TestComponent} from './test/test.component';
+import {Test2Component} from './test2/test2.component';
 import {ModelpermissionComponent} from './modelPermissioManagement/modelpermission.component';
 import {RolemanagementComponent} from "./rolemanagement/rolemanagement.component";
 import {RolemanagementComponent2} from "./rolemanagement/rolemanagement2.component";
@@ -19,6 +20,7 @@ const routes: Routes = [
     {path: 'modeler', component: ModelerComponent, canActivate: [AuthGuard]},
 
     {path: 'test', component: TestComponent},
+    {path: 'test2', component: Test2Component},
     {path: 'modelPermission', component: ModelpermissionComponent},
     {path: 'roleManagement', component: RolemanagementComponent},
     {path: 'roleManagement2', component: RolemanagementComponent2},

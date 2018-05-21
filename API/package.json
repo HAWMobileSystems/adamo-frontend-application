@@ -4,7 +4,9 @@
   "description": "express server for GET/POST Requests",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "node index",
+    "mqtt": "node mqttserver"
   },
   "author": "Markus",
   "license": "ISC",

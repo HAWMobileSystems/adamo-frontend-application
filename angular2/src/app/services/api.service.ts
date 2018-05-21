@@ -79,19 +79,19 @@ export class ApiService {
 
 
   getAllRoles() {
-    return this.http.get('http://localhost:3000/getallroles', options)
+    return this.http.get('http://localhost:3000/roles/all', options)
       .map((response: Response) => response.json());
   }
 
   roleDelete(roleid: number) {
     const deleteOptions = options;
     deleteOptions.body = {roleid: roleid};
-    return this.http.delete('http://localhost:3000/roledelete', deleteOptions)
+    return this.http.delete('http://localhost:3000/role/delete', deleteOptions)
       .map((response: Response) => response.json());
   }
 
   roleUpdate(roleid: number, role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/roleupdate', {
+    return this.http.post('http://localhost:3000/role/update', {
       roleid: roleid,
       role: role,
       read: read,
@@ -102,7 +102,7 @@ export class ApiService {
   }
 
   roleCreate(role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/rolecreate', {
+    return this.http.post('http://localhost:3000/role/create', {
       role: role,
       read: read,
       write: write,
@@ -113,19 +113,19 @@ export class ApiService {
 
 
   getAllProfiles() {
-    return this.http.get('http://localhost:3000/getallprofiles', options)
+    return this.http.get('http://localhost:3000/profiles/all', options)
       .map((response: Response) => response.json());
   }
 
   profileDelete(profileid: number) {
     const deleteOptions = options;
     deleteOptions.body = {profileid: profileid};
-    return this.http.delete('http://localhost:3000/profiledelete', deleteOptions)
+    return this.http.delete('http://localhost:3000/profile/delete', deleteOptions)
       .map((response: Response) => response.json());
   }
 
   profileUpdate(profileid: number, profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/profileupdate', {
+    return this.http.post('http://localhost:3000/profile/update', {
       profileid: profileid,
       profile: profile,
       read: read,
@@ -136,7 +136,7 @@ export class ApiService {
   }
 
   profileCreate(profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/profilecreate', {
+    return this.http.post('http://localhost:3000/profile/create', {
       profile: profile,
       read: read,
       write: write,
@@ -192,6 +192,11 @@ export class ApiService {
 
   permissionCreate(uid: any, mid: any, role:any){
     return this.http.post('http://localhost:3000/permission/create', {uid: uid, mid: mid, role: role}, options)
+      .map((response: Response) => response.json());
+  }
+
+  permissionUpdate(uid: any, mid: any, role:any){
+    return this.http.post('http://localhost:3000/permission/update', {uid: uid, mid: mid, role: role}, options)
       .map((response: Response) => response.json());
   }
 }

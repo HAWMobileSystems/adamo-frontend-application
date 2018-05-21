@@ -11,7 +11,7 @@
 <!--<input style="position:absolute; top:2%; left:28%; display: none; color:green;" type="file" id="files" name="files[]" />-->
 
 
-<div class="with-diagram modeler height-90">
+<div class="with-diagram modeler">
     <modelloader [hidden]="hideLoader" (notify)="onNotify($event)"></modelloader>
     <div id="js-drop-zone" >
         <div id="js-canvas" class="canvas .section-to-print"></div>
@@ -19,18 +19,19 @@
     </div>
 </div>
 
+<!--<modeler></modeler>-->
 
 
 
 <div class="buttons">
-    <!-- 
+    <!--
     <button type="button" class="btn btn-large btn-block btn-default" (click)="createNewDiagram()">createNewDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="saveDiagram()">saveDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="loadDiagram()">loadDiagram</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="debug()">button3</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandTest()">commandstack</button>
     <button type="button" class="btn btn-large btn-block btn-default" (click)="commandReset()">commandReset</button>
-    <button type="button" class="btn btn-large btn-block btn-default" (click)="commandGet()">commandGet</button> 
+    <button type="button" class="btn btn-large btn-block btn-default" (click)="commandGet()">commandGet</button>
     -->
     <!--<term-modal></term-modal>-->
     <!--<input-modal></input-modal>-->

@@ -11,7 +11,7 @@ const mqtt = require('mqtt');
 })
 
 export class ModelLoaderComponent {
-    @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+    @Output() notify: EventEmitter<object> = new EventEmitter<object>();
     private selected: any;
     private newModel: any;
     private models: any;
@@ -44,7 +44,7 @@ export class ModelLoaderComponent {
 
 
     public loadSelected() {
-        this.notify.emit(this.selected.modelxml);
+        this.notify.emit({modelxml: this.selected.modelxml, modelname: this.selected.modelname});
     }
     public getAllModels() {
         this.models = [];
