@@ -10,5 +10,6 @@ export const COMMANDS = {
     EXTRA: 'extra',
     LOAD: 'load',
     ADMINISTRATE: 'administrate',
-    LOGOUT: 'logout'
+    LOGOUT: 'logout',
+    SET_IPIM_SUBPROCESS: 'set-ipim-subprocess'
 };

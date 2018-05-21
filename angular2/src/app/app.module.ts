@@ -20,6 +20,7 @@ import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
 import { VariableModal} from './modeler/modals/VariableModal';
 import { InputModal} from './modeler/modals/InputModal';
+import { SubProcessModal } from './modeler/modals/SubProcessModal';
 
 // import { AlertComponent } from './alert/index';
 import {AlertComponent} from './components/Alert/alert.component';
@@ -31,7 +32,7 @@ import { AlertService } from './services/alert.service';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from './services/api.service';
-import {TestComponent} from "./test/test.component";
+import {TestComponent} from './test/test.component';
 import {ModelpermissionComponent} from './modelPermissioManagement/modelpermission.component';
 import {RolemanagementComponent} from './rolemanagement/rolemanagement.component';
 import {RolemanagementComponent2} from './rolemanagement/rolemanagement2.component';
@@ -46,6 +47,7 @@ import {PermissionComponent} from "./components/PermissionComponent/permission.c
 import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from "./modeler/modals/variables.component";
 import { InputVarComponent } from './modeler/modals/input.component';
+
 
 
 //check for correct branch!
@@ -85,6 +87,7 @@ import { InputVarComponent } from './modeler/modals/input.component';
         TermModal,
         VariableModal,
         InputModal,
+        SubProcessModal,
         VariableComponent,
         InputVarComponent
     ],
