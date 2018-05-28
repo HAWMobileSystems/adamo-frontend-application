@@ -31,9 +31,9 @@ export class Test2Component implements OnInit {
   }
 
   //TODO create class for object
-  onNotify(message: object): void {
+  onNotify(message: any): void {
     this.models.push(message);
-    this.page= message.modelname;
+    this.page = message.abc;
     // console.log(this.models);
   }
 
