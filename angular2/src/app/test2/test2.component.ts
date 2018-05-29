@@ -33,8 +33,8 @@ export class Test2Component implements OnInit {
   //TODO create class for object
   onNotify(message: object): void {
     this.models.push(message);
-    this.page= message.modelname;
-    // console.log(this.models);
+    //this.page= message.modelname;
+     //console.log(this.models);
   }
 
   onExportModel(message: Object): void{

@@ -160,9 +160,9 @@ app.post('/authenticate', function (req, res) {
                             });
                     }
                     else {
-                        response.message = 'User and password do not match';
-                        response.success = false;
-                        res.status(401).send(response);
+                       /* response.message = 'User and password do not match';
+                        response.success = false;*/
+                        res.status(401).send('User and password do not match');
                     }
                 });
             })

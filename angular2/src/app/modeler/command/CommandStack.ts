@@ -26,8 +26,8 @@ export class CommandStack {
         this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
-        this.topic = this.defaultTopic;  //Set Topic to default Topic
-
+        this.topic = this.modeler.abc;  //Set Topic to default Topic
+        console.log(this.defaultTopic);
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
         //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
