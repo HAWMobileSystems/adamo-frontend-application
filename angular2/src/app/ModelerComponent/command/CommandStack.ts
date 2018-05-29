@@ -16,17 +16,19 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
+    private collab: any;
 
     //Commandstack Class
 
-    constructor(modeler : any) {
+    constructor(modeler : any, collab : any) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
         this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
-        this.topic = this.defaultTopic;  //Set Topic to default Topic
+        this.collab = collab;
+        this.topic = this.collab.abc;
 
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
@@ -55,7 +57,7 @@ export class CommandStack {
         const event = JSON.parse(message);
 
         //check if the Event was issued from remote or self
-        if (event.IPIMID !== this.id) {
+        if (event.IPIMID !== this.id && this.topic === topic) {
 
             //event was remote so cancel dragging if active an import new XML String
             console.log('Test from remote:' + message.toString());

@@ -95,6 +95,10 @@ export class ModelerComponent2 implements OnInit {
     //this.initializeModeler();
   }
 
+  public getabc() {
+    return this.abc;
+  }
+
   get urls(): Link[] {
     return this._urls;
   }
@@ -306,7 +310,7 @@ export class ModelerComponent2 implements OnInit {
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler);
+    this.commandStack = new CommandStack(this.modeler, this);
     // debugger;
     // Start with an empty diagram:
     this.url = this.urls[0].href;
