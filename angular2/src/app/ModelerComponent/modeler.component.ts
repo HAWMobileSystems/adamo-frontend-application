@@ -46,7 +46,7 @@ const customPropertiesProviderModule = {
   providers: [BPMNStore]
 })
 export class ModelerComponent2 implements OnInit {
-  @Input() abc: string;
+  @Input() modelId: string;
   @Input() newDiagramXML: string;
   @Output() exportModel: EventEmitter<object> = new EventEmitter<object>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
@@ -232,7 +232,7 @@ export class ModelerComponent2 implements OnInit {
    * and is no longer recognized as a function
    */
   public ngOnInit() {
-    console.log('abc: ',this.abc);
+    console.log('modelId: ',this.modelId);
     this.commandQueue = new Subject();
     this.store.listDiagrams()
       .do(links => this.urls = links)
@@ -279,9 +279,9 @@ export class ModelerComponent2 implements OnInit {
 
   private initializeModeler() {
     this.modeler = new this.modeler({
-      container: '#' + this.abc + ' ' + this.containerRef,
+      container: '#' + this.modelId + ' ' + this.containerRef,
       propertiesPanel: {
-        parent: '#' + this.abc + ' ' + this.propsPanelRef
+        parent: '#' + this.modelId + ' ' + this.propsPanelRef
       },
       additionalModules: [
         {extraPaletteEntries: ['type', () => this.extraPaletteEntries]},
