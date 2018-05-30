@@ -27,7 +27,7 @@ export class CommandStack {
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
         this.topic = this.modeler.abc;  //Set Topic to default Topic
-        console.log(this.defaultTopic);
+
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
         //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
@@ -54,8 +54,8 @@ export class CommandStack {
         //Parse event from String to variable
         const event = JSON.parse(message);
 
-        //check if the Event was issued from remote or self
-        if (event.IPIMID !== this.id) {
+        //check if the Event was issued from remote or self and is a valid topic
+        if ( (event.IPIMID !== this.id) && (this.topic.toString === topic.toString) ) {
 
             //event was remote so cancel dragging if active an import new XML String
             console.log('Test from remote:' + message.toString());
