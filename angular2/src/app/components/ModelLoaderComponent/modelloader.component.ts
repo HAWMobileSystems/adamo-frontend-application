@@ -1,6 +1,7 @@
 import {Component, Output, EventEmitter} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {ApiService} from "../../services/api.service";
+import {Model} from '../../models/model';
 
 
 const mqtt = require('mqtt');
@@ -11,7 +12,7 @@ const mqtt = require('mqtt');
 })
 
 export class ModelLoaderComponent {
-    @Output() notify: EventEmitter<object> = new EventEmitter<object>();
+    @Output() loadModel: EventEmitter<object> = new EventEmitter<Model>();
     private selected: any;
     private newModel: any;
     private models: any;
@@ -44,7 +45,12 @@ export class ModelLoaderComponent {
 
 
     public loadSelected() {
-        this.notify.emit({modelxml: this.selected.modelxml, modelname: this.selected.modelname});
+        var model = new Model();
+        model.xml = this.selected.modelxml;
+        model.name = this.selected.modelname;
+        model.id = this.selected.mid;
+        this.loadModel.emit(model);
+        // this.notify.emit({modelxml: this.selected.modelxml, modelname: this.selected.modelname});
     }
     public getAllModels() {
         this.models = [];

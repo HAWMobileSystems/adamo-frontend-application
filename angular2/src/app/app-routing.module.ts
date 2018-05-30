@@ -17,10 +17,10 @@ import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 const routes: Routes = [
     {path: 'front-page', component: FrontPageComponent},
     {path: 'viewer', component: ViewerComponent, canActivate: [AuthGuard]},
-    {path: 'modeler', component: ModelerComponent, canActivate: [AuthGuard]},
+    {path: 'test2', component: ModelerComponent, canActivate: [AuthGuard]},
 
     {path: 'test', component: TestComponent},
-    {path: 'test2', component: Test2Component},
+    {path: 'modeler', component: Test2Component},
     {path: 'modelPermission', component: ModelpermissionComponent},
     {path: 'roleManagement', component: RolemanagementComponent},
     {path: 'roleManagement2', component: RolemanagementComponent2},

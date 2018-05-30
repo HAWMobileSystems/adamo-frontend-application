@@ -2,23 +2,17 @@
     <div class="height-10">
         <nav class="navbar navbar-default height-50" role="navigation">
             <ul class="nav navbar-nav">
-                <!--<li [ngClass]="{'active': page ==='Model'}" (click)="page = 'Model'"><a>Model</a></li>-->
-                <!--<li [ngClass]="{'active': page ==='Model2'}" (click)="page = 'Model2'"><a>Model2</a></li>-->
-                <li *ngFor="let model of models" [ngClass]="{'active': page ===model.modelname}" (click)="page = model.modelname"><a>{{model.modelname}}</a></li>
+                <li *ngFor="let model of models" [ngClass]="{'active': page ===model.name}" (click)="page = model.name"><a>{{model.name || 'unsaved model'}}</a></li>
                 <li [ngClass]="{'active': page ==='+'}" (click)="page = '+'"><a>+</a></li>
+                <li><a href="administration-page">administratoin</a></li>
             </ul>
         </nav>
     </div>
-    <!--<div>-->
-    <!--</div>-->
 
     <div [hidden]="page!=='+'">
-        <modelloader (notify)="onNotify($event)"></modelloader>
+        <modelloader (loadModel)="onLoadModel($event)"></modelloader>
     </div>
-    <!--<modeler [hidden]="page!=='Model'" [abc]="'model'"></modeler>-->
-    <!--<modeler [hidden]="page!=='Model2'" [abc]="'model2'" [newDiagramXML]="xml"></modeler>-->
-    <modeler (exportModel)="onExportModel($event)" *ngFor="let model of models" [hidden]="page!==model.modelname" [abc]="model.modelname" [newDiagramXML]="model.modelxml"></modeler>
+    <modeler (exportModel)="onExportModel($event)" *ngFor="let model of models" [hidden]="page!==model.name" [modelId]="'model'+model.id" [newDiagramXML]="model.modelxml"></modeler>
 
 </div>
-<div [hidden]=true>abc</div>
 
