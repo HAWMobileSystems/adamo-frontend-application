@@ -26,6 +26,7 @@ import {FileReaderEvent} from './interfaces';
 import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
+import {SubProcessModal} from './modals/SubProcessModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
@@ -71,10 +72,13 @@ export class ModelerComponent2 implements OnInit {
   private inputModal: InputModal;
   @ViewChild('termModal')
   private termModal: TermModal;
+  @ViewChild('SubProcessModal')
+  private subProcessModal: SubProcessModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
-    CALC: 'ipim_calc'
+    CALC: 'ipim_calc',
+    SUBPROCESS: 'ipim_subprocess'
   };
 
   private lookup: any = {
@@ -90,13 +94,14 @@ export class ModelerComponent2 implements OnInit {
     this.openDiagram(message);
   }
 
-  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef, private router: Router) {
+  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
+     private ref: ChangeDetectorRef, private router: Router) {
 
     //this.initializeModeler();
   }
 
   public getabc() {
-    return this.abc;
+    return this.modelId;
   }
 
   get urls(): Link[] {
@@ -130,6 +135,49 @@ export class ModelerComponent2 implements OnInit {
     // const variableModal = new VariableModal(this.modeler);
     this.variableModal.modal.open();
   }
+
+  public openSubProcessModal = () => {
+    this.getSubProcessList(this.lookup.SELECTION);
+    // this.variableModal.fillModal();
+    // const variableModal = new VariableModal(this.modeler);
+  }
+
+  private getSubProcessList = (scope: string) => {
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    let elements: any;
+    scope === this.lookup.SELECTION
+      ? elements = this.modeler.get(scope).get()
+      : elements = this.modeler.get(scope).getAll();
+    const terms: string[] = new Array();
+    let validSelection = false;
+    //Alle Elemente durchlaufen um Variablen zu finden
+    for (const element of elements) {
+      if (element.type === 'bpmn:SubProcess') {
+        validSelection = true;
+        console.log(element, typeof element.businessObject.extensionElements);
+        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+        if (element.businessObject.extensionElements) {
+          //Wenn vorhandne die Elemente auslesen
+          const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (terms.indexOf(extras[0].values[i].value) === -1) {
+                terms.push(extras[0].values[i].value);
+              }
+            }
+          }
+        }
+      }
+    }
+    if (!validSelection) {
+      window.alert('No Subprocess selected!');
+    } else {
+      this.subProcessModal.setProps(this.modeler, terms);
+      this.subProcessModal.modal.open();
+    }
+  };
 
   public closeTermController = () => {
     this.termModal.close();
@@ -227,7 +275,8 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.SAVE]: this.saveDiagram,
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
-    [COMMANDS.LOGOUT]: this.logout
+    [COMMANDS.LOGOUT]: this.logout,
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal
   };
 
   /**

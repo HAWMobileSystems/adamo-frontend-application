@@ -1,4 +1,6 @@
 import { Inherits } from 'inherits';
+import { ModelComponent } from '../../components/ModelComponent/model.component';
+import { ModelerComponent2 } from '../modeler.component';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 const mqtt = require('mqtt');
 
@@ -16,11 +18,11 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
-    private collab: any;
+    private collab: ModelerComponent2;
 
     //Commandstack Class
 
-    constructor(modeler : any, collab : any) {
+    constructor(modeler : any, collab : ModelerComponent2) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
@@ -28,7 +30,7 @@ export class CommandStack {
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
         this.collab = collab;
-        this.topic = this.collab.abc;
+        this.topic = this.collab.modelId;
 
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
