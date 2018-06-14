@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Http} from '@angular/http';
@@ -22,18 +22,13 @@ import {CamundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
-import { FileReaderEvent } from './interfaces';
-import { TermModal } from './modals/TermModal';
-import { InputModal } from './modals/InputModal';
-import { VariableModal } from './modals/VariableModal';
-import { SubprocessModal } from './modals/SubprocessModal';
 import {FileReaderEvent} from './interfaces';
 import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal';
 
-import {COMMANDS} from './../bpmn-store/commandstore.service';
+import {COMMANDS} from '../bpmn-store/commandstore.service';
 
 import {ApiService} from '../services/api.service';
 
@@ -46,11 +41,15 @@ const customPropertiesProviderModule = {
 };
 
 @Component({
+  selector: 'modeler',
   templateUrl: './modeler.component.html',
   styleUrls: ['./modeler.component.css'],
   providers: [BPMNStore]
 })
-export class ModelerComponent implements OnInit {
+export class ModelerComponent2 implements OnInit {
+  @Input() modelId: string;
+  @Input() newDiagramXML: string;
+  @Output() exportModel: EventEmitter<object> = new EventEmitter<object>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
@@ -65,7 +64,7 @@ export class ModelerComponent implements OnInit {
   private container: JQuery; // = '#js-drop-zone';
   private containerRef: string = '#js-canvas';
   private propsPanelRef: string = '#js-properties-panel';
-  private newDiagramXML: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  // private newDiagramXML: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
   private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
   @ViewChild('variableModal')
   private variableModal: VariableModal;
@@ -95,9 +94,14 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(message);
   }
 
-  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore, private ref: ChangeDetectorRef, private router: Router) {
+  constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
+     private ref: ChangeDetectorRef, private router: Router) {
 
     //this.initializeModeler();
+  }
+
+  public getabc() {
+    return this.modelId;
   }
 
   get urls(): Link[] {
@@ -137,6 +141,43 @@ export class ModelerComponent implements OnInit {
     // this.variableModal.fillModal();
     // const variableModal = new VariableModal(this.modeler);
   }
+
+  private getSubProcessList = (scope: string) => {
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+    let elements: any;
+    scope === this.lookup.SELECTION
+      ? elements = this.modeler.get(scope).get()
+      : elements = this.modeler.get(scope).getAll();
+    const terms: string[] = new Array();
+    let validSelection = false;
+    //Alle Elemente durchlaufen um Variablen zu finden
+    for (const element of elements) {
+      if (element.type === 'bpmn:SubProcess') {
+        validSelection = true;
+        console.log(element, typeof element.businessObject.extensionElements);
+        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+        if (element.businessObject.extensionElements) {
+          //Wenn vorhandne die Elemente auslesen
+          const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (terms.indexOf(extras[0].values[i].value) === -1) {
+                terms.push(extras[0].values[i].value);
+              }
+            }
+          }
+        }
+      }
+    }
+    if (!validSelection) {
+      window.alert('No Subprocess selected!');
+    } else {
+      this.subProcessModal.setProps(this.modeler, terms);
+      this.subProcessModal.modal.open();
+    }
+  };
 
   public closeTermController = () => {
     this.termModal.close();
@@ -235,7 +276,7 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS]: this.openSubProcessModal
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal
   };
 
   /**
@@ -244,7 +285,7 @@ export class ModelerComponent implements OnInit {
    * and is no longer recognized as a function
    */
   public ngOnInit() {
-
+    console.log('modelId: ',this.modelId);
     this.commandQueue = new Subject();
     this.store.listDiagrams()
       .do(links => this.urls = links)
@@ -261,7 +302,7 @@ export class ModelerComponent implements OnInit {
         func();
       }
     });
-
+    this.exportModel.emit(this);
     // this.commandQueue
     //   .filter(cmd => COMMANDS.SAVE === cmd.action)
     //   .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
@@ -291,9 +332,9 @@ export class ModelerComponent implements OnInit {
 
   private initializeModeler() {
     this.modeler = new this.modeler({
-      container: this.containerRef,
+      container: '#' + this.modelId + ' ' + this.containerRef,
       propertiesPanel: {
-        parent: this.propsPanelRef
+        parent: '#' + this.modelId + ' ' + this.propsPanelRef
       },
       additionalModules: [
         {extraPaletteEntries: ['type', () => this.extraPaletteEntries]},
@@ -318,7 +359,7 @@ export class ModelerComponent implements OnInit {
   private createModeler() {
     // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler);
+    this.commandStack = new CommandStack(this.modeler, this);
     // debugger;
     // Start with an empty diagram:
     this.url = this.urls[0].href;
@@ -356,6 +397,7 @@ export class ModelerComponent implements OnInit {
     };
     // TODO: Fixme
 
+    console.log(container)
     const firstElementInContainer = container.get(0);
 
     if (firstElementInContainer) {
@@ -527,43 +569,6 @@ export class ModelerComponent implements OnInit {
       }
     }
     return terms;
-  };
-
-  private getSubProcessList = (scope: string) => {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    let elements: any;
-    scope === this.lookup.SELECTION
-      ? elements = this.modeler.get(scope).get()
-      : elements = this.modeler.get(scope).getAll();
-    const terms: string[] = new Array();
-    let validSelection = false;
-    //Alle Elemente durchlaufen um Variablen zu finden
-    for (const element of elements) {
-      if (element.type === 'bpmn:SubProcess') {
-        validSelection = true;
-        console.log(element, typeof element.businessObject.extensionElements);
-        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-        if (element.businessObject.extensionElements) {
-          //Wenn vorhandne die Elemente auslesen
-          const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-          //Schleife über alle Elemente
-          for (let i = 0; i < extras[0].values.length; i++) {
-            //Prüfen ob der Name des Elementes IPIM_Val entspricht
-            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
-              if (terms.indexOf(extras[0].values[i].value) === -1) {
-                terms.push(extras[0].values[i].value);
-              }
-            }
-          }
-        }
-      }
-    }
-    if (!validSelection) {
-      window.alert('No Subprocess selected!');
-    } else {
-      this.subProcessModal.setProps(this.modeler, terms);
-      this.subProcessModal.modal.open();
-    }
   };
 
   private evaluateProcess = () => {

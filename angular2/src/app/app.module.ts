@@ -15,11 +15,13 @@ import { FrontPageComponent } from './front-page/front-page.component';
 import {AdministrationPageComponent} from "./administration-page/administration-page.component";
 import { ViewerComponent } from './viewer/viewer.component';
 import { ModelerComponent } from './modeler/modeler.component';
+import { ModelerComponent2} from './ModelerComponent/modeler.component'
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
 import { VariableModal} from './modeler/modals/VariableModal';
 import { InputModal} from './modeler/modals/InputModal';
+import { SubProcessModal } from './modeler/modals/SubProcessModal';
 
 // import { AlertComponent } from './alert/index';
 import {AlertComponent} from './components/Alert/alert.component';
@@ -32,6 +34,7 @@ import {AppFooterComponent} from './components/AppFooterComponent/footer.compone
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from './services/api.service';
 import {TestComponent} from "./test/test.component";
+import {Test2Component} from "./test2/test2.component";
 import {ModelpermissionComponent} from './modelPermissioManagement/modelpermission.component';
 import {RolemanagementComponent} from './rolemanagement/rolemanagement.component';
 import {RolemanagementComponent2} from './rolemanagement/rolemanagement2.component';
@@ -47,6 +50,7 @@ import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from "./modeler/modals/variables.component";
 import { InputVarComponent } from './modeler/modals/input.component';
 import { SubprocessModal } from './modeler/modals/SubprocessModal';
+
 
 
 //check for correct branch!
@@ -80,13 +84,15 @@ import { SubprocessModal } from './modeler/modals/SubprocessModal';
         RolemanagementComponent,
         ModelpermissionComponent,
         TestComponent,
+        Test2Component,
         ViewerComponent,
         ModelerComponent,
+        ModelerComponent2,
         AlertComponent,
         TermModal,
         VariableModal,
         InputModal,
-        SubprocessModal,
+        SubProcessModal,
         VariableComponent,
         InputVarComponent
     ],

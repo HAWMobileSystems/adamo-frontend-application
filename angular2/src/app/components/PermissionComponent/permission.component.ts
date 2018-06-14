@@ -47,6 +47,10 @@ export class PermissionComponent {
         });
   }
 
+  private permissionUpdate(pid: any, role: any){
+    this.apiService.permissionUpdate
+  }
+
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }
 

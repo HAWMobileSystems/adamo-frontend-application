@@ -9,6 +9,8 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const modelRouter = require('./model');
 const partmodelRouter = require('./partmodel');
+const profileRouter = require('./profile');
+const roleRouter = require('./role');
 
 
 app.use(function (req, res, next) {
@@ -38,6 +40,18 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 app.use('/partmodel', partmodelRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/profile', profileRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/role', roleRouter);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+
+app.use('/permission', permissionRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
@@ -314,6 +328,10 @@ app.get('/', function (req, res) {
     res.send("IPIM Server is Running");
 });
 
+app.listen(3000);
+
+
+/*
 app.get('/models/:id/:name', function (req, res) {
 
     const name = req.params.name;
@@ -375,7 +393,7 @@ app.get('/model', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:
-* */
+*
 app.get('/getmodel/:mid', function (req, res) {
 
     const mid = req.params.mid;
@@ -903,7 +921,7 @@ app.delete('/userdelete', function (req, res) {
 
 
 
-    /*
+/*
 * URL:              /getallprofiles
 * Method:           get
 * URL Params:
@@ -915,7 +933,7 @@ app.delete('/userdelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.get('/getallprofiles', function (req, res) {
     
@@ -943,7 +961,7 @@ app.get('/getallprofiles', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/profilecreate', function (req, res) {
 
@@ -991,7 +1009,7 @@ app.post('/profilecreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/profileupdate', function (req, res) {
     
@@ -1045,7 +1063,7 @@ app.post('/profileupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/profiledelete', function (req, res) {
 
@@ -1262,7 +1280,7 @@ app.delete('/roledelete', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/permissioncreate', function (req, res) {
 
@@ -1319,7 +1337,7 @@ app.post('/permissioncreate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.post('/permissionupdate', function (req, res) {
 
@@ -1377,7 +1395,7 @@ app.post('/permissionupdate', function (req, res) {
 * Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      
-* */
+* 
 
 app.delete('/permissiondelete', function (req, res) {
 
@@ -1405,8 +1423,6 @@ app.delete('/permissiondelete', function (req, res) {
 app.post('/', function (req, res) {
     res.send('Got a POST request')
 });
-
-app.listen(3000);
 
 
     /*try{

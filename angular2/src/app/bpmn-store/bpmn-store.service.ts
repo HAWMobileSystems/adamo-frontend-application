@@ -103,6 +103,14 @@ export class BPMNStore {
                 action: {
                     click: () => console.log('EXTRA')
                 }
+            },
+            [COMMANDS.SET_IPIM_SUBPROCESS]: {
+                group: 'ipim',
+                className: ['fa-beer', 'fa'],
+                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                action: {
+                    click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
+                }
             }
         }).delay(1000);
     }

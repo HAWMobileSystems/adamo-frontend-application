@@ -1,4 +1,6 @@
 import { Inherits } from 'inherits';
+import { ModelComponent } from '../../components/ModelComponent/model.component';
+import { ModelerComponent2 } from '../modeler.component';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 const mqtt = require('mqtt');
 
@@ -16,17 +18,19 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
+    private collab: ModelerComponent2;
 
     //Commandstack Class
 
-    constructor(modeler : any) {
+    constructor(modeler : any, collab : ModelerComponent2) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
         this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
-        this.topic = this.modeler.abc;  //Set Topic to default Topic
+        this.collab = collab;
+        this.topic = this.collab.modelId;
 
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
@@ -54,8 +58,8 @@ export class CommandStack {
         //Parse event from String to variable
         const event = JSON.parse(message);
 
-        //check if the Event was issued from remote or self and is a valid topic
-        if ( (event.IPIMID !== this.id) && (this.topic.toString === topic.toString) ) {
+        //check if the Event was issued from remote or self
+        if (event.IPIMID !== this.id && this.topic === topic) {
 
             //event was remote so cancel dragging if active an import new XML String
             console.log('Test from remote:' + message.toString());
