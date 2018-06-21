@@ -26,7 +26,7 @@ import {FileReaderEvent} from './interfaces';
 import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
-import {SubProcessModal} from './modals/SubProcessModal';
+import {SubprocessModal} from './modals/SubprocessModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
@@ -72,8 +72,8 @@ export class ModelerComponent2 implements OnInit {
   private inputModal: InputModal;
   @ViewChild('termModal')
   private termModal: TermModal;
-  @ViewChild('SubProcessModal')
-  private subProcessModal: SubProcessModal;
+  @ViewChild('SubprocessModal')
+  private subprocessModal: SubprocessModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
@@ -136,7 +136,7 @@ export class ModelerComponent2 implements OnInit {
     this.variableModal.modal.open();
   }
 
-  public openSubProcessModal = () => {
+  public openSubprocessModal = () => {
     this.getSubProcessList(this.lookup.SELECTION);
     // this.variableModal.fillModal();
     // const variableModal = new VariableModal(this.modeler);
@@ -174,8 +174,8 @@ export class ModelerComponent2 implements OnInit {
     if (!validSelection) {
       window.alert('No Subprocess selected!');
     } else {
-      this.subProcessModal.setProps(this.modeler, terms);
-      this.subProcessModal.modal.open();
+      this.subprocessModal.setProps(this.modeler, terms);
+      this.subprocessModal.modal.open();
     }
   };
 
@@ -276,7 +276,7 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal
   };
 
   /**

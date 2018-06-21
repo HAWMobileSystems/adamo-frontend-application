@@ -21,7 +21,7 @@ import { provideRoutes} from '@angular/router';
 import { TermModal} from './modeler/modals/TermModal';
 import { VariableModal} from './modeler/modals/VariableModal';
 import { InputModal} from './modeler/modals/InputModal';
-import { SubProcessModal } from './modeler/modals/SubProcessModal';
+import { SubprocessModal } from './modeler/modals/SubprocessModal';
 
 // import { AlertComponent } from './alert/index';
 import {AlertComponent} from './components/Alert/alert.component';
@@ -49,7 +49,6 @@ import {PermissionComponent} from "./components/PermissionComponent/permission.c
 import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from "./modeler/modals/variables.component";
 import { InputVarComponent } from './modeler/modals/input.component';
-import { SubprocessModal } from './modeler/modals/SubprocessModal';
 
 
 
@@ -92,7 +91,7 @@ import { SubprocessModal } from './modeler/modals/SubprocessModal';
         TermModal,
         VariableModal,
         InputModal,
-        SubProcessModal,
+        SubprocessModal,
         VariableComponent,
         InputVarComponent
     ],

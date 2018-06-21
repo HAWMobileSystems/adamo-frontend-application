@@ -18,14 +18,14 @@ import { Router } from '@angular/router';
       <br>
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeSubProcessModalValues()">Set SubProcess</button>
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>
         <!-- <input type="button" value=" Set Term " id="SetTermModal"> -->
     </modal-footer>
   </modal>
   `
 })
 
-export class SubProcessModal extends ModalComponent {
+export class SubprocessModal extends ModalComponent {
   //@Input()
   //@ViewChild('termModalModalComponent') private modal: ModalComponent;
   public modeler: any;
@@ -62,7 +62,7 @@ export class SubProcessModal extends ModalComponent {
   } */
 
   private opened() {
-    console.log('SubProcessModal Opended');
+    console.log('SubprocessModal Opended');
   }
 
   protected fillModal(): void {
@@ -70,18 +70,18 @@ export class SubProcessModal extends ModalComponent {
   }
 
   private dismissed() {
-    console.log('SubProcessModal dismissed');
+    console.log('SubprocessModal dismissed');
   }
 
   private closed() {
-    console.log('SubProcessModal closed');
+    console.log('SubprocessModal closed');
   }
 
   public cancel(): void {
     this.dismiss();
   }
 
-  private  fillSubProcessModal() {
+  private  fillSubprocessModal() {
 
     const terms = this.subProcessList;
 
@@ -91,7 +91,7 @@ export class SubProcessModal extends ModalComponent {
 
   public accept() {
     console.log(this.constructor.name + ' fillModal');
-    if (this.fillSubProcessModal.length > 1) {
+    if (this.fillSubprocessModal.length > 1) {
       window.alert('Attention selected Elements already have different Subprocesses!');
     }
     const element = <HTMLInputElement>document.getElementById('inputFieldSubprocess');
@@ -102,7 +102,7 @@ export class SubProcessModal extends ModalComponent {
         : element.value = '';
   }
 
-  private writeSubProcessModalValues() {
+  private writeSubprocessModalValues() {
     //get moddle Object
     const moddle = this.modeler.get('moddle');
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
