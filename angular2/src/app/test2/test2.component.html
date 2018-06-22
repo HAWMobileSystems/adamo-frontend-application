@@ -4,7 +4,7 @@
             <ul class="nav navbar-nav">
                 <li *ngFor="let model of models" [ngClass]="{'active': page ===model.name}" (click)="page = model.name"><a>{{model.name || 'unsaved model'}}</a></li>
                 <li [ngClass]="{'active': page ==='+'}" (click)="page = '+'"><a>+</a></li>
-                <li><a href="administration-page">administratoin</a></li>
+                <li><a href="administration-page">Administration</a></li>
             </ul>
         </nav>
     </div>
