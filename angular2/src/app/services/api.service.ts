@@ -79,14 +79,14 @@ export class ApiService {
 
 
   getAllRoles() {
-    return this.http.get('http://localhost:3000/roles/all', options)
+    return this.http.get('http://localhost:3000/role/all', options)
       .map((response: Response) => response.json());
   }
 
   roleDelete(roleid: number) {
     const deleteOptions = options;
     deleteOptions.body = {roleid: roleid};
-    return this.http.delete('http://localhost:3000/role/delete', deleteOptions)
+    return this.http.post('http://localhost:3000/role/delete', {roleid: roleid}, options)
       .map((response: Response) => response.json());
   }
 
