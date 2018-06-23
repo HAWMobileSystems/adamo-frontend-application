@@ -120,7 +120,7 @@ export class ApiService {
   profileDelete(profileid: number) {
     //const deleteOptions = options;
     //deleteOptions.body = {profileid: profileid};
-    return this.http.post('http://localhost:3000/profile/delete',{upid: profileid}, options)
+    return this.http.post('http://localhost:3000/profile/delete',{profileid: profileid}, options)
       .map((response: Response) => response.json());
   }
 

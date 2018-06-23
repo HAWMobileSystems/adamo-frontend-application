@@ -105,20 +105,20 @@ router.post('/update', function (req, res) {
         return;
     }  
 
-    const rid = req.body.rid;
+    const roleid = req.body.roleid;
     const role = req.body.role;
     const read = req.body.read;
     const write = req.body.write;
     const admin = req.body.admin;
 
-    console.log(rid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
+    console.log(roleid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
     
     db.oneOrNone('select * from role where role = $1', [role])
     .then(function (data) {
-        if(data && data.rid !== +rid){
+        if(data && data.roleid !== +roleid){
             res.status(400).send({ status: 'Role name already exists'})
         } else {
-             db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, rid])
+             db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, roleid])
              .then(function (data) {
                 res.send({ status: 'Role updated successfully', success: true});
             })
@@ -151,14 +151,14 @@ router.post('/update', function (req, res) {
 
 router.post('/delete', function (req, res) {
 
-    const rid = req.body.rid;
+    const roleid = req.body.roleid;
 
-    console.log(rid);
+    console.log(roleid);
 
-    db.oneOrNone('select from role where rid =$1', [rid])
+    db.oneOrNone('select from role where rid =$1', [roleid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from role where rid =$1', [rid])
+            db.oneOrNone('delete from role where rid =$1', [roleid])
             .then(function (data) {
                 console.log('Role deleted ');
                 res.send({ status: 'Role deleted successfully', success: true});
