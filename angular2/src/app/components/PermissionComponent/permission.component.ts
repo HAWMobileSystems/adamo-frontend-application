@@ -76,10 +76,11 @@ export class PermissionComponent {
             this.roles = response.data;
           }
           else {
-            this.alertService.error(response.error)
+            this.alertService.error(response._body)
           }
         },
         error => {
+            this.alertService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -93,10 +94,11 @@ export class PermissionComponent {
             this.selected_user = null;
           }
           else {
-            this.alertService.error(response.error)
+            this.alertService.error(response._body)
           }
         },
         error => {
+            this.alertService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -110,10 +112,11 @@ export class PermissionComponent {
             this.selected_model = null;
           }
           else {
-            this.alertService.error(response.error)
+            this.alertService.error(response._body)
           }
         },
         error => {
+            this.alertService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -125,10 +128,11 @@ export class PermissionComponent {
             this.selected_permission = response.data;
           }
           else {
-            this.alertService.error(response.error)
+            this.alertService.error(response._body)
           }
         },
         error => {
+            this.alertService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   };

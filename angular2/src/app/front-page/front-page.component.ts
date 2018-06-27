@@ -44,7 +44,7 @@ export class FrontPageComponent implements OnInit {
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(error._body);
                     console.log('loginerror: ', error);
                     this.loading = false;
                 });

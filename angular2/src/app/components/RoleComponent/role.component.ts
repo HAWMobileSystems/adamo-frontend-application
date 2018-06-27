@@ -54,10 +54,11 @@ export class RoleComponent {
                         this.selected = null;
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }
@@ -69,11 +70,11 @@ export class RoleComponent {
                         this.mqtt.publish('ROLE');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }
@@ -86,11 +87,11 @@ export class RoleComponent {
                         this.mqtt.publish('ROLE');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }
@@ -103,11 +104,11 @@ export class RoleComponent {
                         this.mqtt.publish('ROLE');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }

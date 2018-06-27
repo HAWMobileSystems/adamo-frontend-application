@@ -79,14 +79,14 @@ export class ApiService {
 
 
   getAllRoles() {
-    return this.http.get('http://localhost:3000/roles/all', options)
+    return this.http.get('http://localhost:3000/role/all', options)
       .map((response: Response) => response.json());
   }
 
   roleDelete(roleid: number) {
     const deleteOptions = options;
     deleteOptions.body = {roleid: roleid};
-    return this.http.delete('http://localhost:3000/role/delete', deleteOptions)
+    return this.http.post('http://localhost:3000/role/delete', {roleid: roleid}, options)
       .map((response: Response) => response.json());
   }
 
@@ -113,14 +113,14 @@ export class ApiService {
 
 
   getAllProfiles() {
-    return this.http.get('http://localhost:3000/profiles/all', options)
+    return this.http.get('http://localhost:3000/profile/all', options)
       .map((response: Response) => response.json());
   }
 
   profileDelete(profileid: number) {
-    const deleteOptions = options;
-    deleteOptions.body = {profileid: profileid};
-    return this.http.delete('http://localhost:3000/profile/delete', deleteOptions)
+    //const deleteOptions = options;
+    //deleteOptions.body = {profileid: profileid};
+    return this.http.post('http://localhost:3000/profile/delete',{profileid: profileid}, options)
       .map((response: Response) => response.json());
   }
 
@@ -157,16 +157,16 @@ export class ApiService {
   }
 
   modelDelete(mid: number) {
-    const deleteOptions = options;
-    deleteOptions.body = {modelid: mid};
-    return this.http.delete('http://localhost:3000/model/delete', deleteOptions)
+    //const deleteOptions = options;
+    //options.body = {modelid: mid};
+    return this.http.post('http://localhost:3000/model/delete', {mid: mid}, options)
       .map((response: Response) => response.json());
   }
 
 
   modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
     return this.http.post('http://localhost:3000/model/update', {
-      modelid: mid,
+      mid: mid,
       modelname: modelname,
       lastchange: lastchange,
       modelxml: modelxml,

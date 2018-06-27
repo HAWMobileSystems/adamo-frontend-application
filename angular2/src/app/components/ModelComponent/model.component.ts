@@ -54,11 +54,12 @@ export class ModelComponent {
                         this.selected = null;
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
                     console.log(error);
+                    this.alertService.error(JSON.parse(error._body).status);
                 });
     }
 
@@ -71,11 +72,12 @@ export class ModelComponent {
                         this.mqtt.publish('MODEL');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
+
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }
@@ -87,11 +89,11 @@ export class ModelComponent {
                         this.mqtt.publish('MODEL');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }
@@ -104,11 +106,11 @@ export class ModelComponent {
                         this.mqtt.publish('MODEL');
                     }
                     else {
-                        this.alertService.error(response.error)
+                        this.alertService.error(response._body)
                     }
                 },
                 error => {
-                    this.alertService.error(error.statusText);
+                    this.alertService.error(JSON.parse(error._body).status);
                     console.log(error);
                 });
     }

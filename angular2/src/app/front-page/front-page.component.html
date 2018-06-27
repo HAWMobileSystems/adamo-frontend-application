@@ -31,6 +31,7 @@
                            name="password" [(ngModel)]="model.password"
                            #password="ngModel" required autofocus/>
                     <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+                    <alert></alert>
                 </div>
                 <!--&lt;!&ndash;TODO Use project specific key (currently using key registrated for Lackmann)&ndash;&gt;
                 <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !captcha.valid }">

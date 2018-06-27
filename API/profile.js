@@ -103,25 +103,25 @@ router.post('/update', function (req, res) {
         res.status(400).send({ status: 'Profile name may not be empty!'});
         return;
     }  
-    if(!req.body.upid) {
+    if(!req.body.profileid) {
         res.status(400).send({ status: 'User profile may not be empty!'});
         return;
     }  
 
-    const upid = req.body.upid;
+    const profileid = req.body.profileid;
     const profile = req.body.profile;
     const permission = req.body.permission;
 
-    console.log(upid + ' ' + profile + ' ' + permission);
+    console.log(profileid + ' ' + profile + ' ' + permission);
 
     
     db.oneOrNone('select * from userprofile where profile = $1', [profile])
     .then(function (data) {
-        if(data && data.upid !== +upid){
-            console.log(data && data.upid !== +upid);
+        if(data && data.profileid !== +profileid){
+            console.log(data && data.profileid !== +profileid);
             res.status(400).send({ status: 'User profile already exists'})
         } else {
-             db.oneOrNone('update userprofile set profile = $1, permission = $2 where upid = $3', [profile, permission, upid])
+             db.oneOrNone('update userprofile set profile = $1, permission = $2 where upid = $3', [profile, permission, profileid])
              .then(function (data) {
                 res.send({ status: 'User profile updated successfully'}); 
             })
@@ -154,18 +154,18 @@ router.post('/update', function (req, res) {
 
 router.post('/delete', function (req, res) {
 
-    if(!req.body.upid) {
+    if(!req.body.profileid) {
         res.status(400).send({ status: 'User profile may not be empty!'});
         return;
     }
-    const upid = req.body.upid;
+    const profileid = req.body.profileid;
 
-    console.log(upid);
+    console.log(profileid);
 
-    db.oneOrNone('select from userprofile where upid = $1', [upid])
+    db.oneOrNone('select from userprofile where upid = $1', [profileid])
     .then(function (data) {
         if(data){
-            db.oneOrNone('delete from userprofile where upid =$1', [upid])
+            db.oneOrNone('delete from userprofile where upid =$1', [profileid])
             .then(function (data) {
                 res.send({ status: 'User profile deleted successfully', success: true});
             })

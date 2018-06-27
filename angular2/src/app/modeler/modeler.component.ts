@@ -630,6 +630,86 @@ export class ModelerComponent implements OnInit {
     }
   }
 
+  private extractVariables = () => {
+    if (this.lastDiagramXML === '') {
+      window.alert('No Diagram loaded!');
+    }
+    const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
+    const modeling = this.modeler.get(this.lookup.MODELING);
+    this.modeler.saveXML({format: true}, (err: any, xml: string) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      this.lastDiagramXML = xml;
+    });
+    //Alle Elemente der ElementRegistry holen
+    const elements = elementRegistry.getAll();
+    const varValMap = {};
+    //Alle Elemente durchlaufen um Variablen zu finden
+    // elements.forEach((element: any) => {
+    for (const element of elements) {
+      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+      if (element.businessObject.extensionElements) {
+        //Wenn vorhandne die Elemente auslesen
+        const extras = element.businessObject.extensionElements.get('values');
+        //Schleife über alle Elemente
+        for (let i = 0; i < extras[0].values.length; i++) {
+          const valueName = extras[0].values[i].name.toLowerCase();
+          //Prüfen ob der Name des Elementes IPIM_Val entspricht
+          if (valueName.startsWith('IPIM_Val_'.toLowerCase())) {
+            //Variablen als Key mit Wert in Map übernehmen
+            varValMap[valueName.replace('IPIM_Val_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+          }
+          //Prüfen ob der Name des Elementes IPIM_Val entspricht
+          if (valueName.startsWith('IPIM_META_'.toLowerCase())) {
+            //Variablen als Key mit Wert in Map übernehmen
+            varValMap[valueName.replace('IPIM_META_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+          }
+        }
+      }
+    }
+    return varValMap;
+  }
+
+  private evaluateVariables = (varValMap: any) => {
+
+    const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
+    const modeling = this.modeler.get(this.lookup.MODELING);
+
+    //Alle Elemente der ElementRegistry holen
+    const elements = elementRegistry.getAll();
+
+    //Alle Elemente durchlaufen um Evaluationsterme auszuwerten
+    for (const element of elements) {
+      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+      if (typeof element.businessObject.extensionElements !== 'undefined') {
+        //Wenn vorhandne die Elemente auslesen
+        const extras = element.businessObject.extensionElements.get('values');
+        //Schleife über alle Elemente
+        for (let i = 0; i < extras[0].values.length; i++) {
+          //Prüfen ob der Name des Elementes IPIM entspricht
+          if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+            //Stringoperationen um den Wert anzupassen.
+            let evalterm = extras[0].values[i].value.toLowerCase();
+            //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
+            while (evalterm.includes('[')) {
+              // [ ist vorhanden, daher String nach Substrings durchsuchen
+              const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
+              //evalterm mit String.replace veränderun und variablenwert einsetzen.
+              evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
+            }
+            // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
+            if (!eval(evalterm)) {
+              //Element über modeling Objekt löschen
+              modeling.removeElements([element]);
+            }
+          }
+        }
+      }
+    }
+  }
+
   private openFileDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
