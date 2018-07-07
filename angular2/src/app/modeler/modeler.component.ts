@@ -247,7 +247,7 @@ export class ModelerComponent implements OnInit {
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
         //  debugger;
-        return this.createModeler()
+        return this.createModeler();
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];

@@ -50,7 +50,6 @@ export class ModelerComponent2 implements OnInit {
   @Input() modelId: string;
   @Input() newDiagramXML: string;
   @Output() exportModel: EventEmitter<object> = new EventEmitter<object>();
-  @Output() loadedCompletely: EventEmitter<null> = new EventEmitter();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
@@ -210,12 +209,13 @@ export class ModelerComponent2 implements OnInit {
     } else {
       console.error('There is no Diagram to highlight');
     }
-  };
+  }
 
   private resetDiagram = () => {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
+    ;
     this.openDiagram(this.lastDiagramXML);
   };
   private debug = () => {
@@ -258,8 +258,6 @@ export class ModelerComponent2 implements OnInit {
       .subscribe(response => {
         this.router.navigate(['/front-page']);
       }, error => {
-
-        +
           console.log(error);
         // this.alertService.error(error)
       });
@@ -364,7 +362,6 @@ export class ModelerComponent2 implements OnInit {
     // Start with an empty diagram:
     this.url = this.urls[0].href;
     this.loadBPMN();
-    this.loadedCompletely.emit();
   }
 
   //$('#IPIM-Load').click(function () {
@@ -517,7 +514,6 @@ export class ModelerComponent2 implements OnInit {
    *
    */
 
-
   private loadBPMN() {
     // console.log('load', this.url, this.store);
     const canvas = this.modeler.get('canvas');
@@ -531,7 +527,10 @@ export class ModelerComponent2 implements OnInit {
   }
 
   private postLoad() {
+    console.log('publishing');
+    this.commandStack.publishXML();
     const canvas = this.modeler.get('canvas');
+
     canvas.zoom('fit-viewport');
   }
 

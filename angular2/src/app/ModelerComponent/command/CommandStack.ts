@@ -77,6 +77,10 @@ export class CommandStack {
         // user modeled something or
             // performed a undo/redo operation
             this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+                if (err) {
+                    console.log (err);
+                    return;
+                }
                        const transfer: any = {
                             IPIMID: this.id,
                             XMLDoc: xml
