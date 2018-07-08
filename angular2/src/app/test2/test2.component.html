@@ -1,7 +1,8 @@
 <div class="height-100" [ngSwitch]="page">
     <div class="height-10">
         <nav class="navbar navbar-default height-50" role="navigation">
-            <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
+            <!-- <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}"> -->
+            <ul class="nav navbar-nav">
                 <li *ngFor="let model of models" [ngClass]="{'active': page ===model.name}" (click)="page = model.name">
                     <a>{{model.name || 'unsaved model'}}</a></li>
                 <li [ngClass]="{'active': page ==='+'}" (click)="page = '+'"><a>+</a></li>

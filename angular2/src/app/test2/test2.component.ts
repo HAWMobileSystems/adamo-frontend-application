@@ -4,7 +4,7 @@ import {Router,} from '@angular/router';
 import {ApiService} from '../services/api.service';
 
 import {Model} from '../models/model';
-import {ModelerComponent2} from '../ModelerComponent/modeler.component'
+import {ModelerComponent2} from '../ModelerComponent/modeler.component';
 import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
