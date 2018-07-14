@@ -27,7 +27,7 @@
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 40%;
+    width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -41,7 +41,7 @@
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 40%;
+    width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -61,6 +61,24 @@
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s
+}
+
+.modal-form-group{
+    border: 1px dotted grey;
+    /*-moz-border-radius-topright: 30px 20px;
+    -moz-border-radius-topleft: 30px 20px; */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-top: 5px;
+}
+
+.modal-form-input{
+    width: 100%;
 }
 
 /* Add Animation */
@@ -91,7 +109,8 @@
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #be0000;
+    /*background-color: #be0000;*/
+    background-color: #52B415;
     color: white;
 }
 
@@ -106,7 +125,8 @@
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #be0000;
+    /*background-color: #be0000;*/
+    background-color: #52B415;
     color: black;
 }
 

@@ -3,11 +3,21 @@ import {Variable} from './variable';
 @Component({
     selector: 'variable-comp',
     template: `
-    <span>
-      Variable: <input type="text" [(ngModel)]="varName.name"> <input type="checkbox" value="Meta?" [(ngModel)]="varName.meta"> Meta?
-    </span>
-    <br>
-    <span> Value:  <input type="text" [(ngModel)]="varName.value"> </span>
+    <div> 
+    <form>
+      <div class = "modal-form-group">  
+        <label> Variable: </label>
+        <br>
+        <input type="text" [(ngModel)]="varName.name" class = "modal-form-input">
+        <br>
+        <label> Value: </label>
+        <br>
+        <input type="text" [(ngModel)]="varName.value" class = "modal-form-input">
+        <br>
+        <input type="checkbox" value="Meta?" [(ngModel)]="varName.meta"> Meta?
+      </div>
+    </form>
+  </div>
 	  `
 })
 export class VariableComponent {

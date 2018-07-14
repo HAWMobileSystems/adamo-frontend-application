@@ -63,6 +63,24 @@
     animation-duration: 0.4s
 }
 
+.modal-form-group{
+    border: 1px dotted grey;
+    /*-moz-border-radius-topright: 30px 20px;
+    -moz-border-radius-topleft: 30px 20px; */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-top: 5px;
+}
+
+.modal-form-input{
+    width: 100%;
+}
+
 /* Add Animation */
 @-webkit-keyframes animatetop {
     from {top:-300px; opacity:0} 
@@ -91,7 +109,8 @@
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #be0000;
+    /*   background-color: #be0000;*/
+    background-color: #52B415;
     color: white;
 }
 
@@ -106,8 +125,8 @@
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #be0000;
+/*    background-color: #be0000;*/
+    background-color: #52B415;
     color: black;
 }
-
 
