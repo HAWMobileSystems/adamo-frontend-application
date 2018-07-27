@@ -4,6 +4,9 @@
   "description": "A webpack starter for Angular",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
+    "start-full": "npm run start-mqtt-server | npm run start-node-backend | npm run start",
+    "start-mqtt-server": "node ../API/mqttserver.js",
+    "start-node-backend": "node ../API/index.js",
     "test": "karma start",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "tslint": "tslint",
