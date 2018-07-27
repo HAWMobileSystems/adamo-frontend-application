@@ -4,7 +4,7 @@
   "description": "A webpack starter for Angular",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
-    "start-full": "npm run start-mqtt-server | npm run start-node-backend | npm run start",
+    "start-full": "npm-run-all -p start-mqtt-server start-node-backend start",
     "start-mqtt-server": "node ../API/mqttserver.js",
     "start-node-backend": "node ../API/index.js",
     "test": "karma start",
@@ -87,6 +87,7 @@
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
     "ngx-dropzone-wrapper": "^4.0.2",
+    "npm-run-all": "^4.1.3",
     "null-loader": "^0.1.1",
     "phantomjs-prebuilt": "^2.1.7",
     "protractor": "~5.1.1",
