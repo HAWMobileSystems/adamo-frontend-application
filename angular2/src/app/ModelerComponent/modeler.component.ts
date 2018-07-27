@@ -27,6 +27,7 @@ import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal';
+import {EvalModal} from './modals/evaluatorModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
@@ -138,6 +139,12 @@ export class ModelerComponent2 implements OnInit {
 
   public openSubProcessModal = () => {
     this.getSubProcessList(this.lookup.SELECTION);
+    // this.variableModal.fillModal();
+    // const variableModal = new VariableModal(this.modeler);
+  }
+
+  public openEvaluatorModal = () => {
+    console.log('openEvaluatorModal clicked');
     // this.variableModal.fillModal();
     // const variableModal = new VariableModal(this.modeler);
   }
@@ -274,7 +281,8 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal,
+    [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal
   };
 
   /**

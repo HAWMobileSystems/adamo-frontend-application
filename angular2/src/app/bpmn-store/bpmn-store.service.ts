@@ -103,6 +103,14 @@ export class BPMNStore {
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
                 }
+            },
+            [COMMANDS.SET_IPIM_EVALUATOR]: {
+                group: 'ipim',
+                className: ['fa-cubes', 'fa'],
+                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                action: {
+                    click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
+                }
             }
         }).delay(1000);
     }
