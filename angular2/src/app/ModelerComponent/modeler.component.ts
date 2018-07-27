@@ -631,6 +631,8 @@ export class ModelerComponent2 implements OnInit {
             //Stringoperationen um den Wert anzupassen.
             let evalterm = extras[0].values[i].value.toLowerCase();
             //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
+            const safeEval = require("safe-eval")
+
             while (evalterm.includes('[')) {
               // [ ist vorhanden, daher String nach Substrings durchsuchen
               const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
@@ -638,7 +640,7 @@ export class ModelerComponent2 implements OnInit {
               evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
             }
             // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-            if (!eval(evalterm)) {
+            if (!safeEval(evalterm)) {
               //Element über modeling Objekt löschen
               modeling.removeElements([element]);
             }
