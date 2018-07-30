@@ -46,7 +46,7 @@ import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
 import {PermissionComponent} from "./components/PermissionComponent/permission.component";
-import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
+//import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from './ModelerComponent/modals/variables.component';
 import { InputVarComponent } from './ModelerComponent/modals/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
@@ -76,7 +76,7 @@ import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
         ModelLoaderComponent,
         RoleComponent,
         PermissionComponent,
-        Exp_frontpageComponent,
+        //Exp_frontpageComponent,
         UsermanagementComponent,
         Usermanagement2Component,
         RolemanagementComponent2,

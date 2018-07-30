@@ -26,7 +26,7 @@ export class BPMNStore {
             new Link('/diagrams/initial.bpmn'),
             new Link('/diagrams/initial2.bpmn'),
             new Link('/diagrams/pizza-collaboration.bpmn')
-        ]).delay(2000);
+        ]).delay(2);
     }
 
     public paletteEntries(): Observable<any> {
@@ -112,6 +112,6 @@ export class BPMNStore {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
                 }
             }
-        }).delay(1000);
+        }).delay(1);
     }
 }
