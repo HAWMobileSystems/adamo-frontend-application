@@ -63,12 +63,17 @@ router.post('/create', function (req, res) {
 
     console.log(role + ' ' + read + ' ' + write + ' ' + admin);
    
-    db.oneOrNone('select from role where role = $1', [role])
+    db.oneOrNone('select * from role where role = $1', [role])
         .then(function (data) {
             if(data){
                 res.status(400).send({ status: 'Role name already exists'})
             } else {
-                  db.oneOrNone('insert into role (role, read, write, admin) values ($1, $2, $3, $4)', [role, read, write, admin])
+                const tmpRead = (read == true); 
+                const tmpWrite = (write == true);
+                const tmpAdmin = (admin == true);
+                const tmpQuery = 'insert into role (role, read, write, admin) values ($1, ' + tmpRead + ', ' + tmpWrite + ', ' + tmpAdmin + ')'
+                console.log('querylog:', tmpQuery)
+                db.oneOrNone(tmpQuery, [role])
                   .then(function (data) {
                     res.send({ status: 'Role created successfully'}); 
                 })
@@ -115,10 +120,16 @@ router.post('/update', function (req, res) {
     
     db.oneOrNone('select * from role where role = $1', [role])
     .then(function (data) {
-        if(data && data.roleid !== +roleid){
+        if(data && data.rid !== +roleid){
+            console.log('MeinLOG', data, data.roleid, role, +roleid)
             res.status(400).send({ status: 'Role name already exists'})
         } else {
-             db.oneOrNone('update role set role = $1, read = $2, write = $3, admin = $4 where rid = $5', [role, read, write, admin, roleid])
+            const tmpRead = (read == true); 
+            const tmpWrite = (write == true);
+            const tmpAdmin = (admin == true);
+            const tmpQuery = 'update role set role = $1, read = ' + tmpRead + ', write = ' + tmpWrite + ', admin = ' + tmpAdmin + ' where rid = $2'
+            console.log('querylog:', tmpQuery)
+            db.oneOrNone(tmpQuery, [role, roleid])
              .then(function (data) {
                 res.send({ status: 'Role updated successfully', success: true});
             })
