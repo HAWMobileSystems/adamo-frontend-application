@@ -168,10 +168,8 @@ app.post('/authenticate', function (req, res) {
             })
             .catch(function (error) {
                 console.log(error);
-                response.message = 'Database error';
-                response.success = false;
-                response.error = error,
-                res.status(404).send(response);
+                response.message = 'User not found in the database';
+                res.status(404).send(response.message);
             });
     }
     catch (error) {
