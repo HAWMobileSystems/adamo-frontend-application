@@ -8,14 +8,8 @@ import {CustomPropertiesProvider} from './properties/props-provider';
 import {BPMNStore, Link} from '../bpmn-store/bpmn-store.service';
 
 const propertiesPanelModule = require('bpmn-js-properties-panel');
-// const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-//const camundaModdleDescriptor = require ('camunda-bpmn-moddle/resources/camunda');
 
-//const inherits = require('inherits');
-//const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
-// import { Inherits } from 'inherits';
-// import { CommandInterceptor } from 'diagram-js/lib/command/CommandInterceptor';
 import {CommandStack} from './command/CommandStack';
 import {CustomModdle} from './custom-moddle';
 import {CamundaModdle} from './camunda-moddle';
@@ -32,6 +26,8 @@ import {EvalModal} from './modals/evaluatorModal';
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
 import {ApiService} from '../services/api.service';
+import { Evaluator } from './evaluator/evaluator.component';
+import * as FileSaver from 'file-saver';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -48,24 +44,26 @@ const customPropertiesProviderModule = {
   providers: [BPMNStore]
 })
 export class ModelerComponent2 implements OnInit {
-  @Input() modelId: string;
-  @Input() newDiagramXML: string;
-  @Output() exportModel: EventEmitter<object> = new EventEmitter<object>();
+  @Input() public modelId: string;
+  @Input() public newDiagramXML: string;
+  @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
+  //private originModule: any = require('diagram-js-origin');
   private termsColored: boolean = false;
-  private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson']
+  private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson'];
   private lastDiagramXML: string = '';
   private url: string;
   private commandStack: any;
-  private _urls: Link[];
+  private evaluator: Evaluator;
+  private modelerUrls: Link[];
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
   private container: JQuery; // = '#js-drop-zone';
   private containerRef: string = '#js-canvas';
   private propsPanelRef: string = '#js-properties-panel';
-  // private newDiagramXML: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  private defaultModel: string = '/diagrams/scrum.bpmn';
   private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
   @ViewChild('variableModal')
   private variableModal: VariableModal;
@@ -75,6 +73,8 @@ export class ModelerComponent2 implements OnInit {
   private termModal: TermModal;
   @ViewChild('SubProcessModal')
   private subProcessModal: SubProcessModal;
+  @ViewChild('EvalModal')
+  private evaluatorModal: EvalModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
@@ -88,9 +88,9 @@ export class ModelerComponent2 implements OnInit {
     SELECTION: 'selection',
     VALUES: 'values'
   };
-  private hideLoader = true;
+  private hideLoader : boolean = true;
 
-  onNotify(message: string): void {
+  public onNotify(message: string): void {
     this.hideLoader = true;
     this.openDiagram(message);
   }
@@ -105,15 +105,15 @@ export class ModelerComponent2 implements OnInit {
     return this.modelId;
   }
 
-  get urls(): Link[] {
-    return this._urls;
-  }
+  // get urls(): Link[] {
+  //   return this.modelerUrls;
+  // }
 
-  set urls(u: Link[]) {
-    console.log('urls: ', u);
-    this._urls = u;
-    this.url = u[0].href;
-  }
+  // set urls(u: Link[]) {
+  //   console.log('urls: ', u);
+  //   this.modelerUrls = u;
+  //   this.url = u[0].href;
+  // }
 
   // Extract the following to the separate controler
   public openTermModal = () => {
@@ -144,9 +144,11 @@ export class ModelerComponent2 implements OnInit {
   }
 
   public openEvaluatorModal = () => {
-    console.log('openEvaluatorModal clicked');
+    this.evaluatorModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
     // this.variableModal.fillModal();
     // const variableModal = new VariableModal(this.modeler);
+    this.evaluatorModal.modal.open();
+    console.log('ElevatorModal_Clicked!');
   }
 
   private getSubProcessList = (scope: string) => {
@@ -184,7 +186,7 @@ export class ModelerComponent2 implements OnInit {
       this.subProcessModal.setProps(this.modeler, terms);
       this.subProcessModal.modal.open();
     }
-  };
+  }
 
   public closeTermController = () => {
     this.termModal.close();
@@ -222,43 +224,41 @@ export class ModelerComponent2 implements OnInit {
     if (this.lastDiagramXML === '') {
       window.alert('No Diagram loaded!');
     }
-    ;
     this.openDiagram(this.lastDiagramXML);
-  };
+  }
   private debug = () => {
     console.log(this.modeler);
-    console.log(this)
-  };
+    console.log(this);
+  }
 
   private toggleLoader = () => {
     this.hideLoader = !this.hideLoader;
-  };
+  }
 
   private saveDiagram = () => {
-    console.log('savediagram');
     const downloadLink = $('#js-download-diagram');
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
-      console.log('xml:', xml, 'err', err);
-      setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+      const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
+      //const url = window.URL.createObjectURL(blob);
+      //window.open(url);
+      FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
+    });
+  }
+
+  private saveSVG = () => {
+    const downloadSvgLink = $('#js-download-SVG');
+    this.modeler.saveSVG((err : any, svg : any) => {
+      const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+      //const url = window.URL.createObjectURL(blob);
+      //window.open(url);
+      FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
     });
 
-    function setEncoded(link: any, name: any, data: any) {
-      const encodedData = encodeURIComponent(data);
-
-      if (data) {
-        link.addClass('active').attr({
-          href: 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
-          download: name
-        });
-      } else {
-        link.removeClass('active');
-      }
-    }
-  };
+  }
 
   private administrate = () => {
     this.router.navigate(['/administration-page']);
-  };
+  }
 
   private logout = () => {
     this.apiService.logout()
@@ -268,7 +268,16 @@ export class ModelerComponent2 implements OnInit {
           console.log(error);
         // this.alertService.error(error)
       });
-  };
+  }
+
+  private zoomToFit = () => {
+
+    this.evaluator = new Evaluator('root', 'ID', this.apiService);
+    const test = this.evaluator.getXMLFromDB('6');
+    debugger;
+   const canvasObject = this.modeler.get('canvas');
+   canvasObject.zoom('fit-viewport');
+  }
 
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openVariableModal,
@@ -282,7 +291,9 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
     [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal,
-    [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal
+    [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal,
+    [COMMANDS.ZOOM_TO_FIT] : this.zoomToFit,
+    [COMMANDS.EXPORT_SVG] : this.saveSVG
   };
 
   /**
@@ -291,15 +302,16 @@ export class ModelerComponent2 implements OnInit {
    * and is no longer recognized as a function
    */
   public ngOnInit() {
-    console.log('modelId: ',this.modelId);
+    console.log('modelId: ', this.modelId);
     this.commandQueue = new Subject();
-    this.store.listDiagrams()
-      .do(links => this.urls = links)
-      .flatMap(() => this.store.paletteEntries())
+    // this.store.listDiagrams()
+    //   .do(links => this.urls = links)
+    //   .flatMap(() =>
+      this.store.paletteEntries()
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
         //  debugger;
-        return this.createModeler()
+        return this.createModeler();
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
@@ -348,6 +360,7 @@ export class ModelerComponent2 implements OnInit {
         this.propertiesPanelModule,
         this.propertiesProviderModule,
         // customPropertiesProviderModule,
+        //O0riginModule,
         customPaletteModule
       ],
       moddleExtensions: {
@@ -368,7 +381,8 @@ export class ModelerComponent2 implements OnInit {
     this.commandStack = new CommandStack(this.modeler, this);
     // debugger;
     // Start with an empty diagram:
-    this.url = this.urls[0].href;
+    const linkToDiagram = new Link(this.defaultModel);
+    this.url = linkToDiagram.href; //this.urls[0].href;
     this.loadBPMN();
   }
 
@@ -403,7 +417,7 @@ export class ModelerComponent2 implements OnInit {
     };
     // TODO: Fixme
 
-    console.log(container)
+    console.log(container);
     const firstElementInContainer = container.get(0);
 
     if (firstElementInContainer) {
@@ -423,64 +437,6 @@ export class ModelerComponent2 implements OnInit {
     });
   }
 
-  private commandTest = () => {
-    const elements = this.modeler.get('elementRegistry');
-    debugger;
-    //   const COMMANDSTACK : string = 'commandStack';
-    //   const cs = this.modeler.get(COMMANDSTACK);
-
-    //   const testTerm = cs._stack[0];
-
-    //   cs.execute(testTerm.command, testTerm.context);
-
-  }
-
-  private commandReset = () => {
-    debugger;
-    this.commandStack.commandTest();
-    //   const COMMANDSTACK : string = 'commandStack';
-    //   const cs = this.modeler.get(COMMANDSTACK);
-
-    //   const testTerm = cs._stack[0];
-
-    //   cs.execute(testTerm.command, testTerm.context);
-
-  }
-
-  private commandGet = () => {
-    debugger;
-    this.commandStack.commandTest();
-    //   const COMMANDSTACK : string = 'commandStack';
-    //   const cs = this.modeler.get(COMMANDSTACK);
-
-    //   const testTerm = cs._stack[0];
-
-    //   cs.execute(testTerm.command, testTerm.context);
-
-  };
-  //  private commandLogger = (eventBus: any) => {
-  //     CommandInterceptor.call(this, eventBus);
-  //     CommandInterceptor.preExecute( ( event : any ) =>  {
-  //      console.log('command pre-execute', event);
-  //     });
-  //  }
-  //inherits(commandLogger, commandInterceptor);
-
-  // import {debounce} from 'lodash';
-  // const exportArtifacts = debounce(() => {
-
-  // this.modeler.on('commandStack.changed', this.exportArtifacts);
-  //   const downloadLink = $('#js-download-diagram');
-  //   const downloadSvgLink = $('#js-download-svg');
-  //   //saveSVG((err : any, svg : any) => {
-  //   // setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
-  //   // });
-
-  //   this.saveDiagram((err: any, xml: any) => {
-  //     this.modeler.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
-  //   });
-  // }, 500);
-
   private createNewDiagram() {
     this.openDiagram(this.newDiagramXML);
   }
@@ -491,8 +447,7 @@ export class ModelerComponent2 implements OnInit {
           if (response.success) {
             console.log(response.data);
             this.openDiagram(response.data.modelxml);
-          }
-          else {
+          }  else { console.log(response.error );
           }
         },
         error => {
@@ -516,7 +471,7 @@ export class ModelerComponent2 implements OnInit {
       //     .addClass('with-diagram');
       // }
     });
-  };
+  }
 
   /**
    *
@@ -577,7 +532,7 @@ export class ModelerComponent2 implements OnInit {
       }
     }
     return terms;
-  };
+  }
 
   private evaluateProcess = () => {
     if (this.lastDiagramXML === '') {
@@ -630,15 +585,17 @@ export class ModelerComponent2 implements OnInit {
           if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
             //Stringoperationen um den Wert anzupassen.
             let evalterm = extras[0].values[i].value.toLowerCase();
-            //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
-            const safeEval = require("safe-eval")
 
+            //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
             while (evalterm.includes('[')) {
               // [ ist vorhanden, daher String nach Substrings durchsuchen
               const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
               //evalterm mit String.replace veränderun und variablenwert einsetzen.
               evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
             }
+            //sichere Sandbox für Eval Auswertung schaffen
+            const safeEval = require('safe-eval');
+
             // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
             if (!safeEval(evalterm)) {
               //Element über modeling Objekt löschen
@@ -661,8 +618,8 @@ export class ModelerComponent2 implements OnInit {
   private getAsFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsText(file); // , 'UTF-16')
-    reader.onerror = (err: ErrorEvent) => {
-      console.error('error during reading file');
+    reader.onerror = (e: any) => {
+      console.log('Error opening File');
     };
     reader.onload = (e: any) => {
       this.lastDiagramXML = reader.result;
