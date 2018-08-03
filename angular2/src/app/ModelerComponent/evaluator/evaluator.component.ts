@@ -8,6 +8,8 @@ import {Http} from '@angular/http';
 import {Observable, Subject} from 'rxjs';
 import {ModelerComponent2} from '../../ModelerComponent/modeler.component';
 
+import {ApiService} from '../../services/api.service';
+
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
 
@@ -21,7 +23,7 @@ const customPropertiesProviderModule = {
 };
 
 export class Evaluator {
-  private modeler : any;  //Modeler from Main Application
+  private modeler: any = require('bpmn-js/lib/Modeler.js');
   private rootxml : string;
   private rootID : string;
   //private xmls : String[];
@@ -34,10 +36,11 @@ export class Evaluator {
 
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
-  //Ask About
+
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
   private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
+  private apiService: ApiService;
 
   private lookup: any = {
     MODELING: 'modeling',
@@ -73,7 +76,8 @@ export class Evaluator {
     });
   }
 
-  constructor(rootID : string, rootXML : string) {
+  constructor(rootID : string, rootXML : string, apiService : ApiService) {
+    this.apiService = apiService;
     this.rootxml = rootXML;
     this.rootID = rootID;
     this.xmls.set(rootID, rootXML);
@@ -113,9 +117,21 @@ export class Evaluator {
     });
   }
 
-  private getXMLFromDB(id : string) {
-    //TODO Get Model with ID from DB!
-    return  'XML';
+  public getXMLFromDB(id : string): string {
+
+    this.getDataFromDB(id)
+    .then(data => console.log(data));
+
+    return 'Test';
+    //const responsePromise = await this.apiService.getModel(id).toPromise();
+
+   // return responsePromise; //String(response.data.modelxml);
+  }
+
+  private async getDataFromDB(id: string): Promise<String> {
+    const response = await fetch('http://localhost:3000/model/getmodel/' + id);
+    const data = await response.json();
+    return data;
   }
 
   public extractSubmodels(xml : string) {
@@ -181,7 +197,7 @@ export class Evaluator {
         }
       }
     });
-  };
+  }
 
   private evaluateProcesses = () => {
     this.xmls.forEach((value: string, key: string) => {
@@ -211,8 +227,10 @@ export class Evaluator {
                 //evalterm mit String.replace veränderun und variablenwert einsetzen.
                 evalterm = evalterm.replace('[' + substr + ']', this.varValMap[substr]);
               }
+              //Sichere Eval Sandbox schaffen
+              const safeEval = require('safe-eval');
               // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-              if (!eval(evalterm)) {
+              if (!safeEval(evalterm)) {
                 //Element über modeling Objekt löschen
                 modeling.removeElements([element]);
               }
