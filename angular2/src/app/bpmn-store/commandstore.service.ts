@@ -12,5 +12,6 @@ export const COMMANDS = {
     LOAD: 'load',
     ADMINISTRATE: 'administrate',
     LOGOUT: 'logout',
-    SET_IPIM_SUBPROCESS: 'set-ipim-subprocess'
+    SET_IPIM_SUBPROCESS: 'set-ipim-subprocess',
+    SET_IPIM_EVALUATOR: 'set-ipim-evaluator'
 };

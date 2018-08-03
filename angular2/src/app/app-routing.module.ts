@@ -12,7 +12,7 @@ import {RolemanagementComponent2} from "./rolemanagement/rolemanagement2.compone
 import {UsermanagementComponent} from "./usermanagement/usermanagement.component";
 import {Usermanagement2Component} from "./usermanagement/usermanagement2.component";
 import {AdministrationPageComponent} from "./administration-page/administration-page.component";
-import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
+//import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 
 const routes: Routes = [
     {path: 'front-page', component: FrontPageComponent},
@@ -27,7 +27,7 @@ const routes: Routes = [
     {path: 'userManagement', component: UsermanagementComponent},
     {path: 'userManagement2', component: Usermanagement2Component},
     {path: 'administration-page', component: AdministrationPageComponent},
-    {path: 'expFrontpage' , component: Exp_frontpageComponent},
+    //{path: 'expFrontpage' , component: Exp_frontpageComponent},
 
     {path: '', redirectTo: '/front-page', pathMatch: 'full'},
     {path: '**', redirectTo: '/front-page', pathMatch: 'full'},

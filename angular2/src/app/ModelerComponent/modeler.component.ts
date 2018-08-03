@@ -26,7 +26,8 @@ import {FileReaderEvent} from './interfaces';
 import {TermModal} from './modals/TermModal';
 import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
-import {SubprocessModal} from './modals/SubprocessModal';
+import {SubProcessModal} from './modals/SubProcessModal';
+import {EvalModal} from './modals/evaluatorModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
@@ -138,6 +139,12 @@ export class ModelerComponent2 implements OnInit {
 
   public openSubprocessModal = () => {
     this.getSubProcessList(this.lookup.SELECTION);
+    // this.variableModal.fillModal();
+    // const variableModal = new VariableModal(this.modeler);
+  }
+
+  public openEvaluatorModal = () => {
+    console.log('openEvaluatorModal clicked');
     // this.variableModal.fillModal();
     // const variableModal = new VariableModal(this.modeler);
   }
@@ -274,7 +281,8 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal,
+    [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal
   };
 
   /**
@@ -623,6 +631,8 @@ export class ModelerComponent2 implements OnInit {
             //Stringoperationen um den Wert anzupassen.
             let evalterm = extras[0].values[i].value.toLowerCase();
             //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
+            const safeEval = require("safe-eval")
+
             while (evalterm.includes('[')) {
               // [ ist vorhanden, daher String nach Substrings durchsuchen
               const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
@@ -630,7 +640,7 @@ export class ModelerComponent2 implements OnInit {
               evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
             }
             // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-            if (!eval(evalterm)) {
+            if (!safeEval(evalterm)) {
               //Element über modeling Objekt löschen
               modeling.removeElements([element]);
             }

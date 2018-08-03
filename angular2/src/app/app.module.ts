@@ -18,10 +18,10 @@ import { ModelerComponent } from './modeler/modeler.component';
 import { ModelerComponent2} from './ModelerComponent/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
-import { TermModal} from './modeler/modals/TermModal';
-import { VariableModal} from './modeler/modals/VariableModal';
-import { InputModal} from './modeler/modals/InputModal';
-import { SubprocessModal } from './modeler/modals/SubprocessModal';
+import { TermModal} from './ModelerComponent/modals/TermModal';
+import { VariableModal} from './ModelerComponent/modals/VariableModal';
+import { InputModal} from './ModelerComponent/modals/InputModal';
+import { SubProcessModal } from './ModelerComponent/modals/SubProcessModal';
 
 // import { AlertComponent } from './alert/index';
 import {AlertComponent} from './components/Alert/alert.component';
@@ -46,10 +46,10 @@ import {ModelComponent} from "./components/ModelComponent/model.component";
 import {ModelLoaderComponent} from "./components/ModelLoaderComponent/modelloader.component";
 import {RoleComponent} from "./components/RoleComponent/role.component";
 import {PermissionComponent} from "./components/PermissionComponent/permission.component";
-import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
-import {VariableComponent} from "./modeler/modals/variables.component";
-import { InputVarComponent } from './modeler/modals/input.component';
-
+//import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
+import {VariableComponent} from './ModelerComponent/modals/variables.component';
+import { InputVarComponent } from './ModelerComponent/modals/input.component';
+import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
 
 
 //check for correct branch!
@@ -76,7 +76,7 @@ import { InputVarComponent } from './modeler/modals/input.component';
         ModelLoaderComponent,
         RoleComponent,
         PermissionComponent,
-        Exp_frontpageComponent,
+        //Exp_frontpageComponent,
         UsermanagementComponent,
         Usermanagement2Component,
         RolemanagementComponent2,
@@ -91,7 +91,8 @@ import { InputVarComponent } from './modeler/modals/input.component';
         TermModal,
         VariableModal,
         InputModal,
-        SubprocessModal,
+        SubProcessModal,
+        EvalModal,
         VariableComponent,
         InputVarComponent
     ],

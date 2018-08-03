@@ -26,7 +26,7 @@ export class BPMNStore {
             new Link('/diagrams/initial.bpmn'),
             new Link('/diagrams/initial2.bpmn'),
             new Link('/diagrams/pizza-collaboration.bpmn')
-        ]).delay(2000);
+        ]).delay(2);
     }
 
     public paletteEntries(): Observable<any> {
@@ -111,7 +111,15 @@ export class BPMNStore {
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
                 }
+            },
+            [COMMANDS.SET_IPIM_EVALUATOR]: {
+                group: 'ipim',
+                className: ['fa-cubes', 'fa'],
+                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                action: {
+                    click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
+                }
             }
-        }).delay(1000);
+        }).delay(1);
     }
 }
