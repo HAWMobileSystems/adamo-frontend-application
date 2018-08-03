@@ -1,4 +1,5 @@
-export function PaletteProvider(palette: any, create: any, elementFactory: any, spaceTool: any, lassoTool: any, extraPaletteEntries: any, commandQueue:any) {
+export function PaletteProvider(
+    palette: any, create: any, elementFactory: any, spaceTool: any, lassoTool: any, extraPaletteEntries: any, commandQueue: any) {
     this._create = create;
     this._elementFactory = elementFactory;
     this._spaceTool = spaceTool;
@@ -7,26 +8,24 @@ export function PaletteProvider(palette: any, create: any, elementFactory: any, 
     this._commandQueue = commandQueue;
     palette.registerProvider(this);
 }
-PaletteProvider["$inject"] = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'extraPaletteEntries', 'commandQueue'];
+PaletteProvider['$inject'] = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'extraPaletteEntries', 'commandQueue'];
 
 PaletteProvider.prototype.getPaletteEntries = function (element: any) {
-    var self = this;
+    const self = this;
 
-    var actions = {},
-        create = this._create,
-        elementFactory = this._elementFactory,
-        spaceTool = this._spaceTool,
-        lassoTool = this._lassoTool,
-        extraPaletteEntries = this._extraPaletteEntries,
-        commandQueue = this._commandQueue
-        ;
+    const actions = {};
+    const create = this._create;
+    const elementFactory = this._elementFactory;
+    const spaceTool = this._spaceTool;
+    const lassoTool = this._lassoTool;
+    const extraPaletteEntries = this._extraPaletteEntries;
+    const commandQueue = this._commandQueue;
 
     console.log('Palette-provider: extraPaletteEntries=', extraPaletteEntries);
 
-
     function createAction(type: string, group: string, className: string, title: string = null, options: any = {}) {
         function createListener(event: any) {
-            var shape = elementFactory.createShape(Object.assign({type: type}, options));
+            const shape = elementFactory.createShape(Object.assign({type: type}, options));
             if (options) {
                 shape.businessObject.di.isExpanded = options.isExpanded;
             }
@@ -61,7 +60,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             group: 'row',
             separator: true
         },
-        'save': {
+        save: {
             group: 'storage',
             className: ['fa-floppy-o', 'fa'],
             title: 'SAVE',
@@ -69,7 +68,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 click: () => commandQueue.next({action: 'save'})
             }
         },
-        'load': {
+        load: {
             group: 'storage',
             className: ['fa-database', 'fa'],
             title: 'LOAD',
@@ -77,7 +76,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 click: () => commandQueue.next({action: 'load'})
             }
         },
-        'administrate': {
+        administrate: {
             group: 'storage',
             className: ['fa-lock', 'fa'],
             title: 'ADMINISTRATE',
@@ -85,7 +84,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 click: () => commandQueue.next({action: 'administrate'})
             }
         },
-        'logout': {
+        logout: {
             group: 'storage',
             className: ['fa-sign-out', 'fa'],
             title: 'LOGOUT',
@@ -98,7 +97,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             className: ['fa-print', 'fa'],
             title: 'EXPORT TO SVG',
             action: {
-                click: () => console.log('EXPORT TO SVG')
+                click: () => commandQueue.next({action: 'Export SVG'})
             }
         },
         'tool-separator-storage': {
@@ -110,23 +109,13 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             className: ['fa-map-o', 'fa'],
             title: 'Zoom-To-Fit',
             action: {
-                click: () => console.log('Zoom-To-Fit')
-            }
-        },
-        'view.reset-zoom': {
-            group: 'view',
-            className: ['fa-binoculars', 'fa'],
-            title: 'Reset Zoom',
-            action: {
-                click: () => console.log('Reset Zoom')
+                click: () => commandQueue.next({action: 'zoom2fit'})
             }
         },
         'view.tool-separator-view': {
             group: 'view',
             separator: true
         },
-
-
         'lasso-tool': {
             group: 'advanced',
             className: 'bpmn-icon-lasso-tool',
