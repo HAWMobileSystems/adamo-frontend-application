@@ -51,7 +51,8 @@
       "LF"
     ],
     "max-classes-per-file": [
-      false
+      false, 
+      10
     ],
     "max-file-line-count": [
       false
@@ -89,7 +90,7 @@
       true
     ],
     "no-console": [
-      true,
+      false,
       "debug",
       "info",
       "log",
@@ -152,7 +153,7 @@
     "no-reference": true,
     "no-reference-import": true,
     "no-regex-spaces": true,
-    "no-require-imports": true,
+    "no-require-imports": false,
     "no-reserved-keywords": true,
     "no-shadowed-variable": true,
     "no-single-line-block-comment": true,
@@ -182,7 +183,7 @@
     "no-unused-expression": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
-    "no-var-requires": true,
+    "no-var-requires": false,
     "no-var-self": true,
     "no-void-expression": false,
     "no-with-statement": true,
@@ -248,7 +249,7 @@
     "restrict-plus-operands": false,
     "semicolon": [
       true,
-      "ignore-bound-class-methods"
+      "always"
     ],
     "space-before-function-paren": false,
     "strict-boolean-expressions": false,
