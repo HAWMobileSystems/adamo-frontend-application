@@ -17,7 +17,7 @@ import { InputVarComponent } from './input.component';
       <p>Please specify the values used:</p>
       <form>
         <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-        <fieldset id="inputfset">
+        <fieldset id="evalfset">
           <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
         </fieldset>
       </form>
@@ -65,7 +65,7 @@ export class EvalModal extends ModalComponent {
   }
 
   public cancel() : void {
-      this.clearModal('inputfset');
+      this.clearModal('evalfset');
       this.dismiss();
   }
 
@@ -74,18 +74,18 @@ export class EvalModal extends ModalComponent {
   }
 
   private opened() {
-    this.fillModal();
+    console.log('ElevatorModal opened');
   }
 
   private dismissed() {
-    console.log('InputModal Dissmissed');
+    console.log('ElevatorModal Dissmissed');
   }
 
   private closed() {
-    console.log('InputModal closed');
+    console.log('ElevatorModal closed');
   }
 
-  public clearModal(s: string){
+  public clearModal(s: string) {
     //Bereich zum Löschen per getElement abfragen
     const inpNode = document.getElementById(s);
     //Solange es noch ein firstChild gibt, wird dieses entfernt!
@@ -155,21 +155,4 @@ export class EvalModal extends ModalComponent {
     this.variables.push(new Variable(name, value, meta));
   }
 
-   private insertInputField(pname: string, inpval: string, pform: string) {
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('name', pname);
-    inputField.setAttribute('value', inpval);
-    inputField.setAttribute('id', 'Input_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-    const br = document.createElement('br');
-
-    const node = document.createTextNode('Variable ' + pname + ':     ');
-
-    document.getElementById(pform).appendChild(node);
-    document.getElementById(pform).appendChild(document.createElement('br'));
-    document.getElementById(pform).appendChild(inputField);
-    //document.getElementById(pform).appendChild(br);
-    document.getElementById(pform).appendChild(br);
-
-  }
 }
