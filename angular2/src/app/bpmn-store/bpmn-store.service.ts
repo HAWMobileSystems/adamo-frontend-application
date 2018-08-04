@@ -82,7 +82,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['fa-tasks', 'fa'],
+                className: ['fa-object-ungroup', 'fa'],
                 title: COMMANDS.SET_SUBPROCESS,
                 action: {
                     click: () => console.log('openSubProcessModal')
@@ -98,7 +98,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['fa-beer', 'fa'],
+                className: ['fa-object-group', 'fa'],
                 title: COMMANDS.SET_IPIM_SUBPROCESS,
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
