@@ -18,19 +18,19 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
-    private collab: ModelerComponent2;
+    private modelerComponenetRoot: ModelerComponent2;
 
     //Commandstack Class
 
-    constructor(modeler : any, collab : ModelerComponent2) {
+    constructor(modeler : any, modelerComponenetRoot : ModelerComponent2) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
         this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
         this.client  = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
         this.id = this.guidGenerator();  //generate the unique ID for this Browser
-        this.collab = collab;
-        this.topic = this.collab.modelId;
+        this.modelerComponenetRoot = modelerComponenetRoot;
+        this.topic = this.modelerComponenetRoot.modelId;
 
         this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
@@ -73,7 +73,7 @@ export class CommandStack {
       }
 
     //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
-    public publishXML = () => {
+    public publishXML = (): void => {
         // user modeled something or
             // performed a undo/redo operation
             this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
@@ -112,18 +112,14 @@ export class CommandStack {
                 event.context.IPIMremote = 'yes';
                 console.log('IPIM command execute logger', event);
 
-                // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-                //     this.client.publish('IPIM', xml);
-                // });
-                //console.log(this.modeler.saveXML());
                this.client.publish('IPIM', JSON.stringify(event));
-               //this.client.publish('IPIM', this.modeler.saveXML());
+
           }
         });
     }
 
     //Creates a unique GUI for each Client to eliminate echos
-    public  guidGenerator() {
+    public  guidGenerator() : string{
         const S4 = () => {
         return (((1 + Math.random())*0x10000)|0).toString(16).substring(1);
         };
