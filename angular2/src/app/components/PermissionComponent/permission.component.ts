@@ -33,9 +33,14 @@ export class PermissionComponent {
   };
 
   private permissionCreate(uid: any, mid: any, role: any){
+      console.log(uid,mid,role);
     this.apiService.permissionCreate(uid, mid, role)
       .subscribe(response => {
           if (response.success) {
+              this.alertService.success('Permission successfully created');
+              this.selected_permission=null;
+              this.selected_user=null;
+              this.selected_model=null;
             // this.roles = response.data;
           }
           else {
@@ -47,9 +52,49 @@ export class PermissionComponent {
         });
   }
 
-  private permissionUpdate(pid: any, role: any){
-    this.apiService.permissionUpdate
+  private permissionDelete(pid: any){
+      console.log(pid);
+      this.apiService.permissionDelete(pid)
+          .subscribe(response => {
+                    if (response.success) {
+                        this.alertService.success('Permission deleted');
+                        this.selected_permission=null;
+                        this.selected_user=null;
+                        this.selected_model=null;
+                        // this.roles = response.data;
+                    }
+                    else {
+                        this.alertService.error(response.error)
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
+    }
+
+  private permissionUpdate(pid: any, rid: any, uid: any, mid: any){
+      console.log(uid,rid,pid,mid);
+    this.apiService.permissionUpdate(uid,mid,rid,pid)
+  .subscribe(response => {
+              if (response.success) {
+                  this.alertService.success('Permission updated');
+                  this.selected_permission=null;
+                  this.selected_user=null;
+                  this.selected_model=null;
+                  // this.roles = response.data;
+              }
+              else {
+                  this.alertService.error(response.error)
+              }
+          },
+          error => {
+              console.log(error);
+          });
   }
+/*
+  private permissionDelete(pid: any, role: any){
+      this.apiService.permissionDelete
+  }*/
 
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }
@@ -126,6 +171,7 @@ export class PermissionComponent {
       .subscribe(response => {
           if (response.success) {
             this.selected_permission = response.data;
+              console.log(this.selected_permission);
           }
           else {
             this.alertService.error(response._body)

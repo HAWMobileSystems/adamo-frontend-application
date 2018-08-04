@@ -145,8 +145,10 @@ export class UserComponent {
           console.log(response);
           if (response.success) {
             this.mqtt.publish('USER');
-            this.alertService.success(response);
-            console.log(response);
+            this.alertService.success('User successfully deleted');
+
+            //console.log(response);
+
           }
           else {
             this.alertService.error(response._body)
