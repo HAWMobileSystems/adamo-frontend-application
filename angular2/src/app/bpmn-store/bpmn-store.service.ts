@@ -88,14 +88,6 @@ export class BPMNStore {
                     click: () => console.log('two-column')
                 }
             },
-            [COMMANDS.EXTRA]: {
-                group: 'storage',
-                className: ['fa-coffee', 'fa'],
-                title: 'EXTRA',
-                action: {
-                    click: () => console.log('EXTRA')
-                }
-            },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
                 className: ['fa-beer', 'fa'],
