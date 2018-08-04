@@ -86,7 +86,6 @@ export class VariableModal extends ModalComponent {
 
     public fillModal(): void {
         console.log('VariableModal fillModal');
-        debugger;
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
         const elementRegistry = this.modeler.get('elementRegistry');
         const modeling = this.modeler.get('modeling');

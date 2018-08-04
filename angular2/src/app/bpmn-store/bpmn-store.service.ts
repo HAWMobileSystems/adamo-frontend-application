@@ -16,18 +16,18 @@ export class BPMNStore {
     constructor(private http: Http) {
     }
 
-    public listDiagrams(): Observable<Link[]> {
-        // console.log('listDiagrams');
-        // This could be async and coming from a server:
+    // public listDiagrams(): Observable<Link[]> {
+    //     // console.log('listDiagrams');
+    //     // This could be async and coming from a server:
 
-        // TODO: async read from folder via fs read async
-        return Observable.of([
-            new Link('/diagrams/scrum.bpmn'),
-            new Link('/diagrams/initial.bpmn'),
-            new Link('/diagrams/initial2.bpmn'),
-            new Link('/diagrams/pizza-collaboration.bpmn')
-        ]).delay(2);
-    }
+    //     // TODO: async read from folder via fs read async
+    //     return Observable.of([
+    //         new Link('/diagrams/scrum.bpmn'),
+    //         new Link('/diagrams/initial.bpmn'),
+    //         new Link('/diagrams/initial2.bpmn'),
+    //         new Link('/diagrams/pizza-collaboration.bpmn')
+    //     ]).delay(2);
+    // }
 
     public paletteEntries(): Observable<any> {
         // This could be async and coming from a server:
@@ -77,7 +77,7 @@ export class BPMNStore {
                 className: ['fa-tasks', 'fa'],
                 title: COMMANDS.SET_TERM,
                 action: {
-                    click: () => console.log('openTermModal') 
+                    click: () => console.log('openTermModal')
                 }
             },
             [COMMANDS.SET_SUBPROCESS]: {
@@ -96,14 +96,6 @@ export class BPMNStore {
                     click: () => console.log('two-column')
                 }
             },
-            [COMMANDS.EXTRA]: {
-                group: 'storage',
-                className: ['fa-coffee', 'fa'],
-                title: 'EXTRA',
-                action: {
-                    click: () => console.log('EXTRA')
-                }
-            },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
                 className: ['fa-beer', 'fa'],
@@ -115,7 +107,7 @@ export class BPMNStore {
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
                 className: ['fa-cubes', 'fa'],
-                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                title: COMMANDS.SET_IPIM_EVALUATOR,
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
                 }

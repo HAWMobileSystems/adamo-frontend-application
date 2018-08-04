@@ -195,8 +195,13 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  permissionUpdate(uid: any, mid: any, role:any){
-    return this.http.post('http://localhost:3000/permission/update', {uid: uid, mid: mid, role: role}, options)
+  permissionDelete(pid: any){
+    return this.http.post('http://localhost:3000/permission/delete', {pid: pid}, options)
+        .map((response: Response) => response.json());
+    }
+
+  permissionUpdate(uid: any, mid: any, rid:any, pid: any){
+    return this.http.post('http://localhost:3000/permission/update', {uid: uid, mid: mid, rid: rid, pid: pid}, options)
       .map((response: Response) => response.json());
   }
 }
