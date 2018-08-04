@@ -3,9 +3,9 @@ import {Variable} from './variable';
 @Component({
     selector: 'variable-comp',
     template: `
-    <div> 
+    <div>
     <form>
-      <div class = "modal-form-group">  
+      <div class = "modal-form-group">
         <label> Variable: </label>
         <br>
         <input type="text" [(ngModel)]="varName.name" class = "modal-form-input">

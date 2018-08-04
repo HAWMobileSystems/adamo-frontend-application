@@ -54,7 +54,7 @@ export class TermModal extends ModalComponent {
   public setProps(modeler: any, termList: any) {
     this.termList = termList;
     this.modeler = modeler;
-    if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '}
+    if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
 
   /* constructor(modeler: any, termList: any) {
