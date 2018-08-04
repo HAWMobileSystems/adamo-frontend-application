@@ -48,6 +48,7 @@ export class PermissionComponent {
           }
         },
         error => {
+          this.alertService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -72,9 +73,9 @@ export class PermissionComponent {
                 });
     }
 
-  private permissionUpdate(pid: any, rid: any, uid: any, mid: any){
-      console.log(uid,rid,pid,mid);
-    this.apiService.permissionUpdate(uid,mid,rid,pid)
+  private permissionUpdate(role: any, pid: any){
+      console.log(role,pid);
+    this.apiService.permissionUpdate(role,pid)
   .subscribe(response => {
               if (response.success) {
                   this.alertService.success('Permission updated');
@@ -171,6 +172,7 @@ export class PermissionComponent {
       .subscribe(response => {
           if (response.success) {
             this.selected_permission = response.data;
+            // this.alertService.success((JSON.parse(response._body).status) );
               console.log(this.selected_permission);
           }
           else {

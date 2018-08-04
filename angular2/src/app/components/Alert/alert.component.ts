@@ -16,4 +16,8 @@ export class AlertComponent {
     ngOnInit() {
         this.alertService.getMessage().subscribe(message => { this.message = message; });
     }
+
+  private remove() {
+        this.message = null;
+  };
 }
