@@ -3,6 +3,7 @@ import {Router,} from '@angular/router';
 
 import {AlertService} from '../services/alert.service';
 import {ApiService} from '../services/api.service';
+import {generateErrorMessage} from "codelyzer/angular/styles/cssLexer";
 
 
 @Component({
@@ -47,6 +48,7 @@ export class FrontPageComponent implements OnInit {
                     this.alertService.error(error._body);
                     console.log('loginerror: ', error);
                     this.loading = false;
+
                 });
     }
 

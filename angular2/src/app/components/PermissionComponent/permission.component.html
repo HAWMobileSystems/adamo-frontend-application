@@ -64,7 +64,7 @@
         <!--</div>-->
     <!--</div>-->
 
-    <div class="panel-body" >
+    <div class="panel-body">
         <div *ngIf="selected_permission?.length === 0">
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left">Role</label>
@@ -83,7 +83,11 @@
                     <option *ngFor="let role of roles">{{role.role}}</option>
                 </select>
             </div>
-            <button class="btn btn-primary" (click)="permissionUpdate(selected_permission.pid, selected_permission.role)">change
+            <button class="btn btn-primary" (click)="permissionUpdate(selected_permission[0].pid, selected_permission[0].role, selected_permission[0].uid, selected_permission[0].mid)">change
+                relation
+            </button>
+
+            <button class="btn btn-danger" (click)="permissionDelete(selected_permission[0].pid)">delete
                 relation
             </button>
         </div>
