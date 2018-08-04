@@ -98,55 +98,29 @@ export class ModelerComponent2 implements OnInit {
   constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
      private ref: ChangeDetectorRef, private router: Router) {
 
-    //this.initializeModeler();
   }
-
-  public getabc() {
-    return this.modelId;
-  }
-
-  // get urls(): Link[] {
-  //   return this.modelerUrls;
-  // }
-
-  // set urls(u: Link[]) {
-  //   console.log('urls: ', u);
-  //   this.modelerUrls = u;
-  //   this.url = u[0].href;
-  // }
 
   // Extract the following to the separate controler
   public openTermModal = () => {
     this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
-    //  const termModal = new TermModal(this.modeler, this.getTermList(this.lookup.SELECTION));
-    //  this.termModal.instance.termList =  this.getTermList(this.lookup.SELECTION);
-    //  this.termModal.instance.modeler = this.modeler;
     this.termModal.modal.open();
   }
 
   public openInputModal = () => {
     this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
-    // const inputModal = new InputModal(this.modeler);
-    //this.inputModal.fillModal();
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
     this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
-    // this.variableModal.fillModal();
-    // const variableModal = new VariableModal(this.modeler);
     this.variableModal.modal.open();
   }
 
   public openSubProcessModal = () => {
     this.getSubProcessList(this.lookup.SELECTION);
-    // this.variableModal.fillModal();
-    // const variableModal = new VariableModal(this.modeler);
   }
 
   public openEvaluatorModal = () => {
     this.evaluatorModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
-    // this.variableModal.fillModal();
-    // const variableModal = new VariableModal(this.modeler);
     this.evaluatorModal.modal.open();
     console.log('ElevatorModal_Clicked!');
   }
@@ -239,8 +213,6 @@ export class ModelerComponent2 implements OnInit {
     const downloadLink = $('#js-download-diagram');
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
-      //const url = window.URL.createObjectURL(blob);
-      //window.open(url);
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
     });
   }
@@ -249,8 +221,6 @@ export class ModelerComponent2 implements OnInit {
     const downloadSvgLink = $('#js-download-SVG');
     this.modeler.saveSVG((err : any, svg : any) => {
       const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-      //const url = window.URL.createObjectURL(blob);
-      //window.open(url);
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
     });
 
@@ -266,7 +236,6 @@ export class ModelerComponent2 implements OnInit {
         this.router.navigate(['/front-page']);
       }, error => {
           console.log(error);
-        // this.alertService.error(error)
       });
   }
 
@@ -304,14 +273,10 @@ export class ModelerComponent2 implements OnInit {
   public ngOnInit() {
     console.log('modelId: ', this.modelId);
     this.commandQueue = new Subject();
-    // this.store.listDiagrams()
-    //   .do(links => this.urls = links)
-    //   .flatMap(() =>
       this.store.paletteEntries()
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
-        //  debugger;
-        return this.createModeler();
+        return this.createModeler(); 
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
@@ -321,10 +286,6 @@ export class ModelerComponent2 implements OnInit {
       }
     });
     this.exportModel.emit(this);
-    // this.commandQueue
-    //   .filter(cmd => COMMANDS.SAVE === cmd.action)
-    //   .do(cmd => console.log('Received SUPER SPECIAL SAVE command: ', cmd))
-    //   .subscribe(() => this.modeler.saveXML((err: any, xml: any) => console.log('xml!?!', err, xml)));
   }
 
   public ngAfterViewInit(): void {
@@ -342,12 +303,6 @@ export class ModelerComponent2 implements OnInit {
     });
   }
 
-  // openBPMN() {
-  //   $('#IPIM-Load').addClass('IPIM').attr({
-  //     'href': 'data:application/bpmn20-xml;charset=UTF-8,',
-  //     'download': 'Openfile'
-  //   });
-
   private initializeModeler() {
     this.modeler = new this.modeler({
       container: '#' + this.modelId + ' ' + this.containerRef,
@@ -359,13 +314,10 @@ export class ModelerComponent2 implements OnInit {
         {commandQueue: ['type', () => this.commandQueue]},
         this.propertiesPanelModule,
         this.propertiesProviderModule,
-        // customPropertiesProviderModule,
-        //O0riginModule,
         customPaletteModule
       ],
       moddleExtensions: {
         camunda: this.camundaModdleDescriptor
-        // ne: CustomModdle
       }
     });
   }
@@ -376,23 +328,15 @@ export class ModelerComponent2 implements OnInit {
    *
    */
   private createModeler() {
-    // console.log('Creating this.modeler, injecting extraPaletteEntries: ', this.extraPaletteEntries);
     this.initializeModeler();
     this.commandStack = new CommandStack(this.modeler, this);
-    // debugger;
     // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
     this.loadBPMN();
   }
 
-  //$('#IPIM-Load').click(function () {
-  //Zurücksetzten des HTML File Values, da Ereignis sonst nicht ausgelöst wird
-  // (<HTMLInputElement>document.getElementById('')).value = "";
-  // document.getElementById('').click();
-
   private registerFileDrop = (container: JQuery, callback: Function) => {
-    // let containerJQ = $(this.containerID);
     const handleelect = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
@@ -415,7 +359,6 @@ export class ModelerComponent2 implements OnInit {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     };
-    // TODO: Fixme
 
     console.log(container);
     const firstElementInContainer = container.get(0);
@@ -453,23 +396,11 @@ export class ModelerComponent2 implements OnInit {
         error => {
           console.log(error);
         });
-    // this.openDiagram()
   }
 
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
     this.modeler.importXML(xml, (err: any) => {
-      // if (err) {
-      //   this.container
-      //     .removeClass('with-diagram')
-      //     .addClass('with-error');
-      //   this.container.find('.error pre').text(err.message);
-      //   console.error(err);
-      // } else {
-      //   this.container
-      //     .removeClass('with-error')
-      //     .addClass('with-diagram');
-      // }
     });
   }
 
@@ -506,7 +437,7 @@ export class ModelerComponent2 implements OnInit {
   /**
    *
    */
-  private getTermList = (scope: string) => {
+  private getTermList = (scope: string): string[] => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
     scope === this.lookup.SELECTION
@@ -636,9 +567,6 @@ export class ModelerComponent2 implements OnInit {
     }
 
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-
-    //const ipimcolors = $('.ipimcolors').css('color');    //CSS auslesen
-
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
@@ -662,12 +590,6 @@ export class ModelerComponent2 implements OnInit {
               'indexOf' + terms.indexOf(extras[0].values[i].value),
               'indexOf % length' + terms.indexOf(extras[0].values[i].value) % this.ipimColors.length);
             colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
-            // const endEventNode = document.querySelector('[data-element-id="sid-52EB1772-F36E-433E-8F5B-D5DFD26E6F26"]');
-            // endEventNode.setAttribute('title', "HELPT!");
-            // const children = endEventNode.children;
-            // for (const i = 0; i < children.length; i++) {
-            // children[i].setAttribute('title', "HELPT!");
-            // }
           }
         }
       }
@@ -679,12 +601,5 @@ export class ModelerComponent2 implements OnInit {
         });
       }
     });
-    // for (let i = 0; i < this.ipimColors.length; i++) {
-    //   if (colorelements[i].length > 0) {
-    //     modeling.setColor(colorelements[i], {
-    //       stroke: this.ipimColors[i]
-    //     });
-    //   }
-    // }
   }
 }
