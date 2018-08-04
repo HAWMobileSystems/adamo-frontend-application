@@ -1,4 +1,5 @@
 <div *ngIf="message"
      [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">
+    <button class="label label-danger" style="position: absolute; top: 0; right: 17px;"(click)="remove()">X</button>
     {{message.text}}
 </div>
