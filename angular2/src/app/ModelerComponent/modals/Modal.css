@@ -109,8 +109,7 @@
 
 .modal-header {
     padding: 2px 16px;
-    /*background-color: #be0000;*/
-    background-color: #52B415;
+    background-color: #be0000;
     color: white;
 }
 
@@ -125,9 +124,6 @@
 
 .modal-footer {
     padding: 2px 16px;
-    /*background-color: #be0000;*/
-    background-color: #52B415;
+    background-color: #be0000;
     color: black;
 }
-
-

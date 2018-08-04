@@ -85,7 +85,7 @@ export class BPMNStore {
                 className: ['fa-tasks', 'fa'],
                 title: COMMANDS.SET_SUBPROCESS,
                 action: {
-                    click: () => console.log('openSubprocessModal') 
+                    click: () => console.log('openSubProcessModal')
                 }
             },
             [COMMANDS.HIGHLIGHT]: {

@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   `
 })
 
-export class SubprocessModal extends ModalComponent {
+export class SubProcessModal extends ModalComponent {
   //@Input()
   //@ViewChild('termModalModalComponent') private modal: ModalComponent;
   public modeler: any;

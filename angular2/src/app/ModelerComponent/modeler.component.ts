@@ -11,7 +11,7 @@ const propertiesPanelModule = require('bpmn-js-properties-panel');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
 
 import {CommandStack} from './command/CommandStack';
-import {CustomModdle} from './custom-moddle';
+//import {customModdle} from './custom-moddle';
 import {CamundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
@@ -157,8 +157,8 @@ export class ModelerComponent2 implements OnInit {
     if (!validSelection) {
       window.alert('No Subprocess selected!');
     } else {
-      this.subprocessModal.setProps(this.modeler, terms);
-      this.subprocessModal.modal.open();
+      this.subProcessModal.setProps(this.modeler, terms);
+      this.subProcessModal.modal.open();
     }
   }
 
@@ -259,7 +259,7 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal,
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal,
     [COMMANDS.ZOOM_TO_FIT] : this.zoomToFit,
     [COMMANDS.EXPORT_SVG] : this.saveSVG
@@ -276,7 +276,7 @@ export class ModelerComponent2 implements OnInit {
       this.store.paletteEntries()
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
-        return this.createModeler(); 
+        return this.createModeler();
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
