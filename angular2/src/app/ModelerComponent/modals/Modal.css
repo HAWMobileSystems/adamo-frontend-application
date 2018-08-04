@@ -1,6 +1,5 @@
 /* IPIM MODAL CSS FOR INPUT VALUES */
 
-
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -26,7 +25,7 @@
     background-color: #fefefe;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #626262;
     width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
@@ -40,7 +39,7 @@
     background-color: #fefefe;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #626262;
     width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
@@ -54,7 +53,8 @@
     background-color: #fefefe;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #626262;
+
     width: 20%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
@@ -64,9 +64,23 @@
 }
 
 .modal-form-group{
-    border: 1px dotted grey;
-    /*-moz-border-radius-topright: 30px 20px;
-    -moz-border-radius-topleft: 30px 20px; */
+    background-color: lightgray;
+    opacity: 0.5;
+    border: 1px dotted #626262;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-top: 5px;
+}
+
+.modal-form-group:hover{
+    background-color: lightgray;
+    opacity: 1.0;
+    border: 1px dotted #626262;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
