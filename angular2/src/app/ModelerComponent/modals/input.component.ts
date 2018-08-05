@@ -3,10 +3,13 @@ import {Variable} from './variable';
 @Component({
     selector: 'inputvar-comp',
     template: `
-    <span>
-      {{varName.name}}: <input type="text" [(ngModel)]="varName.value">
-    </span>
-    <br/>
+    <form>
+    <label> {{varName.name}}: </label>
+    <br>
+    <input type="text" [(ngModel)]="varName.value" class = "modal-form-input" [ngModelOptions]="{standalone: true}">
+    <br>
+  </form>
+
 	  `
 })
 export class InputVarComponent {

@@ -23,8 +23,7 @@ import { InputVarComponent } from './input.component';
       </form>
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
-    <!--<input type="button" value=" Evaluate " id="EvalModal"> -->
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeEvaluatorModalValues()">Evaluate</button>
     </modal-footer>
   </modal>
   `
@@ -70,19 +69,19 @@ export class EvalModal extends ModalComponent {
   }
 
   public accept(): void {
-      this.writeInputModalValues();
+      this.writeEvaluatorModalValues();
   }
 
   private opened() {
-    console.log('ElevatorModal opened');
+    console.log('EvaluatorModal opened');
   }
 
   private dismissed() {
-    console.log('ElevatorModal Dissmissed');
+    console.log('EvaluatorModal dismissed');
   }
 
   private closed() {
-    console.log('ElevatorModal closed');
+    console.log('EvaluatorModal closed');
   }
 
   public clearModal(s: string) {
@@ -94,7 +93,7 @@ export class EvalModal extends ModalComponent {
     }
   }
 
-  private writeInputModalValues() {
+  private writeEvaluatorModalValues() {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const elementRegistry = this.modeler.get('elementRegistry');
     const modeling = this.modeler.get('modeling');
