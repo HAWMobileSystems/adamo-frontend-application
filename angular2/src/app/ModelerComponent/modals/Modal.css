@@ -48,13 +48,12 @@
     animation-duration: 0.4s
 }
 
-.modal-content-input {
+.modal-content-input{
     position: relative;
     background-color: #fefefe;
     margin: auto;
     padding: 0;
     border: 1px solid #626262;
-
     width: 20%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
@@ -63,7 +62,13 @@
     animation-duration: 0.4s
 }
 
-.modal-form-group{
+.modal-textarea {
+    width: 100%;
+    resize: vertical;
+    border: solid 1px #626262;
+}
+
+.modal-form-group {
     background-color: lightgray;
     opacity: 0.5;
     border: 1px dotted #626262;
@@ -77,7 +82,7 @@
     margin-top: 5px;
 }
 
-.modal-form-group:hover{
+.modal-form-group:hover {
     background-color: lightgray;
     opacity: 1.0;
     border: 1px dotted #626262;
@@ -91,7 +96,7 @@
     margin-top: 5px;
 }
 
-.modal-form-input{
+.modal-form-input {
     width: 100%;
 }
 
@@ -131,7 +136,7 @@
 	padding: 2px 16px;
 	}
 	
-.modal-body-scroll{
+.modal-body-scroll {
 	height: 60vh;
     overflow-y: auto;
 }
