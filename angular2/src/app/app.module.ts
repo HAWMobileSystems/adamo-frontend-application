@@ -45,6 +45,7 @@ import {UserComponent} from './components/UserComponent/user.component';
 import {ModelComponent} from './components/ModelComponent/model.component';
 import {ModelLoaderComponent} from './components/ModelLoaderComponent/modelloader.component';
 import {RoleComponent} from './components/RoleComponent/role.component';
+import {ProfileComponent} from './components/ProfileComponent/profile.component';
 import {PermissionComponent} from './components/PermissionComponent/permission.component';
 //import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from './ModelerComponent/modals/variables.component';
@@ -74,6 +75,7 @@ import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
         ModelComponent,
         ModelLoaderComponent,
         RoleComponent,
+        ProfileComponent,
         PermissionComponent,
         //Exp_frontpageComponent,
         UsermanagementComponent,
