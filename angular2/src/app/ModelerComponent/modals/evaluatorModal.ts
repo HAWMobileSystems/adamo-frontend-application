@@ -24,7 +24,6 @@ import { InputVarComponent } from './input.component';
     </modal-body>
     <modal-footer [show-default-buttons]="false">
         <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
-    <!--<input type="button" value=" Evaluate " id="EvalModal"> -->
     </modal-footer>
   </modal>
   `
@@ -74,15 +73,15 @@ export class EvalModal extends ModalComponent {
   }
 
   private opened() {
-    console.log('ElevatorModal opened');
+    console.log('EvaluatorModal opened');
   }
 
   private dismissed() {
-    console.log('ElevatorModal Dissmissed');
+    console.log('EvaluatorModal dismissed');
   }
 
   private closed() {
-    console.log('ElevatorModal closed');
+    console.log('EvaluatorModal closed');
   }
 
   public clearModal(s: string) {

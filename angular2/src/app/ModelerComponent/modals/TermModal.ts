@@ -14,28 +14,21 @@ import { Router } from '@angular/router';
     <modal-body>
       <p>Please define a new term for all elements:</p>
       <form>
-        <!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
-        <textarea value="" [(ngModel)]="firstTerm" id="inputFieldTerm" class="maxwid" name="inputFieldTerm">
+        <textarea value="" [(ngModel)]="firstTerm" id="inputFieldTerm" class="modal-textarea" name="inputFieldTerm">
         </textarea>
         <br>
       </form>
       <br>
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeTermModalValues()">Set Term</button>
-        <!-- <input type="button" value=" Set Term " id="SetTermModal"> -->
+      <button type="button" class="btn btn-large btn-block btn-default" (click)="writeTermModalValues()">Set Term</button>
     </modal-footer>
   </modal>
   `
 })
 
 export class TermModal extends ModalComponent {
-  //@Input()
-  //@ViewChild('termModalModalComponent') private modal: ModalComponent;
   public modeler: any;
-  // private IPIM_VAL : string = 'IPIM_Val';
-  // private IPIM_META : string = 'IPIM_Meta';
-  //@Input()
   public termList: any;
   public firstTerm: any;
 
@@ -54,16 +47,8 @@ export class TermModal extends ModalComponent {
   public setProps(modeler: any, termList: any) {
     this.termList = termList;
     this.modeler = modeler;
-    if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '}
+    if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
-
-  /* constructor(modeler: any, termList: any) {
-    super(modeler);
-    console.log(this.constructor.name + ' Constructor');
-    this.termList = termList;
-
-    // this.fillModal(termList);
-  } */
 
   private opened() {
     console.log('TermModal Opended');
@@ -103,8 +88,8 @@ export class TermModal extends ModalComponent {
     !element
       ? console.error('no such element')
       : (this.termList.length > 0)
-        ? element.value = this.termList[0]
-        : element.value = '';
+      ? element.value = this.termList[0]
+      : element.value = '';
   }
 
   private writeTermModalValues() {
@@ -145,49 +130,3 @@ export class TermModal extends ModalComponent {
     this.modal.close();
   }
 }
-
-/**
- *
-  <modal>
-    <modal-header>
-        <h4 class="modal-title">TermModal!</h4>
-    </modal-header>
-    <modal-body>
-        <div class="form-group">
-            <label for="term">Insert new Term for all Elements</label>
-            <textarea value="" id="inputFieldTerm" class="maxwid"></textarea>
-        </div>
-    </modal-body>
-    <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="this" (click)="this.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="this.accept()">Ok</button>
-    </modal-footer>
-</modal>
- */
-
-/* <div id="TermModal" class="modal" display:block #TermMod>
-
-  <!-- Modal content  Header-->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close" id ="TermClose">&times;</span>
-      <h2>IPIM Terms</h2>
-    </div>
-    <div class="modal-body">
-      <p>Please insert new Term for all Elements:</p>
-	  <form>
-
-		<!-- <input type="text" value="" id="inputFieldTerm" style="min-width: 100%">  -->
-		<textarea value="" id="inputFieldTerm" class="maxwid">
-		</textarea>
-		<br>
-
-	  </form>
-	  <br>
-    </div>
-    <div class="modal-footer">
-      <input type="button" value=" Set Term " id="SetTermModal">
-    </div>
-  </div>
-
-</div> */
