@@ -21,10 +21,6 @@
             </tr>
             </thead>
             <tbody ></tbody>
-            <!--<tr (click)="selected = newRole" [ngClass]="{'info': selected === newRole}">
-                <td></td>
-                <td>NewRole</td>
-            </tr>-->
             <tr *ngFor="let role of roles | filter:search" (click)="selected = role" [ngClass]="{'info': selected === role}">
                 <td>{{role.rid}}</td>
                 <td>{{role.role}}</td>
