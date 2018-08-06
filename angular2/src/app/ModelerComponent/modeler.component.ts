@@ -43,7 +43,7 @@ const customPropertiesProviderModule = {
   styleUrls: ['./modeler.component.css'],
   providers: [BPMNStore]
 })
-export class ModelerComponent2 implements OnInit {
+export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();

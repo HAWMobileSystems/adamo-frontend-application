@@ -6,7 +6,7 @@ import {CustomPropertiesProvider} from '../properties/props-provider';
 import {Http} from '@angular/http';
 
 import {Observable, Subject} from 'rxjs';
-import {ModelerComponent2} from '../../ModelerComponent/modeler.component';
+import {ModelerComponent} from '../../ModelerComponent/modeler.component';
 
 import {ApiService} from '../../services/api.service';
 
@@ -30,7 +30,7 @@ export class Evaluator {
   private xmls : Map<string, string> = new Map<string, string>();
   private varValMap : any = {};
 
-  private modelerComponent : ModelerComponent2;
+  private modelerComponent : ModelerComponent;
   private containerRef: string = '#js-canvas';
   private propsPanelRef: string = '#js-properties-panel';
 
