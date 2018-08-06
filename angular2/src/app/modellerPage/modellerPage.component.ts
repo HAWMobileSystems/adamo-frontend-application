@@ -4,14 +4,14 @@ import {Router,} from '@angular/router';
 import {ApiService} from '../services/api.service';
 
 import {Model} from '../models/model';
-import {ModelerComponent2} from '../ModelerComponent/modeler.component';
+import {ModelerComponent} from '../ModelerComponent/modeler.component';
 import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
-  templateUrl: './test2.component.html',
-  styleUrls: ['./test2.component.css']
+  templateUrl: './modellerPage.component.html',
+  styleUrls: ['./modellerPage.component.css']
 })
-export class Test2Component implements OnInit {
+export class ModellerPageComponent implements OnInit {
   title: string = 'Angular 2 with BPMN-JS';
   model: any = {};
   loading = false;
@@ -45,7 +45,7 @@ export class Test2Component implements OnInit {
     this.page = model.name;
   }
 
-  onExportModel(modelerComponent: ModelerComponent2): void {
+  onExportModel(modelerComponent: ModelerComponent): void {
     console.log(modelerComponent);
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
     console.log(this.models);

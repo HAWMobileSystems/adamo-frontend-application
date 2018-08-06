@@ -6,14 +6,14 @@ import {ApiService} from "../../services/api.service";
 const mqtt = require('mqtt');
 
 @Component({
-  selector: 'role-management',
-  templateUrl: './role.template.html'
+  selector: 'profile-management',
+  templateUrl: './profile.template.html'
 })
 
-export class RoleComponent {
+export class ProfileComponent {
   private selected: any;
-  private newRole: any;
-  private roles: any;
+  private newProfile: any;
+  private profiles: any;
   private mqtt: any;
 
 
@@ -21,15 +21,15 @@ export class RoleComponent {
   }
 
   public ngOnInit() {
-    this.newRole = {
+    this.newProfile = {
       rid: '',
-      role: '',
+      profile: '',
       read: '',
       write: '',
       admin: ''
     };
 
-    this.getAllRoles();
+    this.getAllProfiles();
 
 
     this.mqtt = mqtt.connect('mqtt://localhost:4711');
@@ -37,17 +37,17 @@ export class RoleComponent {
     const i = this;
     this.mqtt.on('message', function (topic: any, message: any) {
       console.log('Test from remote:' + message.toString());
-      i.getAllRoles();
+      i.getAllProfiles();
     });
   }
 
-  public getAllRoles() {
-    this.roles = [];
+  public getAllProfiles() {
+    this.profiles = [];
 
-    this.apiService.getAllRoles()
+    this.apiService.getAllProfiles()
       .subscribe(response => {
           if (response.success) {
-            this.roles = response.data;
+            this.profiles = response.data;
             this.selected = null;
           }
           else {
@@ -60,8 +60,8 @@ export class RoleComponent {
         });
   }
 
-  public roleUpdate() {
-    this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
+  public profileUpdate() {
+    this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
             this.mqtt.publish('ROLE');
@@ -77,9 +77,9 @@ export class RoleComponent {
         });
   }
 
-  public roleCreate() {
+  public profileCreate() {
     console.log(this.selected)
-    this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
+    this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
             this.mqtt.publish('ROLE');
@@ -95,8 +95,8 @@ export class RoleComponent {
         });
   }
 
-  public roleDelete() {
-    this.apiService.roleDelete(this.selected.rid)
+  public profileDelete() {
+    this.apiService.profileDelete(this.selected.rid)
       .subscribe(response => {
           console.log(response);
           if (response.success) {

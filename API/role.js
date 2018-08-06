@@ -75,7 +75,7 @@ router.post('/create', function (req, res) {
                 console.log('querylog:', tmpQuery)
                 db.oneOrNone(tmpQuery, [role])
                   .then(function (data) {
-                    res.send({ status: 'Role created successfully'}); 
+                    res.send({ status: 'Role created successfully', success: true});
                 })
                 .catch(function (error) {
                     console.log('ERROR POSTGRES:', error)

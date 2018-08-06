@@ -59,7 +59,7 @@ export class ApiService {
   }
 
   userPassword(uid: number, password: string) {
-    return this.http.post('http://localhost:3000/user/update', {
+    return this.http.post('http://localhost:3000/user/password', {
       uid: uid,
       password: password,
     }, options)

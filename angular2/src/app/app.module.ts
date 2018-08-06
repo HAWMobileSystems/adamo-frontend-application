@@ -15,7 +15,7 @@ import { FrontPageComponent } from './front-page/front-page.component';
 import {AdministrationPageComponent} from './administration-page/administration-page.component';
 import { ViewerComponent } from './viewer/viewer.component';
 //import { ModelerComponent } from './modeler/modeler.component';
-import { ModelerComponent2} from './ModelerComponent/modeler.component';
+import { ModelerComponent} from './ModelerComponent/modeler.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { provideRoutes} from '@angular/router';
 import { TermModal} from './ModelerComponent/modals/TermModal';
@@ -33,18 +33,13 @@ import { AlertService } from './services/alert.service';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from './services/api.service';
-import {TestComponent} from './test/test.component';
-import {Test2Component} from './test2/test2.component';
-import {ModelpermissionComponent} from './modelPermissioManagement/modelpermission.component';
-import {RolemanagementComponent} from './rolemanagement/rolemanagement.component';
-import {RolemanagementComponent2} from './rolemanagement/rolemanagement2.component';
-import {UsermanagementComponent} from './usermanagement/usermanagement.component';
-import {Usermanagement2Component} from './usermanagement/usermanagement2.component';
+import {ModellerPageComponent} from './modellerPage/modellerPage.component';
 
 import {UserComponent} from './components/UserComponent/user.component';
 import {ModelComponent} from './components/ModelComponent/model.component';
 import {ModelLoaderComponent} from './components/ModelLoaderComponent/modelloader.component';
 import {RoleComponent} from './components/RoleComponent/role.component';
+import {ProfileComponent} from './components/ProfileComponent/profile.component';
 import {PermissionComponent} from './components/PermissionComponent/permission.component';
 //import {Exp_frontpageComponent} from "./exp_frontpage/exp_frontpage.component";
 import {VariableComponent} from './ModelerComponent/modals/variables.component';
@@ -74,18 +69,11 @@ import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
         ModelComponent,
         ModelLoaderComponent,
         RoleComponent,
+        ProfileComponent,
         PermissionComponent,
-        //Exp_frontpageComponent,
-        UsermanagementComponent,
-        Usermanagement2Component,
-        RolemanagementComponent2,
-        RolemanagementComponent,
-        ModelpermissionComponent,
-        TestComponent,
-        Test2Component,
+      ModellerPageComponent,
         ViewerComponent,
-        //ModelerComponent,
-        ModelerComponent2,
+        ModelerComponent,
         AlertComponent,
         TermModal,
         VariableModal,

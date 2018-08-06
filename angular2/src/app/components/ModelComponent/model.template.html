@@ -12,7 +12,7 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr class="active">
-                <th>ModelID</th>
+                <!--<th>ModelID</th>-->
                 <th>ModelName</th>
                 <th>Version</th>
             </tr>
@@ -24,7 +24,7 @@
                 <td></td>
             </tr>-->
             <tr *ngFor="let model of models | filter:search" (click)="selected = model" [ngClass]="{'info': selected === model}">
-                <td>{{model.mid}}</td>
+                <!--<td>{{model.mid}}</td>-->
                 <td>{{model.modelname}}</td>
                 <td>{{model.version}}</td>
             </tr>
@@ -55,11 +55,7 @@
             </div>
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left" for="lastchange">LastChange</label>
-                <input required type="text" class="form-control" id="lastchange" placeholder="LastChange" name="lastchange" [(ngModel)]="selected.lastchange">
-            </div>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="mid">Mid</label>
-                <input required type="text" class="form-control" id="mid" placeholder="Mid" name="mid" [(ngModel)]="selected.mid">
+                <input readonly required type="text" class="form-control" id="lastchange" placeholder="LastChange" name="lastchange" [(ngModel)]="selected.lastchange">
             </div>
             <button *ngIf="selected.mid === ''" type="submit" class="btn btn-success" (click)="modelCreate()">Create</button>
             <button *ngIf="selected.mid !== ''" type="submit" class="btn btn-primary" (click)="modelUpdate()">Change</button>

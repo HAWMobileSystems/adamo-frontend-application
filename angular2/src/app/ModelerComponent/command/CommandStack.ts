@@ -1,6 +1,6 @@
 import { Inherits } from 'inherits';
 import { ModelComponent } from '../../components/ModelComponent/model.component';
-import { ModelerComponent2 } from '../modeler.component';
+import { ModelerComponent } from '../modeler.component';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 const mqtt = require('mqtt');
 
@@ -18,11 +18,11 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
-    private modelerComponenetRoot: ModelerComponent2;
+    private modelerComponenetRoot: ModelerComponent;
 
     //Commandstack Class
 
-    constructor(modeler : any, modelerComponenetRoot : ModelerComponent2) {
+    constructor(modeler : any, modelerComponenetRoot : ModelerComponent) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler

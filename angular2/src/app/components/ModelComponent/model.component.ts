@@ -66,8 +66,7 @@ export class ModelComponent {
             .subscribe(response => {
                     if (response.success) {
                         this.mqtt.publish('MODEL');
-                    } else {
-                        this.alertService.error(response._body);
+                      this.alertService.success(response.status);
                     }
                 },
                 error => {
@@ -81,8 +80,7 @@ export class ModelComponent {
             .subscribe(response => {
                     if (response.success) {
                         this.mqtt.publish('MODEL');
-                    } else {
-                        this.alertService.error(response._body);
+                      this.alertService.success(response.status);
                     }
                 },
                 error => {
@@ -97,8 +95,7 @@ export class ModelComponent {
                     console.log(response);
                     if (response.success) {
                         this.mqtt.publish('MODEL');
-                    } else {
-                        this.alertService.error(response._body);
+                      this.alertService.success(response.status);
                     }
                 },
                 error => {
