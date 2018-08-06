@@ -59,7 +59,7 @@ export class ApiService {
   }
 
   userPassword(uid: number, password: string) {
-    return this.http.post('http://localhost:3000/user/update', {
+    return this.http.post('http://localhost:3000/user/password', {
       uid: uid,
       password: password,
     }, options)
@@ -147,7 +147,7 @@ export class ApiService {
 
 
   getModel(mid: string) {
-    return this.http.get('http://localhost:3000/getmodel/' + mid, options)
+    return this.http.get('http://localhost:3000/model/model' + mid, options)
       .map((response: Response) => response.json());
   }
 
@@ -200,8 +200,8 @@ export class ApiService {
         .map((response: Response) => response.json());
     }
 
-  permissionUpdate(uid: any, mid: any, rid:any, pid: any){
-    return this.http.post('http://localhost:3000/permission/update', {uid: uid, mid: mid, rid: rid, pid: pid}, options)
+  permissionUpdate(role:any, pid: any){
+    return this.http.post('http://localhost:3000/permission/update', {role: role, pid: pid}, options)
       .map((response: Response) => response.json());
   }
 }

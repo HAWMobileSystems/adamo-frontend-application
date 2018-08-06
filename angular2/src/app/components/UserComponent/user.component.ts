@@ -90,6 +90,7 @@ export class UserComponent {
           if (response.success) {
             this.mqtt.publish('USER');
             this.alertService.success(response);
+            this.alertService.success(response.status);
             console.log(response);
           }
           else {
@@ -108,6 +109,7 @@ export class UserComponent {
           if (response.success) {
             this.mqtt.publish('USER');
             this.alertService.success(response);
+            this.alertService.success(response.status);
             console.log(response);
           }
           else {
@@ -126,7 +128,7 @@ export class UserComponent {
         console.log('debug');
           if (response.success) {
             this.mqtt.publish('USER');
-            this.alertService.success(response);
+            this.alertService.success(response.status);
             console.log(response);
           }
           else {
