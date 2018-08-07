@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
-import {ApiService} from "../../services/api.service";
-
+import {ApiService} from '../../services/api.service';
 
 const mqtt = require('mqtt');
 
@@ -15,7 +14,6 @@ export class RoleComponent {
   private newRole: any;
   private roles: any;
   private mqtt: any;
-
 
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }
@@ -31,11 +29,10 @@ export class RoleComponent {
 
     this.getAllRoles();
 
-
-    this.mqtt = mqtt.connect('mqtt://localhost:4711');
+    this.mqtt = mqtt.connect('mq://localhost:4711');
     this.mqtt.subscribe('ROLE');
     const i = this;
-    this.mqtt.on('message', function (topic: any, message: any) {
+    this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
       i.getAllRoles();
     });
@@ -49,9 +46,8 @@ export class RoleComponent {
           if (response.success) {
             this.roles = response.data;
             this.selected = null;
-          }
-          else {
-            this.alertService.error(response._body)
+          } else {
+            this.alertService.error(response._body);
           }
         },
         error => {
@@ -66,9 +62,8 @@ export class RoleComponent {
           if (response.success) {
             this.mqtt.publish('ROLE');
             this.alertService.success(response.status);
-          }
-          else {
-            this.alertService.error(response._body)
+          } else {
+            this.alertService.error(response._body);
           }
         },
         error => {
@@ -78,15 +73,14 @@ export class RoleComponent {
   }
 
   public roleCreate() {
-    console.log(this.selected)
+    console.log(this.selected);
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
             this.mqtt.publish('ROLE');
             this.alertService.success(response.status);
-          }
-          else {
-            this.alertService.error(response._body)
+          } else {
+            this.alertService.error(response._body);
           }
         },
         error => {
@@ -102,9 +96,8 @@ export class RoleComponent {
           if (response.success) {
             this.mqtt.publish('ROLE');
             this.alertService.success(response.status);
-          }
-          else {
-            this.alertService.error(response._body)
+          } else {
+            this.alertService.error(response._body);
           }
         },
         error => {

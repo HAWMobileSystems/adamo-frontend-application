@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import {Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -8,16 +7,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class AppFooterComponent {
-  private _route: ActivatedRoute;
+  private route: ActivatedRoute;
   private currentStatus: string;
 
-  constructor( route: ActivatedRoute) {
-    this._route = route;
+  constructor(route: ActivatedRoute) {
+    this.route = route;
     this.currentStatus = '';
   }
 
   public ngOnInit() {
-    this._route.params
+    this.route.params
       .map(params => params.status)
       .subscribe((status) => {
         this.currentStatus = status || '';
