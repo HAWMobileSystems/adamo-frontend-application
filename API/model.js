@@ -25,11 +25,11 @@ router.get('/all', function (req, res) {
 
     db.query('select * from model')
     .then(function (data) {
-        console.log('DATA:', data)
+        console.log('DATA:', data);
         res.send({ data: data, success: true});
         })
         .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
+            console.log('ERROR POSTGRES:', error);
             res.status(400).send({ status: 'Database not available'});
         })
     });
@@ -49,13 +49,13 @@ router.get('/all', function (req, res) {
 * Description:
 * */
 
-app.get('/getModel', function (req, res) {
+router.get('/getModel', function (req, res) {
 
     const mid = req.params.mid;
-    console.log(req.params)
+    console.log(req.params);
     db.one('select * from model where mid = $1', [mid])
         .then(function (data) {
-            console.log('DATA:', data)
+            console.log('DATA:', data);
             res.send({ data: data, success: true});
         })
         .catch(function (error) {
