@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Request, XHRBackend, RequestOptions, Response, Http, RequestOptionsArgs, Headers} from '@angular/http';
-import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {Http, Request, RequestOptions, RequestOptionsArgs, Response, XHRBackend} from '@angular/http';
+import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class AuthenticatedHttpService extends Http {
@@ -20,7 +18,7 @@ export class AuthenticatedHttpService extends Http {
         error.status === 497 ||
         error.status === 496
       ) {
-        console.log('The authentication session expires or the user is not authorised. Force refresh of the current page.');
+        console.log('The authentication session expires or the user is not authorised. Force to Login Page.');
         this.router.navigate(['/front-page']);
 
       }

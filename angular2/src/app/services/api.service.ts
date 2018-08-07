@@ -1,17 +1,14 @@
 import {Injectable} from '@angular/core';
-import {RequestOptions, Http, Response} from "@angular/http";
-
-import 'rxjs/add/operator/map'
+import {RequestOptions, Http, Response} from '@angular/http';
 
 const options = new RequestOptions({withCredentials: true});
 
 @Injectable()
 export class ApiService {
-  constructor(private http: Http) {
+  constructor(public http: Http) {
   }
 
-
-  authenticate(email: string, password: string, captcha: string) {
+  public authenticate(email: string, password: string, captcha: string) {
     return this.http.post(
       'http://localhost:3000/authenticate',
       {
@@ -23,50 +20,46 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-
-  login_status() {
+  public login_status() {
     return this.http.get('http://localhost:3000/login_status', options)
       .map((response: Response) => response.json());
   }
 
-
-  logout() {
+  public logout() {
     return this.http.get('http://localhost:3000/logout', options)
       .map((response: Response) => response.json());
   }
 
-  getAllUsers() {
+  public getAllUsers() {
     return this.http.get('http://localhost:3000/user/all', options)
       .map((response: Response) => response.json());
   }
 
-  userDelete(uid: number) {
-    // var deleteOptions = options;
-    // deleteOptions.body = {uid: uid};
+  public userDelete(uid: number) {
     return this.http.post('http://localhost:3000/user/delete', {uid: uid}, options)
       .map((response: Response) => response.json());
   }
 
-  userUpdate(uid: number, email:string, firstname: string, lastname: string, profile: string) {
+  public userUpdate(uid: number, email: string, firstname: string, lastname: string, profile: string) {
     return this.http.post('http://localhost:3000/user/update', {
       uid: uid,
       email: email,
       firstname: firstname,
       lastname: lastname,
-      profile: profile,
+      profile: profile
     }, options)
       .map((response: Response) => response.json());
   }
 
-  userPassword(uid: number, password: string) {
+  public userPassword(uid: number, password: string) {
     return this.http.post('http://localhost:3000/user/password', {
       uid: uid,
-      password: password,
+      password: password
     }, options)
       .map((response: Response) => response.json());
   }
 
-  userCreate(email:string, firstname: string, lastname: string, profile: string, password: string) {
+  public userCreate(email: string, firstname: string, lastname: string, profile: string, password: string) {
     return this.http.post('http://localhost:3000/user/create', {
       email: email,
       firstname: firstname,
@@ -77,20 +70,17 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-
-  getAllRoles() {
+  public getAllRoles() {
     return this.http.get('http://localhost:3000/role/all', options)
       .map((response: Response) => response.json());
   }
 
-  roleDelete(roleid: number) {
-    const deleteOptions = options;
-    deleteOptions.body = {roleid: roleid};
+  public roleDelete(roleid: number) {
     return this.http.post('http://localhost:3000/role/delete', {roleid: roleid}, options)
       .map((response: Response) => response.json());
   }
 
-  roleUpdate(roleid: number, role: string, read: boolean, write: boolean, admin: boolean) {
+  public roleUpdate(roleid: number, role: string, read: boolean, write: boolean, admin: boolean) {
     return this.http.post('http://localhost:3000/role/update', {
       roleid: roleid,
       role: role,
@@ -101,7 +91,7 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  roleCreate(role: string, read: boolean, write: boolean, admin: boolean) {
+  public roleCreate(role: string, read: boolean, write: boolean, admin: boolean) {
     return this.http.post('http://localhost:3000/role/create', {
       role: role,
       read: read,
@@ -111,20 +101,17 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-
-  getAllProfiles() {
+  public getAllProfiles() {
     return this.http.get('http://localhost:3000/profile/all', options)
       .map((response: Response) => response.json());
   }
 
-  profileDelete(profileid: number) {
-    //const deleteOptions = options;
-    //deleteOptions.body = {profileid: profileid};
-    return this.http.post('http://localhost:3000/profile/delete',{profileid: profileid}, options)
+  public profileDelete(profileid: number) {
+    return this.http.post('http://localhost:3000/profile/delete', {profileid: profileid}, options)
       .map((response: Response) => response.json());
   }
 
-  profileUpdate(profileid: number, profile: string, read: boolean, write: boolean, admin: boolean) {
+  public profileUpdate(profileid: number, profile: string, read: boolean, write: boolean, admin: boolean) {
     return this.http.post('http://localhost:3000/profile/update', {
       profileid: profileid,
       profile: profile,
@@ -135,7 +122,7 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  profileCreate(profile: string, read: boolean, write: boolean, admin: boolean) {
+  public profileCreate(profile: string, read: boolean, write: boolean, admin: boolean) {
     return this.http.post('http://localhost:3000/profile/create', {
       profile: profile,
       read: read,
@@ -145,26 +132,22 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-
-  getModel(mid: string) {
+  public getModel(mid: string) {
     return this.http.get('http://localhost:3000/model/model' + mid, options)
       .map((response: Response) => response.json());
   }
 
-  getAllModels() {
+  public getAllModels() {
     return this.http.get('http://localhost:3000/model/all', options)
       .map((response: Response) => response.json());
   }
 
-  modelDelete(mid: number) {
-    //const deleteOptions = options;
-    //options.body = {modelid: mid};
+  public modelDelete(mid: number) {
     return this.http.post('http://localhost:3000/model/delete', {mid: mid}, options)
       .map((response: Response) => response.json());
   }
 
-
-  modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
+  public modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
     return this.http.post('http://localhost:3000/model/update', {
       mid: mid,
       modelname: modelname,
@@ -175,7 +158,7 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
+  public modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
     return this.http.post('http://localhost:3000/model/create', {
       modelname: modelname,
       lastchange: lastchange,
@@ -185,22 +168,22 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  getPermission(user: any, model: any){
-    return this.http.get('http://localhost:3000/permission/'+user+'/'+model, options)
+  public getPermission(user: any, model: any) {
+    return this.http.get('http://localhost:3000/permission/' + user + '/' + model, options)
       .map((response: Response) => response.json());
   }
 
-  permissionCreate(uid: any, mid: any, role:any){
+  public permissionCreate(uid: any, mid: any, role: any) {
     return this.http.post('http://localhost:3000/permission/create', {uid: uid, mid: mid, role: role}, options)
       .map((response: Response) => response.json());
   }
 
-  permissionDelete(pid: any){
+  public permissionDelete(pid: any) {
     return this.http.post('http://localhost:3000/permission/delete', {pid: pid}, options)
-        .map((response: Response) => response.json());
-    }
+      .map((response: Response) => response.json());
+  }
 
-  permissionUpdate(role:any, pid: any){
+  public permissionUpdate(role: any, pid: any) {
     return this.http.post('http://localhost:3000/permission/update', {role: role, pid: pid}, options)
       .map((response: Response) => response.json());
   }
