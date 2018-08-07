@@ -30,28 +30,6 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-app.use('/user', userRouter);
-app.use('/permission', permissionRouter);
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
-
-app.use('/model', modelRouter);
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
-
-app.use('/partmodel', partmodelRouter);
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
-
-app.use('/profile', profileRouter);
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
-
-app.use('/role', roleRouter);
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
-
-app.use('/permission', permissionRouter);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
@@ -66,6 +44,68 @@ app.use(session({
     saveUninitialized: false,
     cookie: {maxAge: 3600000} //1 hour
 }));
+
+
+
+
+app.all('*', function (req, res, next) {
+    //no security level:
+    if (
+      req.url === '/logout' ||
+      req.url === '/authenticate' ||
+      req.url === '/login_status'
+    ){
+      next();
+      return;
+    }
+    //any session required:
+    if (req.session.user){
+          if (
+            req.url === '/model/all'
+          ) {
+            next();
+            return;
+          }
+    }
+    else {
+        res.status(401).send();
+        return;
+    }
+    //permission bit field 1 required:
+    if (parseInt(req.session.user.permission) === 1) {
+        if (
+          req.url.startsWith('/user') ||
+          req.url.startsWith('/profile') ||
+          req.url.startsWith('/role')
+        ) {
+          next();
+          return;
+        }
+    }
+    //higher permissions required:
+    else if (parseInt(req.session.user.permission) > 1) {
+        next();
+      return;
+    }
+    else {
+        res.status(401).send();
+        return;
+    }
+  res.status(401).send();
+});
+
+
+
+
+
+app.use('/user', userRouter);
+app.use('/permission', permissionRouter);
+app.use('/model', modelRouter);
+app.use('/partmodel', partmodelRouter);
+app.use('/profile', profileRouter);
+app.use('/role', roleRouter);
+app.use('/permission', permissionRouter);
+
 
 /*
 * URL:              /authenticate
@@ -99,7 +139,11 @@ app.post('/authenticate', function (req, res) {
         // else throw({status: 400, data: {message: 'missing captcha', success: false}});
         //TODO what to do when client is already logged in with different credentials?
         //TODO validate captcha could be the first thing to do
-        db.one('select uid, email, password, firstname, lastname, upid from users where email = $1', email)
+        db.one('' +
+          'SELECT uid, email, password, firstname, lastname, profile, permission ' +
+          'FROM users ' +
+          'LEFT JOIN userprofile On users.upid = userprofile.upid ' +
+          'WHERE email = $1', email)
             .then(function (user) {
                 if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
 
@@ -126,7 +170,8 @@ app.post('/authenticate', function (req, res) {
                                             email: user.email,
                                             firstname: user.firstname,
                                             lastname: user.lastname,
-                                            role: user.role
+                                            profile: user.profile,
+                                            permission: user.permission
                                         };
                                         req.session.save(function (error) {
                                             if (error){
@@ -144,7 +189,8 @@ app.post('/authenticate', function (req, res) {
                                         email: user.email,
                                         firstname: user.firstname,
                                         lastname: user.lastname,
-                                        role: user.role
+                                        profile: user.profile,
+                                        permission: user.permission
                                     }
                                     req.session.save(function (error) {
                                         if (error){
@@ -221,10 +267,11 @@ app.get('/login_status', function (req, res) {
     try {
         if (req.session.user) {
             res.status(200).send({
-                message: 'logged in as ' + req.session.user.role,
+                message: 'logged in as ' + req.session.user.profile,
+                profile: req.session.user.profile,
+                permission: req.session.user.permission,
                 success: true,
-                loggedIn: true,
-                data: req.session.user.role
+                loggedIn: true
             });
         }
         else res.status(200).send({status: 200, data: {message: 'not logged in', success: true, loggedIn: false}});
