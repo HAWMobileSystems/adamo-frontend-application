@@ -1,65 +1,65 @@
-import {Custom} from './custom';
+/**import {Custom} from './custom';
 
-export const CustomModdle = {
+export const customModdle = {
     name: Custom.name,
     prefix: Custom.prefix,
     uri: Custom.uri,
     xml: {
-        tagAlias: "lowerCase"
+        tagAlias: 'lowerCase'
     },
     associations: new Array(),
     types: [
         {
-            name: "NESendTask",
+            name: 'NESendTask',
             extends: [
-                "bpmn:SendTask"
+                'bpmn:SendTask'
             ],
             properties: [
                 {
-                    "name": "template",
-                    "isAttr": true,
-                    "type": "String"
+                    name: 'template',
+                    isAttr: true,
+                    type: 'String'
                 }
             ]
         },
         {
-            name: "NEUserTask",
+            name: 'NEUserTask',
             extends: [
-                "bpmn:UserTask"
+                'bpmn:UserTask'
             ],
             properties: [
                 {
-                    "name": "worklist",
-                    "isAttr": true,
-                    "type": "String"
+                    name: 'worklist',
+                    isAttr: true,
+                    type: 'String'
                 }
             ]
         },
         {
-            name: "NEGW",
+            name: 'NEGW',
             extends: [
-                "bpmn:ExclusiveGateway"
+                'bpmn:ExclusiveGateway'
             ],
             properties: [
                 {
-                    "name": "condition",
-                    "isAttr": true,
-                    "type": "String"
+                    name: 'condition',
+                    isAttr: true,
+                    type: 'String'
                 }
             ]
         },
         {
-            name: "NESubProcess",
+            name: 'NESubProcess',
             extends: [
-                "bpmn:SubProcess"
+                'bpmn:SubProcess'
             ],
             properties: [
                 {
-                    "name": "ReferencedProcessDefinition",
-                    "isAttr": true,
-                    "type": "String"
+                    name: 'ReferencedProcessDefinition',
+                    isAttr: true,
+                    type: 'String'
                 }
             ]
         }
     ]
-};
+};**/

@@ -6,6 +6,7 @@ export const COMMANDS = {
     SET_IPIM_VALUES_EVALUATE: 'set-ipim-values-evaluate',
     RESET: 'reset',
     SET_TERM: 'set-term',
+    SET_SUBPROCESS: 'set-subprocess',
     HIGHLIGHT: 'highlight',
     EXTRA: 'extra',
     LOAD: 'load',

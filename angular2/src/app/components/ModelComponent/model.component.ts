@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
-import {ApiService} from "../../services/api.service";
-
-
-
-
+import {ApiService} from '../../services/api.service';
 
 const mqtt = require('mqtt');
 
@@ -19,7 +15,6 @@ export class ModelComponent {
     private models: any;
     private mqtt: any;
 
-
     constructor(private apiService: ApiService, private alertService: AlertService) {
     }
 
@@ -33,7 +28,6 @@ export class ModelComponent {
         };
 
         this.getAllModels();
-
 
         this.mqtt = mqtt.connect('mqtt://localhost:4711');
         this.mqtt.subscribe('MODEL');
@@ -52,9 +46,8 @@ export class ModelComponent {
                     if (response.success) {
                         this.models = response.data;
                         this.selected = null;
-                    }
-                    else {
-                        this.alertService.error(response._body)
+                    } else {
+                        this.alertService.error(response._body);
                     }
                 },
                 error => {
@@ -63,18 +56,17 @@ export class ModelComponent {
                 });
     }
 
-
-
     public modelUpdate() {
-        this.apiService.modelUpdate(this.selected.mid, this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
+        this.apiService.modelUpdate(
+            this.selected.mid,
+            this.selected.modelname,
+            this.selected.lastchange,
+            this.selected.modelxml,
+            this.selected.version)
             .subscribe(response => {
                     if (response.success) {
                         this.mqtt.publish('MODEL');
                       this.alertService.success(response.status);
-                    }
-                    else {
-                        this.alertService.error(response._body)
-
                     }
                 },
                 error => {
@@ -90,9 +82,6 @@ export class ModelComponent {
                         this.mqtt.publish('MODEL');
                       this.alertService.success(response.status);
                     }
-                    else {
-                        this.alertService.error(response._body)
-                    }
                 },
                 error => {
                     this.alertService.error(JSON.parse(error._body).status);
@@ -107,9 +96,6 @@ export class ModelComponent {
                     if (response.success) {
                         this.mqtt.publish('MODEL');
                       this.alertService.success(response.status);
-                    }
-                    else {
-                        this.alertService.error(response._body)
                     }
                 },
                 error => {

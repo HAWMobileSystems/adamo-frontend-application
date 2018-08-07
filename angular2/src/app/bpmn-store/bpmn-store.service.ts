@@ -88,20 +88,28 @@ export class BPMNStore {
                     click: () => console.log('two-column')
                 }
             },
-            [COMMANDS.SET_IPIM_SUBPROCESS]: {
-                group: 'ipim',
-                className: ['fa-beer', 'fa'],
-                title: COMMANDS.SET_IPIM_SUBPROCESS,
-                action: {
-                    click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
-                }
-            },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
                 className: ['fa-cubes', 'fa'],
                 title: COMMANDS.SET_IPIM_EVALUATOR,
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
+                }
+            },
+            [COMMANDS.SET_SUBPROCESS]: {
+                group: 'ipim',
+                className: ['fa-object-ungroup', 'fa'],
+                title: COMMANDS.SET_SUBPROCESS,
+                action: {
+                    click: () => console.log('openSubProcessModal')
+                }
+            },
+            [COMMANDS.SET_IPIM_SUBPROCESS]: {
+                group: 'ipim',
+                className: ['fa-object-group', 'fa'],
+                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                action: {
+                    click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
                 }
             }
         }).delay(1);
