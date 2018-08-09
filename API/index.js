@@ -65,7 +65,8 @@ app.all('*', function (req, res, next) {
   //any session required:
   if (req.session.user) {
     if (
-      req.url === '/model/all'
+      req.url === '/model/all' ||
+      req.url.startsWith('/model/getModel/')
     ) {
       next();
       console.error('2');
@@ -373,6 +374,7 @@ app.get('/', function (req, res) {
 
 app.listen(3000);
 
+console.log('ExpressJS is up and running');
 
 /*
 app.get('/models/:id/:name', function (req, res) {
