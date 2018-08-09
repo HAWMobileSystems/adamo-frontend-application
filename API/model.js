@@ -49,9 +49,9 @@ router.get('/all', function (req, res) {
 * Description:
 * */
 
-router.get('/getModel', function (req, res) {
+router.get('/getModel/:id', function (req, res) {
 
-    const mid = req.params.mid;
+    const mid = req.params.id;
     console.log(req.params);
     db.one('select * from model where mid = $1', [mid])
         .then(function (data) {

@@ -133,8 +133,13 @@ export class ApiService {
   }
 
   public getModel(mid: string) {
-    return this.http.get('http://localhost:3000/model/model' + mid, options)
+    return this.http.post('http://localhost:3000/model/getModel/' + mid, options)
       .map((response: Response) => response.json());
+  }
+
+  public async getModelAsync(mid: string): Promise<string> {
+    const response = await this.http.get('http://localhost:3000/model/getModel/' + mid, options).toPromise();
+    return response.json().data.modelxml;
   }
 
   public getAllModels() {
