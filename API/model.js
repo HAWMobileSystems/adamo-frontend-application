@@ -25,14 +25,44 @@ router.get('/all', function (req, res) {
 
     db.query('select * from model')
     .then(function (data) {
-        console.log('DATA:', data)
+        console.log('DATA:', data);
         res.send({ data: data, success: true});
         })
         .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
+            console.log('ERROR POSTGRES:', error);
             res.status(400).send({ status: 'Database not available'});
         })
     });
+
+
+/*
+* URL:              /getModel
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:
+* */
+
+router.get('/getModel/:id', function (req, res) {
+
+    const mid = req.params.id;
+    console.log(req.params);
+    db.one('select * from model where mid = $1', [mid])
+        .then(function (data) {
+            console.log('DATA:', data);
+            res.send({ data: data, success: true});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error);
+            res.status(400).send({ status: 'Database not available'});
+        })
+});
 
 
 /*

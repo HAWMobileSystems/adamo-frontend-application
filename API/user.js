@@ -59,6 +59,7 @@ router.post('/create', function (req, res) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
+  //TODO Insert EMail Regex Check!
   if (!req.body.firstname) {
     res.status(400).send({status: 'First name may not be empty!'});
     return;

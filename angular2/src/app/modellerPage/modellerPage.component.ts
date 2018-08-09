@@ -26,11 +26,11 @@ export class ModellerPageComponent implements OnInit {
 
   ngOnInit() {
     // reset login status
-    this.apiService.logout()
-      .subscribe(response => {
-      }, error => {
-        console.log(error);
-      });
+    // this.apiService.logout()
+    //   .subscribe(response => {
+    //   }, error => {
+    //     console.log(error);
+    //   });
   }
 
   onLoadModel(model: Model): void {
