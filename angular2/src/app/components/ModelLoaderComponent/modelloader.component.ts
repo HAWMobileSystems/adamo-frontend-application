@@ -59,6 +59,15 @@ export class ModelLoaderComponent {
   //   this.loadModel.emit(model);
   // }
 
+  public createNew() {
+    const model = new Model();
+    model.xml = this.newModel.modelxml;
+    model.name = this.newModel.modelname;
+    model.id = this.newModel.mid;
+    this.loadModel.emit(model);
+  }
+
+
   public loadSelected() {
     const model = new Model();
     model.xml = this.selected.modelxml;
