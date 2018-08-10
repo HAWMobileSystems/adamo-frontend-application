@@ -85,7 +85,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: helpers.root('src', 'app'),
-                use: ['to-string-loader', 'css-loader']
+                use: ['css-loader']
                 // use: ExtractTextPlugin.extract({
                 //     fallback: 'style',
                 //     use: 'css?sourceMap'
@@ -114,7 +114,10 @@ module.exports = {
 
     plugins: [
         new webpack.NamedModulesPlugin(),
-
+        new webpack.ContextReplacementPlugin(
+            /angular(\\|\/)core(\\|\/)@angular/,
+            helpers.root('./src'), {}
+        ),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'app',
         //     minChunks: function(module, count) {
