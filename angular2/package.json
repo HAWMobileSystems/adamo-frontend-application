@@ -56,7 +56,7 @@
     "safe-eval": "^0.4.1",
     "sass-loader": "^6.0.5",
     "systemjs": "0.19.6",
-    "typescript": "^2.4.2",
+    "typescript": "^2.9.2",
     "zone.js": "^0.8.9"
   },
   "devDependencies": {
