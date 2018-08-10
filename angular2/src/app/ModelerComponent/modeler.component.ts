@@ -40,7 +40,7 @@ const customPropertiesProviderModule = {
 @Component({
   selector: 'modeler',
   templateUrl: './modeler.component.html',
-  styleUrls: ['./modeler.component.css'],
+  styleUrls: ['./modeler.component.less'],
   providers: [BPMNStore]
 })
 export class ModelerComponent2 implements OnInit {
