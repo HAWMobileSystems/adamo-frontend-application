@@ -85,7 +85,7 @@ export class InputModal extends ModalComponent {
     console.log('InputModal closed');
   }
 
-  public clearModal(s: string){
+  public clearModal(s: string) {
     //Bereich zum Löschen per getElement abfragen
     const inpNode = document.getElementById(s);
     //Solange es noch ein firstChild gibt, wird dieses entfernt!

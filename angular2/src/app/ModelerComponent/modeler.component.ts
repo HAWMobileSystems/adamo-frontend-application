@@ -11,7 +11,7 @@ const propertiesPanelModule = require('bpmn-js-properties-panel');
 const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
 
 import {CommandStack} from './command/CommandStack';
-import {CustomModdle} from './custom-moddle';
+//import {customModdle} from './custom-moddle';
 import {CamundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
@@ -43,10 +43,11 @@ const customPropertiesProviderModule = {
   styleUrls: ['./modeler.component.css'],
   providers: [BPMNStore]
 })
-export class ModelerComponent2 implements OnInit {
+export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
+  @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
@@ -115,7 +116,7 @@ export class ModelerComponent2 implements OnInit {
     this.variableModal.modal.open();
   }
 
-  public openSubProcessModal = () => {
+  public openSubprocessModal = () => {
     this.getSubProcessList(this.lookup.SELECTION);
   }
 
@@ -240,10 +241,6 @@ export class ModelerComponent2 implements OnInit {
   }
 
   private zoomToFit = () => {
-
-    this.evaluator = new Evaluator('root', 'ID', this.apiService);
-    const test = this.evaluator.getXMLFromDB('6');
-    debugger;
    const canvasObject = this.modeler.get('canvas');
    canvasObject.zoom('fit-viewport');
   }
@@ -259,7 +256,7 @@ export class ModelerComponent2 implements OnInit {
     [COMMANDS.LOAD]: this.toggleLoader,
     [COMMANDS.ADMINISTRATE]: this.administrate,
     [COMMANDS.LOGOUT]: this.logout,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubProcessModal,
+    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal,
     [COMMANDS.ZOOM_TO_FIT] : this.zoomToFit,
     [COMMANDS.EXPORT_SVG] : this.saveSVG
@@ -276,7 +273,7 @@ export class ModelerComponent2 implements OnInit {
       this.store.paletteEntries()
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
-        return this.createModeler(); 
+        return this.createModeler();
       });
     this.commandQueue.subscribe(cmd => {
       const func = this.funcMap[cmd.action];
@@ -409,6 +406,10 @@ export class ModelerComponent2 implements OnInit {
    */
 
   private loadBPMN() {
+    this.modeler.importXML(this.newDiagramXML, this.handleError);
+    this.loadedCompletely.emit();
+    return;
+
     // console.log('load', this.url, this.store);
     const canvas = this.modeler.get('canvas');
     this.http.get(this.url)
@@ -446,7 +447,7 @@ export class ModelerComponent2 implements OnInit {
     const terms: string[] = new Array();
     //Alle Elemente durchlaufen um Variablen zu finden
     for (const element of elements) {
-      console.log(element, typeof element.businessObject.extensionElements);
+      //console.log(element, typeof element.businessObject.extensionElements);
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
@@ -570,25 +571,17 @@ export class ModelerComponent2 implements OnInit {
     const terms = this.getTermList('elementRegistry');
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
-    console.log('after elementRegistry');
+    //console.log('after elementRegistry');
 
     const colorelements = this.ipimColors.map(() => []);
     for (const element of elements) {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
-        // if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        console.log('extras ' + extras);
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
           if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
-            console.log(colorelements,
-              'values[i].value' + extras[0].values[i].value, 'i ' + i,
-              'length' + this.ipimColors.length,
-              'terms' + terms,
-              'indexOf' + terms.indexOf(extras[0].values[i].value),
-              'indexOf % length' + terms.indexOf(extras[0].values[i].value) % this.ipimColors.length);
             colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
           }
         }

@@ -80,7 +80,7 @@ export class VariableModal extends ModalComponent {
         this.addVar('newVariable', 'newValue', false);
     }
 
-    public addVar(name: string, value: string, meta: boolean): void{
+    public addVar(name: string, value: string, meta: boolean): void {
         this.variables.push(new Variable(name, value, meta));
     }
 
@@ -124,9 +124,10 @@ export class VariableModal extends ModalComponent {
         this.dismiss();
     }
 
-    public clearModal(s: string){
+    public clearModal(s: string) {
         //Bereich zum Löschen per getElement abfragen
-        let inpNode = document.getElementById(s);
+        //let changed to const, because it was never assigned
+        const inpNode = document.getElementById(s);
         //Solange es noch ein firstChild gibt, wird dieses entfernt!
         while (inpNode.firstChild) {
           inpNode.removeChild(inpNode.firstChild);
@@ -138,15 +139,13 @@ export class VariableModal extends ModalComponent {
         this.writeVariableModalValues();
     }
 
-    public insertVariables(): void{
+    public insertVariables(): void {
         console.log('insertVariables');
         this.insertVariableField('newField', 'NewVariable', 'variablefset', false);
     }
 
-    // TODO: FIxme in a template?
     private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
         console.log('Variablemodal insertVariableField clicked');
-        debugger;
         const inputField = document.createElement('input');
         inputField.setAttribute('type', 'text');
         inputField.setAttribute('name', 'textbox');
@@ -249,7 +248,6 @@ export class VariableModal extends ModalComponent {
         const fields = document.getElementsByName('textbox');
         const checkboxes = document.getElementsByName('checkbox');
         const valueboxes = document.getElementsByName('valuebox');
-
 
         for (let fieldi = 0; fieldi < this.variables.length; fieldi++) {
             if ((this.variables[fieldi]).value !== '') {

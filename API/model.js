@@ -3,6 +3,23 @@ const router = express.Router();
 const db = require('./database');
 const bodyParser = require('body-parser');
 
+const mqtt = require('mqtt').connect('mqtt://localhost:1883');
+const openModels = {};
+
+mqtt.subscribe('MODEL/#');
+mqtt.on('message', function (topic, message) {
+  var mid = topic.split('_')[1];
+  openModels[mid] = JSON.parse(message);
+  openModels[mid].modelxml = JSON.parse(message).XMLDoc;
+  openModels[mid].mid = mid;
+  openModels[mid].hasOwnProperty('numberOfCollaborators') ? openModels[mid].numberOfCollaborators = openModels[mid].numberOfCollaborators++ : openModels[mid].numberOfCollaborator = 1;
+  lastchange = null;
+  modelname = null;
+  version = null;
+  console.error(openModels);
+});
+
+
 router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
@@ -25,14 +42,58 @@ router.get('/all', function (req, res) {
 
     db.query('select * from model')
     .then(function (data) {
-        console.log('DATA:', data)
+        console.log('DATA:', data);
         res.send({ data: data, success: true});
         })
         .catch(function (error) {
-            console.log('ERROR POSTGRES:', error)
+            console.log('ERROR POSTGRES:', error);
             res.status(400).send({ status: 'Database not available'});
         })
     });
+
+
+/*
+* URL:              /getModel
+* Method:           get
+* URL Params:
+*   Required:       none
+*   Optional:       none
+* Data Params:
+*   Required:       none
+*   Optional:       none
+* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
+* Error Response:   Code 400, Content: {message: [string], success: [bool]}
+* Description:
+* */
+
+router.post('/getModel', function (req, res) {
+
+
+
+
+  if(!req.body.mid) {
+    res.status(400).send({ status: 'Model name may not be empty!'});
+    return;
+  }
+  const mid = req.body.mid;
+
+
+  if (openModels.hasOwnProperty(mid)) {
+    res.send({ data: openModels[mid], success: true});
+    return;
+  }
+
+    console.log(req.params);
+    db.one('select * from model where mid = $1', [mid])
+        .then(function (data) {
+            console.log('DATA:', data);
+            res.send({ data: data, success: true});
+        })
+        .catch(function (error) {
+            console.log('ERROR POSTGRES:', error);
+            res.status(400).send({ status: 'Database not available'});
+        })
+});
 
 
 /*

@@ -6,12 +6,13 @@ import {CustomPropertiesProvider} from '../properties/props-provider';
 import {Http} from '@angular/http';
 
 import {Observable, Subject} from 'rxjs';
-import {ModelerComponent2} from '../../ModelerComponent/modeler.component';
+import {ModelerComponent} from '../../ModelerComponent/modeler.component';
 
 import {ApiService} from '../../services/api.service';
 
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
+import { resolve } from 'q';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -30,7 +31,7 @@ export class Evaluator {
   private xmls : Map<string, string> = new Map<string, string>();
   private varValMap : any = {};
 
-  private modelerComponent : ModelerComponent2;
+  private modelerComponent : ModelerComponent;
   private containerRef: string = '#js-canvas';
   private propsPanelRef: string = '#js-properties-panel';
 
@@ -102,33 +103,33 @@ export class Evaluator {
 
   }
 
-  public getAllSubmodels(xml : string) {
+  private async asyncForEach(array: string[], callback: any) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
+  public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
     const currentSubprocesses: string[] = this.extractSubmodels(xml);
     //Iterate over all Subprocess and see if they were already retrieved from DB
-    currentSubprocesses.forEach(element => {
+    await this.asyncForEach(currentSubprocesses, async (element: string) => {
       //If the Subprocess has no Key, get XML from DB and add it
       if (!this.xmls.has(element)) {
-        const tempXML = this.getXMLFromDB(element);
+        const tempXML = await this.getXMLFromDB(element);
         this.xmls.set(element, tempXML);
         //As we just added the XML, we recursively call the function to get all of its Subprocesses
         this.getAllSubmodels(tempXML);
       }
     });
+    console.log(this.xmls);
   }
 
-  public getXMLFromDB(id : string): string {
-
-    this.getDataFromDB(id)
-    .then(data => console.log(data));
-
-    return 'Test';
-    //const responsePromise = await this.apiService.getModel(id).toPromise();
-
-   // return responsePromise; //String(response.data.modelxml);
+  public async getXMLFromDB(id : string): Promise<string> {
+     return await this.apiService.getModelAsync(id).then( (value : string) => {return value; });
   }
 
-  private async getDataFromDB(id: string): Promise<String> {
+  private async getDataFromDB(id: number): Promise<String> {
     const response = await fetch('http://localhost:3000/model/getmodel/' + id);
     const data = await response.json();
     return data;

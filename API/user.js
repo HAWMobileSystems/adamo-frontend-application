@@ -59,6 +59,7 @@ router.post('/create', function (req, res) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
+  //TODO Insert EMail Regex Check!
   if (!req.body.firstname) {
     res.status(400).send({status: 'First name may not be empty!'});
     return;
@@ -148,24 +149,24 @@ router.post('/update', function (req, res) {
   const email = req.body.email;
   const profile = req.body.profile;
 
-        db.oneOrNone('' +
-          'UPDATE users\n' +
-          '          SET firstname = $1, \n' +
-          '            lastname = $2, \n' +
-          '            email = $3,  \n' +
-          '            upid = (SELECT upid\n' +
-          '                      FROM userprofile\n' +
-          '                      WHERE profile = $4)\n' +
-          '          where uid = $5',
-          [firstname, lastname, email, profile, uid])
-          .then(function (data) {
-            console.log('data is ', data);
-            res.send({status: 'User updated successfully', success: true});
-          })
-          .catch(function (error) {
-            console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Database not available'});
-          })
+  db.oneOrNone('' +
+    'UPDATE users\n' +
+    '          SET firstname = $1, \n' +
+    '            lastname = $2, \n' +
+    '            email = $3,  \n' +
+    '            upid = (SELECT upid\n' +
+    '                      FROM userprofile\n' +
+    '                      WHERE profile = $4)\n' +
+    '          where uid = $5',
+    [firstname, lastname, email, profile, uid])
+    .then(function (data) {
+      console.log('data is ', data);
+      res.send({status: 'User updated successfully', success: true});
+    })
+    .catch(function (error) {
+      console.log('ERROR POSTGRES:', error);
+      res.status(400).send({status: 'Database not available'});
+    })
 });
 
 
@@ -184,7 +185,6 @@ router.post('/update', function (req, res) {
 * */
 
 router.post('/password', function (req, res) {
-
   if (!req.body.uid) {
     res.status(400).send({status: 'Uid may not be empty!'});
     return;
@@ -195,39 +195,20 @@ router.post('/password', function (req, res) {
   }
 
   const uid = req.body.uid;
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
-  const email = req.body.email;
-  const profile = req.body.password;
-
-  // console.log(uid + ' ' + firstname + ' ' + lastname + ' ' + email + ' ' + password + ' ' + profile);
-
-  db.oneOrNone('SELECT FROM users WHERE uid = $1', [uid])
-    .then(function (data) {
-      // if (data) {
-      //   // console.log('data= ',data);
-      //   res.status(400).send({status: 'User already exists'})
-      // } else {
-        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-          db.oneOrNone('' +
-            'UPDATE users\n' +
-            '          SET password = $1, ' +
-            '          where uid = $5',
-            [hash])
-            .then(function () {
-              res.send({status: 'User created successfully', success: true});
-            })
-            .catch(function (error) {
-              console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Database not available'});
-            })
-        });
-      // }
-    })
-    .catch(function (error) {
-      console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
-    })
+  const password = req.body.password;
+  bcrypt.hash(password, saltRounds, function (err, hash) {
+    db.oneOrNone('' +
+      'UPDATE users ' +
+      'SET password = $1 ' +
+      'WHERE uid = $2', [hash, uid])
+      .then(function () {
+        res.send({status: 'Password changed successfully', success: true});
+      })
+      .catch(function (error) {
+        console.log('ERROR POSTGRES:', error);
+        res.status(400).send({status: 'Database not available'});
+      })
+  });
 });
 
 

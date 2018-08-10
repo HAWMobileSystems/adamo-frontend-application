@@ -1,6 +1,6 @@
 import { Inherits } from 'inherits';
 import { ModelComponent } from '../../components/ModelComponent/model.component';
-import { ModelerComponent2 } from '../modeler.component';
+import { ModelerComponent } from '../modeler.component';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 const mqtt = require('mqtt');
 
@@ -18,11 +18,11 @@ export class CommandStack {
     private id: any;       //Generated unique ID for Client to avoid Echos
     private dragging : any; //Dragging State from Modeler
     private topic: any;     //Currently subscribed Topic
-    private modelerComponenetRoot: ModelerComponent2;
+    private modelerComponenetRoot: ModelerComponent;
 
     //Commandstack Class
 
-    constructor(modeler : any, modelerComponenetRoot : ModelerComponent2) {
+    constructor(modeler : any, modelerComponenetRoot : ModelerComponent) {
         this.modeler = modeler;    //take modeler from super function
         this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
         this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
@@ -32,7 +32,7 @@ export class CommandStack {
         this.modelerComponenetRoot = modelerComponenetRoot;
         this.topic = this.modelerComponenetRoot.modelId;
 
-        this.client.subscribe(this.topic);  //subscribe Client to defaulttopic on MQTT Server
+        this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
 
         //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
         this.client.on('message', (topic: any, message: any) => {
@@ -47,9 +47,9 @@ export class CommandStack {
 
     //resubscribe to differernt topic/model
     public subscribeToModel = (modelID: string) => {
-       this.client.unsubscribe(this.topic);
+       this.client.unsubscribe('MODEL/' + this.topic);
        this.topic = modelID;
-       this.client.subscribe(this.topic);
+       this.client.subscribe('MODEL/' + this.topic);
     }
 
     //Handle a new Message from MQTT-Server
@@ -59,7 +59,7 @@ export class CommandStack {
         const event = JSON.parse(message);
 
         //check if the Event was issued from remote or self
-        if (event.IPIMID !== this.id && this.topic === topic) {
+        if (event.IPIMID !== this.id && 'MODEL/' + this.topic === topic) {
 
             //event was remote so cancel dragging if active an import new XML String
             console.log('Test from remote:' + message.toString());
@@ -86,7 +86,7 @@ export class CommandStack {
                             XMLDoc: xml
 
                        };
-                       this.client.publish(this.topic, JSON.stringify(transfer));
+                       this.client.publish('MODEL/' + this.topic, JSON.stringify(transfer));
             });
     }
 
