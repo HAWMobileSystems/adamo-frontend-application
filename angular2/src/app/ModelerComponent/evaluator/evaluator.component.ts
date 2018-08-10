@@ -103,11 +103,17 @@ export class Evaluator {
 
   }
 
-  public getAllSubmodels(xml : string) {
+  private async asyncForEach(array: string[], callback: any) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
+  public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
     const currentSubprocesses: string[] = this.extractSubmodels(xml);
     //Iterate over all Subprocess and see if they were already retrieved from DB
-    currentSubprocesses.forEach(async (element) => {
+    await this.asyncForEach(currentSubprocesses, async (element: string) => {
       //If the Subprocess has no Key, get XML from DB and add it
       if (!this.xmls.has(element)) {
         const tempXML = await this.getXMLFromDB(element);
@@ -116,6 +122,7 @@ export class Evaluator {
         this.getAllSubmodels(tempXML);
       }
     });
+    console.log(this.xmls);
   }
 
   public async getXMLFromDB(id : string): Promise<string> {
