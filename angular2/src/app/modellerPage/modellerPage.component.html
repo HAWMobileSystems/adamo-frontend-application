@@ -19,7 +19,7 @@
         <modelloader (loadModel)="onLoadModel($event)"></modelloader>
     </div>
     <modeler (loadedCompletely)="onLoadedCompletely($event)" (exportModel)="onExportModel($event)"
-             *ngFor="let model of models" [hidden]="page!==model.name" [modelId]="'model'+model.id"
-             [newDiagramXML]="model.modelxml"></modeler>
+             *ngFor="let model of models" [hidden]="page!==model.name" [modelId]="'model_'+model.id"
+             [newDiagramXML]="model.xml"></modeler>
 
 </div>

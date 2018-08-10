@@ -49,13 +49,36 @@ export class ModelLoaderComponent {
     });
   }
 
+
+
+  // public loadSelected() {
+  //   const model = new Model();
+  //   model.xml = this.selected.modelxml;
+  //   model.name = this.selected.modelname;
+  //   model.id = this.selected.mid;
+  //   this.loadModel.emit(model);
+  // }
+
   public loadSelected() {
     const model = new Model();
     model.xml = this.selected.modelxml;
     model.name = this.selected.modelname;
     model.id = this.selected.mid;
-    this.loadModel.emit(model);
-// this.notify.emit({modelxml: this.selected.modelxml, modelname: this.selected.modelname});
+    if (this.selected.mid !== '') {
+      this.apiService.getModel(this.selected.mid)
+        .subscribe(response => {
+            model.xml = response.data.modelxml;
+            console.info(model);
+            this.loadModel.emit(model);
+          },
+          error => {
+            this.alertService.error(JSON.parse(error._body).status);
+            console.log(error);
+          });
+
+    } else {
+      this.loadModel.emit(model);
+    }
   }
 
   public getAllModels() {

@@ -405,6 +405,9 @@ export class ModelerComponent implements OnInit {
    */
 
   private loadBPMN() {
+    this.modeler.importXML(this.newDiagramXML, this.handleError);
+    return;
+
     // console.log('load', this.url, this.store);
     const canvas = this.modeler.get('canvas');
     this.http.get(this.url)

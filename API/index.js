@@ -48,6 +48,7 @@ app.use(session({
 
 
 app.all('*', function (req, res, next) {
+  console.error(req.session.user);
   if (req.method === 'OPTIONS') {
     next();
     return;
@@ -66,7 +67,7 @@ app.all('*', function (req, res, next) {
   if (req.session.user) {
     if (
       req.url === '/model/all' ||
-      req.url.startsWith('/model/getModel/')
+      req.url.startsWith('/model/getModel')
     ) {
       next();
       console.error('2');
@@ -87,11 +88,11 @@ app.all('*', function (req, res, next) {
       }
     }
   } else {
-    res.status(401).send();
+    res.status(401).send('you have no session');
     console.error('4');
     return;
   }
-  res.status(401).send();
+  res.status(401).send('not enoth permissions you permissions are: ', req.session.user);
   console.error('5');
 });
 
