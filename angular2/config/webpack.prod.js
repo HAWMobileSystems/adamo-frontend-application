@@ -1,6 +1,7 @@
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+// var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
 
@@ -22,19 +23,28 @@ module.exports = webpackMerge(commonConfig, {
 
     plugins: [
         new webpack.NoErrorsPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({ // https://github.com/angular/angular/issues/10618
-            mangle: {
-                keep_fnames: true
-            }
-        }),
-        new ExtractTextPlugin('[name].[hash].css'),
+        // new ExtractTextPlugin('[name].[hash].css'),
         new webpack.DefinePlugin({
             'process.env': {
                 'ENV': JSON.stringify(ENV)
             }
         })
-    ]
+    ],
+
+    optimization: {
+        minimize: true,
+        minimizer: [],
+
+        optimization: {
+            minimize: true,
+
+            minimizer: [new UglifyJsPlugin({ // https://github.com/angular/angular/issues/10618
+                mangle: {
+                    keep_fnames: true
+                }
+            })]
+        }
+    }
 });
 
-console.log( 'output dist dir: ', helpers.root('dist'));
+console.log('output dist dir: ', helpers.root('dist'));

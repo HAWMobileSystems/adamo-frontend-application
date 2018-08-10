@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production'
 var helpers = require('./helpers');
 
 // function isExternal(module) {
@@ -26,98 +28,108 @@ var helpers = require('./helpers');
 // ];
 
 module.exports = {
-    entry: {
-        'polyfills': './src/polyfills.ts',
-        'vendor': './src/vendor.ts',
-        // 'bpmn': bpmn,
-        'bpmn': './src/bpmn.ts',
-        'app': './src/main.ts'
-    },
+  entry: {
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    // 'bpmn': bpmn,
+    'bpmn': './src/bpmn.ts',
+    'app': './src/main.ts'
+  },
 
-    resolve: {
-        extensions: ['', '.ts', '.js']
-    },
+  resolve: {
+    extensions: ['.ts', '.js', '.json', '.less', '.css', '.html']
+  },
 
-    module: {
-        loaders: [
-            // {
-            //     test: /\.js$/,
-            //     loaders: ['awesome-typescript-loader', 'angular2-template-loader']
-            // },
-            {
-                test: /\.ts$/,
-                loaders: ['awesome-typescript-loader', 'angular2-template-loader']
-            },
-            {
-                test: /\.html$/,
-                loader: 'html'
-            },
-            {
-                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?\d+)?$/,
-                loader: 'file?name=graphics/[name].[ext]'
-            },
-            {
-                test: /\.bpmn$/,
-                loader: 'file?name=diagrams/[name].[ext]'
-            },
-            {
-                test: /\.less/,
-                loader: "less"
-            },
-            {
-                test: /\.css$/,
-                exclude: helpers.root('src', 'app'),
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
-            },
-            {
-                test: /\.css$/,
-                exclude: helpers.root('public'),
-                include: helpers.root('src', 'app'),
-                // https://github.com/webpack/style-loader/issues/123:
-                loaders:[ExtractTextPlugin.extract('style', 'css-loader'), 'to-string', 'css', 'less-loader']
-            },
-            {
-                test: /\.json$/,
-                loader: 'json'
+  module: {
+    rules: [ // {
+      //     test: /\.js$/,
+      //     loaders: ['awesome-typescript-loader', 'angular2-template-loader']
+      // },
+      {
+        test: /\.ts$/,
+        use: [{
+          loader: 'awesome-typescript-loader'
+        }, {
+          loader: 'angular2-template-loader'
+        }]
+      }, {
+        test: /\.html$/,
+        use: [{
+          loader: 'html-loader'
+        }]
+      }, {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?\d+)?$/,
+        use: [{
+          loader: 'file-loader',
+
+          options: {
+            name: 'graphics/[name].[ext]'
+          }
+        }]
+      }, {
+        test: /\.css$/,
+        use: [{
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
             }
+          },
+          "css-loader"
         ]
-    },
+      }, {
+        test: /\.bpmn$/,
+        use: [{
+          loader: 'file-loader',
 
-    plugins: [
-        new webpack.NamedModulesPlugin(),
+          options: {
+            name: 'diagrams/[name].[ext]'
+          }
+        }]
+      }, {
 
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'app',
-        //     minChunks: function(module, count) {
-        //         return isExternal(module);
-        //     }
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'bpmn',
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'polyfills',
-        // }),
-        //
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'bpmn',
-        //     minChunks: function(module) {
-        //         return isExternal(module);
-        //     }
-        // }),
-        //
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'bpmn', 'vendor', 'polyfills'],
-            // minChunks: function(module) {
-            //     return isExternal(module);
-            // }
-        }),
+        test: /\.(sa|sc)ss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+        ],
 
-        new HtmlWebpackPlugin({
-            template: 'src/index.html'
-        })
+        // test: /\.css$/,
+        // exclude: helpers.root('src', 'app'),
+        // use: ExtractTextPlugin.extract({
+        //     fallback: 'style',
+        //     use: 'css?sourceMap'
+        // })
+      }, {
+        // test: /\.less$/,
+        // exclude: /node_modules/,
+        // use: [{
+        //   loader: 'raw-loader'
+        // }, {
+        //   loader: 'less-loader'
+        // }]
+      }
     ]
+  },
+
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    // new optimization.splitChunks({
+    //   name: ['app', 'bpmn', 'vendor', 'polyfills'],
+    //   // minChunks: function(module) {
+    //   //     return isExternal(module);
+    //   // }
+    // }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    })
+  ]
 };
