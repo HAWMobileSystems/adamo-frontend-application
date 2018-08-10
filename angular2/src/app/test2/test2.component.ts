@@ -9,7 +9,7 @@ import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   templateUrl: './test2.component.html',
-  styleUrls: ['./test2.component.css']
+  styleUrls: ['./test2.component.less']
 })
 export class Test2Component implements OnInit {
   title: string = 'Angular 2 with BPMN-JS';
