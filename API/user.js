@@ -8,7 +8,6 @@ const saltRounds = 10;
 router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
-
 /*
 * URL:              /all
 * Method:           get
@@ -54,12 +53,18 @@ router.get('/all', function (req, res) {
 * Description:
 * */
 
+
 router.post('/create', function (req, res) {
   if (!req.body.email) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
-  //TODO Insert EMail Regex Check!
+  // EMail Regex Check!
+  if (!validateEmail(req.body.email)) {
+    res.status(400).send({status: 'E-Mail is not in a valid form!'});
+    return;
+  }
+
   if (!req.body.firstname) {
     res.status(400).send({status: 'First name may not be empty!'});
     return;
@@ -76,6 +81,12 @@ router.post('/create', function (req, res) {
     res.status(400).send({status: 'User profile may not be empty!'});
     return;
   }
+
+
+  private validateEmail  = function (email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+    }
 
   db.oneOrNone('select from users where email = $1', [req.body.email])
     .then(function (data) {
