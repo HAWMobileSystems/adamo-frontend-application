@@ -11,8 +11,8 @@
                 </tr>
                 </thead>
                 <tbody></tbody>
-                <tr *ngFor="let user of users | filter:search" (click)="select_user(user)"
-                    [ngClass]="{'info': selected_user === user}">
+                <tr *ngFor="let user of users | filter:search" (click)="selectUser(user)"
+                    [ngClass]="{'info': selectedUser === user}">
                     <td>{{user.email}}</td>
                 </tr>
                 <tfoot></tfoot>
@@ -27,8 +27,8 @@
                 </tr>
                 </thead>
                 <tbody></tbody>
-                <tr *ngFor="let model of models | filter:search" (click)="select_model(model)"
-                    [ngClass]="{'info': selected_model === model}">
+                <tr *ngFor="let model of models | filter:search" (click)="selectModel(model)"
+                    [ngClass]="{'info': selectedModel === model}">
                     <td>{{model.modelname}}</td>
                     <td>{{model.version}}</td>
                 </tr>
@@ -38,38 +38,38 @@
     </div>
 </div>
 
-<div class="panel panel-default" *ngIf="selected_permission">
+<div class="panel panel-default" *ngIf="selectedPermission">
     <div class="panel-heading">
-        <h3 class="panel-title">{{selected_user.email}} - {{selected_model.modelname}} {{selected_model.version}}</h3>
+        <h3 class="panel-title">{{selectedUser.email}} - {{selectedModel.modelname}} {{selectedModel.version}}</h3>
     </div>
     <div class="panel-body">
         <!--<div class="panel-body">-->
-        <div *ngIf="selected_permission?.length === 0">
+        <div *ngIf="selectedPermission?.length === 0">
             <div class="form-group form-inline">
                 <label class="col-md-4" style="text-align: left">Role</label>
-                <select required class="form-control" name="role" [(ngModel)]="selected_permission.role">
+                <select required class="form-control" name="role" [(ngModel)]="selectedPermission.role">
                     <option *ngFor="let role of roles">{{role.role}}</option>
                 </select>
             </div>
             <button class="btn btn-success"
-                    (click)="permissionCreate(selected_user.uid, selected_model.mid, selected_permission.role)">
+                    (click)="permissionCreate(selectedUser.uid, selectedModel.mid, selectedPermission.role)">
                 create relation
             </button>
         </div>
-        <div *ngIf="selected_permission?.length !== 0">
-            <div class="form-group form-inline" *ngIf="selected_permission?.length !== 0">
+        <div *ngIf="selectedPermission?.length !== 0">
+            <div class="form-group form-inline" *ngIf="selectedPermission?.length !== 0">
                 <label class="col-md-4" style="text-align: left">Role</label>
-                <select required class="form-control" name="role" [(ngModel)]="selected_permission[0].role">
+                <select required class="form-control" name="role" [(ngModel)]="selectedPermission[0].role">
                     <option *ngFor="let role of roles">{{role.role}}</option>
                 </select>
             </div>
             <button class="btn btn-primary"
-                    (click)="permissionUpdate(selected_permission[0].role, selected_permission[0].pid)">
+                    (click)="permissionUpdate(selectedPermission[0].role, selectedPermission[0].pid)">
                 change relation
             </button>
 
             <button class="btn btn-danger"
-                    (click)="permissionDelete(selected_permission[0].pid)">delete
+                    (click)="permissionDelete(selectedPermission[0].pid)">delete
             </button>
         </div>
     </div>

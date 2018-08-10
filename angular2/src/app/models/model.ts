@@ -1,4 +1,4 @@
-import {ModelerComponent2} from '../ModelerComponent/modeler.component';
+import {ModelerComponent} from '../ModelerComponent/modeler.component';
 
 
 export class Model {
@@ -9,11 +9,11 @@ export class Model {
     set version(value: string) {
         this._version = value;
     }
-    get modelerComponent(): ModelerComponent2 {
+    get modelerComponent(): ModelerComponent {
         return this._modelerComponent;
     }
 
-    set modelerComponent(value: ModelerComponent2) {
+    set modelerComponent(value: ModelerComponent) {
         this._modelerComponent = value;
     }
     get id(): number {
@@ -40,7 +40,7 @@ export class Model {
     private _xml: string;
     private _name: string;
     private _id: number;
-    private _modelerComponent: ModelerComponent2;
+    private _modelerComponent: ModelerComponent;
     private _version: string;
 
 

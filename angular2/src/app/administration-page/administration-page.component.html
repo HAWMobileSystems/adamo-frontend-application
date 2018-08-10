@@ -11,6 +11,7 @@
                 <li [ngClass]="{'active': page ==='User'}" (click)="page = 'User'"><a>User</a></li>
                 <li [ngClass]="{'active': page ==='Model'}" (click)="page = 'Model'"><a>Model</a></li>
                 <li [ngClass]="{'active': page ==='Role'}" (click)="page = 'Role'"><a>Role</a></li>
+                <li [ngClass]="{'active': page ==='Profile'}" (click)="page = 'Profile'"><a>Profile</a></li>
                 <li [ngClass]="{'active': page ==='Permission'}" (click)="page = 'Permission'"><a>Permission</a></li>
             </ul>
         </nav>
@@ -27,6 +28,9 @@
         </div>
         <div *ngSwitchCase="'Permission'">
             <permission-management></permission-management>
+        </div>
+        <div *ngSwitchCase="'Profile'">
+            <profile-management></profile-management>
         </div>
 
     </div>
