@@ -78,7 +78,7 @@ export class InputModal extends ModalComponent {
   }
 
   private dismissed() {
-    console.log('InputModal Dissmissed');
+    console.log('InputModal dismissed');
   }
 
   private closed() {
