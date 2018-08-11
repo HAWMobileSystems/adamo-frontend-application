@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('./database');
 const bodyParser = require('body-parser');
-
 const mqtt = require('mqtt').connect('mqtt://localhost:1883');
 const openModels = {};
 
