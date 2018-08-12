@@ -23,7 +23,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 router.get('/all', function (req, res) {
     
-    db.query('select upid, profile from userprofile')
+    db.query('select upid, profile, permission from userprofile')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
