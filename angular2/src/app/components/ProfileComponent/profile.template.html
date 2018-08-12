@@ -22,7 +22,7 @@
             </thead>
             <tbody ></tbody>
             <tr *ngFor="let profile of profiles | filter:search" (click)="selected = profile" [ngClass]="{'info': selected === profile}">
-                <td>{{profile.rid}}</td>
+                <td>{{profile.upid}}</td>
                 <td>{{profile.profile}}</td>
             </tr>
             <tfoot></tfoot>
