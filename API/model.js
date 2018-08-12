@@ -39,7 +39,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 router.get('/all', function (req, res) {
 
-    db.query('select modelname, version from model')
+    db.query('select modelname, version, lastchange from model')
     .then(function (data) {
         console.log('DATA:', data);
         res.send({ data: data, success: true});
