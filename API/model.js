@@ -39,7 +39,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 router.get('/all', function (req, res) {
 
-    db.query('select modelname, version, lastchange from model')
+    db.query('select mid, modelname, lastchange, modelxml, version from model')
     .then(function (data) {
         console.log('DATA:', data);
         res.send({ data: data, success: true});
@@ -254,7 +254,7 @@ router.post('/delete', function (req, res) {
 
 router.get('/changes', function (req, res) {
    
-    db.query('select modename, version from model where lastchange >= NOW() - interval \'7 days\' order by lastchange desc')
+    db.query('select modelname, version from model where lastchange >= NOW() - interval \'7 days\' order by lastchange desc')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
