@@ -47,6 +47,7 @@ export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
+  @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
@@ -405,6 +406,10 @@ export class ModelerComponent implements OnInit {
    */
 
   private loadBPMN() {
+    this.modeler.importXML(this.newDiagramXML, this.handleError);
+    this.loadedCompletely.emit();
+    return;
+
     // console.log('load', this.url, this.store);
     const canvas = this.modeler.get('canvas');
     this.http.get(this.url)
