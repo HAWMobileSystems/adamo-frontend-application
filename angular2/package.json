@@ -85,6 +85,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-sourcemap-loader": "^0.3.7",
+    "karma-typescript": "^3.0.13",
     "karma-webpack": "^1.8.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
