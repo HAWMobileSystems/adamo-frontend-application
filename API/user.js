@@ -84,7 +84,7 @@ router.post('/create', function (req, res) {
     return;
   }
 
-  db.oneOrNone('select from users where email = $1', [req.body.email])
+  db.oneOrNone('select email from users where email = $1', [req.body.email])
     .then(function (data) {
       if (data) {
         res.status(400).send({status: 'User already exists'})
@@ -149,7 +149,6 @@ router.post('/update', function (req, res) {
     const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
     return emailRegex.test(email);
   }
-
   if (!emailValid(req.body.email)) {
     res.status(400).send({status: 'E-Mail is not valid!'});
     return;
@@ -250,15 +249,14 @@ router.post('/delete', function (req, res) {
   }
 
   const uid = req.body.uid;
-
   console.log(uid);
 
-  db.oneOrNone('select from users where uid = $1', [uid])
+  db.oneOrNone('select uid from users where uid = $1', [uid])
     .then(function (data) {
       if (data) {
         db.oneOrNone('delete from permission where uid = $1; delete from users where uid = $1', [uid])
           .then(function (data) {
-            console.log('User deleted ');
+            console.log('User deleted');
             res.send({status: 'User deleted successfully', success: true, data: data});
           })
           .catch(function (error) {

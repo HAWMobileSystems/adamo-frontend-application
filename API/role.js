@@ -23,7 +23,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 router.get('/all', function (req, res) {
     
-    db.query('select * from role')
+    db.query('select rid, role, read, write, admin from role')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
@@ -63,7 +63,7 @@ router.post('/create', function (req, res) {
 
     console.log(role + ' ' + read + ' ' + write + ' ' + admin);
    
-    db.oneOrNone('select * from role where role = $1', [role])
+    db.oneOrNone('select role from role where role = $1', [role])
         .then(function (data) {
             if(data){
                 res.status(400).send({ status: 'Role name already exists'})
@@ -118,7 +118,7 @@ router.post('/update', function (req, res) {
 
     console.log(roleid + ' ' + role + ' ' + read + ' ' + write + ' ' + admin);
     
-    db.oneOrNone('select * from role where role = $1', [role])
+    db.oneOrNone('select role from role where role = $1', [role])
     .then(function (data) {
         if(data && data.rid !== +roleid){
             console.log('MeinLOG', data, data.roleid, role, +roleid)
@@ -166,7 +166,7 @@ router.post('/delete', function (req, res) {
 
     console.log(roleid);
 
-    db.oneOrNone('select from role where rid =$1', [roleid])
+    db.oneOrNone('select rid from role where rid =$1', [roleid])
     .then(function (data) {
         if(data){
             db.oneOrNone('delete from role where rid =$1', [roleid])
