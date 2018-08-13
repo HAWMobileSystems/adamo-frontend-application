@@ -133,7 +133,7 @@ export class ApiService {
   }
 
   public getModel(mid: string) {
-    return this.http.post('http://localhost:3000/model/getModel/' + mid, options)
+    return this.http.post('http://localhost:3000/model/getModel', {mid: mid}, options)
       .map((response: Response) => response.json());
   }
 

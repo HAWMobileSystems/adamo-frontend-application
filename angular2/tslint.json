@@ -38,7 +38,8 @@
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces", 
+      2
     ],
     "insecure-random": true,
     "interface-name": false,

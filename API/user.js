@@ -8,6 +8,7 @@ const saltRounds = 10;
 router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
+
 /*
 * URL:              /all
 * Method:           get
@@ -53,18 +54,19 @@ router.get('/all', function (req, res) {
 * Description:
 * */
 
-
 router.post('/create', function (req, res) {
   if (!req.body.email) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
-  // EMail Regex Check!
-  if (!validateEmail(req.body.email)) {
-    res.status(400).send({status: 'E-Mail is not in a valid form!'});
+  const emailValid = (email) => {
+    const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+    return emailRegex.test(email);
+  }
+  if (!emailValid(req.body.email)) {
+    res.status(400).send({status: 'E-Mail is not valid!'});
     return;
   }
-
   if (!req.body.firstname) {
     res.status(400).send({status: 'First name may not be empty!'});
     return;
@@ -82,13 +84,7 @@ router.post('/create', function (req, res) {
     return;
   }
 
-
-  private validateEmail  = function (email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-    }
-
-  db.oneOrNone('select from users where email = $1', [req.body.email])
+  db.oneOrNone('select email from users where email = $1', [req.body.email])
     .then(function (data) {
       if (data) {
         res.status(400).send({status: 'User already exists'})
@@ -149,7 +145,15 @@ router.post('/update', function (req, res) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
-  if (!req.body.profile) {
+  const emailValid = (email) => {
+    const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+    return emailRegex.test(email);
+  }
+  if (!emailValid(req.body.email)) {
+    res.status(400).send({status: 'E-Mail is not valid!'});
+    return;
+  }
+    if (!req.body.profile) {
     res.status(400).send({status: 'Profile may not be empty!'});
     return;
   }
@@ -245,15 +249,14 @@ router.post('/delete', function (req, res) {
   }
 
   const uid = req.body.uid;
-
   console.log(uid);
 
-  db.oneOrNone('select from users where uid = $1', [uid])
+  db.oneOrNone('select uid from users where uid = $1', [uid])
     .then(function (data) {
       if (data) {
         db.oneOrNone('delete from permission where uid = $1; delete from users where uid = $1', [uid])
           .then(function (data) {
-            console.log('User deleted ');
+            console.log('User deleted');
             res.send({status: 'User deleted successfully', success: true, data: data});
           })
           .catch(function (error) {
