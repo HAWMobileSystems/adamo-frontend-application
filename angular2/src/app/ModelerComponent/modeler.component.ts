@@ -410,15 +410,15 @@ export class ModelerComponent implements OnInit {
     this.loadedCompletely.emit();
     return;
 
-    // console.log('load', this.url, this.store);
-    const canvas = this.modeler.get('canvas');
-    this.http.get(this.url)
-      .map((response: any) => response.text())
-      .map((data: any) => {
-        this.lastDiagramXML = data;
-        return this.modeler.importXML(data, this.handleError);
-      })
-      .subscribe(x => x ? this.handleError(x) : this.postLoad());
+    // // console.log('load', this.url, this.store);
+    // const canvas = this.modeler.get('canvas');
+    // this.http.get(this.url)
+    //   .map((response: any) => response.text())
+    //   .map((data: any) => {
+    //     this.lastDiagramXML = data;
+    //     return this.modeler.importXML(data, this.handleError);
+    //   })
+    //   .subscribe(x => x ? this.handleError(x) : this.postLoad());
   }
 
   private postLoad() {
