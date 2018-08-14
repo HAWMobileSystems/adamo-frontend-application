@@ -48,7 +48,6 @@ app.use(session({
 
 
 app.all('*', function (req, res, next) {
-  console.error(req.session.user);
   if (req.method === 'OPTIONS') {
     next();
     return;
@@ -60,7 +59,6 @@ app.all('*', function (req, res, next) {
     req.url === '/login_status'
   ) {
     next();
-    console.error('1');
     return;
   }
   //any session required:
@@ -70,7 +68,6 @@ app.all('*', function (req, res, next) {
       req.url.startsWith('/model/getModel')
     ) {
       next();
-      console.error('2');
       return;
     }
     //permission bit field 1 required:
@@ -83,17 +80,14 @@ app.all('*', function (req, res, next) {
         req.url.startsWith('/role')
       ) {
         next();
-        console.error('3');
         return;
       }
     }
   } else {
-    res.status(401).send('you have no session');
-    console.error('4');
+    res.status(401).send({message: 'you have no session'});
     return;
   }
-  res.status(401).send('not enoth permissions you permissions are: ', req.session.user);
-  console.error('5');
+  res.status(401).send({message: 'not enoth permissions you permissions are: '+ req.session.user});
 });
 
 
