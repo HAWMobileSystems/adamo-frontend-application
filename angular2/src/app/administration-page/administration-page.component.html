@@ -1,21 +1,14 @@
 <h1>The administration page</h1>
 <div class="col-md-6 col-md-offset-3" [ngSwitch]="page">
     <alert></alert>
-    <!--<form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>-->
-    <!--</form>-->
-
-
     <nav class="navbar navbar-default" role="navigation">
-        <ul class="nav navbar-nav" >
+        <ul class="nav navbar-nav">
             <li [ngClass]="{'active': page ==='User'}" (click)="page = 'User'"><a>User</a></li>
             <li [ngClass]="{'active': page ==='Model'}" (click)="page = 'Model'"><a>Model</a></li>
             <li [ngClass]="{'active': page ==='Role'}" (click)="page = 'Role'"><a>Role</a></li>
-            <!--<li [ngClass]="{'active': page ==='Profile'}" (click)="page = 'Profile'"><a>Profile</a></li>-->
             <li [ngClass]="{'active': page ==='Permission'}" (click)="page = 'Permission'"><a>Permission</a></li>
         </ul>
     </nav>
-
-
     <div *ngSwitchCase="'User'">
         <user-management></user-management>
     </div>
@@ -28,8 +21,9 @@
     <div *ngSwitchCase="'Permission'">
         <permission-management></permission-management>
     </div>
-    <!--<div *ngSwitchCase="'Profile'">-->
-        <!--<profile-management></profile-management>-->
-    <!--</div>-->
-
 </div>
+
+
+
+
+

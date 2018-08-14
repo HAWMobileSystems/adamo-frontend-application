@@ -10,11 +10,11 @@ mqtt.subscribe('MODEL/#')
 mqtt.on('message', function (topic, message) {
   console.error(topic)
   try {
-    var split = topic.split('_');
-    var mid = split[1];
-    var version = split[2];
+    var split = topic.split('_')
+    var mid = split[1]
+    var version = split[2]
     if (mid && version) {
-      openModels[mid] = {version : {}};
+      openModels[mid] = {version: {}}
       openModels[mid][version] = JSON.parse(message)
       openModels[mid][version].modelxml = JSON.parse(message).XMLDoc
       openModels[mid][version].mid = mid
@@ -25,8 +25,8 @@ mqtt.on('message', function (topic, message) {
       version = null
     }
   }
-  catch (error){
-    console.error(error);
+  catch (error) {
+    console.error(error)
   }
 })
 
@@ -52,11 +52,10 @@ router.use(bodyParser.urlencoded({extended: true})) // support encoded bodies
 router.get('/all', function (req, res) {
 
   db.query('' +
-    'SELECT * ' +
+    'SELECT mid, modelname, lastchange, modelxml, version ' +
     'FROM model ' +
-    'ORDER BY modelname asc, version desc')
+    'ORDER BY modelname ASC, version DESC')
     .then(function (data) {
-      console.log('DATA:', data)
       res.send({data: data, success: true})
     })
     .catch(function (error) {
@@ -87,10 +86,7 @@ router.post('/getModel', function (req, res) {
     res.status(400).send({status: 'Model name may not be empty!'})
     return
   }
-
   const mid = req.body.mid
-
-
 
 
   if (req.body.version) {
@@ -103,7 +99,8 @@ router.post('/getModel', function (req, res) {
     }
 
     db.one('' +
-      'SELECT * FROM model ' +
+      'SELECT modelxml, mid, version ' +
+      'FROM model ' +
       'WHERE mid = $1 ' +
       'AND version = $2', [mid, version])
       .then(function (data) {
@@ -118,10 +115,10 @@ router.post('/getModel', function (req, res) {
   } else {
     console.log(req.params)
     db.one('' +
-      'SELECT * ' +
+      'SELECT modelxml, mid, version ' +
       'FROM model ' +
       'WHERE mid = $1 ' +
-      'ORDER BY version desc ' +
+      'ORDER BY version DESC ' +
       'LIMIT 1', [mid])
       .then(function (data) {
         console.log('DATA:', data)
@@ -163,12 +160,18 @@ router.post('/create', function (req, res) {
 
   console.log(modelname + ' ' + modelxml + ' ' + version)
 
-  db.oneOrNone('select from model where modelname = $1', [modelname])
+  db.oneOrNone('' +
+    'SELECT modelname ' +
+    'FROM model ' +
+    'WHERE modelname = $1', [modelname])
     .then(function (data) {
       if (data) {
         res.status(400).send({status: 'Model name already exists'})
       } else {
-        db.oneOrNone('insert into model (modelname, modelxml, version) values ($1, $2, $3)', [modelname, modelxml, version])
+        db.oneOrNone('' +
+          'INSERT into model ' +
+          '(modelname, modelxml, version) ' +
+          'VERSION ($1, $2, $3)', [modelname, modelxml, version])
           .then(function (data) {
             res.send({status: 'Model created successfully', success: true})
           })
@@ -214,7 +217,7 @@ router.post('/update', function (req, res) {
 
   console.log(mid + ' ' + modelname + ' ' + modelxml + ' ' + version)
 
-  db.oneOrNone('select * from model where modelname = $1', [modelname])
+  db.oneOrNone('select modelname from model where modelname = $1', [modelname])
     .then(function (data) {
       if (data && data.mid !== +mid) {
         res.status(400).send({status: 'Model name already exists'})
@@ -263,7 +266,6 @@ router.post('/delete', function (req, res) {
   }
   const version = req.body.version
 
-  console.log(mid)
 
   db.oneOrNone('' +
     'SELECT mid ' +
@@ -314,7 +316,11 @@ router.post('/delete', function (req, res) {
 
 router.get('/changes', function (req, res) {
 
-  db.query('select * from model where lastchange >= NOW() - interval \'7 days\' order by lastchange desc')
+  db.query('' +
+    'SELECT mid, modelname, version ' +
+    'FROM model ' +
+    'WHERE lastchange >= NOW() - interval \'7 days\' ' +
+    'ORDER BY lastchange DESC')
     .then(function (data) {
       console.log('DATA:', data)
       res.send({data: data, success: true})
@@ -363,137 +369,89 @@ router.post('/upsert', function (req, res) {
   const mid = req.body.mid
   const modelxml = req.body.modelxml
   const version = bigInt(req.body.version)
-  const superversion = req.body.supeversion;
+  const superversion = req.body.supeversion
 
-  console.error(bigInt(version).add(bigInt('0001000000000000', '16')).toString(16));
+  console.error(bigInt(version).add(bigInt('0001000000000000', '16')).toString(16))
   var level = [
     bigInt('0001000000000000', '16'),
     bigInt('0000000100000000', '16'),
     bigInt('0000000000010000', '16'),
     bigInt('0000000000000001', '16')
-  ];
-  var currentLevel;
+  ]
+  var currentLevel
   if (!bigInt(version).and(bigInt('FFFF000000000000', '16')).isZero()) {
-    currentLevel = 0;
+    currentLevel = 0
   }
   if (!bigInt(version).and(bigInt('0000FFFF00000000', '16')).isZero()) {
-    currentLevel = 1;
+    currentLevel = 1
   }
   if (!bigInt(version).and(bigInt('00000000FFFF0000', '16')).isZero()) {
-    currentLevel = 2;
+    currentLevel = 2
   }
   if (!bigInt(version).and(bigInt('000000000000FFFF', '16')).isZero()) {
-    currentLevel = 3;
+    currentLevel = 3
   }
-  console.log(currentLevel, level[currentLevel].toString(16));
+  console.log(currentLevel, level[currentLevel].toString(16))
   db.oneOrNone('' +
     'INSERT INTO model' +
     '(mid, modelname, modelxml, version) ' +
     'VALUES ' +
     '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
     .then(function (data) {
-      console.log('_1_', data);
-      res.send({status: 'Model upserted successfully', mid: mid, modelname: modelname, version: bigInt(version).add(level[currentLevel]), success: true});
-      mqtt.publish('modelupsert', JSON.stringify({mid: mid, version: version, newVersion: bigInt(version).add(level[currentLevel])}));
+      console.log('_1_', data)
+      res.send({
+        status: 'Model upserted successfully',
+        mid: mid,
+        modelname: modelname,
+        version: bigInt(version).add(level[currentLevel]),
+        success: true
+      })
+      mqtt.publish('modelupsert', JSON.stringify({
+        mid: mid,
+        version: version,
+        newVersion: bigInt(version).add(level[currentLevel])
+      }))
     })
     .catch(function (error) {
-      if (error.code === '23505'){
+      if (error.code === '23505') {
         if (currentLevel < 3) {
-          currentLevel ++;
+          currentLevel++
           db.oneOrNone('' +
             'INSERT INTO model' +
             '(mid, modelname, modelxml, version) ' +
             'VALUES ' +
             '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
             .then(function (data) {
-              console.log('_2_', data);
-              res.send({status: 'Model upserted successfully', mid: mid, modelname: modelname, version: bigInt(version).add(level[currentLevel]), success: true});
-              mqtt.publish('modelupsert', JSON.stringify({mid: mid, version: bigInt(version).add(level[currentLevel])}));
+              console.log('_2_', data)
+              res.send({
+                status: 'Model upserted successfully',
+                mid: mid,
+                modelname: modelname,
+                version: bigInt(version).add(level[currentLevel]),
+                success: true
+              })
+              mqtt.publish('modelupsert', JSON.stringify({
+                mid: mid,
+                version: bigInt(version).add(level[currentLevel])
+              }))
             })
             .catch(function (error) {
-              if (error.code === '23505'){
-                  res.send({status: 'Next Version already exists', success: false});
-              } else{
+              if (error.code === '23505') {
+                res.send({status: 'Next Version already exists', success: false})
+              } else {
                 console.log('ERROR POSTGRES:', error)
-                res.status(400).send({status: 'Database not available'});
+                res.status(400).send({status: 'Database not available'})
               }
-            });
+            })
         }
         else {
-          res.status(400).send({status: 'Max Subversion number reached', success: false});
+          res.status(400).send({status: 'Max Subversion number reached', success: false})
         }
-      } else{
+      } else {
         console.log('ERROR POSTGRES:', error)
-        res.status(400).send({status: 'Database not available', success: false});
+        res.status(400).send({status: 'Database not available', success: false})
       }
-    });
-
-
-  // db.oneOrNone('' +
-  //   'INSERT INTO model' +
-  //   '(mid, modelname, modelxml, version) ' +
-  //   'VALUES ' +
-  //   '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(bigInt('0001000000000000', '16')).toString()])
-  //   .then(function (data) {
-  //     res.send({status: 'Model upserted successfully', success: true})
-  //     mqtt.publish('administration/model');
-  //   })
-  //   .catch(function (error) {
-  //     if (error.code === '23505'){
-  //       db.oneOrNone('' +
-  //         'INSERT INTO model' +
-  //         '(mid, modelname, modelxml, version) ' +
-  //         'VALUES ' +
-  //         '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(bigInt('0000000100000000', '16')).toString()])
-  //         .then(function (data) {
-  //           res.send({status: 'Model upserted successfully', success: true})
-  //           mqtt.publish('MODEL');
-  //         })
-  //         .catch(function (error) {
-  //           if (error.code === '23505'){
-  //             db.oneOrNone('' +
-  //               'INSERT INTO model' +
-  //               '(mid, modelname, modelxml, version) ' +
-  //               'VALUES ' +
-  //               '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(bigInt('0000000000010000', '16')).toString()])
-  //               .then(function (data) {
-  //                 res.send({status: 'Model upserted successfully', success: true});
-  //                 mqtt.publish('MODEL');
-  //               })
-  //               .catch(function (error) {
-  //                 if (error.code === '23505'){
-  //                   db.oneOrNone('' +
-  //                     'INSERT INTO model' +
-  //                     '(mid, modelname, modelxml, version) ' +
-  //                     'VALUES ' +
-  //                     '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(bigInt('0000000000000001', '16')).toString()])
-  //                     .then(function (data) {
-  //                       res.send({status: 'Model upserted successfully', success: true});
-  //                       mqtt.publish('MODEL');
-  //                     })
-  //                     .catch(function (error) {
-  //                       if (error.code === '23505'){
-  //                         res.status(400).send({status: 'Max version number reached'});
-  //                       } else{
-  //                         console.log('ERROR POSTGRES:', error)
-  //                         res.status(400).send({status: 'Database not available'});
-  //                       }
-  //                     });
-  //                 } else{
-  //                   console.log('ERROR POSTGRES:', error)
-  //                   res.status(400).send({status: 'Database not available'});
-  //                 }
-  //               });
-  //           } else{
-  //             console.log('ERROR POSTGRES:', error)
-  //             res.status(400).send({status: 'Database not available'});
-  //           }
-  //         });
-  //     } else{
-  //       console.log('ERROR POSTGRES:', error)
-  //       res.status(400).send({status: 'Database not available'});
-  //     }
-  //   });
+    })
 })
 
 

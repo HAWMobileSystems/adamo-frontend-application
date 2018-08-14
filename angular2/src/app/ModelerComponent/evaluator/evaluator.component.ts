@@ -135,7 +135,7 @@ export class Evaluator {
     return data;
   }
 
-  public extractSubmodels(xml : string) {
+  public extractSubmodels(xml : string): string[] {
     this.modeler.importXML(xml);
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);

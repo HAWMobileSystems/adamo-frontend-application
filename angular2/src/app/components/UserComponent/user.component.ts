@@ -44,6 +44,11 @@ export class UserComponent {
     });
   }
 
+    private validateEmail(email: string) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+
   public getAllProfiles() {
     this.profiles = [];
 
@@ -78,25 +83,30 @@ export class UserComponent {
   }
 
   public userUpdate() {
-    this.apiService.userUpdate(
-      this.selected.uid,
-      this.selected.email,
-      this.selected.firstname,
-      this.selected.lastname,
-      this.selected.profile)
-      .subscribe(response => {
-          if (response.success) {
-            this.mqtt.publish('USER');
-            this.alertService.success(response);
-            this.alertService.success(response.status);
-            console.log(response);
-          } else {
-            this.alertService.error(response._body);
-          }
-        },
-        error => {
-          this.alertService.error(JSON.parse(error._body).status);
-        });
+      //E-Mail validation Abfrage
+    if (this.validateEmail(this.selected.email)) {
+        this.apiService.userUpdate(
+            this.selected.uid,
+            this.selected.email,
+            this.selected.firstname,
+            this.selected.lastname,
+            this.selected.profile)
+            .subscribe(response => {
+                    if (response.success) {
+                        this.mqtt.publish('USER');
+                        this.alertService.success(response);
+                        this.alertService.success(response.status);
+                        console.log(response);
+                    } else {
+                        this.alertService.error(response._body);
+                    }
+                },
+                error => {
+                    this.alertService.error(JSON.parse(error._body).status);
+                });
+    }else {
+        this.alertService.error('Not a valid E-Mail!');
+    }
   }
 
   public userPassword() {
@@ -117,25 +127,29 @@ export class UserComponent {
   }
 
   public userCreate() {
-    this.apiService.userCreate(
-      this.selected.email,
-      this.selected.firstname,
-      this.selected.lastname,
-      this.selected.profile,
-      this.selected.password)
-      .subscribe(response => {
-          console.log('debug');
-          if (response.success) {
-            this.mqtt.publish('USER');
-            this.alertService.success(response.status);
-            console.log(response);
-          } else {
-            this.alertService.error(response._body);
-          }
-        },
-        error => {
-          this.alertService.error(JSON.parse(error._body).status);
-        });
+      if (this.validateEmail(this.selected.email)) {
+          this.apiService.userCreate(
+              this.selected.email,
+              this.selected.firstname,
+              this.selected.lastname,
+              this.selected.profile,
+              this.selected.password)
+              .subscribe(response => {
+                      console.log('debug');
+                      if (response.success) {
+                          this.mqtt.publish('USER');
+                          this.alertService.success(response.status);
+                          console.log(response);
+                      } else {
+                          this.alertService.error(response._body);
+                      }
+                  },
+                  error => {
+                      this.alertService.error(JSON.parse(error._body).status);
+                  });
+      }else {
+          this.alertService.error('Not a valid E-Mail!');
+      }
   }
 
   public userDelete() {

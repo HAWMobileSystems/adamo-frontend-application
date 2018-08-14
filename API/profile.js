@@ -23,7 +23,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 router.get('/all', function (req, res) {
     
-    db.query('select * from userprofile')
+    db.query('select upid, profile, permission from userprofile')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({ data: data, success: true});
@@ -61,7 +61,7 @@ router.post('/create', function (req, res) {
 
     console.log(profile + ' ' + permission);
    
-    db.oneOrNone('select from userprofile where profile = $1', [profile])
+    db.oneOrNone('select profile from userprofile where profile = $1', [profile])
         .then(function (data) {
             if(data){
                 res.status(400).send({ status: 'User profile already exists'})
@@ -115,7 +115,7 @@ router.post('/update', function (req, res) {
     console.log(profileid + ' ' + profile + ' ' + permission);
 
     
-    db.oneOrNone('select * from userprofile where profile = $1', [profile])
+    db.oneOrNone('select profile from userprofile where profile = $1', [profile])
     .then(function (data) {
         if(data && data.profileid !== +profileid){
             console.log(data && data.profileid !== +profileid);
@@ -162,7 +162,7 @@ router.post('/delete', function (req, res) {
 
     console.log(profileid);
 
-    db.oneOrNone('select from userprofile where upid = $1', [profileid])
+    db.oneOrNone('select upid from userprofile where upid = $1', [profileid])
     .then(function (data) {
         if(data){
             db.oneOrNone('delete from userprofile where upid =$1', [profileid])
