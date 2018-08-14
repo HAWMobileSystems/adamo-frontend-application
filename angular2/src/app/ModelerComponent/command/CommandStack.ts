@@ -1,6 +1,7 @@
 import {Inherits} from 'inherits';
 import {ModelComponent} from '../../components/ModelComponent/model.component';
 import {ModelerComponent} from '../modeler.component';
+import {IPIM_OPTIONS} from '../../modelerConfig.service';
 
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 const mqtt = require('mqtt');
@@ -11,7 +12,7 @@ export class CommandStack {
   private EVENTBUS: string = 'eventBus';  //Eventbus from Modeler to trigger for element changed Event
   private ELEMENTREGISTRY: string = 'elementRegistry';  //ElementRegistry from Modeler for testing purposes
   private DRAGGING: string = 'dragging';   //Dragging Class from Modeler, used for aborting possible movement while refreshing
-  private mqttString: string = 'mqtt://localhost:4711';  //Connection path for the mqtt Server
+  private mqttString: string = IPIM_OPTIONS.MQTT_CONNECTION;  //Connection path for the mqtt Server
   private defaultTopic: string = 'IPIM Default';  //Default Topic to subscribe on
   private commandStack: any;   //commandStack for testing purposes
   private eleReg: any;  //elementRegistry for Testing purposes
@@ -35,7 +36,6 @@ export class CommandStack {
 
     this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
     this.client.subscribe('modelupsert');
-
 
 //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
     this.client.on('message', (topic: any, message: any) => {

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RequestOptions, Http, Response} from '@angular/http';
+import {IPIM_OPTIONS} from '../modelerConfig.service';
 
 const options = new RequestOptions({withCredentials: true});
 
@@ -10,7 +11,7 @@ export class ApiService {
 
   public authenticate(email: string, password: string, captcha: string) {
     return this.http.post(
-      'http://localhost:3000/authenticate',
+      IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/authenticate',
       {
         email: email,
         password: password,
@@ -21,27 +22,27 @@ export class ApiService {
   }
 
   public login_status() {
-    return this.http.get('http://localhost:3000/login_status', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/login_status', options)
       .map((response: Response) => response.json());
   }
 
   public logout() {
-    return this.http.get('http://localhost:3000/logout', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/logout', options)
       .map((response: Response) => response.json());
   }
 
   public getAllUsers() {
-    return this.http.get('http://localhost:3000/user/all', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/all', options)
       .map((response: Response) => response.json());
   }
 
   public userDelete(uid: number) {
-    return this.http.post('http://localhost:3000/user/delete', {uid: uid}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/delete', {uid: uid}, options)
       .map((response: Response) => response.json());
   }
 
   public userUpdate(uid: number, email: string, firstname: string, lastname: string, profile: string) {
-    return this.http.post('http://localhost:3000/user/update', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/update', {
       uid: uid,
       email: email,
       firstname: firstname,
@@ -52,7 +53,7 @@ export class ApiService {
   }
 
   public userPassword(uid: number, password: string) {
-    return this.http.post('http://localhost:3000/user/password', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/password', {
       uid: uid,
       password: password
     }, options)
@@ -60,7 +61,7 @@ export class ApiService {
   }
 
   public userCreate(email: string, firstname: string, lastname: string, profile: string, password: string) {
-    return this.http.post('http://localhost:3000/user/create', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/create', {
       email: email,
       firstname: firstname,
       lastname: lastname,
@@ -71,17 +72,17 @@ export class ApiService {
   }
 
   public getAllRoles() {
-    return this.http.get('http://localhost:3000/role/all', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/all', options)
       .map((response: Response) => response.json());
   }
 
   public roleDelete(roleid: number) {
-    return this.http.post('http://localhost:3000/role/delete', {roleid: roleid}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/delete', {roleid: roleid}, options)
       .map((response: Response) => response.json());
   }
 
   public roleUpdate(roleid: number, role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/role/update', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/update', {
       roleid: roleid,
       role: role,
       read: read,
@@ -92,7 +93,7 @@ export class ApiService {
   }
 
   public roleCreate(role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/role/create', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/create', {
       role: role,
       read: read,
       write: write,
@@ -102,17 +103,17 @@ export class ApiService {
   }
 
   public getAllProfiles() {
-    return this.http.get('http://localhost:3000/profile/all', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/all', options)
       .map((response: Response) => response.json());
   }
 
   public profileDelete(profileid: number) {
-    return this.http.post('http://localhost:3000/profile/delete', {profileid: profileid}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/delete', {profileid: profileid}, options)
       .map((response: Response) => response.json());
   }
 
   public profileUpdate(profileid: number, profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/profile/update', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/update', {
       profileid: profileid,
       profile: profile,
       read: read,
@@ -123,7 +124,7 @@ export class ApiService {
   }
 
   public profileCreate(profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post('http://localhost:3000/profile/create', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/create', {
       profile: profile,
       read: read,
       write: write,
@@ -133,27 +134,27 @@ export class ApiService {
   }
 
   public getModel(mid: string, version?: string) {
-    return this.http.post('http://localhost:3000/model/getModel', {mid: mid, version: version}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
   public async getModelAsync(mid: string): Promise<string> {
-    const response = await this.http.get('http://localhost:3000/model/getModel/' + mid, options).toPromise();
+    const response = await this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel/' + mid, options).toPromise();
     return response.json().data.modelxml;
   }
 
   public getAllModels() {
-    return this.http.get('http://localhost:3000/model/all', options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/all', options)
       .map((response: Response) => response.json());
   }
 
   public modelDelete(mid: number, version: string) {
-    return this.http.post('http://localhost:3000/model/delete', {mid: mid, version: version}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/delete', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
   public modelUpsert(mid: number, modelname: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/model/upsert', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/upsert', {
       mid: mid,
       modelname: modelname,
       modelxml: modelxml,
@@ -163,7 +164,7 @@ export class ApiService {
   }
 
   public modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/model/update', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/update', {
       mid: mid,
       modelname: modelname,
       lastchange: lastchange,
@@ -174,7 +175,7 @@ export class ApiService {
   }
 
   public modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post('http://localhost:3000/model/create', {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/create', {
       modelname: modelname,
       lastchange: lastchange,
       modelxml: modelxml,
@@ -184,22 +185,22 @@ export class ApiService {
   }
 
   public getPermission(user: any, model: any) {
-    return this.http.get('http://localhost:3000/permission/' + user + '/' + model, options)
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/' + user + '/' + model, options)
       .map((response: Response) => response.json());
   }
 
   public permissionCreate(uid: any, mid: any, role: any) {
-    return this.http.post('http://localhost:3000/permission/create', {uid: uid, mid: mid, role: role}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/create', {uid: uid, mid: mid, role: role}, options)
       .map((response: Response) => response.json());
   }
 
   public permissionDelete(pid: any) {
-    return this.http.post('http://localhost:3000/permission/delete', {pid: pid}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/delete', {pid: pid}, options)
       .map((response: Response) => response.json());
   }
 
   public permissionUpdate(role: any, pid: any) {
-    return this.http.post('http://localhost:3000/permission/update', {role: role, pid: pid}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/update', {role: role, pid: pid}, options)
       .map((response: Response) => response.json());
   }
 }
