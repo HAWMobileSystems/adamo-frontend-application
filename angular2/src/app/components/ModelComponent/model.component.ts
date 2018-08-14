@@ -9,7 +9,6 @@ const mqtt = require('mqtt');
   templateUrl: './model.template.html'
 })
 
-
 export class ModelComponent {
   private selected: any;
   private newModel: any;

@@ -49,16 +49,6 @@ export class ModelLoaderComponent {
     });
   }
 
-
-
-  // public loadSelected() {
-  //   const model = new Model();
-  //   model.xml = this.selected.modelxml;
-  //   model.name = this.selected.modelname;
-  //   model.id = this.selected.mid;
-  //   this.loadModel.emit(model);
-  // }
-
   public createNew() {
     const model = new Model();
     model.xml = this.newModel.modelxml;
@@ -66,8 +56,6 @@ export class ModelLoaderComponent {
     model.id = this.newModel.mid;
     this.loadModel.emit(model);
   }
-
-
   public loadSelected() {
     const model = new Model();
     model.xml = this.selected.modelxml;
@@ -108,56 +96,4 @@ export class ModelLoaderComponent {
           console.log(error);
         });
   }
-
-  public modelUpdate() {
-    this.apiService.modelUpdate(
-      this.selected.mid,
-      this.selected.modelname,
-      this.selected.lastchange,
-      this.selected.modelxml,
-      this.selected.version)
-      .subscribe(response => {
-          if (response.success) {
-            this.mqtt.publish('MODEL');
-          } else {
-            this.alertService.error(response._body);
-          }
-        },
-        error => {
-          this.alertService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
-  }
-
-  public modelCreate() {
-    this.apiService.modelCreate(this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
-      .subscribe(response => {
-          if (response.success) {
-            this.mqtt.publish('MODEL');
-          } else {
-            this.alertService.error(response._body);
-          }
-        },
-        error => {
-          this.alertService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
-  }
-
-  public modelDelete() {
-    this.apiService.modelDelete(this.selected.mid)
-      .subscribe(response => {
-          console.log(response);
-          if (response.success) {
-            this.mqtt.publish('MODEL');
-          } else {
-            this.alertService.error(response._body);
-          }
-        },
-        error => {
-          this.alertService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
-  }
-
 }

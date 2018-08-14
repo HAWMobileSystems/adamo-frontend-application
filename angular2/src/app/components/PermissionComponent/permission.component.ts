@@ -62,7 +62,6 @@ export class PermissionComponent {
             this.selectedPermission = null;
             this.selectedUser = null;
             this.selectedModel = null;
-// this.roles = response.data;
           } else {
             this.alertService.error(response.error)
             ;
@@ -82,7 +81,6 @@ export class PermissionComponent {
             this.selectedPermission = null;
             this.selectedUser = null;
             this.selectedModel = null;
-// this.roles = response.data;
           } else {
             this.alertService.error(response.error)
             ;
@@ -92,11 +90,6 @@ export class PermissionComponent {
           console.log(error);
         });
   }
-
-  /*
-  private permissionDelete(pid: any, role: any){
-  this.apiService.permissionDelete
-  }*/
 
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }

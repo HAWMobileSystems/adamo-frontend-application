@@ -26,7 +26,7 @@ import {EvalModal} from './modals/evaluatorModal';
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 
 import {ApiService} from '../services/api.service';
-import { Evaluator } from './evaluator/evaluator.component';
+import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
 
 const customPaletteModule = {
@@ -46,13 +46,13 @@ const customPropertiesProviderModule = {
 export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
-  @Input() public model: object;
+  @Input() public model: any;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
-  //private originModule: any = require('diagram-js-origin');
+//private originModule: any = require('diagram-js-origin');
   private termsColored: boolean = false;
   private ipimColors: string[] = ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson'];
   private lastDiagramXML: string = '';
@@ -90,7 +90,7 @@ export class ModelerComponent implements OnInit {
     SELECTION: 'selection',
     VALUES: 'values'
   };
-  private hideLoader : boolean = true;
+  private hideLoader: boolean = true;
 
   public onNotify(message: string): void {
     this.hideLoader = true;
@@ -98,11 +98,11 @@ export class ModelerComponent implements OnInit {
   }
 
   constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
-     private ref: ChangeDetectorRef, private router: Router) {
+              private ref: ChangeDetectorRef, private router: Router) {
 
   }
 
-  // Extract the following to the separate controler
+// Extract the following to the separate controler
   public openTermModal = () => {
     this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
     this.termModal.modal.open();
@@ -128,19 +128,19 @@ export class ModelerComponent implements OnInit {
   }
 
   private getSubProcessList = (scope: string) => {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+//Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
     scope === this.lookup.SELECTION
       ? elements = this.modeler.get(scope).get()
       : elements = this.modeler.get(scope).getAll();
     const terms: string[] = new Array();
     let validSelection = false;
-    //Alle Elemente durchlaufen um Variablen zu finden
+//Alle Elemente durchlaufen um Variablen zu finden
     for (const element of elements) {
       if (element.type === 'bpmn:SubProcess') {
         validSelection = true;
         console.log(element, typeof element.businessObject.extensionElements);
-        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+//Prüfen ob erweiterte Eigenschaften für das Objekt existieren
         if (element.businessObject.extensionElements) {
           //Wenn vorhandne die Elemente auslesen
           const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
@@ -209,7 +209,7 @@ export class ModelerComponent implements OnInit {
 
   private saveToDb = () => {
     console.log('saving to db');
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       if (err) {
         console.error(err);
         return
@@ -227,23 +227,23 @@ export class ModelerComponent implements OnInit {
   private saveDiagram = () => {
     const downloadLink = $('#js-download-diagram');
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
-      const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
+      const blob = new Blob([xml], {type: 'text/xml;charset=utf-8'});
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
     });
   }
 
   private saveSVG = () => {
     const downloadSvgLink = $('#js-download-SVG');
-    this.modeler.saveSVG((err : any, svg : any) => {
-      const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    this.modeler.saveSVG((err: any, svg: any) => {
+      const blob = new Blob([svg], {type: 'image/svg+xml;charset=utf-8'});
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
     });
 
   }
 
   private zoomToFit = () => {
-   const canvasObject = this.modeler.get('canvas');
-   canvasObject.zoom('fit-viewport');
+    const canvasObject = this.modeler.get('canvas');
+    canvasObject.zoom('fit-viewport');
   }
 
   private funcMap: any = {
@@ -255,10 +255,10 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick,
     [COMMANDS.SAVE]: this.saveDiagram,
     [COMMANDS.SAVETODB]: this.saveToDb,
-    [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal,
-    [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal,
-    [COMMANDS.ZOOM_TO_FIT] : this.zoomToFit,
-    [COMMANDS.EXPORT_SVG] : this.saveSVG
+    [COMMANDS.SET_IPIM_SUBPROCESS]: this.openSubprocessModal,
+    [COMMANDS.SET_IPIM_EVALUATOR]: this.openEvaluatorModal,
+    [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
+    [COMMANDS.EXPORT_SVG]: this.saveSVG
   };
 
   /**
@@ -269,7 +269,7 @@ export class ModelerComponent implements OnInit {
   public ngOnInit() {
     console.log('modelId: ', this.modelId);
     this.commandQueue = new Subject();
-      this.store.paletteEntries()
+    this.store.paletteEntries()
       .do(entries => this.extraPaletteEntries = entries)
       .subscribe(() => {
         return this.createModeler();
@@ -285,7 +285,7 @@ export class ModelerComponent implements OnInit {
   }
 
   public ngAfterViewInit(): void {
-    // this is scary as fuck -.-
+// this is scary as fuck -.-
     $(document).ready(() => {
       this.container = $('#js-drop-zone');
       if (!window.FileList || !window.FileReader) {
@@ -326,7 +326,7 @@ export class ModelerComponent implements OnInit {
   private createModeler() {
     this.initializeModeler();
     this.commandStack = new CommandStack(this.modeler, this);
-    // Start with an empty diagram:
+// Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
     this.loadBPMN();
@@ -369,7 +369,7 @@ export class ModelerComponent implements OnInit {
 
   private toggleTermsNormal = (elementRegistry: any, modeling: any) => {
     console.log('toggleTermsNormal');
-    //Alle Elemente der ElementRegistry holen
+//Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     modeling.setColor(elements, {
       stroke: 'black'
@@ -386,7 +386,8 @@ export class ModelerComponent implements OnInit {
           if (response.success) {
             console.log(response.data);
             this.openDiagram(response.data.modelxml);
-          }  else { console.log(response.error );
+          } else {
+            console.log(response.error);
           }
         },
         error => {
@@ -409,15 +410,15 @@ export class ModelerComponent implements OnInit {
     this.loadedCompletely.emit();
     return;
 
-    // // console.log('load', this.url, this.store);
-    // const canvas = this.modeler.get('canvas');
-    // this.http.get(this.url)
-    //   .map((response: any) => response.text())
-    //   .map((data: any) => {
-    //     this.lastDiagramXML = data;
-    //     return this.modeler.importXML(data, this.handleError);
-    //   })
-    //   .subscribe(x => x ? this.handleError(x) : this.postLoad());
+// // console.log('load', this.url, this.store);
+// const canvas = this.modeler.get('canvas');
+// this.http.get(this.url)
+//   .map((response: any) => response.text())
+//   .map((data: any) => {
+//     this.lastDiagramXML = data;
+//     return this.modeler.importXML(data, this.handleError);
+//   })
+//   .subscribe(x => x ? this.handleError(x) : this.postLoad());
   }
 
   private postLoad() {
@@ -438,20 +439,20 @@ export class ModelerComponent implements OnInit {
    *
    */
   private getTermList = (scope: string): string[] => {
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+//Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
     scope === this.lookup.SELECTION
       ? elements = this.modeler.get(scope).get()
       : elements = this.modeler.get(scope).getAll();
     const terms: string[] = new Array();
-    //Alle Elemente durchlaufen um Variablen zu finden
+//Alle Elemente durchlaufen um Variablen zu finden
     for (const element of elements) {
-      //console.log(element, typeof element.businessObject.extensionElements);
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+//console.log(element, typeof element.businessObject.extensionElements);
+//Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
-        //Wenn vorhandne die Elemente auslesen
+//Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-        //Schleife über alle Elemente
+//Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
           if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.CALC)) {
@@ -478,17 +479,17 @@ export class ModelerComponent implements OnInit {
       }
       this.lastDiagramXML = xml;
     });
-    //Alle Elemente der ElementRegistry holen
+//Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     const varValMap = {};
-    //Alle Elemente durchlaufen um Variablen zu finden
-    // elements.forEach((element: any) => {
+//Alle Elemente durchlaufen um Variablen zu finden
+// elements.forEach((element: any) => {
     for (const element of elements) {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+//Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
-        //Wenn vorhandne die Elemente auslesen
+//Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
+//Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           const valueName = extras[0].values[i].name.toLowerCase();
           //Prüfen ob der Name des Elementes IPIM_Val entspricht
@@ -504,13 +505,13 @@ export class ModelerComponent implements OnInit {
         }
       }
     }
-    //Alle Elemente durchlaufen um Evaluationsterme auszuwerten
+//Alle Elemente durchlaufen um Evaluationsterme auszuwerten
     for (const element of elements) {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+//Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (typeof element.businessObject.extensionElements !== 'undefined') {
-        //Wenn vorhandne die Elemente auslesen
+//Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
+//Schleife über alle Elemente
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
           if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
@@ -540,7 +541,7 @@ export class ModelerComponent implements OnInit {
 
   private openFileDiagram() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-      // Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
+// Maybe HTML5 File API helps https://w3c.github.io/FileAPI/
       const file = (<HTMLInputElement>document.getElementById('file')).files[0];
       file ? this.getAsFile(file) : console.error('could not reach selected file..', file);
     }
@@ -566,17 +567,17 @@ export class ModelerComponent implements OnInit {
       return;
     }
 
-    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+//Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const terms = this.getTermList('elementRegistry');
-    //Alle Elemente der ElementRegistry holen
+//Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
-    //console.log('after elementRegistry');
+//console.log('after elementRegistry');
 
     const colorelements = this.ipimColors.map(() => []);
     for (const element of elements) {
-      //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+//Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
-        //Wenn vorhandne die Elemente auslesen
+//Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
         for (let i = 0; i < extras[0].values.length; i++) {
           //Prüfen ob der Name des Elementes IPIM entspricht
