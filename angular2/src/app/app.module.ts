@@ -33,7 +33,8 @@ import {PermissionComponent} from './components/PermissionComponent/permission.c
 import {VariableComponent} from './ModelerComponent/modals/variables.component';
 import {InputVarComponent} from './ModelerComponent/modals/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
-
+import {FilterUnique} from './pipes/filterUnique.pipe'
+import {Version} from './pipes/version.pipe'
 import {AuthenticatedHttpService } from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
 
@@ -72,7 +73,9 @@ import {Http} from '@angular/http';
     SubProcessModal,
     EvalModal,
     VariableComponent,
-    InputVarComponent
+    InputVarComponent,
+    FilterUnique,
+    Version
   ],
   providers: [
     AuthGuard,
