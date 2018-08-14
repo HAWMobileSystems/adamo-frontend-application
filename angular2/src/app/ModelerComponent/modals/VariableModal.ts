@@ -70,9 +70,8 @@ export class VariableModal extends ModalComponent {
         this.fillModal();
     }
 
-    public setProps(modeler: any, termList: any) {
+    public setProps(modeler: any) {
         console.log('Variable Modal Set Props');
-        this.termList = termList;
         this.modeler = modeler;
     }
 

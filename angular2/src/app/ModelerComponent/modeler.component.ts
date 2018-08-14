@@ -77,6 +77,7 @@ export class ModelerComponent implements OnInit {
   private subProcessModal: SubProcessModal;
   @ViewChild('evalModal')
   private evaluatorModal: EvalModal;
+
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
@@ -109,11 +110,11 @@ export class ModelerComponent implements OnInit {
   }
 
   public openInputModal = () => {
-    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
+    this.inputModal.setProps(this.modeler, this);
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.variableModal.setProps(this.modeler);
     this.variableModal.modal.open();
   }
 
@@ -122,7 +123,7 @@ export class ModelerComponent implements OnInit {
   }
 
   public openEvaluatorModal = () => {
-    this.evaluatorModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
+    this.evaluatorModal.setProps(this.modeler, this);
     this.evaluatorModal.modal.open();
     console.log('ElevatorModal_Clicked!');
   }
@@ -197,11 +198,18 @@ export class ModelerComponent implements OnInit {
   }
 
   private resetDiagram = () => {
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-    }
-    this.openDiagram(this.lastDiagramXML);
+    this.apiService.getModel(this.modelId.split('_')[1])
+        .subscribe(response => {
+            const xml = response.data.modelxml;
+            console.info('Reset-Model', xml);
+            this.modeler.importXML(xml);
+          },
+          error => {
+            console.log(error);
+          });
+    this.commandStack.stopEvaluateMode();
   }
+
   private debug = () => {
     console.log(this.modeler);
     console.log(this);
@@ -381,20 +389,20 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(this.newDiagramXML);
   }
 
-  private loadDiagram() {
-    this.apiService.getModel('test')
-      .subscribe(response => {
-          if (response.success) {
-            console.log(response.data);
-            this.openDiagram(response.data.modelxml);
-          } else {
-            console.log(response.error);
-          }
-        },
-        error => {
-          console.log(error);
-        });
-  }
+  // private loadDiagram() {
+  //   this.apiService.getModel('test')
+  //     .subscribe(response => {
+  //         if (response.success) {
+  //           console.log(response.data);
+  //           this.openDiagram(response.data.modelxml);
+  //         } else {
+  //           console.log(response.error);
+  //         }
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       });
+  // }
 
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
@@ -469,18 +477,18 @@ export class ModelerComponent implements OnInit {
   }
 
   private evaluateProcess = () => {
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-    }
+    //Stop MQTT from Publishing
+    this.commandStack.startEvaluateMode();
+
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
-    this.modeler.saveXML({format: true}, (err: any, xml: string) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      this.lastDiagramXML = xml;
-    });
+    // this.modeler.saveXML({format: true}, (err: any, xml: string) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+    //   this.lastDiagramXML = xml;
+    // });
 //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     const varValMap = {};
@@ -529,9 +537,8 @@ export class ModelerComponent implements OnInit {
             }
             //sichere Sandbox für Eval Auswertung schaffen
             const safeEval = require('safe-eval');
-
             // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-            if (!safeEval(evalterm)) {
+            if (!eval(evalterm)) {
               //Element über modeling Objekt löschen
               modeling.removeElements([element]);
             }

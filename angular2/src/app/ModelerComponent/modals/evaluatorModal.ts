@@ -34,7 +34,6 @@ export class EvalModal extends ModalComponent {
   private IPIM_META : string = 'IPIM_Meta';
 
   private modeler : any;
-  public termList: any;
   private root : any;
   /* constructor(modeler: any) {
       super(modeler);
@@ -56,8 +55,7 @@ export class EvalModal extends ModalComponent {
   public backdrop: string | boolean = true;
   public css: boolean = false;
 
-  public setProps(modeler: any, termList: any, root: any) {
-    this.termList = termList;
+  public setProps(modeler: any, root: any) {
     this.modeler = modeler;
     this.variables = [];
     this.root = root;
