@@ -198,16 +198,20 @@ export class ModelerComponent implements OnInit {
   }
 
   private resetDiagram = () => {
+    this.showOverlay();
     this.apiService.getModel(this.modelId.split('_')[1])
         .subscribe(response => {
             const xml = response.data.modelxml;
             console.info('Reset-Model', xml);
             this.modeler.importXML(xml);
+            this.commandStack.stopEvaluateMode();
+            this.hideOverlay();
           },
           error => {
             console.log(error);
+            this.commandStack.stopEvaluateMode();
+            this.hideOverlay();
           });
-    this.commandStack.stopEvaluateMode();
   }
 
   private debug = () => {
@@ -603,5 +607,13 @@ export class ModelerComponent implements OnInit {
         });
       }
     });
+  }
+
+  public showOverlay(): void {
+    document.getElementById('overlayLoading').style.display = 'block';
+  }
+
+  public hideOverlay(): void {
+    document.getElementById('overlayLoading').style.display = 'none';
   }
 }
