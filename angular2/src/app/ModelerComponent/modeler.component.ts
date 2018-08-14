@@ -73,9 +73,9 @@ export class ModelerComponent implements OnInit {
   private inputModal: InputModal;
   @ViewChild('termModal')
   private termModal: TermModal;
-  @ViewChild('SubProcessModal')
+  @ViewChild('subProcessModal')
   private subProcessModal: SubProcessModal;
-  @ViewChild('EvalModal')
+  @ViewChild('evalModal')
   private evaluatorModal: EvalModal;
   private ipimTags: any = {
     META: 'IPIM_meta_',
@@ -184,16 +184,16 @@ export class ModelerComponent implements OnInit {
   }
 
   private highlightTerms = () => {
-    if (this.lastDiagramXML !== '') {
+    // if (this.lastDiagramXML !== '') {
       const elementRegistry = this.modeler.get('elementRegistry');
       const modeling = this.modeler.get('modeling');
       this.termsColored
         ? this.toggleTermsNormal(elementRegistry, modeling)
         : this.toggleTermsColored(elementRegistry, modeling);
       this.termsColored = !this.termsColored;
-    } else {
-      console.error('There is no Diagram to highlight');
-    }
+    // } else {
+    //   console.error('There is no Diagram to highlight');
+    // }
   }
 
   private resetDiagram = () => {
@@ -212,11 +212,12 @@ export class ModelerComponent implements OnInit {
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       if (err) {
         console.error(err);
-        return
+        return;
       }
       console.log(this.model);
       this.apiService.modelUpsert(this.model.id, this.model.name, xml, this.model.version)
         .subscribe(response => {
+            console.log(response);
           },
           error => {
             console.log(error);
@@ -398,6 +399,7 @@ export class ModelerComponent implements OnInit {
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
     this.modeler.importXML(xml, (err: any) => {
+      console.log('import successful');
     });
   }
 
@@ -562,10 +564,10 @@ export class ModelerComponent implements OnInit {
   private toggleTermsColored(elementRegistry: any, modeling: any) {
 
     console.log('toggleTermscolored');
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-      return;
-    }
+    // if (this.lastDiagramXML === '') {
+    //   window.alert('No Diagram loaded!');
+    //   return;
+    // }
 
 //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const terms = this.getTermList('elementRegistry');
