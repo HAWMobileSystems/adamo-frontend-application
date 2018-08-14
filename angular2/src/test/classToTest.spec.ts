@@ -7,4 +7,8 @@ describe('Meaningful Test', () => {
         expect(1 + 1).not.toBe(3);
     });
 
+    it('null should be null', () => {
+        expect(null).toBe(null);
+    });
+
 });
