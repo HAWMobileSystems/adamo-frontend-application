@@ -40,14 +40,22 @@ export class BPMNStore {
                     click: () => console.log('two-column')
                 }
             },
-            [COMMANDS.SAVE] : {
-                group: 'row',
-                className: ['fa-save', 'fa'],
-                title: COMMANDS.SAVE,
-                action: {
-                    click: () => console.log('save')
-                }
-            },
+          [COMMANDS.SAVE] : {
+            group: 'row',
+            className: ['fa-save', 'fa'],
+            title: COMMANDS.SAVE,
+            action: {
+              click: () => console.log('save')
+            }
+          },
+          [COMMANDS.SAVETODB] : {
+            group: 'row',
+            className: ['fa-database', 'fa'],
+            title: COMMANDS.SAVETODB,
+            action: {
+              click: () => console.log('save')
+            }
+          },
             [COMMANDS.SET_IPIM_VALUES]: {
                 group: 'ipim',
                 className: ['fa-cog', 'fa'],

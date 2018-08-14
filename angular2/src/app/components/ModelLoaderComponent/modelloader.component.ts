@@ -41,7 +41,7 @@ export class ModelLoaderComponent {
     this.getAllModels();
 
     this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('MODEL');
+    this.mqtt.subscribe('administration/model');
     const i = this;
     this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
@@ -73,8 +73,9 @@ export class ModelLoaderComponent {
     model.xml = this.selected.modelxml;
     model.name = this.selected.modelname;
     model.id = this.selected.mid;
+    model.version = this.selected.version;
     if (this.selected.mid !== '') {
-      this.apiService.getModel(this.selected.mid)
+      this.apiService.getModel(this.selected.mid, this.selected.version)
         .subscribe(response => {
             model.xml = response.data.modelxml;
             console.info(model);

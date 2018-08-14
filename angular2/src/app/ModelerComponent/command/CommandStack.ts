@@ -33,6 +33,8 @@ export class CommandStack {
         this.topic = this.modelerComponenetRoot.modelId;
 
         this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
+        this.client.subscribe('modelupsert');
+
 
         //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
         this.client.on('message', (topic: any, message: any) => {
@@ -69,6 +71,14 @@ export class CommandStack {
             this.modeler.importXML(event.XMLDoc.toString(), (err: any) => {
                 console.log(err);
             });
+        }
+
+        if (topic === 'modelupsert') {
+          console.log(event);
+          console.log(event.version);
+          console.log(event.newVersion);
+          console.log(this.modelerComponenetRoot.model.version);
+          this.modelerComponenetRoot.model.version = event.newVersion;
         }
       }
 

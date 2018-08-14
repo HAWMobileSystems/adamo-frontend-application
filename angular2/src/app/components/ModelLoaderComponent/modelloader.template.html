@@ -1,4 +1,4 @@
-<div class="panel panel-default col-md-6">
+<div class="panel panel-default">
     <div class="panel-body">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"
@@ -16,10 +16,10 @@
             </tr>
             </thead>
             <tbody></tbody>
-            <tr *ngFor="let model of models | filter:search" (click)="selected = model"
+            <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search" (click)="selected = model"
                 [ngClass]="{'info': selected === model}">
                 <td>{{model.modelname}}</td>
-                <td>{{model.version}}</td>
+                <td>{{model.version | version}}</td>
             </tr>
             <tfoot></tfoot>
         </table>

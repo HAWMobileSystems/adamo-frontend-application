@@ -9,6 +9,7 @@ const mqtt = require('mqtt');
   templateUrl: './model.template.html'
 })
 
+
 export class ModelComponent {
   private selected: any;
   private newModel: any;
@@ -20,9 +21,7 @@ export class ModelComponent {
 
   public ngOnInit() {
     this.newModel = {
-      mid: '',
       modelname: '',
-      modelxml: '',
       version: '',
       lastchange: ''
     };
@@ -90,7 +89,7 @@ export class ModelComponent {
   }
 
   public modelDelete() {
-    this.apiService.modelDelete(this.selected.mid)
+    this.apiService.modelDelete(this.selected.mid, this.selected.version)
       .subscribe(response => {
           console.log(response);
           if (response.success) {

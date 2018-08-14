@@ -36,22 +36,24 @@ export class ModellerPageComponent implements OnInit {
     this.loading = true;
     let exists: boolean;
     this.models.forEach(function (element) {
-      if (element.id === model.id)
+      if (element.id === model.id && element.version === model.version)
         exists = true;
     });
     if (!exists)
       this.models.push(model);
-    this.page = model.name;
+    this.page = model.id + model.version;
   }
 
   onExportModel(modelerComponent: ModelerComponent): void {
-    console.log(modelerComponent);
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
-    console.log(this.models);
   }
 
   onLoadedCompletely(): void {
     this.loading = false;
     console.log('loading compleate');
+  }
+
+  onSaveModel(): void {
+
   }
 }

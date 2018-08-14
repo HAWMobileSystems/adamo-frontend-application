@@ -132,8 +132,8 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  public getModel(mid: string) {
-    return this.http.post('http://localhost:3000/model/getModel', {mid: mid}, options)
+  public getModel(mid: string, version?: string) {
+    return this.http.post('http://localhost:3000/model/getModel', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
@@ -147,8 +147,18 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
-  public modelDelete(mid: number) {
-    return this.http.post('http://localhost:3000/model/delete', {mid: mid}, options)
+  public modelDelete(mid: number, version: string) {
+    return this.http.post('http://localhost:3000/model/delete', {mid: mid, version: version}, options)
+      .map((response: Response) => response.json());
+  }
+
+  public modelUpsert(mid: number, modelname: string, modelxml: string, version: string) {
+    return this.http.post('http://localhost:3000/model/upsert', {
+      mid: mid,
+      modelname: modelname,
+      modelxml: modelxml,
+      version: version
+    }, options)
       .map((response: Response) => response.json());
   }
 

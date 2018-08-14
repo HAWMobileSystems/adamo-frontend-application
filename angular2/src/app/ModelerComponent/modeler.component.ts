@@ -46,6 +46,7 @@ const customPropertiesProviderModule = {
 export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
+  @Input() public model: object;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
@@ -206,8 +207,21 @@ export class ModelerComponent implements OnInit {
     console.log(this);
   }
 
-  private toggleLoader = () => {
-    this.hideLoader = !this.hideLoader;
+  private saveToDb = () => {
+    console.log('saving to db');
+    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+      if (err) {
+        console.error(err);
+        return
+      }
+      console.log(this.model);
+      this.apiService.modelUpsert(this.model.id, this.model.name, xml, this.model.version)
+        .subscribe(response => {
+          },
+          error => {
+            console.log(error);
+          });
+    });
   }
 
   private saveDiagram = () => {
@@ -227,19 +241,6 @@ export class ModelerComponent implements OnInit {
 
   }
 
-  private administrate = () => {
-    this.router.navigate(['/administration-page']);
-  }
-
-  private logout = () => {
-    this.apiService.logout()
-      .subscribe(response => {
-        this.router.navigate(['/front-page']);
-      }, error => {
-          console.log(error);
-      });
-  }
-
   private zoomToFit = () => {
    const canvasObject = this.modeler.get('canvas');
    canvasObject.zoom('fit-viewport');
@@ -253,9 +254,7 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.RESET]: this.resetDiagram,
     [COMMANDS.TWO_COLUMN]: this.handleTwoColumnToggleClick,
     [COMMANDS.SAVE]: this.saveDiagram,
-    [COMMANDS.LOAD]: this.toggleLoader,
-    [COMMANDS.ADMINISTRATE]: this.administrate,
-    [COMMANDS.LOGOUT]: this.logout,
+    [COMMANDS.SAVETODB]: this.saveToDb,
     [COMMANDS.SET_IPIM_SUBPROCESS] : this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR] : this.openEvaluatorModal,
     [COMMANDS.ZOOM_TO_FIT] : this.zoomToFit,

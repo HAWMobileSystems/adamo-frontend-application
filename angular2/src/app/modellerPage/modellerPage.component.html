@@ -1,12 +1,12 @@
 <div class="height-100" [ngSwitch]="page">
     <div class="height-10">
         <nav class="navbar navbar-default height-50" role="navigation">
-             <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
-                <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page ===model.name}" (click)="page = model.name">
-                    <a>{{model.name || 'unsaved model'}}<span style="margin-left: 10px; margin-right: 10px;" class="badge badge-light">0</span></a> <!--number of collaborators here-->
+            <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
+                <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page === model.id + model.version}" (click)="page = model.id + model.version">
+                    <a>{{model.name + (model.version | version) || 'unsaved model'}}<span style="margin-left: 10px; margin-right: 10px;" class="badge badge-light">0</span></a> <!--number of collaborators here-->
                     <button class="badge badge-light" style="position: absolute; top: 0; right: 0;" (click)="remove(i)">X</button>
                 </li>
-                <li [ngClass]="{'active': page === '+'}" (click)="page = '+'"><a>+</a></li>
+                <li [ngClass]="{'active': page === '+'}" (click)="page = '+';"><a>+</a></li>
                 <li><a href="administration-page">Administration</a></li>
                 <li *ngIf="loading">
                     <img *ngIf="loading" style="height: inherit" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -16,11 +16,11 @@
         </nav>
     </div>
 
-    <div [hidden]="page!=='+'">
+    <div class="col-md-8 col-md-offset-2" [hidden]="page!=='+'">
         <modelloader (loadModel)="onLoadModel($event)"></modelloader>
     </div>
     <modeler (loadedCompletely)="onLoadedCompletely($event)" (exportModel)="onExportModel($event)"
-             *ngFor="let model of models" [hidden]="page!==model.name" [modelId]="'model_'+model.id"
-             [newDiagramXML]="model.xml">
+             *ngFor="let model of models" [hidden]="page !== model.id + model.version" [modelId]="'model_'+model.id + '_' + model.version"
+             [newDiagramXML]="model.xml" [model]="model">
     </modeler>
 </div>
