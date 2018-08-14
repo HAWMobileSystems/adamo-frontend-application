@@ -43,7 +43,7 @@ export class BPMNStore {
           [COMMANDS.SAVE] : {
             group: 'row',
             className: ['fa-save', 'fa'],
-            title: COMMANDS.SAVE,
+            title: 'Export to BPMN',
             action: {
               click: () => console.log('save')
             }
@@ -51,7 +51,7 @@ export class BPMNStore {
           [COMMANDS.SAVETODB] : {
             group: 'row',
             className: ['fa-database', 'fa'],
-            title: COMMANDS.SAVETODB,
+            title: 'Save to Database',
             action: {
               click: () => console.log('save')
             }
@@ -59,7 +59,7 @@ export class BPMNStore {
             [COMMANDS.SET_IPIM_VALUES]: {
                 group: 'ipim',
                 className: ['fa-cog', 'fa'],
-                title: COMMANDS.SET_IPIM_VALUES,
+                title: 'Set Variables',
                 action: {
                     click: () => console.log('openVariableModal')
                 }
@@ -67,7 +67,7 @@ export class BPMNStore {
              [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
                 className: ['fa-cogs', 'fa'],
-                title: COMMANDS.SET_IPIM_VALUES_EVALUATE,
+                title: 'Evaluate Process',
                 action: {
                     click: () => console.log('openInputModal')
                 }
@@ -75,7 +75,7 @@ export class BPMNStore {
             [COMMANDS.RESET]: {
                 group: 'ipim',
                 className: ['fa-undo', 'fa'],
-                title: COMMANDS.RESET,
+                title: 'Reset Diagram',
                 action: {
                     click: () => console.log('two-column')
                 }
@@ -83,7 +83,7 @@ export class BPMNStore {
             [COMMANDS.SET_TERM]: {
                 group: 'ipim',
                 className: ['fa-tasks', 'fa'],
-                title: COMMANDS.SET_TERM,
+                title: 'Set Term',
                 action: {
                     click: () => console.log('openTermModal')
                 }
@@ -91,7 +91,7 @@ export class BPMNStore {
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
                 className: ['fa-lightbulb-o', 'fa'],
-                title:  COMMANDS.HIGHLIGHT,
+                title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
                 }
@@ -99,7 +99,7 @@ export class BPMNStore {
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
                 className: ['fa-cubes', 'fa'],
-                title: COMMANDS.SET_IPIM_EVALUATOR,
+                title: 'Start cascading Evaluation',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
                 }
@@ -107,7 +107,7 @@ export class BPMNStore {
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
                 className: ['fa-object-group', 'fa'],
-                title: COMMANDS.SET_IPIM_SUBPROCESS,
+                title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
                 }

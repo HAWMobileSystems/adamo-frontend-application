@@ -1,4 +1,3 @@
-
 export const COMMANDS = {
     SAVE: 'save',
     TWO_COLUMN: 'two-column',
