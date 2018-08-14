@@ -106,7 +106,6 @@ export class UserComponent {
                 });
     }else {
         this.alertService.error('Not a valid E-Mail!');
-        window.scrollTo(0, 0);
     }
   }
 
@@ -150,7 +149,6 @@ export class UserComponent {
                   });
       }else {
           this.alertService.error('Not a valid E-Mail!');
-          window.scrollTo(0, 0);
       }
   }
 
