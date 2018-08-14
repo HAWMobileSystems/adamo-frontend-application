@@ -139,6 +139,14 @@ export class VariableModal extends ModalComponent {
         this.writeVariableModalValues();
     }
 
+    private dismissed() {
+        console.log('VariableModal dismissed');
+    }
+
+    private closed() {
+        console.log('VariableModal closed');
+    }
+
     public insertVariables(): void {
         console.log('insertVariables');
         this.insertVariableField('newField', 'NewVariable', 'variablefset', false);
