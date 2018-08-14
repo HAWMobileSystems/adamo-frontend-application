@@ -21,6 +21,7 @@ export class CommandStack {
   private dragging: any; //Dragging State from Modeler
   private topic: any;     //Currently subscribed Topic
   private modelerComponenetRoot: ModelerComponent;
+  private stopEvaluationisRunning: boolean;
 
 //Commandstack Class
 
@@ -33,6 +34,7 @@ export class CommandStack {
     this.id = this.guidGenerator();  //generate the unique ID for this Browser
     this.modelerComponenetRoot = modelerComponenetRoot;
     this.topic = this.modelerComponenetRoot.modelId;
+    this.stopEvaluationisRunning = false;
 
     this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
     this.client.subscribe('modelupsert');
@@ -48,10 +50,15 @@ export class CommandStack {
 
   }
 
-//resubscribe to differernt topic/model
-  public subscribeToModel = (modelID: string) => {
+//Starts Evaluation Mode ... Model will unsubscribe and no longer publish!
+  public startEvaluateMode = () => {
+    this.stopEvaluationisRunning = true;
     this.client.unsubscribe('MODEL/' + this.topic);
-    this.topic = modelID;
+  }
+
+  //Stop Evaluation Mode ... Model will resubscribe and publish again!
+  public stopEvaluateMode = () => {
+    this.stopEvaluationisRunning = false;
     this.client.subscribe('MODEL/' + this.topic);
   }
 
@@ -85,8 +92,11 @@ export class CommandStack {
 
 //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
   public publishXML = (): void => {
-// user modeled something or
-// performed a undo/redo operation
+   //If
+
+    if (this.stopEvaluationisRunning) { return; }
+    // user modeled something or
+    // performed a undo/redo operation
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       if (err) {
         console.log(err);

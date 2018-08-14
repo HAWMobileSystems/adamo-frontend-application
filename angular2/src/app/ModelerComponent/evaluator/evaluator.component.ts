@@ -231,7 +231,7 @@ export class Evaluator {
               //Sichere Eval Sandbox schaffen
               const safeEval = require('safe-eval');
               // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-              if (!safeEval(evalterm)) {
+              if (!eval(evalterm)) {
                 //Element über modeling Objekt löschen
                 modeling.removeElements([element]);
               }
