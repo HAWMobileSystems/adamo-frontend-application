@@ -28,7 +28,7 @@ export class ModelComponent {
     this.getAllModels();
 
     this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('MODEL');
+    this.mqtt.subscribe('administration/model');
     const i = this;
     this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
@@ -63,7 +63,7 @@ export class ModelComponent {
       this.selected.version)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('MODEL');
+            this.mqtt.publish('administration/model');
             this.alertService.success(response.status);
           }
         },
@@ -77,7 +77,7 @@ export class ModelComponent {
     this.apiService.modelCreate(this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('MODEL');
+            this.mqtt.publish('administration/model');
             this.alertService.success(response.status);
           }
         },
@@ -92,7 +92,7 @@ export class ModelComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('MODEL');
+            this.mqtt.publish('administration/model');
             this.alertService.success(response.status);
           }
         },

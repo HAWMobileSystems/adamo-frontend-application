@@ -46,7 +46,6 @@ app.use(session({
 }));
 
 
-
 app.all('*', function (req, res, next) {
   if (req.method === 'OPTIONS') {
     next();
@@ -87,7 +86,7 @@ app.all('*', function (req, res, next) {
     res.status(401).send({message: 'you have no session'});
     return;
   }
-  res.status(401).send({message: 'not enoth permissions you permissions are: '+ req.session.user});
+  res.status(401).send({message: 'not enoth permissions you permissions are: ' + req.session.user});
 });
 
 
@@ -121,17 +120,12 @@ app.use('/permission', permissionRouter);
 
 app.post('/authenticate', function (req, res) {
   try {
-    res.cookie('demoCookie', 123, {maxAge: 900000, httpOnly: true});
     var response = {};
     console.log(req);
     if (req.body.email) var email = req.body.email;
     else throw({status: 400, data: {message: 'missing email', success: false}});
     if (req.body.password) var password = req.body.password;
     else throw({status: 400, data: {message: 'missing password', success: false}});
-    // if (req.body.captcha) var captcha = req.body.captcha;
-    // else throw({status: 400, data: {message: 'missing captcha', success: false}});
-    //TODO what to do when client is already logged in with different credentials?
-    //TODO validate captcha could be the first thing to do
     db.one('' +
       'SELECT uid, email, password, firstname, lastname, profile, permission ' +
       'FROM users ' +
@@ -139,8 +133,6 @@ app.post('/authenticate', function (req, res) {
       'WHERE email = $1', email)
       .then(function (user) {
         if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
-
-        //for debugging: '12341234' matches '$2a$10$vs1hHVA3BZw2Gma3pOIzcOZ1LgROzaUjL3EcVWG6QgbPK/ZFtGCJi'
         bcrypt.compare(password, user.password, function (err, match) {
           if (err) throw (err);
           if (match) {
@@ -184,7 +176,7 @@ app.post('/authenticate', function (req, res) {
                     lastname: user.lastname,
                     profile: user.profile,
                     permission: user.permission
-                  }
+                  };
                   req.session.save(function (error) {
                     if (error) {
                       console.log(error);
@@ -192,7 +184,6 @@ app.post('/authenticate', function (req, res) {
                   });
                   res.send(response);
                 }
-                ;
               })
               .catch(function (error) {
                 console.log(error, 'something happend');

@@ -36,7 +36,6 @@ export class CommandStack {
     this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
     this.client.subscribe('modelupsert');
 
-
 //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
     this.client.on('message', (topic: any, message: any) => {
 //call function to handle the new message
@@ -75,11 +74,12 @@ export class CommandStack {
     }
 
     if (topic === 'modelupsert') {
+      const model = this.modelerComponenetRoot.model;
       console.log(event);
-      console.log(event.version);
-      console.log(event.newVersion);
-      console.log(this.modelerComponenetRoot.model.version);
-      this.modelerComponenetRoot.model.version = event.newVersion;
+      console.log(model);
+      if (model.id === event.mid && model.version === event.version) {
+        model.version = event.newVersion;
+      }
     }
   }
 

@@ -30,7 +30,7 @@ export class RoleComponent {
     this.getAllRoles();
 
     this.mqtt = mqtt.connect('mq://localhost:4711');
-    this.mqtt.subscribe('ROLE');
+    this.mqtt.subscribe('administrations/role');
     const i = this;
     this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
@@ -60,7 +60,7 @@ export class RoleComponent {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -77,7 +77,7 @@ export class RoleComponent {
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -94,7 +94,7 @@ export class RoleComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);

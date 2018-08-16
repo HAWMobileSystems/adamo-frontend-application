@@ -1,59 +1,88 @@
 import {Component, OnInit} from '@angular/core';
-import {Router,} from '@angular/router';
-
+import {Router} from '@angular/router';
 import {ApiService} from '../services/api.service';
-
 import {Model} from '../models/model';
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
-import {forEach} from "@angular/router/src/utils/collection";
+
+const mqtt: any = require('mqtt').connect('mqtt://localhost:4711');
 
 @Component({
   templateUrl: './modellerPage.component.html',
   styleUrls: ['./modellerPage.component.css']
 })
 export class ModellerPageComponent implements OnInit {
-  title: string = 'Angular 2 with BPMN-JS';
-  model: any = {};
-  loading = false;
-  page = '+';
-  xml: string = '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
-  models: Model[] = [];
+  public title: string = 'Angular 2 with BPMN-JS';
+  public model: any = {};
+  public loading: boolean = false;
+  public page: string = '+';
+  public page2: string = 'User';
+  public permission: number;
+  public xml: string = '' +
+    '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+    ' xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/D' +
+    'I" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schem' +
+    'aLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://b' +
+    'pmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEven' +
+    't_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bp' +
+    'mnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n      ' +
+    '  <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane' +
+    '>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  public models: Model[] = [];
 
-  constructor(private router: Router,
-              private apiService: ApiService) {
+  constructor(private apiService: ApiService) {}
 
+  public ngOnInit() {
+    this.apiService.login_status()
+      .subscribe(response => {
+        if (response.success) {
+          console.log(response);
+          this.permission = parseInt(response.permission);
+        } else {
+          console.error(response);
+        }
+      },
+      error => {
+        console.error(error);
+      });
+
+    mqtt.subscribe('modelupsert');
+    mqtt.on('message', (topic: any, message: any) => {
+      console.log(topic);
+      if (topic === 'modelupsert') {
+        const event = JSON.parse(message);
+        const idAndVersion = this.page.split('_');
+        if (idAndVersion[0] === event.mid.toString() && idAndVersion[1] === event.version) {
+          this.page = event.mid + '_' + event.newVersion;
+          console.log(this.page);
+        }
+      }
+    });
   }
 
-  ngOnInit() {
-
-  }
-
-  remove(index: number) {
+  public remove(index: number) {
     this.models.splice(index, 1);
   }
 
-  onLoadModel(model: Model): void {
+  public onLoadModel(model: Model): void {
     this.loading = true;
     let exists: boolean;
-    this.models.forEach(function (element) {
-      if (element.id === model.id && element.version === model.version)
+    this.models.forEach(element => {
+      if (element.id === model.id && element.version === model.version) {
         exists = true;
+      }
     });
-    if (!exists)
+    if (!exists) {
       this.models.push(model);
-    this.page = model.id + model.version;
+    }
+    this.page = model.id + '_' + model.version;
   }
 
-  onExportModel(modelerComponent: ModelerComponent): void {
+  public onExportModel(modelerComponent: ModelerComponent): void {
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
   }
 
-  onLoadedCompletely(): void {
+  public onLoadedCompletely(): void {
     this.loading = false;
-    console.log('loading compleate');
-  }
-
-  onSaveModel(): void {
-
+    console.log('loading complected');
   }
 }

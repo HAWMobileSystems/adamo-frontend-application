@@ -24,5 +24,4 @@ export class AdministrationPageComponent implements OnInit {
   public ngOnInit(): void {
     console.log('Administration page initialized');
   }
-
 }

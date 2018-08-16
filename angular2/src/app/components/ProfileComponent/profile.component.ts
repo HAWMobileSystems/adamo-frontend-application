@@ -30,7 +30,7 @@ export class ProfileComponent {
     this.getAllProfiles();
 
     this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('ROLE');
+    this.mqtt.subscribe('administrations/Role');
     const i = this;
     this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
@@ -60,7 +60,7 @@ export class ProfileComponent {
     this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/Role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -76,7 +76,7 @@ export class ProfileComponent {
     this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/Role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -93,7 +93,7 @@ export class ProfileComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('ROLE');
+            this.mqtt.publish('administrations/Role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);

@@ -36,7 +36,7 @@ export class UserComponent {
     this.getAllProfiles();
 
     this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('USER');
+    this.mqtt.subscribe('administrations/user');
     const i = this;
     this.mqtt.on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
@@ -93,7 +93,7 @@ export class UserComponent {
             this.selected.profile)
             .subscribe(response => {
                     if (response.success) {
-                        this.mqtt.publish('USER');
+                        this.mqtt.publish('administrations/user');
                         this.alertService.success(response);
                         this.alertService.success(response.status);
                         console.log(response);
@@ -113,7 +113,7 @@ export class UserComponent {
     this.apiService.userPassword(this.selected.uid, this.selected.password)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('USER');
+            this.mqtt.publish('administrations/user');
             this.alertService.success(response);
             this.alertService.success(response.status);
             console.log(response);
@@ -137,7 +137,7 @@ export class UserComponent {
               .subscribe(response => {
                       console.log('debug');
                       if (response.success) {
-                          this.mqtt.publish('USER');
+                          this.mqtt.publish('administrations/user');
                           this.alertService.success(response.status);
                           console.log(response);
                       } else {
@@ -157,7 +157,7 @@ export class UserComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('USER');
+            this.mqtt.publish('administrations/user');
             this.alertService.success('User successfully deleted');
 
             //console.log(response);

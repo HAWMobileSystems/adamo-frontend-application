@@ -371,7 +371,6 @@ router.post('/upsert', function (req, res) {
   const version = bigInt(req.body.version)
   const superversion = req.body.supeversion
 
-  console.error(bigInt(version).add(bigInt('0001000000000000', '16')).toString(16))
   var level = [
     bigInt('0001000000000000', '16'),
     bigInt('0000000100000000', '16'),
@@ -391,14 +390,12 @@ router.post('/upsert', function (req, res) {
   if (!bigInt(version).and(bigInt('000000000000FFFF', '16')).isZero()) {
     currentLevel = 3
   }
-  console.log(currentLevel, level[currentLevel].toString(16))
   db.oneOrNone('' +
     'INSERT INTO model' +
     '(mid, modelname, modelxml, version) ' +
     'VALUES ' +
     '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
     .then(function (data) {
-      console.log('_1_', data)
       res.send({
         status: 'Model upserted successfully',
         mid: mid,
@@ -406,6 +403,7 @@ router.post('/upsert', function (req, res) {
         version: bigInt(version).add(level[currentLevel]),
         success: true
       })
+      mqtt.publish('administration/model');
       mqtt.publish('modelupsert', JSON.stringify({
         mid: mid,
         version: version,
@@ -422,7 +420,6 @@ router.post('/upsert', function (req, res) {
             'VALUES ' +
             '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
             .then(function (data) {
-              console.log('_2_', data)
               res.send({
                 status: 'Model upserted successfully',
                 mid: mid,
@@ -430,9 +427,11 @@ router.post('/upsert', function (req, res) {
                 version: bigInt(version).add(level[currentLevel]),
                 success: true
               })
+              mqtt.publish('administration/model');
               mqtt.publish('modelupsert', JSON.stringify({
                 mid: mid,
-                version: bigInt(version).add(level[currentLevel])
+                version: version,
+                newVersion: bigInt(version).add(level[currentLevel])
               }))
             })
             .catch(function (error) {

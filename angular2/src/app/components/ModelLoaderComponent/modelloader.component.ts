@@ -3,7 +3,7 @@ import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 import {Model} from '../../models/model';
 
-const mqtt = require('mqtt');
+const mqtt = require('mqtt').connect('mqtt://localhost:4711');
 
 @Component({
   selector: 'modelloader',
@@ -15,7 +15,6 @@ export class ModelLoaderComponent {
   private selected: any;
   private newModel: any;
   private models: any;
-  private mqtt: any;
 
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }
@@ -39,13 +38,12 @@ export class ModelLoaderComponent {
     };
 
     this.getAllModels();
-
-    this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('administration/model');
+    mqtt.subscribe('administration/model');
     const i = this;
-    this.mqtt.on('message', (topic: any, message: any) => {
-      console.log('Test from remote:' + message.toString());
-      i.getAllModels();
+    mqtt.on('message', (topic: any, message: any) => {
+      if (topic === 'administration/model'){
+        i.getAllModels();
+      }
     });
   }
 
