@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
     </modal-header>
     <modal-body>
       <p>Please define a new subprocess ID for all selected Subprocesses:</p>
-        <input type="text" [(ngModel)]="firstSubprocess">
+        <input type="text" [(ngModel)]="firstSubprocess" class = "modal-form-input">
         <br>
       <br>
     </modal-body>
