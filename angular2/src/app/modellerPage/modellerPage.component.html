@@ -1,5 +1,6 @@
 <div class="height-100" [ngSwitch]="page">
     <div class="height-10">
+        <!--Navigation bar-->
         <nav class="navbar navbar-default height-50" role="navigation">
             <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
                 <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page === model.id + model.version}" (click)="page = model.id + model.version">
@@ -16,6 +17,7 @@
         </nav>
     </div>
 
+    <!--Models-->
     <div class="col-md-8 col-md-offset-2" [hidden]="page!=='+'">
         <modelloader (loadModel)="onLoadModel($event)"></modelloader>
     </div>
