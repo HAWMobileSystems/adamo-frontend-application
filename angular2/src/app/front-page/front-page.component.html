@@ -45,11 +45,6 @@
                 </re-captcha>
                 <div *ngIf="f.submitted && !captcha.valid" class="help-block">Captcha is required</div>
             </div>-->
-            <div id="remember" class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Eingeloggt bleiben
-                </label>
-            </div>
             <div class="form-group">
                 <button [disabled]="loading" class="btn btn-lg btn-primary btn-block btn-signin">Login <i
                         class="fa fa-sign-in"></i></button>

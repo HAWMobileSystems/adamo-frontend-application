@@ -63,7 +63,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         save: {
             group: 'storage',
             className: ['fa-floppy-o', 'fa'],
-            title: 'SAVE',
+            title: 'Export to BPMN',
             action: {
                 click: () => commandQueue.next({action: 'save'})
             }
@@ -71,7 +71,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         'export-svg': {
             group: 'storage',
             className: ['fa-print', 'fa'],
-            title: 'EXPORT TO SVG',
+            title: 'Export to SVG',
             action: {
                 click: () => commandQueue.next({action: 'Export SVG'})
             }
@@ -97,7 +97,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             className: 'bpmn-icon-lasso-tool',
             title: 'Activate the lasso tool',
             action: {
-                click: function (event: any) {
+                click: (event: any) => {
                     lassoTool.activateSelection(event);
                 }
             }
@@ -107,7 +107,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             className: 'bpmn-icon-space-tool',
             title: 'Activate the create/remove space tool',
             action: {
-                click: function (event: any) {
+                click: (event: any) => {
                     spaceTool.activateSelection(event);
                 }
             }

@@ -73,10 +73,11 @@ export class ModelerComponent implements OnInit {
   private inputModal: InputModal;
   @ViewChild('termModal')
   private termModal: TermModal;
-  @ViewChild('SubProcessModal')
+  @ViewChild('subProcessModal')
   private subProcessModal: SubProcessModal;
-  @ViewChild('EvalModal')
+  @ViewChild('evalModal')
   private evaluatorModal: EvalModal;
+
   private ipimTags: any = {
     META: 'IPIM_meta_',
     VAL: 'IPIM_Val_',
@@ -109,11 +110,11 @@ export class ModelerComponent implements OnInit {
   }
 
   public openInputModal = () => {
-    this.inputModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
+    this.inputModal.setProps(this.modeler, this);
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.variableModal.setProps(this.modeler);
     this.variableModal.modal.open();
   }
 
@@ -122,7 +123,7 @@ export class ModelerComponent implements OnInit {
   }
 
   public openEvaluatorModal = () => {
-    this.evaluatorModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
+    this.evaluatorModal.setProps(this.modeler, this);
     this.evaluatorModal.modal.open();
     console.log('ElevatorModal_Clicked!');
   }
@@ -184,24 +185,35 @@ export class ModelerComponent implements OnInit {
   }
 
   private highlightTerms = () => {
-    if (this.lastDiagramXML !== '') {
+    // if (this.lastDiagramXML !== '') {
       const elementRegistry = this.modeler.get('elementRegistry');
       const modeling = this.modeler.get('modeling');
       this.termsColored
         ? this.toggleTermsNormal(elementRegistry, modeling)
         : this.toggleTermsColored(elementRegistry, modeling);
       this.termsColored = !this.termsColored;
-    } else {
-      console.error('There is no Diagram to highlight');
-    }
+    // } else {
+    //   console.error('There is no Diagram to highlight');
+    // }
   }
 
   private resetDiagram = () => {
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-    }
-    this.openDiagram(this.lastDiagramXML);
+    this.showOverlay();
+    this.apiService.getModel(this.modelId.split('_')[1])
+        .subscribe(response => {
+            const xml = response.data.modelxml;
+            console.info('Reset-Model', xml);
+            this.modeler.importXML(xml);
+            this.commandStack.stopEvaluateMode();
+            this.hideOverlay();
+          },
+          error => {
+            console.log(error);
+            this.commandStack.stopEvaluateMode();
+            this.hideOverlay();
+          });
   }
+
   private debug = () => {
     console.log(this.modeler);
     console.log(this);
@@ -212,11 +224,12 @@ export class ModelerComponent implements OnInit {
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
       if (err) {
         console.error(err);
-        return
+        return;
       }
       console.log(this.model);
       this.apiService.modelUpsert(this.model.id, this.model.name, xml, this.model.version)
         .subscribe(response => {
+            console.log(response);
           },
           error => {
             console.log(error);
@@ -380,24 +393,25 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(this.newDiagramXML);
   }
 
-  private loadDiagram() {
-    this.apiService.getModel('test')
-      .subscribe(response => {
-          if (response.success) {
-            console.log(response.data);
-            this.openDiagram(response.data.modelxml);
-          } else {
-            console.log(response.error);
-          }
-        },
-        error => {
-          console.log(error);
-        });
-  }
+  // private loadDiagram() {
+  //   this.apiService.getModel('test')
+  //     .subscribe(response => {
+  //         if (response.success) {
+  //           console.log(response.data);
+  //           this.openDiagram(response.data.modelxml);
+  //         } else {
+  //           console.log(response.error);
+  //         }
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       });
+  // }
 
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;
     this.modeler.importXML(xml, (err: any) => {
+      console.log('import successful');
     });
   }
 
@@ -467,18 +481,18 @@ export class ModelerComponent implements OnInit {
   }
 
   private evaluateProcess = () => {
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-    }
+    //Stop MQTT from Publishing
+    this.commandStack.startEvaluateMode();
+
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
-    this.modeler.saveXML({format: true}, (err: any, xml: string) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      this.lastDiagramXML = xml;
-    });
+    // this.modeler.saveXML({format: true}, (err: any, xml: string) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+    //   this.lastDiagramXML = xml;
+    // });
 //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     const varValMap = {};
@@ -527,9 +541,8 @@ export class ModelerComponent implements OnInit {
             }
             //sichere Sandbox für Eval Auswertung schaffen
             const safeEval = require('safe-eval');
-
             // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-            if (!safeEval(evalterm)) {
+            if (!eval(evalterm)) {
               //Element über modeling Objekt löschen
               modeling.removeElements([element]);
             }
@@ -562,10 +575,10 @@ export class ModelerComponent implements OnInit {
   private toggleTermsColored(elementRegistry: any, modeling: any) {
 
     console.log('toggleTermscolored');
-    if (this.lastDiagramXML === '') {
-      window.alert('No Diagram loaded!');
-      return;
-    }
+    // if (this.lastDiagramXML === '') {
+    //   window.alert('No Diagram loaded!');
+    //   return;
+    // }
 
 //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const terms = this.getTermList('elementRegistry');
@@ -594,5 +607,13 @@ export class ModelerComponent implements OnInit {
         });
       }
     });
+  }
+
+  public showOverlay(): void {
+    document.getElementById('overlayLoading').style.display = 'block';
+  }
+
+  public hideOverlay(): void {
+    document.getElementById('overlayLoading').style.display = 'none';
   }
 }

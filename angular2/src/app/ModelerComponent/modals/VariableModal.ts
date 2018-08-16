@@ -70,9 +70,8 @@ export class VariableModal extends ModalComponent {
         this.fillModal();
     }
 
-    public setProps(modeler: any, termList: any) {
+    public setProps(modeler: any) {
         console.log('Variable Modal Set Props');
-        this.termList = termList;
         this.modeler = modeler;
     }
 
@@ -137,6 +136,14 @@ export class VariableModal extends ModalComponent {
     public accept(): void {
         console.log('VariableModal accept');
         this.writeVariableModalValues();
+    }
+
+    private dismissed() {
+        console.log('VariableModal dismissed');
+    }
+
+    private closed() {
+        console.log('VariableModal closed');
     }
 
     public insertVariables(): void {

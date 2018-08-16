@@ -26,11 +26,13 @@ export class AlertService {
   public success(message: string, keepAfterNavigationChange : boolean = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
     this.subject.next({type: 'success', text: message});
+    window.scrollTo(0, 0);
   }
 
   public error(message: string, keepAfterNavigationChange : boolean = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
     this.subject.next({type: 'error', text: message});
+    window.scrollTo(0, 0);
   }
 
   public getMessage(): Observable<any> {
