@@ -7,27 +7,7 @@ import { InputVarComponent } from './input.component';
 
 @Component({
   selector: 'input-modal',
-  template: `
-  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
-      <h2>IPIM Evaluation</h2>
-    </modal-header>
-    <modal-body>
-      <p>Please specify the values used:</p>
-      <form>
-        <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-        <fieldset id="inputfset">
-          <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
-        </fieldset>
-      </form>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
-    <!--<input type="button" value=" Evaluate " id="EvalModal"> -->
-    </modal-footer>
-  </modal>
-  `
+  templateUrl: './InputModal.html'
 })
 
 export class InputModal extends ModalComponent {
@@ -36,11 +16,6 @@ export class InputModal extends ModalComponent {
 
   private modeler : any;
   private root : any;
-  /* constructor(modeler: any) {
-      super(modeler);
-      console.log('InputModal Constructor');
-      this.fillModal();
-  } */
 
   public variables: Variable[] = [];
 
