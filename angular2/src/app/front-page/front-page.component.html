@@ -8,8 +8,6 @@
 
 <main>
     <!--<h1>The front page</h1>-->
-<!--<div class="col-md-6 col-md-offset-3">
-    <alert></alert>-->
 <!--
     <h2>Front-Page</h2>
 -->
@@ -37,14 +35,6 @@
                 <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
                 <alert></alert>
             </div>
-            <!--&lt;!&ndash;TODO Use project specific key (currently using key registrated for Lackmann)&ndash;&gt;
-            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !captcha.valid }">
-                <label for="captcha">Captcha</label>
-                <re-captcha id="captcha" site_key="6LcGNDoUAAAAAM6MBt_APekc0isUcLNxPypJck3J" [(ngModel)]="model.captcha"
-                            #captcha="ngModel" name="captcha">
-                </re-captcha>
-                <div *ngIf="f.submitted && !captcha.valid" class="help-block">Captcha is required</div>
-            </div>-->
             <div class="form-group">
                 <button [disabled]="loading" class="btn btn-lg btn-primary btn-block btn-signin">Login <i
                         class="fa fa-sign-in"></i></button>
@@ -55,98 +45,7 @@
         </form>
     </div><!-- /card-container -->
 </div><!-- /container -->
-<!--</div>-->
-<!--<div class="col-md-4">
-    <h4>for debugging purpose</h4>
-    <span>asuming there is a postgres database which the api can connect to and has a users</span>
-    <br>
-    <label for="user1">login with credentials set for user 1</label>
-    <br>
-    <button id="user1" class="btn btn-primary" (click)="debug1()">user '1'</button>
-    <br>
-    <label for="user1">login with credentials set for user 2</label>
-    <br>
-    <button id="user2" class="btn btn-primary" (click)="debug2()">user '2'</button>
-    <br>
-    <label for="user1">Simple Link to Modeler (only works if the authentication guard is turned off)</label>
-    <br>
-    <a class="btn btn-primary" href="/modeler">modeler</a>
-    <br>
-</div>-->
 </main>
 
 
 
-<!--<main>
-    &lt;!&ndash;<h1>The front page</h1>&ndash;&gt;
-    &lt;!&ndash;<div class="col-md-6 col-md-offset-3">
-        <alert></alert>&ndash;&gt;
-&lt;!&ndash;
-    <h2>Front-Page</h2>
-&ndash;&gt;
-    <div class="container login-form height-100 col-md-12">
-        <div class="card card-container">
-            <img id="profile-img" class="profile-img-card" src="ipim-logo.png"/>
-            <p id="profile-name" class="profile-name-card"></p>
-
-            <form name="form-signin" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
-                <span id="reauth-email" class="reauth-email"></span>
-
-                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
-                    &lt;!&ndash;<label for="username">Username</label>&ndash;&gt;
-                    <input id="username" type="text" class="form-control" placeholder="Username eingeben"
-                           name="username" [(ngModel)]="model.username"
-                           #username="ngModel" required autofocus/>
-                    <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
-                </div>
-
-                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
-                    &lt;!&ndash;<label for="password">Password</label>&ndash;&gt;
-                    <input id="inputPassword" type="password" class="form-control" placeholder="Passwort eingeben"
-                           name="password" [(ngModel)]="model.password"
-                           #password="ngModel" required autofocus/>
-                    <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
-                    <alert></alert>
-                </div>
-                &lt;!&ndash;&lt;!&ndash;TODO Use project specific key (currently using key registrated for Lackmann)&ndash;&gt;
-                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !captcha.valid }">
-                    <label for="captcha">Captcha</label>
-                    <re-captcha id="captcha" site_key="6LcGNDoUAAAAAM6MBt_APekc0isUcLNxPypJck3J" [(ngModel)]="model.captcha"
-                                #captcha="ngModel" name="captcha">
-                    </re-captcha>
-                    <div *ngIf="f.submitted && !captcha.valid" class="help-block">Captcha is required</div>
-                </div>&ndash;&gt;
-                <div id="remember" class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Eingeloggt bleiben
-                    </label>
-                </div>
-                <div class="form-group">
-                    <button [disabled]="loading" class="btn btn-lg btn-primary btn-block btn-signin">Login <i
-                            class="fa fa-sign-in"></i></button>
-                    <img *ngIf="loading"
-                         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-                </div>
-
-            </form>
-        </div>&lt;!&ndash; /card-container &ndash;&gt;
-    </div>&lt;!&ndash; /container &ndash;&gt;
-    &lt;!&ndash;</div>&ndash;&gt;
-    &lt;!&ndash;<div class="col-md-4">
-        <h4>for debugging purpose</h4>
-        <span>asuming there is a postgres database which the api can connect to and has a users</span>
-        <br>
-        <label for="user1">login with credentials set for user 1</label>
-        <br>
-        <button id="user1" class="btn btn-primary" (click)="debug1()">user '1'</button>
-        <br>
-        <label for="user1">login with credentials set for user 2</label>
-        <br>
-        <button id="user2" class="btn btn-primary" (click)="debug2()">user '2'</button>
-        <br>
-        <label for="user1">Simple Link to Modeler (only works if the authentication guard is turned off)</label>
-        <br>
-        <a class="btn btn-primary" href="/modeler">modeler</a>
-        <br>
-    </div>&ndash;&gt;
-</main>-->
