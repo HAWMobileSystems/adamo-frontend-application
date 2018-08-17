@@ -1,4 +1,4 @@
-import { Custom } from './../custom';
+import { custom } from './../custom';
 
 const inherits = require('inherits');
 
@@ -55,8 +55,8 @@ function createGeneralTabGroups(element: any, bpmnFactory: any, elementRegistry:
 function createCustomTabGroups(element: any, elementRegistry: any) {
 
     const theGroup = {
-        id: Custom.id,
-        label: Custom.name,
+        id: custom.id,
+        label: custom.name,
         entries: new Array()
     };
 
@@ -80,8 +80,8 @@ export function CustomPropertiesProvider(eventBus: any, bpmnFactory: any, elemen
         };
 
         const theTab = {
-            id: Custom.id,
-            label: Custom.name,
+            id: custom.id,
+            label: custom.name,
             groups: createCustomTabGroups(element, elementRegistry)
         };
 

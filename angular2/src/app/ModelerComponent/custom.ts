@@ -1,4 +1,4 @@
-export const Custom = {
+export const custom = {
     id: `CustomCompany`,
     name: `CustomCompany`,
     prefix: `ext`,
