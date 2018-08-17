@@ -1,8 +1,8 @@
 interface FileReaderEventTarget extends EventTarget {
-    result:string
+    result: string;
 }
 
 export interface FileReaderEvent extends Event {
     target: FileReaderEventTarget;
-    getMessage():string;
+    getMessage(): string;
 }
