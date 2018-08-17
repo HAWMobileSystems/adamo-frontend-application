@@ -12,7 +12,7 @@ const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/
 
 import {CommandStack} from './command/CommandStack';
 //import {customModdle} from './custom-moddle';
-import {CamundaModdle} from './camunda-moddle';
+import {camundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
