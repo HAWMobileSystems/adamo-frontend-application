@@ -5,26 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'term-modal',
-  template: `
-  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
-      <h2>IPIM Terms</h2>
-    </modal-header>
-    <modal-body>
-      <p>Please define a new term for all elements:</p>
-      <form>
-        <textarea value="" [(ngModel)]="firstTerm" id="inputFieldTerm" class="modal-textarea" name="inputFieldTerm">
-        </textarea>
-        <br>
-      </form>
-      <br>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
-      <button type="button" class="btn btn-large btn-block btn-default" (click)="writeTermModalValues()">Set Term</button>
-    </modal-footer>
-  </modal>
-  `
+  templateUrl: './TermModal.html'
 })
 
 export class TermModal extends ModalComponent {
