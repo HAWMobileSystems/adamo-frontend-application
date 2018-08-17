@@ -1,6 +1,5 @@
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
 
-
 export class Model {
     get version(): string {
         return this._version;
@@ -42,7 +41,6 @@ export class Model {
     private _id: number;
     private _modelerComponent: ModelerComponent;
     private _version: string;
-
 
     constructor(){}
 }

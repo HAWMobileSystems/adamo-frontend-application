@@ -53,7 +53,7 @@ export class ModellerPageComponent implements OnInit {
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
   }
 
-  //Log success message after loading models
+  //Log success message after loading
   public onLoadedCompletely(): void {
     this.loading = false;
     console.log('loading complete');
