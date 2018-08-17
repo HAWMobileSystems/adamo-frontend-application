@@ -111,7 +111,8 @@ export class Evaluator {
 
   public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
-    const currentSubprocesses: string[] = this.extractSubmodels(xml);
+    const currentSubprocesses: string[] = await this.extractSubmodels(xml);
+    debugger;
     //Iterate over all Subprocess and see if they were already retrieved from DB
     await this.asyncForEach(currentSubprocesses, async (element: string) => {
       //If the Subprocess has no Key, get XML from DB and add it
@@ -122,6 +123,7 @@ export class Evaluator {
         this.getAllSubmodels(tempXML);
       }
     });
+    debugger;
     console.log(this.xmls);
   }
 
@@ -135,8 +137,18 @@ export class Evaluator {
     return data;
   }
 
-  public extractSubmodels(xml : string): string[] {
-    this.modeler.importXML(xml);
+  private async importFromXML(xml: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      this.modeler.importXML(xml, (err: any) => {
+        resolve();
+      });
+    });
+  }
+
+  public async extractSubmodels(xml : string): Promise<string[]> {
+
+    await this.importFromXML(xml);
+
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
     //Alle Elemente der ElementRegistry holen

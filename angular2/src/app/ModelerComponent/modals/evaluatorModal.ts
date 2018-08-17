@@ -7,26 +7,7 @@ import { InputVarComponent } from './input.component';
 
 @Component({
   selector: 'eval-modal',
-  template: `
-  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
-      <h2>IPIM Evaluation</h2>
-    </modal-header>
-    <modal-body>
-      <p>Please specify the values used:</p>
-      <form>
-        <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-        <fieldset id="evalfset">
-          <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
-        </fieldset>
-      </form>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
-    </modal-footer>
-  </modal>
-  `
+  templateUrl: './evaluatorModal.html'
 })
 
 export class EvalModal extends ModalComponent {
