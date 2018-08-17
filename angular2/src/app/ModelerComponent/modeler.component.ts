@@ -123,9 +123,12 @@ export class ModelerComponent implements OnInit {
   }
 
   public openEvaluatorModal = () => {
+    this.modeler.saveXML({format: true}, (err: any, xml: any) => {
+      this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService);
     this.evaluatorModal.setProps(this.modeler, this);
     this.evaluatorModal.modal.open();
     console.log('ElevatorModal_Clicked!');
+    });
   }
 
   private getSubProcessList = (scope: string) => {
@@ -160,7 +163,7 @@ export class ModelerComponent implements OnInit {
     if (!validSelection) {
       window.alert('No Subprocess selected!');
     } else {
-      this.subProcessModal.setProps(this.modeler, terms);
+      this.subProcessModal.setProps(this.modeler, terms, this);
       this.subProcessModal.modal.open();
     }
   }
@@ -615,5 +618,9 @@ export class ModelerComponent implements OnInit {
 
   public hideOverlay(): void {
     document.getElementById('overlayLoading').style.display = 'none';
+  }
+
+  public getCommandStack(): CommandStack {
+    return this.commandStack;
   }
 }
