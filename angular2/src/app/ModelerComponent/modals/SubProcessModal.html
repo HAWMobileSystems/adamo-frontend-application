@@ -1,0 +1,16 @@
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+    <modal-header [show-close]="true">
+      <h2>IPIM SubProcess</h2>
+    </modal-header>
+    <modal-body>
+      <p>Please define a new subprocess ID for all selected Subprocesses!</p>
+        
+        <br>
+        <submodelloader [selectedId]="firstSubprocess" (selectedIdChange)="firstSubprocess=$event"></submodelloader>
+      <br>
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>
+    </modal-footer>
+  </modal>
