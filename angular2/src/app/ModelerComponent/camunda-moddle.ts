@@ -499,7 +499,7 @@ export const camundaModdle = {
             name: 'TaskPriorized',
             extends: [
                 'bpmn:Process',
-                'camunda:ExternalCapable'
+                'Camunda:ExternalCapable'
             ],
             properties: [
                 {
