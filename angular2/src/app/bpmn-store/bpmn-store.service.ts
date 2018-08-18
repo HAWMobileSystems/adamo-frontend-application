@@ -71,7 +71,7 @@ export class BPMNStore {
                 action: {
                     click: () => console.log('openTermModal')
                 }
-            }, 
+            },
             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
                 className: ['fa-cube', 'fa'],

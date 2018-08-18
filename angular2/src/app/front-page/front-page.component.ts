@@ -36,7 +36,7 @@ export class FrontPageComponent implements OnInit {
   // Login of user ans subscribe response of POST authenticate
   public login() {
     this.loading = true;
-    this.apiService.authenticate(this.model.username, this.model.password, this.model.captcha)
+    this.apiService.authenticate(this.model.username, this.model.password)
       .subscribe(response => {
           if (response.success) {
             console.log(JSON.stringify(response, null, 2));
@@ -50,27 +50,6 @@ export class FrontPageComponent implements OnInit {
           console.log('loginerror: ', error);
           this.loading = false;
 
-        });
-  }
-
-  debug1() {
-    this.apiService.authenticate('1', '12341234', '1234')
-      .subscribe(response => {
-          console.log(response);
-          this.router.navigate(['/modeler']);
-        },
-        error => {
-          console.log('loginerror: ', error);
-        });
-  }
-
-  debug2() {
-    this.apiService.authenticate('2', '12341234', '1234')
-      .subscribe(response => {
-          this.router.navigate(['/modeler']);
-        },
-        error => {
-          console.log(error);
         });
   }
 }

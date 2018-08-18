@@ -1054,4 +1054,4 @@ export const camundaModdle = {
         }
     ],
     enumerations: new Array()
-}
+};
