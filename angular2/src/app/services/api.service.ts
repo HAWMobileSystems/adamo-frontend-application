@@ -10,13 +10,12 @@ export class ApiService {
   }
 
   //Session handling: Authentication when user is logging in
-  public authenticate(email: string, password: string, captcha: string) {
+  public authenticate(email: string, password: string) {
     return this.http.post(
       IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/authenticate',
       {
         email: email,
-        password: password,
-        captcha: captcha
+        password: password
       },
       options)
       .map((response: Response) => response.json());

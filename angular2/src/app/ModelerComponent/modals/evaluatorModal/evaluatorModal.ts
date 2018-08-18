@@ -1,9 +1,9 @@
-import { AbstractCustomModal } from './AbstractCustomModal';
+import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
-import { Variable } from './variable';
-import { InputVarComponent } from './input.component';
+import { Variable } from '../variable';
+import { InputVarComponent } from '../input.component';
 
 @Component({
   selector: 'eval-modal',
