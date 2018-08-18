@@ -23,6 +23,6 @@
     </div>
     <modeler (loadedCompletely)="onLoadedCompletely($event)" (exportModel)="onExportModel($event)"
              *ngFor="let model of models" [hidden]="page !== model.id + model.version" [modelId]="'model_'+model.id + '_' + model.version"
-             [newDiagramXML]="model.xml" [model]="model">
+             [newDiagramXML]="model.xml" [model]="model" >
     </modeler>
 </div>

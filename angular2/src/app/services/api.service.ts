@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RequestOptions, Http, Response} from '@angular/http';
 import {IPIM_OPTIONS} from '../modelerConfig.service';
+import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
 
 const options = new RequestOptions({withCredentials: true});
 
@@ -155,9 +156,9 @@ export class ApiService {
   }
 
   //Modeller: Evaluation needs asynchron loading of model
-  public async getModelAsync(mid: string): Promise<string> {
-    const response = await this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel/' + mid, options).toPromise();
-    return response.json().data.modelxml;
+  public async getModelAsync(mid: string): Promise<ModelElement> {
+    const response = await this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid}, options).toPromise();
+    return new ModelElement(response.json().data.modelname, response.json().data.mid.toString(), response.json().data.modelxml);
   }
 
   //Administration page: Show all models

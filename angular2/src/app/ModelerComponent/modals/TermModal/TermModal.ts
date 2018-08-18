@@ -12,6 +12,7 @@ export class TermModal extends ModalComponent {
   public modeler: any;
   public termList: any;
   public firstTerm: any;
+  public root : any;
 
   @ViewChild('modal')
   public modal: ModalComponent;
@@ -25,9 +26,10 @@ export class TermModal extends ModalComponent {
   public backdrop: string | boolean = true;
   public css: boolean = false;
 
-  public setProps(modeler: any, termList: any) {
+  public setProps(modeler: any, termList: any, root: any) {
     this.termList = termList;
     this.modeler = modeler;
+    this.root = root;
     if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
 
@@ -108,6 +110,7 @@ export class TermModal extends ModalComponent {
         }
       }
     });
+    this.root.getCommandStack().publishXML();
     this.modal.close();
   }
 }

@@ -8,7 +8,7 @@
       <form>
         <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
         <fieldset id="evalfset">
-          <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
+          <inputvar-comp *ngFor="let variable of variables" [hidden]="variable.meta" [varName]="variable"> </inputvar-comp>
         </fieldset>
       </form>
     </modal-body>

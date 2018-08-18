@@ -17,10 +17,10 @@ import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
 import {FileReaderEvent} from './interfaces';
-import {TermModal} from './modals/TermModal';
-import {InputModal} from './modals/InputModal';
-import {VariableModal} from './modals/VariableModal';
-import {SubProcessModal} from './modals/SubProcessModal';
+import {TermModal} from './modals/TermModal/TermModal';
+import {InputModal} from './modals/InputModal/InputModal';
+import {VariableModal} from './modals/VariableModal/VariableModal';
+import {SubProcessModal} from './modals/SubProcessModal/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal/evaluatorModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
@@ -105,7 +105,7 @@ export class ModelerComponent implements OnInit {
 
 // Extract the following to the separate controler
   public openTermModal = () => {
-    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
     this.termModal.modal.open();
   }
 
@@ -114,7 +114,7 @@ export class ModelerComponent implements OnInit {
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler);
+    this.variableModal.setProps(this.modeler, this);
     this.variableModal.modal.open();
   }
 
@@ -124,9 +124,7 @@ export class ModelerComponent implements OnInit {
 
   public openEvaluatorModal = () => {
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
-      this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService);
-    this.evaluatorModal.setProps(this.modeler, this);
-    this.evaluatorModal.modal.open();
+    this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService, this);
     console.log('ElevatorModal_Clicked!');
     });
   }
@@ -623,4 +621,9 @@ export class ModelerComponent implements OnInit {
   public getCommandStack(): CommandStack {
     return this.commandStack;
   }
+
+  public getEvaluator(): Evaluator {
+    return this.evaluator;
+  }
+
 }

@@ -38,7 +38,7 @@ export class ModellerPageComponent implements OnInit {
   public onLoadModel(model: Model): void {
     this.loading = true;
     let exists: boolean;
-    this.models.forEach(function (element) {
+    this.models.forEach((element: any) => {
       if (element.id === model.id && element.version === model.version) {
         exists = true;
       }

@@ -23,6 +23,7 @@ export class VariableModal extends ModalComponent {
 
     private modeler : any;
     public termList: any;
+    public root: any;
   /*   constructor() {
         super();
         console.log('VariableModal constructor');
@@ -48,8 +49,9 @@ export class VariableModal extends ModalComponent {
         this.fillModal();
     }
 
-    public setProps(modeler: any) {
+    public setProps(modeler: any, root: any) {
         console.log('Variable Modal Set Props');
+        this.root = root;
         this.modeler = modeler;
     }
 
@@ -246,7 +248,7 @@ export class VariableModal extends ModalComponent {
                     : extras[0].values[fieldi].value = ' ';
             }
         }
-
+        this.root.getCommandStack().publishXML();
         this.modal.close();
     }
 }

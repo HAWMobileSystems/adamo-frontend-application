@@ -99,6 +99,7 @@ export class InputModal extends ModalComponent {
       }
     });
     this.root.evaluateProcess();
+    this.root.getCommandStack().publishXML();
     this.modal.close();
   }
 
