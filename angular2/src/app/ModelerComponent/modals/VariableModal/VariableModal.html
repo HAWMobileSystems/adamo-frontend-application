@@ -8,14 +8,12 @@
             <form>
             <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
                 <fieldset id="variablefset" >
-                <variable-comp *ngFor="let variable of variables" [varName]="variable"> </variable-comp>
+                  <variable-comp *ngFor="let variable of variables" [varName]="variable"> </variable-comp>
                 </fieldset>
             </form>
       </modal-body>
       <modal-footer [show-default-buttons]="false">
          <button type="button" class="btn btn-large btn-block btn-default" (click)="addNewVar()">Add Variable</button>
          <button type="button" class="btn btn-large btn-block btn-default" (click)="writeVariableModalValues()">Set</button>
-         <!-- <input type="button" value=" Add Variable " id="IPIMButtonAddVariable" (click) = "insertVariableField()"> -->
-         <!-- <input type="button" value=" Set " id="VariableModalButton">  -->
       </modal-footer>
 </modal>
