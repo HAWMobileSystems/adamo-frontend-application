@@ -28,6 +28,7 @@ import {COMMANDS} from '../bpmn-store/commandstore.service';
 import {ApiService} from '../services/api.service';
 import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
+import { Model } from '../models/model';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -48,6 +49,7 @@ export class ModelerComponent implements OnInit {
   @Input() public newDiagramXML: string;
   @Input() public model: any;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
+  @Output() public loadSubProcess: EventEmitter<Model> = new EventEmitter<Model>();
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');

@@ -7,8 +7,10 @@
       <p>Please define a new subprocess ID for all selected Subprocesses!</p>
         
         <br>
-        <submodelloader [selectedId]="firstSubprocess" (selectedIdChange)="firstSubprocess=$event"></submodelloader>
+        <submodelloader [selectedId]="firstSubprocess" [root]="root" (selectedIdChange)="firstSubprocess=$event" (selectedModelChange)="selectedModel=$event"></submodelloader>
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="openSubProcessModel()">Open Model</button>
       <br>
+      
     </modal-body>
     <modal-footer [show-default-buttons]="false">
         <button type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>

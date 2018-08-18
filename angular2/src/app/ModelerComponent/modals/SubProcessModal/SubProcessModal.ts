@@ -3,6 +3,7 @@ import { Component, Input , ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
 import { SubModelLoaderComponent } from '../../../components/SubModelLoaderComponent/submodelloader.component';
+import { Model } from '../../../models/model';
 
 @Component({
   selector: 'subprocess-modal',
@@ -15,6 +16,7 @@ export class SubProcessModal extends ModalComponent {
 
   public subProcessList: any;
   public firstSubprocess: any;
+  public selectedModel: any;
 
   @ViewChild('modal')
   public modal: ModalComponent;
@@ -27,7 +29,7 @@ export class SubProcessModal extends ModalComponent {
   public  keyboard: boolean = true;
   public backdrop: string | boolean = true;
   public css: boolean = false;
-  private root: any;
+  public root: any;
 
   public setProps(modeler: any, subProcessList: any, root: any) {
     this.subProcessList = subProcessList;
@@ -111,6 +113,38 @@ export class SubProcessModal extends ModalComponent {
       }
     });
     this.root.getCommandStack().publishXML();
+    this.modal.close();
+  }
+
+  public openSubProcessModel() {
+    if (typeof this.selectedModel === 'undefined') {
+      window.alert('Noting selected!');
+      return;
+    }
+    this.root.showOverlay();
+    const model = new Model();
+    model.xml = this.selectedModel.modelxml;
+    model.name = this.selectedModel.modelname;
+    model.id = this.selectedModel.mid;
+    model.version = this.selectedModel.version;
+    if (this.selectedModel.mid !== '') {
+      this.root.apiService.getModel(this.selectedModel.mid, this.selectedModel.version)
+        .subscribe((response: any) => {
+            model.xml = response.data.modelxml;
+            console.info(model);
+            this.root.loadSubProcess.emit(model);
+            this.root.hideOverlay();
+          },
+          (error: any) => {
+            this.root.hideOverlay();
+            this.root.alertService.error(JSON.parse(error._body).status);
+            console.log(error);
+          });
+
+    } else {
+      window.alert('Noting selected!');
+      return;
+    }
     this.modal.close();
   }
 }

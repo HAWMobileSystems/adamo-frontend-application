@@ -11,8 +11,11 @@ import {Model} from '../../models/model';
 export class SubModelLoaderComponent {
   private models: any = [];
   private selectedModelName: any;
+  private selectedModel: any;
   @Input() public selectedId: any;
+  @Input() public root: any;
   @Output() public selectedIdChange: any = new EventEmitter<any>();
+  @Output() public selectedModelChange: any = new EventEmitter<any>();
 
   constructor(private apiService: ApiService, private alertService: AlertService) {
   }
@@ -22,9 +25,11 @@ export class SubModelLoaderComponent {
   }
 
   public selectionChanged(model: any) {
+    this.selectedModel = model;
     this.selectedModelName = model.modelname;
     this.selectedId = model.mid;
     this.selectedIdChange.emit(this.selectedId);
+    this.selectedModelChange.emit(this.selectedModel);
     console.log(this.selectedId);
   }
 
@@ -44,4 +49,5 @@ export class SubModelLoaderComponent {
           console.log(error);
         });
   }
+
 }
