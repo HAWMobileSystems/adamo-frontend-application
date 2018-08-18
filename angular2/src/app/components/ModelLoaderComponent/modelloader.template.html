@@ -23,8 +23,10 @@
             </tr>
             <tfoot></tfoot>
         </table>
-        <button *ngIf="selected" class="btn btn-success" (click)="loadSelected()">Load</button>
-        <button class="btn btn-success" (click)="createNew()">NewModel</button>
+        <button *ngIf="selected" class="btn btn-success" (click)="loadSelected()">Load from DB</button>
+        <button class="btn btn-success" (click)="createNew()">New Model</button>
+        <button class="btn btn-success" (click)="fileSelectorInput.click()">Load from Disk</button>
+        <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
     </div>
 </div>
 

@@ -67,7 +67,7 @@
     ],
     "max-line-length": [
       true,
-      140
+      170
     ],
     "member-access": true,
     "member-ordering": [
