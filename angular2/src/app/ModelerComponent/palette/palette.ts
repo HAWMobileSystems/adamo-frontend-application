@@ -166,6 +166,5 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
 
     console.log('actions now: ', actions);
 
-
     return actions;
 };
