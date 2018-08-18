@@ -96,6 +96,14 @@ export class BPMNStore {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
                 }
             },
+            [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
+                group: 'ipim',
+                className: ['fa-beer', 'fa'],
+                title: 'Open Model of Subprocess',
+                action: {
+                    click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
+                }
+            },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
                 className: ['fa-lightbulb-o', 'fa'],

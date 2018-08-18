@@ -257,6 +257,69 @@ export class ModelerComponent implements OnInit {
 
   }
 
+  private openSubProcessModel = () => {
+    this.loadSubProcessModel(this.lookup.SELECTION);
+  }
+
+  private loadSubProcessModel = (scope: string) => {
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+        let elements: any;
+        scope === this.lookup.SELECTION
+          ? elements = this.modeler.get(scope).get()
+          : elements = this.modeler.get(scope).getAll();
+        const terms: string[] = new Array();
+        let validSelection = false;
+    //Alle Elemente durchlaufen um Variablen zu finden
+        for (const element of elements) {
+          if (element.type === 'bpmn:SubProcess') {
+            validSelection = true;
+            console.log(element, typeof element.businessObject.extensionElements);
+    //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+            if (element.businessObject.extensionElements) {
+              //Wenn vorhandne die Elemente auslesen
+              const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+              //Schleife über alle Elemente
+              for (let i = 0; i < extras[0].values.length; i++) {
+                //Prüfen ob der Name des Elementes IPIM_Val entspricht
+                if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                  if (terms.indexOf(extras[0].values[i].value) === -1) {
+                    terms.push(extras[0].values[i].value);
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (!validSelection) {
+          window.alert('No Subprocess selected!');
+        } else {
+          terms.forEach(element => {
+            this.showOverlay();
+            if (element !== '') {
+              this.apiService.getModel(element)
+                .subscribe((response: any) => {
+                  const model = new Model();
+                    model.xml = response.data.modelxml;
+                    model.name = response.data.modelname;
+                    model.id = response.data.mid;
+                    model.version = response.data.version;
+                    console.info(model);
+                    this.loadSubProcess.emit(model);
+                    this.hideOverlay();
+                  },
+                  (error: any) => {
+                    this.hideOverlay();
+                    console.log(error);
+                  });
+
+            } else {
+              window.alert('Noting selected!');
+              return;
+            }
+          });
+        }
+      }
+
   private zoomToFit = () => {
     const canvasObject = this.modeler.get('canvas');
     canvasObject.zoom('fit-viewport');
@@ -274,7 +337,8 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.SET_IPIM_SUBPROCESS]: this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR]: this.openEvaluatorModal,
     [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
-    [COMMANDS.EXPORT_SVG]: this.saveSVG
+    [COMMANDS.EXPORT_SVG]: this.saveSVG,
+    [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel
   };
 
   /**

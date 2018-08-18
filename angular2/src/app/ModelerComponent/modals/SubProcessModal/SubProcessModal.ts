@@ -128,7 +128,7 @@ export class SubProcessModal extends ModalComponent {
     model.id = this.selectedModel.mid;
     model.version = this.selectedModel.version;
     if (this.selectedModel.mid !== '') {
-      this.root.apiService.getModel(this.selectedModel.mid, this.selectedModel.version)
+      this.root.apiService.getModel(this.selectedModel.mid)
         .subscribe((response: any) => {
             model.xml = response.data.modelxml;
             console.info(model);
@@ -137,7 +137,6 @@ export class SubProcessModal extends ModalComponent {
           },
           (error: any) => {
             this.root.hideOverlay();
-            this.root.alertService.error(JSON.parse(error._body).status);
             console.log(error);
           });
 
