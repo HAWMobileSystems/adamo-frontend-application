@@ -32,6 +32,7 @@ export class ModellerPageComponent implements OnInit {
 
   public remove(index: number): void {
     this.models.splice(index, 1);
+    this.page = '+';
   }
 
   //Show previous versions of a model, if the last one was selected
@@ -51,6 +52,11 @@ export class ModellerPageComponent implements OnInit {
 
   public onExportModel(modelerComponent: ModelerComponent): void {
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
+  }
+
+  public onLoadSubProcess(model: Model): void {
+    console.log('loadedModel', model);
+    this.onLoadModel(model);
   }
 
   //Log success message after loading
