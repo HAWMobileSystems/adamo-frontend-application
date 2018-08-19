@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {RequestOptions, Http, Response} from '@angular/http';
 import {IPIM_OPTIONS} from '../modelerConfig.service';
 import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 
 const options = new RequestOptions({withCredentials: true});
 
