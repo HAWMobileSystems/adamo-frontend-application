@@ -3,8 +3,26 @@
         <nav class="navbar navbar-default height-50" role="navigation">
             <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
                 <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page === model.id + '_' + model.version}" (click)="page = model.id + '_' + model.version">
-                    <a>{{model.name + (model.version | version) || 'unsaved model'}}<span style="margin-left: 10px; margin-right: 10px;" class="badge badge-light">0</span></a> <!--number of collaborators here-->
+                    <a (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false" style="padding-right: 30px;">{{model.name + (model.version | version) || 'unsaved model'}}
+                        <span *ngIf="model.collaborator.length > 1" style="margin-right: 0;" class="badge badge-light">
+                            {{model.collaborator.length}}
+                        </span>
+                    </a>
                     <button class="badge badge-light" style="position: absolute; top: 0; right: 0;" (click)="remove(i)">X</button>
+                    <div *ngIf="model.collaborator.length > 1 && model.showInfo"
+                         style="position: absolute; top: 100%; z-index: 100"
+                         class="panel panel-default">
+                        <div class="panel-heading">
+                            Collaborators
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li *ngFor="let collaborator of model.collaborator">
+                                    {{collaborator}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </li>
                 <li [ngClass]="{'active': page === '+'}" (click)="page = '+'"><a>+</a></li>
                 <li *ngIf="permission === 1" [ngClass]="{'active': page === 'administration'}" (click)="page = 'administration';"><a>Administration(tabbed)</a></li>

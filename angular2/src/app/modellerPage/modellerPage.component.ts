@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {ApiService} from '../services/api.service';
 import {Model} from '../models/model';
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
-
-const mqtt: any = require('mqtt').connect('mqtt://localhost:4711');
+import {MqttService} from '../services/mqtt.service';
 
 @Component({
   templateUrl: './modellerPage.component.html',
@@ -29,24 +27,13 @@ export class ModellerPageComponent implements OnInit {
     '>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
   public models: Model[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private mqttService: MqttService) {
+  }
 
-  public ngOnInit() {
-    this.apiService.login_status()
-      .subscribe(response => {
-        if (response.success) {
-          console.log(response);
-          this.permission = parseInt(response.permission);
-        } else {
-          console.error(response);
-        }
-      },
-      error => {
-        console.error(error);
-      });
-
-    mqtt.subscribe('modelupsert');
-    mqtt.on('message', (topic: any, message: any) => {
+  private initMqtt(){
+    this.mqttService.getClient().subscribe('collaborator/update/+/+');
+    this.mqttService.getClient().subscribe('modelupsert');
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
       console.log(topic);
       if (topic === 'modelupsert') {
         const event = JSON.parse(message);
@@ -55,11 +42,44 @@ export class ModellerPageComponent implements OnInit {
           this.page = event.mid + '_' + event.newVersion;
           console.log(this.page);
         }
+      } else if (topic.startsWith('collaborator/update')) {
+        console.log(topic, JSON.parse(message));
+        console.log(this.models);
+        this.models.forEach(model => {
+          console.log(model.id, parseInt(topic.split('/')[2]), model.version, topic.split('/')[3]);
+          if (model.id === parseInt(topic.split('/')[2]) && model.version === topic.split('/')[3]) {
+            model.collaborator = JSON.parse(message);
+          }
+        });
       }
     });
   }
 
+  public ngOnInit() {
+    this.apiService.login_status()
+      .subscribe(response => {
+          if (response.success) {
+            this.mqttService.getClient(response.email);
+            this.initMqtt();
+            this.permission = parseInt(response.permission);
+          } else {
+            console.error(response);
+          }
+        },
+        error => {
+          console.error(error);
+        });
+  }
+
   public remove(index: number) {
+    console.log(this.models[index]);
+    this.apiService.modelClose(this.models[index].id, this.models[index].version)
+      .subscribe(response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        });
     this.models.splice(index, 1);
   }
 
@@ -73,6 +93,8 @@ export class ModellerPageComponent implements OnInit {
     });
     if (!exists) {
       this.models.push(model);
+    } else {
+      this.loading = false;
     }
     this.page = model.id + '_' + model.version;
   }

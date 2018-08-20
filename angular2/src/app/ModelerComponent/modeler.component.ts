@@ -1,18 +1,11 @@
 import {Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
-import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Http} from '@angular/http';
-
+import {MqttService} from '../services/mqtt.service';
 import {PaletteProvider} from './palette/palette';
 import {CustomPropertiesProvider} from './properties/props-provider';
 import {BPMNStore, Link} from '../bpmn-store/bpmn-store.service';
-
-const propertiesPanelModule = require('bpmn-js-properties-panel');
-const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-
 import {CommandStack} from './command/CommandStack';
-//import {customModdle} from './custom-moddle';
-import {CamundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
@@ -22,19 +15,13 @@ import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal';
-
 import {COMMANDS} from '../bpmn-store/commandstore.service';
-
 import {ApiService} from '../services/api.service';
 import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
-};
-const customPropertiesProviderModule = {
-  __init__: ['propertiesProvider'],
-  propertiesProvider: ['type', CustomPropertiesProvider]
 };
 
 @Component({
@@ -99,7 +86,7 @@ export class ModelerComponent implements OnInit {
   }
 
   constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
-              private ref: ChangeDetectorRef, private router: Router) {
+              private ref: ChangeDetectorRef, private router: Router, private mqttService: MqttService) {
 
   }
 
@@ -186,12 +173,12 @@ export class ModelerComponent implements OnInit {
 
   private highlightTerms = () => {
     // if (this.lastDiagramXML !== '') {
-      const elementRegistry = this.modeler.get('elementRegistry');
-      const modeling = this.modeler.get('modeling');
-      this.termsColored
-        ? this.toggleTermsNormal(elementRegistry, modeling)
-        : this.toggleTermsColored(elementRegistry, modeling);
-      this.termsColored = !this.termsColored;
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
+    this.termsColored
+      ? this.toggleTermsNormal(elementRegistry, modeling)
+      : this.toggleTermsColored(elementRegistry, modeling);
+    this.termsColored = !this.termsColored;
     // } else {
     //   console.error('There is no Diagram to highlight');
     // }
@@ -200,23 +187,18 @@ export class ModelerComponent implements OnInit {
   private resetDiagram = () => {
     this.showOverlay();
     this.apiService.getModel(this.modelId.split('_')[1])
-        .subscribe(response => {
-            const xml = response.data.modelxml;
-            console.info('Reset-Model', xml);
-            this.modeler.importXML(xml);
-            this.commandStack.stopEvaluateMode();
-            this.hideOverlay();
-          },
-          error => {
-            console.log(error);
-            this.commandStack.stopEvaluateMode();
-            this.hideOverlay();
-          });
-  }
-
-  private debug = () => {
-    console.log(this.modeler);
-    console.log(this);
+      .subscribe(response => {
+          const xml = response.data.modelxml;
+          console.info('Reset-Model', xml);
+          this.modeler.importXML(xml);
+          this.commandStack.stopEvaluateMode();
+          this.hideOverlay();
+        },
+        error => {
+          console.log(error);
+          this.commandStack.stopEvaluateMode();
+          this.hideOverlay();
+        });
   }
 
   private saveToDb = () => {
@@ -338,7 +320,7 @@ export class ModelerComponent implements OnInit {
    */
   private createModeler() {
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler, this);
+    this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
 // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
@@ -393,20 +375,20 @@ export class ModelerComponent implements OnInit {
     this.openDiagram(this.newDiagramXML);
   }
 
-  // private loadDiagram() {
-  //   this.apiService.getModel('test')
-  //     .subscribe(response => {
-  //         if (response.success) {
-  //           console.log(response.data);
-  //           this.openDiagram(response.data.modelxml);
-  //         } else {
-  //           console.log(response.error);
-  //         }
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       });
-  // }
+// private loadDiagram() {
+//   this.apiService.getModel('test')
+//     .subscribe(response => {
+//         if (response.success) {
+//           console.log(response.data);
+//           this.openDiagram(response.data.modelxml);
+//         } else {
+//           console.log(response.error);
+//         }
+//       },
+//       error => {
+//         console.log(error);
+//       });
+// }
 
   private openDiagram = (xml: string) => {
     this.lastDiagramXML = xml;

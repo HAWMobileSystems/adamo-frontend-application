@@ -3,7 +3,7 @@ import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 import {Model} from '../../models/model';
 
-const mqtt = require('mqtt').connect('mqtt://localhost:4711');
+import {MqttService} from '../../services/mqtt.service';
 
 @Component({
   selector: 'modelloader',
@@ -16,10 +16,34 @@ export class ModelLoaderComponent {
   private newModel: any;
   private models: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService) {
+  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  }
+
+  private initMqtt() {
+    const self = this;
+    this.mqttService.getClient().subscribe('administration/model/#');
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
+      if (topic.startsWith('administration/model')) {
+        self.getAllModels();
+      }
+    });
   }
 
   public ngOnInit() {
+    this.getAllModels();
+    this.apiService.login_status()
+      .subscribe(response => {
+          if (response.success) {
+            this.mqttService.getClient(response.email);
+            this.initMqtt();
+          } else {
+            console.error(response);
+          }
+        },
+        error => {
+          console.error(error);
+        });
+
     this.newModel = {
       mid: '',
       modelname: '',
@@ -36,15 +60,6 @@ export class ModelLoaderComponent {
       version: '',
       lastchange: ''
     };
-
-    this.getAllModels();
-    mqtt.subscribe('administration/model');
-    const i = this;
-    mqtt.on('message', (topic: any, message: any) => {
-      if (topic === 'administration/model'){
-        i.getAllModels();
-      }
-    });
   }
 
   public createNew() {
@@ -60,6 +75,7 @@ export class ModelLoaderComponent {
     model.name = this.selected.modelname;
     model.id = this.selected.mid;
     model.version = this.selected.version;
+    model.collaborator = [];
     if (this.selected.mid !== '') {
       this.apiService.getModel(this.selected.mid, this.selected.version)
         .subscribe(response => {

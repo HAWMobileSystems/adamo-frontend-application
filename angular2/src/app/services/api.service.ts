@@ -174,6 +174,14 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
+  public modelClose(mid: number, version: string) {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/close', {
+      mid: mid,
+      version: version
+    }, options)
+      .map((response: Response) => response.json());
+  }
+
   public modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/create', {
       modelname: modelname,
@@ -190,7 +198,11 @@ export class ApiService {
   }
 
   public permissionCreate(uid: any, mid: any, role: any) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/create', {uid: uid, mid: mid, role: role}, options)
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/create', {
+      uid: uid,
+      mid: mid,
+      role: role
+    }, options)
       .map((response: Response) => response.json());
   }
 

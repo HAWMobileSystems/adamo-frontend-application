@@ -64,6 +64,7 @@ app.all('*', function (req, res, next) {
   if (req.session.user) {
     if (
       req.url === '/model/all' ||
+      req.url === '/model/close' ||
       req.url.startsWith('/model/getModel')
     ) {
       next();
@@ -150,6 +151,7 @@ app.post('/authenticate', function (req, res) {
                     }
                     response.message = 'success';
                     response.success = true;
+                    response.email = user.email;
                     req.session.user = {
                       id: user.uid,
                       email: user.email,
@@ -169,6 +171,7 @@ app.post('/authenticate', function (req, res) {
                 else {
                   response.message = 'success';
                   response.success = true;
+                  response.email = user.email;
                   req.session.user = {
                     id: user.uid,
                     email: user.email,
@@ -251,6 +254,7 @@ app.get('/login_status', function (req, res) {
     if (req.session.user) {
       res.status(200).send({
         message: 'logged in as ' + req.session.user.profile,
+        email: req.session.user.email,
         profile: req.session.user.profile,
         permission: req.session.user.permission,
         success: true,

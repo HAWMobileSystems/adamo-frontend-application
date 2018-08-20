@@ -23,6 +23,7 @@ import {AlertService} from './services/alert.service';
 import {AppFooterComponent} from './components/AppFooterComponent/footer.component';
 import {AppHeaderComponent} from './components/AppHeaderComponent/header.component';
 import {ApiService} from './services/api.service';
+import {MqttService} from './services/mqtt.service';
 import {ModellerPageComponent} from './modellerPage/modellerPage.component';
 import {UserComponent} from './components/UserComponent/user.component';
 import {ModelComponent} from './components/ModelComponent/model.component';
@@ -81,6 +82,7 @@ import {Http} from '@angular/http';
     AuthGuard,
     AlertService,
     ApiService,
+    MqttService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

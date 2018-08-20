@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 
-const mqtt = require('mqtt');
+import {MqttService} from '../../services/mqtt.service';
 
 @Component({
   selector: 'permission-management',
@@ -17,7 +17,9 @@ export class PermissionComponent {
   private users: any;
   private roles: any;
   private models: any;
-  private mqtt: any;
+
+  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  }
 
   private selectUser(user: any) {
     this.selectedUser = user;
@@ -91,18 +93,13 @@ export class PermissionComponent {
         });
   }
 
-  constructor(private apiService: ApiService, private alertService: AlertService) {
-  }
-
   public ngOnInit() {
 
     this.getAllRoles();
     this.getAllUsers();
     this.getAllModels();
-
-    this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('PERMISSION');
-    this.mqtt.on('message', function (topic: any, message: any) {
+    this.mqttService.getClient().subscribe('PERMISSION');
+    this.mqttService.getClient().on('message', function (topic: any, message: any) {
       this.getAllModels();
       this.getAllUsers();
     });

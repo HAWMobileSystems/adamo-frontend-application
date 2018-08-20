@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 
-const mqtt = require('mqtt');
+import {MqttService} from '../../services/mqtt.service';
 
 @Component({
   selector: 'role-management',
@@ -13,9 +13,8 @@ export class RoleComponent {
   private selected: any;
   private newRole: any;
   private roles: any;
-  private mqtt: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService) {
+  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -29,10 +28,9 @@ export class RoleComponent {
 
     this.getAllRoles();
 
-    this.mqtt = mqtt.connect('mq://localhost:4711');
-    this.mqtt.subscribe('administrations/role');
+    this.mqttService.getClient().subscribe('administrations/role');
     const i = this;
-    this.mqtt.on('message', (topic: any, message: any) => {
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
       i.getAllRoles();
     });
@@ -60,7 +58,7 @@ export class RoleComponent {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -77,7 +75,7 @@ export class RoleComponent {
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -94,7 +92,7 @@ export class RoleComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role');
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);

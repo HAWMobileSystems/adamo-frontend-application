@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
-
-const mqtt = require('mqtt');
+import {MqttService} from '../../services/mqtt.service';
 
 @Component({
   selector: 'model-management',
@@ -13,9 +12,8 @@ export class ModelComponent {
   private selected: any;
   private newModel: any;
   private models: any;
-  private mqtt: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService) {
+  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -27,10 +25,9 @@ export class ModelComponent {
 
     this.getAllModels();
 
-    this.mqtt = mqtt.connect('mqtt://localhost:4711');
-    this.mqtt.subscribe('administration/model');
+    this.mqttService.getClient().subscribe('administration/model/#');
     const i = this;
-    this.mqtt.on('message', (topic: any, message: any) => {
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
       console.log('Test from remote:' + message.toString());
       i.getAllModels();
     });
@@ -63,7 +60,7 @@ export class ModelComponent {
       this.selected.version)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('administration/model');
+            this.mqttService.getClient().publish('administration/model/update');
             this.alertService.success(response.status);
           }
         },
@@ -77,7 +74,7 @@ export class ModelComponent {
     this.apiService.modelCreate(this.selected.modelname, this.selected.lastchange, this.selected.modelxml, this.selected.version)
       .subscribe(response => {
           if (response.success) {
-            this.mqtt.publish('administration/model');
+            this.mqttService.getClient().publish('administration/model/create');
             this.alertService.success(response.status);
           }
         },
@@ -92,7 +89,10 @@ export class ModelComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqtt.publish('administration/model');
+            this.mqttService.getClient().publish('administration/model/delete', JSON.stringify({
+              mid: this.selected.mid,
+              version: this.selected.version
+            }));
             this.alertService.success(response.status);
           }
         },

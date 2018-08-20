@@ -30,7 +30,7 @@
                 <tr *ngFor="let model of models | filter:search" (click)="selectModel(model)"
                     [ngClass]="{'info': selectedModel === model}">
                     <td>{{model.modelname}}</td>
-                    <td>{{model.version}}</td>
+                    <td>{{model.version | version}}</td>
                 </tr>
                 <tfoot></tfoot>
             </table>

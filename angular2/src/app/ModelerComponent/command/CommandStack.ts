@@ -3,8 +3,8 @@ import {ModelComponent} from '../../components/ModelComponent/model.component';
 import {ModelerComponent} from '../modeler.component';
 import {IPIM_OPTIONS} from '../../modelerConfig.service';
 
+import {MqttService} from '../../services/mqtt.service';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
-const mqtt = require('mqtt');
 
 export class CommandStack {
   private modeler: any;  //Modeler from Main Application
@@ -16,7 +16,6 @@ export class CommandStack {
   private defaultTopic: string = 'IPIM Default';  //Default Topic to subscribe on
   private commandStack: any;   //commandStack for testing purposes
   private eleReg: any;  //elementRegistry for Testing purposes
-  private client: any;   //MQTT Client
   private id: any;       //Generated unique ID for Client to avoid Echos
   private dragging: any; //Dragging State from Modeler
   private topic: any;     //Currently subscribed Topic
@@ -25,41 +24,48 @@ export class CommandStack {
 
 //Commandstack Class
 
-  constructor(modeler: any, modelerComponenetRoot: ModelerComponent) {
+  constructor(modeler: any, modelerComponenetRoot: ModelerComponent, private mqttService: MqttService) {
     this.modeler = modeler;    //take modeler from super function
     this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
     this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
     this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
-    this.client = mqtt.connect(this.mqttString);  //  mqtt://test.mosquitto.org
     this.id = this.guidGenerator();  //generate the unique ID for this Browser
     this.modelerComponenetRoot = modelerComponenetRoot;
-    this.topic = this.modelerComponenetRoot.modelId;
+    // this.topic = this.modelerComponenetRoot.modelId;
+    this.topic = '' +
+      'model_' +
+      this.modelerComponenetRoot.model.id +
+      '_' +
+      this.modelerComponenetRoot.model.version;
+    console.log(this.topic);
+    console.log(this.modelerComponenetRoot.model, this.modelerComponenetRoot.model.version);
     this.stopEvaluationisRunning = false;
+    console.log('MODEL/' + this.topic);
 
-    this.client.subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
-    this.client.subscribe('modelupsert');
+    this.mqttService.getClient().subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
+    this.mqttService.getClient().subscribe('modelupsert');
 
 //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
-    this.client.on('message', (topic: any, message: any) => {
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
 //call function to handle the new message
       this.receiveMessage(topic, message);
     });
 
 //Call Publish function if something changes here we use the Eventbus Event element changed!
-    this.modeler.on('element.changed', this.publishXML);
+    this.modeler.on('elements.changed', this.publishXML);
 
   }
 
 //Starts Evaluation Mode ... Model will unsubscribe and no longer publish!
   public startEvaluateMode = () => {
     this.stopEvaluationisRunning = true;
-    this.client.unsubscribe('MODEL/' + this.topic);
+    this.mqttService.getClient().unsubscribe('MODEL/' + this.topic);
   }
 
-  //Stop Evaluation Mode ... Model will resubscribe and publish again!
+//Stop Evaluation Mode ... Model will resubscribe and publish again!
   public stopEvaluateMode = () => {
     this.stopEvaluationisRunning = false;
-    this.client.subscribe('MODEL/' + this.topic);
+    this.mqttService.getClient().subscribe('MODEL/' + this.topic);
   }
 
 //Handle a new Message from MQTT-Server
@@ -87,15 +93,20 @@ export class CommandStack {
       console.log(model);
       if (model.id === event.mid && model.version === event.version) {
         model.version = event.newVersion;
+        this.mqttService.getClient().unsubscribe('MODEL/model_' + event.mid + '_' + event.version);
+        this.mqttService.getClient().subscribe('MODEL/model_' + event.mid + '_' + event.newVersion);
+        this.topic = 'model_' + event.mid + '_' + event.newVersion;
       }
     }
   }
 
 //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
   public publishXML = (): void => {
-   //If
+    //If
 
-    if (this.stopEvaluationisRunning) { return; }
+    if (this.stopEvaluationisRunning) {
+      return;
+    }
     // user modeled something or
     // performed a undo/redo operation
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
@@ -108,7 +119,7 @@ export class CommandStack {
         XMLDoc: xml
 
       };
-      this.client.publish('MODEL/' + this.topic, JSON.stringify(transfer));
+      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer));
     });
   }
 
@@ -134,7 +145,7 @@ export class CommandStack {
         event.context.IPIMremote = 'yes';
         console.log('IPIM command execute logger', event);
 
-        this.client.publish('IPIM', JSON.stringify(event));
+        this.mqttService.getClient().publish('IPIM', JSON.stringify(event));
 
       }
     });
