@@ -13,6 +13,9 @@ import {ApiService} from '../../services/api.service';
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
 import { resolve } from 'q';
+import { Variable } from '../modals/variable';
+import { ModelElement} from './modelElement';
+import { Model } from '../../models/model';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -28,8 +31,9 @@ export class Evaluator {
   private rootxml : string;
   private rootID : string;
   //private xmls : String[];
-  private xmls : Map<string, string> = new Map<string, string>();
-  private varValMap : any = {};
+  private xmls : ModelElement[] = [];
+  private variables: Variable[] = [];
+ // private varValMap : any = {};
 
   private modelerComponent : ModelerComponent;
   private containerRef: string = '#js-canvas';
@@ -42,6 +46,8 @@ export class Evaluator {
   private commandQueue: Subject<any>;
   private camundaModdleDescriptor: any = require('camunda-bpmn-moddle/resources/camunda.json');
   private apiService: ApiService;
+  private root: any;
+  private zipArray: ModelElement[] = [];
 
   private lookup: any = {
     MODELING: 'modeling',
@@ -59,14 +65,14 @@ export class Evaluator {
 
   private createNewModeler() {
     this.modeler = new this.modeler({
-      container: this.containerRef,
+      container: '#evaluatorCanvas',
       propertiesPanel: {
         parent: this.propsPanelRef
       },
       additionalModules: [
         {extraPaletteEntries: ['type', () => this.extraPaletteEntries]},
         {commandQueue: ['type', () => this.commandQueue]},
-        this.propertiesPanelModule,
+        //this.propertiesPanelModule,
         this.propertiesProviderModule,
         // customPropertiesProviderModule,
         customPaletteModule
@@ -77,33 +83,38 @@ export class Evaluator {
     });
   }
 
-  constructor(rootID : string, rootXML : string, apiService : ApiService) {
+  constructor(id: string, xml: string, apiService : ApiService, root: any) {
     this.apiService = apiService;
-    this.rootxml = rootXML;
-    this.rootID = rootID;
-    this.xmls.set(rootID, rootXML);
+    this.rootxml = xml;
+    this.rootID = id;
+    this.root = root;
+    this.zipArray = [];
+    this.xmls.push(new ModelElement(root.model.name, id, xml));
+    this.root.showOverlay();
     this.createNewModeler();
-    this.getAllSubmodels(rootXML);
+    this.getAllSubmodels(xml);
+    console.log(this.xmls);
+    this.getCombinedTermList();
   }
 
   public createZipDownload() {
     const zip = new JSZip();
 
-    this.xmls.forEach((value: string, key: string) => {
+    this.zipArray.forEach((element: ModelElement) => {
 
-    zip.file(key + '.bpmn', value);
+    zip.file(element.name + '.bpmn', element.xml);
 
     });
 
     zip.generateAsync({type: 'blob'}).then( (blob: Blob) => { // 1) generate the zip file
-      FileSaver.saveAs(blob, this.rootID + '.zip');                          // 2) trigger the download
+      FileSaver.saveAs(blob, this.root.model.name + '.zip');                          // 2) trigger the download
     }, (err) => {
       console.log('could not create zip');
     });
 
   }
 
-  private async asyncForEach(array: string[], callback: any) {
+  private async asyncForEach(array: any[], callback: any) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
@@ -111,32 +122,45 @@ export class Evaluator {
 
   public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
-    const currentSubprocesses: string[] = this.extractSubmodels(xml);
+    const currentSubprocesses: string[] = await this.extractSubmodels(xml);
     //Iterate over all Subprocess and see if they were already retrieved from DB
     await this.asyncForEach(currentSubprocesses, async (element: string) => {
-      //If the Subprocess has no Key, get XML from DB and add it
-      if (!this.xmls.has(element)) {
-        const tempXML = await this.getXMLFromDB(element);
-        this.xmls.set(element, tempXML);
-        //As we just added the XML, we recursively call the function to get all of its Subprocesses
-        this.getAllSubmodels(tempXML);
-      }
+        //If the Subprocess has no Key, get XML from DB and add it
+        if (this.xmls.some(e => e.id === element)) {
+          //We already have it so do nothing!
+        } else {
+          const tempModelElement = await this.getXMLFromDB(element);
+          this.xmls.push(tempModelElement);
+          //As we just added the XML, we recursively call the function to get all of its Subprocesses
+          this.getAllSubmodels(tempModelElement.xml);
+        }
     });
-    console.log(this.xmls);
   }
 
-  public async getXMLFromDB(id : string): Promise<string> {
-     return await this.apiService.getModelAsync(id).then( (value : string) => {return value; });
+  public async getXMLFromDB(id : string): Promise<ModelElement> {
+     return await this.apiService.getModelAsync(id).then( (value : ModelElement) => {return value; });
   }
 
-  private async getDataFromDB(id: number): Promise<String> {
-    const response = await fetch('http://localhost:3000/model/getmodel/' + id);
-    const data = await response.json();
-    return data;
+  private async importFromXML(xml: string): Promise<void> {
+    return new Promise<void>( resolve => {
+      this.modeler.importXML(xml, (err: any) => {
+        resolve();
+      });
+    });
   }
 
-  public extractSubmodels(xml : string): string[] {
-    this.modeler.importXML(xml);
+  private async exportFromModeler(): Promise<string> {
+    return new Promise<string>( resolve => {
+      this.modeler.saveXML({format: true}, (err: any, xml: any) => {
+        resolve(xml);
+      });
+    });
+  }
+
+  public async extractSubmodels(xml : string): Promise<string[]> {
+
+    await this.importFromXML(xml);
+
     const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
     const modeling = this.modeler.get(this.lookup.MODELING);
     //Alle Elemente der ElementRegistry holen
@@ -165,14 +189,15 @@ export class Evaluator {
     return subprocesses;
   }
 
-  private getCombinedTermList = () => {
-    this.xmls.forEach((value: string, key: string) => {
+  private async getCombinedTermList(): Promise<void> {
+    await this.asyncForEach(this.xmls, async (element: ModelElement) => {
 
-      this.modeler.import(value);
+      await this.importFromXML(element.xml);
       const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
       const modeling = this.modeler.get(this.lookup.MODELING);
       //Alle Elemente der ElementRegistry holen
       const elements = elementRegistry.getAll();
+      this.variables = [];
 
       //Alle Elemente durchlaufen um Variablen zu finden
       // elements.forEach((element: any) => {
@@ -187,23 +212,37 @@ export class Evaluator {
             //Prüfen ob der Name des Elementes IPIM_Val entspricht
             if (valueName.startsWith('IPIM_Val_'.toLowerCase())) {
               //Variablen als Key mit Wert in Map übernehmen
-              this.varValMap[valueName.replace('IPIM_Val_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+              this.addVar(valueName.replace('IPIM_Val_'.toLowerCase(), ''), extras[0].values[i].value.toLowerCase(), false);
             }
             //Prüfen ob der Name des Elementes IPIM_Val entspricht
             if (valueName.startsWith('IPIM_META_'.toLowerCase())) {
               //Variablen als Key mit Wert in Map übernehmen
-              this.varValMap[valueName.replace('IPIM_META_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+              this.addVar(valueName.replace('IPIM_META_'.toLowerCase(), ''), extras[0].values[i].value.toLowerCase(), true);
             }
           }
         }
       }
     });
+    this.root.hideOverlay();
+    this.root.evaluatorModal.setProps(this.modeler, this.root, this.variables);
+    this.root.evaluatorModal.modal.open();
   }
 
-  private evaluateProcesses = () => {
-    this.xmls.forEach((value: string, key: string) => {
+  public addVar(name: string, value: string, meta: boolean): void {
+    this.variables.push(new Variable(name, value, meta));
+  }
 
-      this.modeler.import(value);
+  public async evaluateProcesses(variables: Variable[]): Promise<void> {
+
+    const varValMap = {};
+
+    variables.forEach(element => {
+      varValMap[element.name.toLowerCase()] = element.value.toLowerCase();
+    });
+
+    await this.asyncForEach(this.xmls, async (element: ModelElement) => {
+
+      await this.importFromXML(element.xml);
       const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
       const modeling = this.modeler.get(this.lookup.MODELING);
       //Alle Elemente der ElementRegistry holen
@@ -226,7 +265,7 @@ export class Evaluator {
                 // [ ist vorhanden, daher String nach Substrings durchsuchen
                 const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
                 //evalterm mit String.replace veränderun und variablenwert einsetzen.
-                evalterm = evalterm.replace('[' + substr + ']', this.varValMap[substr]);
+                evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
               }
               //Sichere Eval Sandbox schaffen
               const safeEval = require('safe-eval');
@@ -239,6 +278,10 @@ export class Evaluator {
           }
         }
       }
+      this.zipArray.push(new ModelElement(element.name, element.id, await this.exportFromModeler() ));
     });
+    this.createZipDownload();
+    this.root.hideOverlay();
   }
+
 }

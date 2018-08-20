@@ -4,10 +4,12 @@ import {Model} from '../models/model';
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
 import {MqttService} from '../services/mqtt.service';
 
+//Include components for interface and styling
 @Component({
   templateUrl: './modellerPage.component.html',
   styleUrls: ['./modellerPage.component.css']
 })
+
 export class ModellerPageComponent implements OnInit {
   public title: string = 'Angular 2 with BPMN-JS';
   public model: any = {};
@@ -30,7 +32,7 @@ export class ModellerPageComponent implements OnInit {
   constructor(private apiService: ApiService, private mqttService: MqttService) {
   }
 
-  private initMqtt(){
+  private initMqtt() {
     this.mqttService.getClient().subscribe('collaborator/update/+/+');
     this.mqttService.getClient().subscribe('modelupsert');
     this.mqttService.getClient().on('message', (topic: any, message: any) => {
@@ -55,6 +57,7 @@ export class ModellerPageComponent implements OnInit {
     });
   }
 
+  //Initialization after ModellerPageComponent component was loaded
   public ngOnInit() {
     this.apiService.login_status()
       .subscribe(response => {
@@ -71,7 +74,7 @@ export class ModellerPageComponent implements OnInit {
         });
   }
 
-  public remove(index: number) {
+  public remove(index: number): void {
     console.log(this.models[index]);
     this.apiService.modelClose(this.models[index].id, this.models[index].version)
       .subscribe(response => {
@@ -81,8 +84,10 @@ export class ModellerPageComponent implements OnInit {
           console.log(error);
         });
     this.models.splice(index, 1);
+    this.page = '+';
   }
 
+  //Show previous versions of a model, if the last one was selected
   public onLoadModel(model: Model): void {
     this.loading = true;
     let exists: boolean;

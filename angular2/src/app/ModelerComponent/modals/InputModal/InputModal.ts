@@ -1,45 +1,21 @@
-import { AbstractCustomModal } from './AbstractCustomModal';
+import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
-import { Variable } from './variable';
-import { InputVarComponent } from './input.component';
+import { Variable } from '../variable';
+import { InputVarComponent } from '../InputComponent/input.component';
 
 @Component({
-  selector: 'eval-modal',
-  template: `
-  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
-      <h2>IPIM Evaluation</h2>
-    </modal-header>
-    <modal-body>
-      <p>Please specify the values used:</p>
-      <form>
-        <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-        <fieldset id="evalfset">
-          <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
-        </fieldset>
-      </form>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
-    </modal-footer>
-  </modal>
-  `
+  selector: 'input-modal',
+  templateUrl: './InputModal.html'
 })
 
-export class EvalModal extends ModalComponent {
+export class InputModal extends ModalComponent {
   private IPIM_VAL : string = 'IPIM_Val';
   private IPIM_META : string = 'IPIM_Meta';
 
   private modeler : any;
   private root : any;
-  /* constructor(modeler: any) {
-      super(modeler);
-      console.log('InputModal Constructor');
-      this.fillModal();
-  } */
 
   public variables: Variable[] = [];
 
@@ -62,7 +38,7 @@ export class EvalModal extends ModalComponent {
   }
 
   public cancel() : void {
-      this.clearModal('evalfset');
+      this.clearModal('inputfset');
       this.dismiss();
   }
 
@@ -71,15 +47,15 @@ export class EvalModal extends ModalComponent {
   }
 
   private opened() {
-    console.log('EvaluatorModal opened');
+    this.fillModal();
   }
 
   private dismissed() {
-    console.log('EvaluatorModal dismissed');
+    console.log('InputModal dismissed');
   }
 
   private closed() {
-    console.log('EvaluatorModal closed');
+    console.log('InputModal closed');
   }
 
   public clearModal(s: string) {
@@ -123,6 +99,7 @@ export class EvalModal extends ModalComponent {
       }
     });
     this.root.evaluateProcess();
+    this.root.getCommandStack().publishXML();
     this.modal.close();
   }
 
@@ -152,4 +129,21 @@ export class EvalModal extends ModalComponent {
     this.variables.push(new Variable(name, value, meta));
   }
 
+   private insertInputField(pname: string, inpval: string, pform: string) {
+    const inputField = document.createElement('input');
+    inputField.setAttribute('type', 'text');
+    inputField.setAttribute('name', pname);
+    inputField.setAttribute('value', inpval);
+    inputField.setAttribute('id', 'Input_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
+    const br = document.createElement('br');
+
+    const node = document.createTextNode('Variable ' + pname + ':     ');
+
+    document.getElementById(pform).appendChild(node);
+    document.getElementById(pform).appendChild(document.createElement('br'));
+    document.getElementById(pform).appendChild(inputField);
+    //document.getElementById(pform).appendChild(br);
+    document.getElementById(pform).appendChild(br);
+
+  }
 }

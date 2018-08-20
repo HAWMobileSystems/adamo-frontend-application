@@ -69,6 +69,28 @@ export class ModelLoaderComponent {
     model.id = this.newModel.mid;
     this.loadModel.emit(model);
   }
+
+  public changeListener($event: any) : void {
+    this.loadFromDisk($event.target);
+  }
+
+  public loadFromDisk(inputValue: any) {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      // you can perform an action with readed data here
+      const model = new Model();
+      model.xml = myReader.result;
+      model.name = file.name;
+      model.id = this.newModel.mid;
+      this.loadModel.emit(model);
+      console.log('loaded successful', file);
+    };
+
+    myReader.readAsText(file);
+  }
+
   public loadSelected() {
     const model = new Model();
     model.xml = this.selected.modelxml;

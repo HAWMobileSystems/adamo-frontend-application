@@ -1,36 +1,18 @@
-import { AbstractCustomModal } from './AbstractCustomModal';
+import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input , ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'term-modal',
-  template: `
-  <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
-      <h2>IPIM Terms</h2>
-    </modal-header>
-    <modal-body>
-      <p>Please define a new term for all elements:</p>
-      <form>
-        <textarea value="" [(ngModel)]="firstTerm" id="inputFieldTerm" class="modal-textarea" name="inputFieldTerm">
-        </textarea>
-        <br>
-      </form>
-      <br>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
-      <button type="button" class="btn btn-large btn-block btn-default" (click)="writeTermModalValues()">Set Term</button>
-    </modal-footer>
-  </modal>
-  `
+  templateUrl: './TermModal.html'
 })
 
 export class TermModal extends ModalComponent {
   public modeler: any;
   public termList: any;
   public firstTerm: any;
+  public root : any;
 
   @ViewChild('modal')
   public modal: ModalComponent;
@@ -44,9 +26,10 @@ export class TermModal extends ModalComponent {
   public backdrop: string | boolean = true;
   public css: boolean = false;
 
-  public setProps(modeler: any, termList: any) {
+  public setProps(modeler: any, termList: any, root: any) {
     this.termList = termList;
     this.modeler = modeler;
+    this.root = root;
     if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
 
@@ -127,6 +110,7 @@ export class TermModal extends ModalComponent {
         }
       }
     });
+    this.root.getCommandStack().publishXML();
     this.modal.close();
   }
 }

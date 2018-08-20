@@ -1,5 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
+        <p>Currently selected:</p><br>
+        <input type="text" [(ngModel)]="selectedModelName" class = "modal-form-input" readonly>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"
                    [(ngModel)]="search">
@@ -16,17 +18,14 @@
             </tr>
             </thead>
             <tbody></tbody>
-            <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search" (click)="selected = model"
-                [ngClass]="{'info': selected === model}">
+            <tr *ngFor="let model of (models | filterUnique: ['mid', search]) | filter:search" 
+                (click)="selectionChanged(model)"
+                [ngClass]="{'info': selectedId === model.mid}">
                 <td>{{model.modelname}}</td>
                 <td>{{model.version | version}}</td>
             </tr>
             <tfoot></tfoot>
         </table>
-        <button *ngIf="selected" class="btn btn-success" (click)="loadSelected()">Load from DB</button>
-        <button class="btn btn-success" (click)="createNew()">New Model</button>
-        <button class="btn btn-success" (click)="fileSelectorInput.click()">Load from Disk</button>
-        <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
     </div>
 </div>
 

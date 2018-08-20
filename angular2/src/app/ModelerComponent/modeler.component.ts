@@ -6,6 +6,8 @@ import {PaletteProvider} from './palette/palette';
 import {CustomPropertiesProvider} from './properties/props-provider';
 import {BPMNStore, Link} from '../bpmn-store/bpmn-store.service';
 import {CommandStack} from './command/CommandStack';
+//import {customModdle} from './custom-moddle';
+import {camundaModdle} from './camunda-moddle';
 import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
@@ -15,10 +17,17 @@ import {InputModal} from './modals/InputModal';
 import {VariableModal} from './modals/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal';
+import {TermModal} from './modals/TermModal/TermModal';
+import {InputModal} from './modals/InputModal/InputModal';
+import {VariableModal} from './modals/VariableModal/VariableModal';
+import {SubProcessModal} from './modals/SubProcessModal/SubProcessModal';
+import {EvalModal} from './modals/evaluatorModal/evaluatorModal';
+
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 import {ApiService} from '../services/api.service';
 import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
+import { Model } from '../models/model';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -35,6 +44,7 @@ export class ModelerComponent implements OnInit {
   @Input() public newDiagramXML: string;
   @Input() public model: any;
   @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
+  @Output() public loadSubProcess: EventEmitter<Model> = new EventEmitter<Model>();
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<null>();
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private propertiesPanelModule: any = require('bpmn-js-properties-panel');
@@ -92,7 +102,7 @@ export class ModelerComponent implements OnInit {
 
 // Extract the following to the separate controler
   public openTermModal = () => {
-    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION));
+    this.termModal.setProps(this.modeler, this.getTermList(this.lookup.SELECTION), this);
     this.termModal.modal.open();
   }
 
@@ -101,7 +111,7 @@ export class ModelerComponent implements OnInit {
     this.inputModal.modal.open();
   }
   public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler);
+    this.variableModal.setProps(this.modeler, this);
     this.variableModal.modal.open();
   }
 
@@ -110,9 +120,10 @@ export class ModelerComponent implements OnInit {
   }
 
   public openEvaluatorModal = () => {
-    this.evaluatorModal.setProps(this.modeler, this);
-    this.evaluatorModal.modal.open();
+    this.modeler.saveXML({format: true}, (err: any, xml: any) => {
+    this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService, this);
     console.log('ElevatorModal_Clicked!');
+    });
   }
 
   private getSubProcessList = (scope: string) => {
@@ -147,7 +158,7 @@ export class ModelerComponent implements OnInit {
     if (!validSelection) {
       window.alert('No Subprocess selected!');
     } else {
-      this.subProcessModal.setProps(this.modeler, terms);
+      this.subProcessModal.setProps(this.modeler, terms, this);
       this.subProcessModal.modal.open();
     }
   }
@@ -236,6 +247,69 @@ export class ModelerComponent implements OnInit {
 
   }
 
+  private openSubProcessModel = () => {
+    this.loadSubProcessModel(this.lookup.SELECTION);
+  }
+
+  private loadSubProcessModel = (scope: string) => {
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+        let elements: any;
+        scope === this.lookup.SELECTION
+          ? elements = this.modeler.get(scope).get()
+          : elements = this.modeler.get(scope).getAll();
+        const terms: string[] = new Array();
+        let validSelection = false;
+    //Alle Elemente durchlaufen um Variablen zu finden
+        for (const element of elements) {
+          if (element.type === 'bpmn:SubProcess') {
+            validSelection = true;
+            console.log(element, typeof element.businessObject.extensionElements);
+    //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+            if (element.businessObject.extensionElements) {
+              //Wenn vorhandne die Elemente auslesen
+              const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+              //Schleife über alle Elemente
+              for (let i = 0; i < extras[0].values.length; i++) {
+                //Prüfen ob der Name des Elementes IPIM_Val entspricht
+                if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                  if (terms.indexOf(extras[0].values[i].value) === -1) {
+                    terms.push(extras[0].values[i].value);
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (!validSelection) {
+          window.alert('No Subprocess selected!');
+        } else {
+          terms.forEach(element => {
+            this.showOverlay();
+            if (element !== '') {
+              this.apiService.getModel(element)
+                .subscribe((response: any) => {
+                  const model = new Model();
+                    model.xml = response.data.modelxml;
+                    model.name = response.data.modelname;
+                    model.id = response.data.mid;
+                    model.version = response.data.version;
+                    console.info(model);
+                    this.loadSubProcess.emit(model);
+                    this.hideOverlay();
+                  },
+                  (error: any) => {
+                    this.hideOverlay();
+                    console.log(error);
+                  });
+
+            } else {
+              window.alert('Noting selected!');
+              return;
+            }
+          });
+        }
+      }
+
   private zoomToFit = () => {
     const canvasObject = this.modeler.get('canvas');
     canvasObject.zoom('fit-viewport');
@@ -253,7 +327,8 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.SET_IPIM_SUBPROCESS]: this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR]: this.openEvaluatorModal,
     [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
-    [COMMANDS.EXPORT_SVG]: this.saveSVG
+    [COMMANDS.EXPORT_SVG]: this.saveSVG,
+    [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel
   };
 
   /**
@@ -598,4 +673,13 @@ export class ModelerComponent implements OnInit {
   public hideOverlay(): void {
     document.getElementById('overlayLoading').style.display = 'none';
   }
+
+  public getCommandStack(): CommandStack {
+    return this.commandStack;
+  }
+
+  public getEvaluator(): Evaluator {
+    return this.evaluator;
+  }
+
 }

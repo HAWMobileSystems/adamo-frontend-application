@@ -102,7 +102,7 @@ export class UserComponent {
                 error => {
                     this.alertService.error(JSON.parse(error._body).status);
                 });
-    }else {
+    } else {
         this.alertService.error('Not a valid E-Mail!');
     }
   }
@@ -145,7 +145,7 @@ export class UserComponent {
                   error => {
                       this.alertService.error(JSON.parse(error._body).status);
                   });
-      }else {
+      } else {
           this.alertService.error('Not a valid E-Mail!');
       }
   }

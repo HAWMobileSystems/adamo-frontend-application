@@ -179,7 +179,7 @@ router.post('/getModel', function (req, res) {
     }
 
     db.one('' +
-      'SELECT modelxml, mid, version ' +
+      'SELECT modelxml, modelname, mid, version ' +
       'FROM model ' +
       'WHERE mid = $1 ' +
       'AND version = $2', [mid, version])
@@ -195,7 +195,7 @@ router.post('/getModel', function (req, res) {
   } else {
     console.log(req.params);
     db.one('' +
-      'SELECT modelxml, mid, version ' +
+      'SELECT modelxml, modelname, mid, version ' +
       'FROM model ' +
       'WHERE mid = $1 ' +
       'ORDER BY version DESC ' +

@@ -4,11 +4,13 @@ import {AlertService} from '../services/alert.service';
 import {ApiService} from '../services/api.service';
 import {MqttService} from '../services/mqtt.service';
 
+//Include components for interface and styling
 @Component({
   selector: 'front-page',
   templateUrl: './front-page.component.html',
   styleUrls: ['./front-page.component.css']
 })
+
 export class FrontPageComponent implements OnInit {
   private title: string = 'Angular 2 with BPMN-JS';
   private model: any = {};
@@ -21,19 +23,22 @@ export class FrontPageComponent implements OnInit {
 
   }
 
-  public ngOnInit() {
+  //Initialization after front-page component was loaded
+  public ngOnInit(): void {
     // reset login status
     this.apiService.logout()
       .subscribe(response => {
+        console.log('Successfully logged out!');
       }, error => {
         console.log(error);
         this.alertService.error(error);
       });
   }
 
+  // Login of user ans subscribe response of POST authenticate
   public login() {
     this.loading = true;
-    this.apiService.authenticate(this.model.username, this.model.password, this.model.captcha)
+    this.apiService.authenticate(this.model.username, this.model.password)
       .subscribe(response => {
           if (response.success) {
             this.mqttService.connect(response.email);

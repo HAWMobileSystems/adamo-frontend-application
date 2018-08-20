@@ -12,10 +12,10 @@ import {AdministrationPageComponent} from './administration-page/administration-
 import {ViewerComponent} from './viewer/viewer.component';
 import {ModelerComponent} from './ModelerComponent/modeler.component';
 import {Ng2Bs3ModalModule} from 'ng2-bs3-modal/ng2-bs3-modal';
-import {TermModal} from './ModelerComponent/modals/TermModal';
-import {VariableModal} from './ModelerComponent/modals/VariableModal';
-import {InputModal} from './ModelerComponent/modals/InputModal';
-import {SubProcessModal} from './ModelerComponent/modals/SubProcessModal';
+import {TermModal} from './ModelerComponent/modals/TermModal/TermModal';
+import {VariableModal} from './ModelerComponent/modals/VariableModal/VariableModal';
+import {InputModal} from './ModelerComponent/modals/InputModal/InputModal';
+import {SubProcessModal} from './ModelerComponent/modals/SubProcessModal/SubProcessModal';
 import {AlertComponent} from './components/Alert/alert.component';
 import {AuthGuard} from './guards/auth.guard';
 import {JwtInterceptor} from './helpers/jwt.interceptor';
@@ -28,12 +28,13 @@ import {ModellerPageComponent} from './modellerPage/modellerPage.component';
 import {UserComponent} from './components/UserComponent/user.component';
 import {ModelComponent} from './components/ModelComponent/model.component';
 import {ModelLoaderComponent} from './components/ModelLoaderComponent/modelloader.component';
+import {SubModelLoaderComponent} from './components/SubModelLoaderComponent/submodelloader.component';
 import {RoleComponent} from './components/RoleComponent/role.component';
 import {ProfileComponent} from './components/ProfileComponent/profile.component';
 import {PermissionComponent} from './components/PermissionComponent/permission.component';
-import {VariableComponent} from './ModelerComponent/modals/variables.component';
-import {InputVarComponent} from './ModelerComponent/modals/input.component';
-import {EvalModal} from './ModelerComponent/modals/evaluatorModal';
+import {VariableComponent} from './ModelerComponent/modals//VariablesComponent/variables.component';
+import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.component';
+import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
 import {Version} from './pipes/version.pipe';
 import {AuthenticatedHttpService } from './services/authenticatedHttp.service';
@@ -61,6 +62,7 @@ import {Http} from '@angular/http';
     UserComponent,
     ModelComponent,
     ModelLoaderComponent,
+    SubModelLoaderComponent,
     RoleComponent,
     ProfileComponent,
     PermissionComponent,

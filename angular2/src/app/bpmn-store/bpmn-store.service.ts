@@ -42,7 +42,7 @@ export class BPMNStore {
             },
           [COMMANDS.SAVE] : {
             group: 'row',
-            className: ['fa-save', 'fa'],
+            className: ['fa-arrow-circle-down', 'fa'],
             title: 'Export to BPMN',
             action: {
               click: () => console.log('save')
@@ -50,7 +50,7 @@ export class BPMNStore {
           },
           [COMMANDS.SAVETODB] : {
             group: 'row',
-            className: ['fa-database', 'fa'],
+            className: ['fa-save', 'fa'],
             title: 'Save to Database',
             action: {
               click: () => console.log('save')
@@ -64,22 +64,6 @@ export class BPMNStore {
                     click: () => console.log('openVariableModal')
                 }
             },
-             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
-                group: 'ipim',
-                className: ['fa-cogs', 'fa'],
-                title: 'Evaluate Process',
-                action: {
-                    click: () => console.log('openInputModal')
-                }
-            },
-            [COMMANDS.RESET]: {
-                group: 'ipim',
-                className: ['fa-undo', 'fa'],
-                title: 'Reset Diagram',
-                action: {
-                    click: () => console.log('two-column')
-                }
-            },
             [COMMANDS.SET_TERM]: {
                 group: 'ipim',
                 className: ['fa-tasks', 'fa'],
@@ -88,12 +72,12 @@ export class BPMNStore {
                     click: () => console.log('openTermModal')
                 }
             },
-            [COMMANDS.HIGHLIGHT]: {
+            [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
-                className: ['fa-lightbulb-o', 'fa'],
-                title:  'Highlight Elements',
+                className: ['fa-cube', 'fa'],
+                title: 'Evaluate Process',
                 action: {
-                    click: () => console.log('two-column')
+                    click: () => console.log('openInputModal')
                 }
             },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
@@ -110,6 +94,30 @@ export class BPMNStore {
                 title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
+                }
+            },
+            [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
+                group: 'ipim',
+                className: ['fa-beer', 'fa'],
+                title: 'Open Model of Subprocess',
+                action: {
+                    click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
+                }
+            },
+            [COMMANDS.HIGHLIGHT]: {
+                group: 'ipim',
+                className: ['fa-lightbulb-o', 'fa'],
+                title:  'Highlight Elements',
+                action: {
+                    click: () => console.log('two-column')
+                }
+            },
+            [COMMANDS.RESET]: {
+                group: 'ipim',
+                className: ['fa-undo', 'fa'],
+                title: 'Reset Diagram',
+                action: {
+                    click: () => console.log('two-column')
                 }
             }
         }).delay(1);

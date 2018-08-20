@@ -62,7 +62,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         save: {
             group: 'storage',
-            className: ['fa-floppy-o', 'fa'],
+            className: ['fa-arrow-circle-down', 'fa'],
             title: 'Export to BPMN',
             action: {
                 click: () => commandQueue.next({action: 'save'})
@@ -70,7 +70,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'export-svg': {
             group: 'storage',
-            className: ['fa-print', 'fa'],
+            className: ['fa-arrow-circle-o-down', 'fa'],
             title: 'Export to SVG',
             action: {
                 click: () => commandQueue.next({action: 'Export SVG'})
@@ -165,7 +165,6 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
     });
 
     console.log('actions now: ', actions);
-
 
     return actions;
 };

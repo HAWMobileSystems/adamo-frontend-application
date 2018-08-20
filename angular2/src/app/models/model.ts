@@ -65,6 +65,5 @@ export class Model {
   private _collaborator: string[];
   private _showInfo: boolean;
 
-  constructor() {
-  }
+    constructor(){}
 }

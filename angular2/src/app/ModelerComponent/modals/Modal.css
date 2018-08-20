@@ -82,7 +82,7 @@
     margin-top: 5px;
 }
 
-.modal-form-group:hover {
+.modal-form-group:focus-within {
     background-color: lightgray;
     opacity: 1.0;
     border: 1px dotted #626262;

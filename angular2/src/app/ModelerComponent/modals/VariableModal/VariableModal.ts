@@ -1,34 +1,12 @@
-import { AbstractCustomModal } from './AbstractCustomModal';
+import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { VariableComponent } from './variables.component';
-import { Variable } from './variable';
+import { VariableComponent } from '../VariablesComponent/variables.component';
+import { Variable } from '../variable';
 
 @Component({
     selector: 'variable-modal',
-    template: `
-    <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
-    (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-      <modal-header [show-close]="true">
-        <h2>IPIM Variables</h2>
-      </modal-header>
-      <modal-body>
-        <p>Please specify the variables used:</p>
-            <form>
-            <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
-                <fieldset id="variablefset" >
-                <variable-comp *ngFor="let variable of variables" [varName]="variable"> </variable-comp>
-                </fieldset>
-            </form>
-      </modal-body>
-      <modal-footer [show-default-buttons]="false">
-         <button type="button" class="btn btn-large btn-block btn-default" (click)="addNewVar()">Add Variable</button>
-         <button type="button" class="btn btn-large btn-block btn-default" (click)="writeVariableModalValues()">Set</button>
-         <!-- <input type="button" value=" Add Variable " id="IPIMButtonAddVariable" (click) = "insertVariableField()"> -->
-         <!-- <input type="button" value=" Set " id="VariableModalButton">  -->
-      </modal-footer>
-    </modal>
-    `
+    templateUrl: './VariableModal.html'
   })
 
 export class VariableModal extends ModalComponent {
@@ -45,6 +23,7 @@ export class VariableModal extends ModalComponent {
 
     private modeler : any;
     public termList: any;
+    public root: any;
   /*   constructor() {
         super();
         console.log('VariableModal constructor');
@@ -70,8 +49,9 @@ export class VariableModal extends ModalComponent {
         this.fillModal();
     }
 
-    public setProps(modeler: any) {
+    public setProps(modeler: any, root: any) {
         console.log('Variable Modal Set Props');
+        this.root = root;
         this.modeler = modeler;
     }
 
@@ -268,7 +248,7 @@ export class VariableModal extends ModalComponent {
                     : extras[0].values[fieldi].value = ' ';
             }
         }
-
+        this.root.getCommandStack().publishXML();
         this.modal.close();
     }
 }
