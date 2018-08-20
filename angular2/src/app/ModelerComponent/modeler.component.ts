@@ -12,11 +12,6 @@ import {Observable, Subject} from 'rxjs';
 import {ChangeDetectorRef} from '@angular/core';
 import * as $ from 'jquery';
 import {FileReaderEvent} from './interfaces';
-import {TermModal} from './modals/TermModal';
-import {InputModal} from './modals/InputModal';
-import {VariableModal} from './modals/VariableModal';
-import {SubProcessModal} from './modals/SubProcessModal';
-import {EvalModal} from './modals/evaluatorModal';
 import {TermModal} from './modals/TermModal/TermModal';
 import {InputModal} from './modals/InputModal/InputModal';
 import {VariableModal} from './modals/VariableModal/VariableModal';
@@ -27,7 +22,7 @@ import {COMMANDS} from '../bpmn-store/commandstore.service';
 import {ApiService} from '../services/api.service';
 import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
-import { Model } from '../models/model';
+import {Model} from '../models/model';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -121,8 +116,8 @@ export class ModelerComponent implements OnInit {
 
   public openEvaluatorModal = () => {
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
-    this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService, this);
-    console.log('ElevatorModal_Clicked!');
+      this.evaluator = new Evaluator(this.modelId.split('_')[1], xml, this.apiService, this);
+      console.log('ElevatorModal_Clicked!');
     });
   }
 
@@ -253,62 +248,62 @@ export class ModelerComponent implements OnInit {
 
   private loadSubProcessModel = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-        let elements: any;
-        scope === this.lookup.SELECTION
-          ? elements = this.modeler.get(scope).get()
-          : elements = this.modeler.get(scope).getAll();
-        const terms: string[] = new Array();
-        let validSelection = false;
+    let elements: any;
+    scope === this.lookup.SELECTION
+      ? elements = this.modeler.get(scope).get()
+      : elements = this.modeler.get(scope).getAll();
+    const terms: string[] = new Array();
+    let validSelection = false;
     //Alle Elemente durchlaufen um Variablen zu finden
-        for (const element of elements) {
-          if (element.type === 'bpmn:SubProcess') {
-            validSelection = true;
-            console.log(element, typeof element.businessObject.extensionElements);
-    //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-            if (element.businessObject.extensionElements) {
-              //Wenn vorhandne die Elemente auslesen
-              const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-              //Schleife über alle Elemente
-              for (let i = 0; i < extras[0].values.length; i++) {
-                //Prüfen ob der Name des Elementes IPIM_Val entspricht
-                if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
-                  if (terms.indexOf(extras[0].values[i].value) === -1) {
-                    terms.push(extras[0].values[i].value);
-                  }
-                }
+    for (const element of elements) {
+      if (element.type === 'bpmn:SubProcess') {
+        validSelection = true;
+        console.log(element, typeof element.businessObject.extensionElements);
+        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+        if (element.businessObject.extensionElements) {
+          //Wenn vorhandne die Elemente auslesen
+          const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (terms.indexOf(extras[0].values[i].value) === -1) {
+                terms.push(extras[0].values[i].value);
               }
             }
           }
         }
-        if (!validSelection) {
-          window.alert('No Subprocess selected!');
-        } else {
-          terms.forEach(element => {
-            this.showOverlay();
-            if (element !== '') {
-              this.apiService.getModel(element)
-                .subscribe((response: any) => {
-                  const model = new Model();
-                    model.xml = response.data.modelxml;
-                    model.name = response.data.modelname;
-                    model.id = response.data.mid;
-                    model.version = response.data.version;
-                    console.info(model);
-                    this.loadSubProcess.emit(model);
-                    this.hideOverlay();
-                  },
-                  (error: any) => {
-                    this.hideOverlay();
-                    console.log(error);
-                  });
-
-            } else {
-              window.alert('Noting selected!');
-              return;
-            }
-          });
-        }
       }
+    }
+    if (!validSelection) {
+      window.alert('No Subprocess selected!');
+    } else {
+      terms.forEach(element => {
+        this.showOverlay();
+        if (element !== '') {
+          this.apiService.getModel(element)
+            .subscribe((response: any) => {
+                const model = new Model();
+                model.xml = response.data.modelxml;
+                model.name = response.data.modelname;
+                model.id = response.data.mid;
+                model.version = response.data.version;
+                console.info(model);
+                this.loadSubProcess.emit(model);
+                this.hideOverlay();
+              },
+              (error: any) => {
+                this.hideOverlay();
+                console.log(error);
+              });
+
+        } else {
+          window.alert('Noting selected!');
+          return;
+        }
+      });
+    }
+  }
 
   private zoomToFit = () => {
     const canvasObject = this.modeler.get('canvas');
