@@ -47,4 +47,9 @@ server.on('clientDisconnecting', function(client) {
 // fired when a client is disconnected
 server.on('clientDisconnected', function(client) {
   console.log('clientDisconnected : ', client.id);
+  server.publish({
+    topic: 'mqtt/disconnect',
+    payload: new Buffer(client.id),
+    qos: 1 // this is important for offline messaging
+  })
 });

@@ -70,9 +70,10 @@ export class CommandStack {
 
 //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
-
-//Parse event from String to variable
+    console.log(topic);
     const event = JSON.parse(message);
+    if (topic.startsWith('MODEL/')) {
+//Parse event from String to variable
 
 //check if the Event was issued from remote or self
     if (event.IPIMID !== this.id && 'MODEL/' + this.topic === topic) {
@@ -87,7 +88,7 @@ export class CommandStack {
       });
     }
 
-    if (topic === 'modelupsert') {
+    } else if (topic === 'modelupsert') {
       const model = this.modelerComponenetRoot.model;
       console.log(event);
       console.log(model);

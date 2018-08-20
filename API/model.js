@@ -14,10 +14,11 @@ mqtt.on('message', function (topic, message) {
     var event;
     if (topic === 'modelupsert') {
       event = JSON.parse(message);
-      openModels[event.mid] = {};
-      openModels[event.mid][event.newVersion] = openModels[event.mid][event.version];
+      // openModels[event.mid] = {};
+      // openModels[event.mid][event.newVersion] = openModels[event.mid][event.version];
       if (openModels.hasOwnProperty(event.mid)) {
-        if (openModels.hasOwnProperty(event.version)) {
+        if (openModels[event.mid].hasOwnProperty(event.version)) {
+          openModels[event.mid][event.newVersion] = openModels[event.mid][event.version];
           delete openModels[event.mid][event.version];
         }
       }
@@ -495,7 +496,7 @@ router.post('/upsert', function (req, res) {
         version: bigInt(version).add(level[currentLevel]),
         success: true
       });
-      mqtt.publish('administration/model');
+      mqtt.publish('administration/model', JSON.stringify({}));
       mqtt.publish('modelupsert', JSON.stringify({
         mid: mid,
         version: version,

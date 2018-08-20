@@ -37,7 +37,7 @@ import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
 import {Version} from './pipes/version.pipe';
-import {AuthenticatedHttpService } from './services/authenticatedHttp.service';
+import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
 
 //check for correct branch!
