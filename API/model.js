@@ -32,7 +32,7 @@ mqtt.on('message', function (topic, message) {
       event = JSON.parse(message);
       removeFromOpenModels(event.mid, event.version);
     } else if (topic === 'mqtt/disconnect') {
-      var collaborator = JSON.parse(message);
+      var collaborator = message;
       for (var _mid in openModels) {
         if (!openModels.hasOwnProperty(_mid)) continue;
         for (var _version in openModels[_mid]) {
