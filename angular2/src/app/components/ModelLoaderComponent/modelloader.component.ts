@@ -69,6 +69,7 @@ export class ModelLoaderComponent {
     model.xml = this.newModel.modelxml;
     model.name = this.newModel.modelname;
     model.id = this.newModel.mid;
+    model.collaborator = [];
     this.loadModel.emit(model);
   }
 
