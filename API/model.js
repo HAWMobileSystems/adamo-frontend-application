@@ -396,7 +396,7 @@ router.post('/delete', function (req, res) {
 router.get('/changes', function (req, res) {
 
   db.query('' +
-    'SELECT mid, modelname, version ' +
+    'SELECT mid, modelname, version, lastchange ' +
     'FROM model ' +
     'WHERE lastchange >= NOW() - interval \'7 days\' ' +
     'ORDER BY lastchange DESC')

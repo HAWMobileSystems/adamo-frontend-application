@@ -27,6 +27,27 @@
         <button class="btn btn-success" (click)="createNew()">New Model</button>
         <button class="btn btn-success" (click)="fileSelectorInput.click()">Load from Disk</button>
         <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
+        <br><br>
+        
+        <div>
+            Latest Changes:
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="active">
+                    <th>Model Name</th>
+                    <th>Version</th>
+                    <th>Last Change</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tr *ngFor="let changedModel of changesLast7Day">
+                    <td>{{changedModel.modelname}}</td>
+                    <td>{{changedModel.version | version}}</td>
+                    <td>{{changedModel.lastchange | timestamp2date}}</td>
+                </tr>
+                <tfoot></tfoot>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -15,6 +15,7 @@ export class ModelLoaderComponent {
   private selected: any;
   private newModel: any;
   private models: any;
+  private changesLast7Day: any;
 
   constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
@@ -31,6 +32,7 @@ export class ModelLoaderComponent {
 
   public ngOnInit() {
     this.getAllModels();
+    this.getLatestChanges();
     this.apiService.login_status()
       .subscribe(response => {
           if (response.success) {
@@ -123,6 +125,24 @@ export class ModelLoaderComponent {
           if (response.success) {
             this.models = response.data;
             this.selected = null;
+          } else {
+            this.alertService.error(response._body);
+          }
+        },
+        error => {
+          this.alertService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  public getLatestChanges() {
+    this.models = [];
+
+    this.apiService.getModelsChangedLast7Days()
+      .subscribe(response => {
+          if (response.success) {
+             this.changesLast7Day = response.data;
+            // this.selected = null;
           } else {
             this.alertService.error(response._body);
           }

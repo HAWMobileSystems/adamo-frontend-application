@@ -150,6 +150,12 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
 
+  //Modeller: changes to model in last 7 days
+  public getModelsChangedLast7Days() {
+    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/changes', options)
+      .map((response: Response) => response.json());
+  }
+
   //Modeller: Load model
   public getModel(mid: string, version?: string) {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid, version: version}, options)

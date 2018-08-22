@@ -36,6 +36,7 @@ import {VariableComponent} from './ModelerComponent/modals//VariablesComponent/v
 import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
+import {Timestamp2Date} from './pipes/timestamp.pipe';
 import {Version} from './pipes/version.pipe';
 import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
@@ -78,6 +79,7 @@ import {Http} from '@angular/http';
     VariableComponent,
     InputVarComponent,
     FilterUnique,
+    Timestamp2Date,
     Version
   ],
   providers: [
