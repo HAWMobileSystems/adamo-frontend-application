@@ -192,7 +192,7 @@ export class ModelerComponent implements OnInit {
 
   private resetDiagram = () => {
     this.showOverlay();
-    this.apiService.getModel(this.modelId.split('_')[1])
+    this.apiService.getModel(this.modelId.split('_')[1], this.modelId.split('_')[2])
       .subscribe(response => {
           const xml = response.data.modelxml;
           console.info('Reset-Model', xml);
