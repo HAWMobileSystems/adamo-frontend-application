@@ -1,2 +1,6 @@
 angular/
 node_modules/
+angular2/src/**/*.map
+angular2/src/**/*.js
+.idea
+.vscode
