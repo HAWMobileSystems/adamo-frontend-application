@@ -9,20 +9,24 @@ router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 
-/*
-* URL:              /all
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
 
+
+/**
+ * @api                 {get} /user/all all
+ * @apiDescription      Request User ID from all users
+ * @apiName             all
+ * @apiGroup            user
+ * @apiParam            (login) {Session} user must be set
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {Boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      [1, 2, 3, 4, 5]
+ * @apiError            Postgress error
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Database not available', error: 'Database not available', success: false}
+ */
 router.get('/all', function (req, res) {
 
   db.query('' +
@@ -36,24 +40,30 @@ router.get('/all', function (req, res) {
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
       res.status(400).send({status: 'Database not available', error: 'Database not available', success: false});
-    })
+    });
 });
 
 
-/*
-* URL:              /create
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
 
+
+/**
+ * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
+ * @apiDescription      this is for copy paste during development
+ * @apiName             CopyPaste
+ * @apiGroup            CopyPaste
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'Some nice Statustext', success: true, data: data}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/create', function (req, res) {
   if (!req.body.email) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
@@ -62,7 +72,7 @@ router.post('/create', function (req, res) {
   const emailValid = (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(email);
-  }
+  };
   if (!emailValid(req.body.email)) {
     res.status(400).send({status: 'E-Mail is not valid!'});
     return;
@@ -87,7 +97,7 @@ router.post('/create', function (req, res) {
   db.oneOrNone('select email from users where email = $1', [req.body.email])
     .then(function (data) {
       if (data) {
-        res.status(400).send({status: 'User already exists'})
+        res.status(400).send({status: 'User already exists'});
       } else {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
           db.oneOrNone('' +
@@ -102,14 +112,14 @@ router.post('/create', function (req, res) {
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
               res.status(400).send({status: 'Database not available'});
-            })
+            });
         });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
       res.status(400).send({status: 'Database not available'});
-    })
+    });
 });
 
 
@@ -127,6 +137,25 @@ router.post('/create', function (req, res) {
 * Description:
 * */
 
+
+/**
+ * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
+ * @apiDescription      this is for copy paste during development
+ * @apiName             CopyPaste
+ * @apiGroup            CopyPaste
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'Some nice Statustext', success: true, data: data}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/update', function (req, res) {
 
   if (!req.body.uid) {
@@ -148,12 +177,12 @@ router.post('/update', function (req, res) {
   const emailValid = (email) => {
     const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
     return emailRegex.test(email);
-  }
+  };
   if (!emailValid(req.body.email)) {
     res.status(400).send({status: 'E-Mail is not valid!'});
     return;
   }
-    if (!req.body.profile) {
+  if (!req.body.profile) {
     res.status(400).send({status: 'Profile may not be empty!'});
     return;
   }
@@ -181,24 +210,29 @@ router.post('/update', function (req, res) {
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
       res.status(400).send({status: 'Database not available'});
-    })
+    });
 });
 
 
-/*
-* URL:              /password
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
 
+/**
+ * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
+ * @apiDescription      this is for copy paste during development
+ * @apiName             CopyPaste
+ * @apiGroup            CopyPaste
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'Some nice Statustext', success: true, data: data}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/password', function (req, res) {
   if (!req.body.uid) {
     res.status(400).send({status: 'Uid may not be empty!'});
@@ -222,7 +256,7 @@ router.post('/password', function (req, res) {
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
         res.status(400).send({status: 'Database not available'});
-      })
+      });
   });
 });
 
@@ -241,6 +275,28 @@ router.post('/password', function (req, res) {
 * Description:
 * */
 
+
+
+
+
+/**
+ * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
+ * @apiDescription      this is for copy paste during development
+ * @apiName             CopyPaste
+ * @apiGroup            CopyPaste
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'Some nice Statustext', success: true, data: data}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/delete', function (req, res) {
 
   if (!req.body.uid) {
@@ -262,15 +318,15 @@ router.post('/delete', function (req, res) {
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
             res.status(400).send({status: 'Error while deleting user'});
-          })
+          });
       } else {
-        res.status(400).send({status: 'User does not exist'})
+        res.status(400).send({status: 'User does not exist'});
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
       res.status(400).send({status: 'Database not available'});
-    })
+    });
 });
 
 module.exports = router;
