@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "api": "node index",
-    "mqtt": "node mqttserver"
+    "mqtt": "node mqttserver",
+    "debugapi": "node %NODE_DEBUG_OPTION% index"
   },
   "author": "Markus",
   "license": "ISC",
