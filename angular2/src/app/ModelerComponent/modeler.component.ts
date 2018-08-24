@@ -17,6 +17,7 @@ import {InputModal} from './modals/InputModal/InputModal';
 import {VariableModal} from './modals/VariableModal/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal/evaluatorModal';
+import {SaveModal} from './modals/saveModal/saveModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 import {ApiService} from '../services/api.service';
@@ -69,6 +70,8 @@ export class ModelerComponent implements OnInit {
   private subProcessModal: SubProcessModal;
   @ViewChild('evalModal')
   private evaluatorModal: EvalModal;
+  @ViewChild('saveModal')
+  private saveModal: SaveModal;
 
   private ipimTags: any = {
     META: 'IPIM_meta_',
@@ -192,7 +195,8 @@ export class ModelerComponent implements OnInit {
 
   private resetDiagram = () => {
     this.showOverlay();
-    this.apiService.getModel(this.modelId.split('_')[1])
+    console.log(this.model);
+    this.apiService.getModel(this.model.id, this.model.version)
       .subscribe(response => {
           const xml = response.data.modelxml;
           console.info('Reset-Model', xml);
@@ -218,6 +222,10 @@ export class ModelerComponent implements OnInit {
       this.apiService.modelUpsert(this.model.id, this.model.name, xml, this.model.version)
         .subscribe(response => {
             console.log(response);
+            if (response.status === 'Next Version already exists') {
+              this.saveModal.setModel(this.model, xml, this.apiService);
+              this.saveModal.modal.open();
+            }
           },
           error => {
             console.log(error);

@@ -35,6 +35,7 @@ import {PermissionComponent} from './components/PermissionComponent/permission.c
 import {VariableComponent} from './ModelerComponent/modals//VariablesComponent/variables.component';
 import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
+import {SaveModal} from './ModelerComponent/modals/saveModal/saveModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
 import {Version} from './pipes/version.pipe';
 import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
@@ -75,6 +76,7 @@ import {Http} from '@angular/http';
     InputModal,
     SubProcessModal,
     EvalModal,
+    SaveModal,
     VariableComponent,
     InputVarComponent,
     FilterUnique,
