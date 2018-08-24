@@ -83,6 +83,7 @@ export class ModellerPageComponent implements OnInit {
 
   //Show previous versions of a model, if the last one was selected
   public onLoadModel(model: Model): void {
+    model.collaborator = [];
     this.loading = true;
     let exists: boolean;
     this.models.forEach(element => {
@@ -100,6 +101,11 @@ export class ModellerPageComponent implements OnInit {
 
   public onExportModel(modelerComponent: ModelerComponent): void {
     this.models[this.models.length - 1].modelerComponent = modelerComponent;
+  }
+
+  public onLoadSubProcess(model: Model): void {
+    console.log('loadedModel', model);
+    this.onLoadModel(model);
   }
 
   public onLoadedCompletely(): void {

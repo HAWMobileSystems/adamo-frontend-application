@@ -109,5 +109,75 @@ describe('ApiService', () => {
 
     }));
 
+      it('should also function in case of no success',
+          inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+              const mockResponse = {
+                  data: {
+                      modelxml: 'modelString!',
+                      modelname: 'testModel',
+                      mid: 13,
+                      version: '1'
+                  },
+                  success: false
+              };
+
+              mockBackend.connections.subscribe((connection: any) => {
+                  connection.mockRespond(new Response(new ResponseOptions({
+                      body: JSON.stringify(mockResponse)
+                  })));
+              });
+
+              apiService.getModel('13', '1').subscribe((response: any) => {
+                  expect(response).toBeDefined();
+                  expect(response.success).toBe(false);
+                  expect(response.data.modelxml).toEqual('modelString!');
+                  expect(response.data.modelname).toEqual('testModel');
+                  expect(response.data.mid).toEqual(13);
+                  expect(response.data.version).toEqual('1');
+              });
+
+          }));
   });
+    describe('modelCreate()', () => {
+
+        it('should return an object',
+            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                const mockResponse = {
+                    status: 'Model created successfully',
+                    success: true
+                };
+
+                mockBackend.connections.subscribe((connection: any) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                expect(typeof(apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
+
+            }));
+
+        it('it should work in case of a failure',
+            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                const mockResponse = {
+                    status: 'Database not available'
+                };
+
+                mockBackend.connections.subscribe((connection: any) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                expect(typeof(apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
+                apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0').subscribe((response: any) => {
+                    expect(response).toBeDefined();
+                    expect(response.success).toBeUndefined();
+                    expect(response.status).toBeDefined();
+                });
+            }));
+    });
 });
