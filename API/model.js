@@ -7,11 +7,16 @@ const mqtt = require('mqtt').connect('mqtt://localhost:1883', {clientId: 'Expres
 const openModels = {};
 
 mqtt.subscribe('MODEL/#');
+mqtt.subscribe('mqtt/subscribed/#');
+mqtt.subscribe('mqtt/unsubscribed/#');
 mqtt.subscribe('modelupsert');
-mqtt.subscribe('mqtt/disconnect');
+// mqtt.subscribe('mqtt/disconnect');
 mqtt.on('message', function (topic, message) {
   try {
     var event;
+    var split;
+    var mid;
+    var version;
     if (topic === 'modelupsert') {
       event = JSON.parse(message);
       // openModels[event.mid] = {};
@@ -23,16 +28,16 @@ mqtt.on('message', function (topic, message) {
         }
       }
     } else if (topic.startsWith('MODEL/')) {
-      var split = topic.split('_');
-      var mid = split[1];
-      var version = split[2];
+      split = topic.split('_');
+      mid = split[1];
+      version = split[2];
       var modelxml = JSON.parse(message).XMLDoc;
       changeOpenModel(mid, version, modelxml);
     } else if (topic === 'administration/model/delete') {
       event = JSON.parse(message);
       removeFromOpenModels(event.mid, event.version);
     } else if (topic === 'mqtt/disconnect') {
-      var collaborator = message;
+      var collaborator = JSON.parse(message);
       for (var _mid in openModels) {
         if (!openModels.hasOwnProperty(_mid)) continue;
         for (var _version in openModels[_mid]) {
@@ -40,6 +45,18 @@ mqtt.on('message', function (topic, message) {
           removeFromOpenModels(_mid, _version, collaborator);
         }
       }
+    } else if (topic.startsWith('mqtt/subscribe')) {
+      event = JSON.parse(message);
+      split = topic.split('/');
+      mid = split[2];
+      version = split[3];
+      addCollaborator(mid, version, event)
+    } else if (topic.startsWith('mqtt/unsubscribe')) {
+      event = JSON.parse(message);
+      split = topic.split('/');
+      mid = split[2];
+      version = split[3];
+      removeFromOpenModels(mid, version, event);
     } else {
       console.log(topic);
     }
@@ -49,7 +66,7 @@ mqtt.on('message', function (topic, message) {
   }
 });
 
-function addToOpenModels(mid, version, modelxml, collaborator) {
+function addToOpenModels(mid, version, modelxml) {
   if (!openModels.hasOwnProperty(mid)) {
     openModels[mid] = {};
   }
@@ -59,7 +76,7 @@ function addToOpenModels(mid, version, modelxml, collaborator) {
   openModels[mid][version].modelxml = modelxml;
   openModels[mid][version].mid = mid;
   openModels[mid][version].version = version;
-  openModels[mid][version].collaborators = [collaborator];
+  openModels[mid][version].collaborators = [];
   openModels[mid][version].changed = false;
 }
 
@@ -144,7 +161,8 @@ router.post('/close', function (req, res) {
     res.status(400).send({status: 'Version name may not be empty!'});
     return;
   }
-  removeFromOpenModels(req.body.mid, req.body.version, req.session.user.email);
+
+  // removeFromOpenModels(req.body.mid, req.body.version, req.session.user.email);
   res.send({message: 'collaborator removed'});
 });
 
@@ -174,7 +192,7 @@ router.post('/getModel', function (req, res) {
     if (openModels.hasOwnProperty(mid)) {
       if (openModels[mid].hasOwnProperty(version)) {
         res.send({data: openModels[mid][version], success: true});
-        addCollaborator(mid, version, req.session.user.email);
+        // addCollaborator(mid, version, req.session.user.email);
         return;
       }
     }
@@ -233,11 +251,15 @@ router.post('/create', function (req, res) {
     return;
   }
 
+  if (!req.body.modelxml) {
+    res.status(400).send({status: 'Modelxml name may not be empty!'});
+    return;
+  }
+
   const modelname = req.body.modelname;
   const modelxml = req.body.modelxml;
-  const version = req.body.version;
 
-  console.log(modelname + ' ' + modelxml + ' ' + version);
+  console.log(modelname + ' ' + modelxml);
 
   db.oneOrNone('' +
     'SELECT modelname ' +
@@ -250,9 +272,10 @@ router.post('/create', function (req, res) {
         db.oneOrNone('' +
           'INSERT into model ' +
           '(modelname, modelxml, version) ' +
-          'VERSION ($1, $2, $3)', [modelname, modelxml, version])
+          'VALUES ($1, $2, $3)', [modelname, modelxml, bigInt('0001000000000000', 16).toString()])
           .then(function (data) {
             res.send({status: 'Model created successfully', success: true});
+            mqtt.publish('administration/model', JSON.stringify({}));
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
@@ -339,27 +362,30 @@ router.post('/delete', function (req, res) {
     return;
   }
   const mid = req.body.mid;
-  if (!req.body.version) {
-    res.status(400).send({status: 'Version may not be empty!'});
-    return;
-  }
   const version = req.body.version;
 
+  if (openModels.hasOwnProperty(mid)) {
+    if (!version) {
+      res.status(400).send({status: 'Model cant be deleted while someone is modelling it', success: false});
+      return
+    } else if (openModels[mid].hasOwnProperty(version)) {
+      res.status(400).send({status: 'Model version cant be deleted while someone is modelling it', success: false});
+      return
+    }
+  }
 
-  db.oneOrNone('' +
+  if (!version) {
+  db.query('' +
     'SELECT mid ' +
     'FROM model ' +
-    'WHERE mid = $1 ' +
-    'AND version = $2', [mid, version])
+    'WHERE mid = $1 ', [mid])
     .then(function (data) {
       if (data) {
-        db.oneOrNone('' +
+        db.query('' +
           'DELETE FROM permission ' +
-          'WHERE mid = $1' +
-          'AND version = $2; ' +
+          'WHERE mid = $1; ' +
           'DELETE FROM model ' +
-          'WHERE mid = $1' +
-          'AND version = $2', [mid, version])
+          'WHERE mid = $1', [mid])
           .then(function (data) {
             console.log('Model deleted');
             res.send({status: 'Model deleted successfully', success: true});
@@ -376,6 +402,38 @@ router.post('/delete', function (req, res) {
       console.log('ERROR POSTGRES:', error);
       res.status(400).send({status: 'Database not available'});
     });
+  } else {
+    db.oneOrNone('' +
+      'SELECT mid ' +
+      'FROM model ' +
+      'WHERE mid = $1 ' +
+      'AND version = $2', [mid, version])
+      .then(function (data) {
+        if (data) {
+          db.oneOrNone('' +
+            'DELETE FROM permission ' +
+            'WHERE mid = $1' +
+            'AND version = $2; ' +
+            'DELETE FROM model ' +
+            'WHERE mid = $1' +
+            'AND version = $2', [mid, version])
+            .then(function (data) {
+              console.log('Model deleted');
+              res.send({status: 'Model deleted successfully', success: true});
+            })
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error);
+              res.status(400).send({status: 'Model cannot be deleted as it is maintained as a partial model'});
+            });
+        } else {
+          res.status(400).send({status: 'Model does not exist'});
+        }
+      })
+      .catch(function (error) {
+        console.log('ERROR POSTGRES:', error);
+        res.status(400).send({status: 'Database not available'});
+      });
+  }
 });
 
 
@@ -452,9 +510,7 @@ router.post('/upsert', function (req, res) {
 
   if (openModels.hasOwnProperty(mid)) {
     if (openModels[mid].hasOwnProperty(version)) {
-      if (openModels[mid][version].changed) {
-        openModels[mid][version].changed = false;
-      } else {
+      if (!openModels[mid][version].changed) {
         res.send({
           status: 'Model has no changes to save',
           success: true
@@ -520,7 +576,7 @@ router.post('/upsert', function (req, res) {
                 version: bigInt(version).add(level[currentLevel]),
                 success: true
               });
-              mqtt.publish('administration/model');
+              mqtt.publish('administration/model', JSON.stringify({}));
               mqtt.publish('modelupsert', JSON.stringify({
                 mid: mid,
                 version: version,

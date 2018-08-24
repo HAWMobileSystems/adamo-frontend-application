@@ -15,6 +15,19 @@ export class ModelLoaderComponent {
   private selected: any;
   private newModel: any;
   private models: any;
+  private diskModelName: string;
+  private diskModelXml: string;
+  private newModelName: string;
+  private newModelXml: string = '' +
+  '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
+  'e" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/201005' +
+  '24/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi' +
+  ':schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="' +
+  'http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id=' +
+  '"StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPM' +
+  'NPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEve' +
+  'nt_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </' +
+  'bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
 
   constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
@@ -62,12 +75,24 @@ export class ModelLoaderComponent {
     };
   }
 
-  public createNew() {
-    const model = new Model();
-    model.xml = this.newModel.modelxml;
-    model.name = this.newModel.modelname;
-    model.id = this.newModel.mid;
-    this.loadModel.emit(model);
+  public createEmpty() {
+    this.apiService.modelCreate(this.newModelName, this.newModelXml)
+      .subscribe(response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  public createLoaded() {
+    this.apiService.modelCreate(this.diskModelName, this.diskModelXml)
+      .subscribe(response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   public changeListener($event: any) : void {
@@ -79,12 +104,16 @@ export class ModelLoaderComponent {
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
+      this.diskModelName = file.name;
+      this.diskModelXml = myReader.result;
+      this.createLoaded();
+
       // you can perform an action with readed data here
-      const model = new Model();
-      model.xml = myReader.result;
-      model.name = file.name;
-      model.id = this.newModel.mid;
-      this.loadModel.emit(model);
+      // const model = new Model();
+      // model.xml = myReader.result;
+      // model.name = file.name;
+      // model.id = this.newModel.mid;
+      // this.loadModel.emit(model);
       console.log('loaded successful', file);
     };
 

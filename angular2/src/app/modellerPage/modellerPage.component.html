@@ -4,7 +4,8 @@
         <nav class="navbar navbar-default height-50" role="navigation">
             <ul class="nav navbar-nav" [ngClass]="{'disabled': loading}">
                 <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page === model.id + '_' + model.version}" (click)="page = model.id + '_' + model.version">
-                    <a (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false" style="padding-right: 30px;">{{model.name + (model.version | version) || 'unsaved model'}}
+                    <a (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false" style="padding-right: 30px;">
+                        {{model.name + ' v' +(model.version | version) || 'unsaved model'}}
                         <span *ngIf="model.collaborator.length > 1" style="margin-right: 0;" class="badge badge-light">
                             {{model.collaborator.length}}
                         </span>
@@ -26,7 +27,7 @@
                     </div>
                 </li>
                 <li [ngClass]="{'active': page === '+'}" (click)="page = '+'"><a>+</a></li>
-                <li *ngIf="permission === 1" [ngClass]="{'active': page === 'administration'}" (click)="page = 'administration';"><a>Administration(tabbed)</a></li>
+                <li *ngIf="permission === 1" [ngClass]="{'active': page === 'administration'}" (click)="page = 'administration';"><a>Administration</a></li>
                 <li *ngIf="loading">
                     <img *ngIf="loading" style="height: inherit" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                 </li>

@@ -65,6 +65,7 @@ app.all('*', function (req, res, next) {
     if (
       req.url === '/model/all' ||
       req.url === '/model/close' ||
+      req.url === '/model/upsert' ||
       req.url.startsWith('/model/getModel')
     ) {
       next();

@@ -16,19 +16,35 @@
             </tr>
             </thead>
             <tbody></tbody>
-            <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search" (click)="selected = model"
+            <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search"
+                (click)="selected = model"
                 [ngClass]="{'info': selected === model}">
                 <td>{{model.modelname}}</td>
                 <td>{{model.version | version}}</td>
             </tr>
             <tfoot></tfoot>
         </table>
-        <button *ngIf="selected" class="btn btn-success" (click)="loadSelected()">Load from DB</button>
-        <button class="btn btn-success" (click)="createNew()">New Model</button>
-        <button class="btn btn-success" (click)="fileSelectorInput.click()">Load from Disk</button>
-        <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
+
+        <div class="row">
+            <button class="col-md-offset-1 col-md-1 btn btn-success" type="button" (click)="fileSelectorInput.click()">
+                <i class="glyphicon glyphicon-open-file"></i>
+            </button>
+            <button *ngIf="selected" class="col-md-offset-1 col-md-1 btn btn-success" (click)="loadSelected()">
+                <i class="glyphicon glyphicon-cloud-download"></i>
+            </button>
+            <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
+            <div class="col-md-offset-6 col-md-5 input-group">
+                <input type="text" class="form-control" [(ngModel)]="newModelName">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" (click)="createEmpty()">
+                        <i class="glyphicon  glyphicon-file"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
     </div>
 </div>
+
 
 
 

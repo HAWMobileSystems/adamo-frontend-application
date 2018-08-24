@@ -59,13 +59,13 @@ export class CommandStack {
 //Starts Evaluation Mode ... Model will unsubscribe and no longer publish!
   public startEvaluateMode = () => {
     this.stopEvaluationisRunning = true;
-    this.mqttService.getClient().unsubscribe('MODEL/' + this.topic);
+    // this.mqttService.getClient().unsubscribe('MODEL/' + this.topic);
   }
 
 //Stop Evaluation Mode ... Model will resubscribe and publish again!
   public stopEvaluateMode = () => {
     this.stopEvaluationisRunning = false;
-    this.mqttService.getClient().subscribe('MODEL/' + this.topic);
+    // this.mqttService.getClient().subscribe('MODEL/' + this.topic);
   }
 
 //Handle a new Message from MQTT-Server
@@ -77,7 +77,9 @@ export class CommandStack {
 
 //check if the Event was issued from remote or self
     if (event.IPIMID !== this.id && 'MODEL/' + this.topic === topic) {
-
+      if (this.stopEvaluationisRunning) {
+        return;
+      }
 //event was remote so cancel dragging if active an import new XML String
       console.log('Test from remote:' + message.toString());
 

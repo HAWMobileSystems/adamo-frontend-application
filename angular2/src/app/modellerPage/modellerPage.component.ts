@@ -76,13 +76,7 @@ export class ModellerPageComponent implements OnInit {
 
   public remove(index: number): void {
     console.log(this.models[index]);
-    this.apiService.modelClose(this.models[index].id, this.models[index].version)
-      .subscribe(response => {
-          console.log(response);
-        },
-        error => {
-          console.log(error);
-        });
+    this.mqttService.getClient().unsubscribe('MODEL/model_' + this.models[index].id + '_' + this.models[index].version);
     this.models.splice(index, 1);
     this.page = '+';
   }
