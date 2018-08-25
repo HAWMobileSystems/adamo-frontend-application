@@ -161,6 +161,38 @@ export class ModelerComponent implements OnInit {
     }
   }
 
+  private returnSubProcessList = (scope: string): string[] => {
+    //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
+        let elements: any;
+        scope === this.lookup.SELECTION
+          ? elements = this.modeler.get(scope).get()
+          : elements = this.modeler.get(scope).getAll();
+        const terms: string[] = new Array();
+        let validSelection = false;
+    //Alle Elemente durchlaufen um Variablen zu finden
+        for (const element of elements) {
+          if (element.type === 'bpmn:SubProcess') {
+            validSelection = true;
+            console.log(element, typeof element.businessObject.extensionElements);
+    //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
+            if (element.businessObject.extensionElements) {
+              //Wenn vorhandne die Elemente auslesen
+              const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+              //Schleife über alle Elemente
+              for (let i = 0; i < extras[0].values.length; i++) {
+                //Prüfen ob der Name des Elementes IPIM_Val entspricht
+                if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                  if (terms.indexOf(extras[0].values[i].value) === -1) {
+                    terms.push(extras[0].values[i].value);
+                  }
+                }
+              }
+            }
+          }
+        }
+        return terms;
+      }
+
   public closeTermController = () => {
     this.termModal.close();
   }
@@ -398,7 +430,7 @@ export class ModelerComponent implements OnInit {
    */
   private createModeler() {
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
+    this.commandStack = new CommandStack(this.modeler, this);
 // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
