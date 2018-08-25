@@ -121,6 +121,27 @@ app.use('/permission', permissionRouter);
 *                   and finaly sets session.
 * */
 
+/**
+ * @api                 {post} /authenticate authenticate
+ * @apiDescription      authenticates a user and sets the Session
+ * @apiName             authenticate
+ * @apiGroup            session
+ * @apiParam            {String} email Mandatory email of an user
+ * @apiParam            {String} password Mandatory password of an user
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {message: 'Some nice Statustext', success: true, data: data, email: 'maxmuster@gmail.com'}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      'Something happend'
+ *                      HTTP/1.1 401 Failure
+ *                      'User and password do not match'
+ *                      HTTP/1.1 404 Failure
+ *                      'User not found in the database'
+ */
 app.post('/authenticate', function (req, res) {
   try {
     var response = {};
@@ -225,6 +246,24 @@ app.post('/authenticate', function (req, res) {
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      Checks if a session is already there and destroys it
 * */
+/**
+ * @api                 {get} /logout logout
+ * @apiDescription      logout
+ * @apiName             logout
+ * @apiGroup            session
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'Some nice Statustext', success: true, data: data}
+ * @apiError            Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 app.get('/logout', function (req, res) {
   try {
     if (req.session.user) {
@@ -251,6 +290,20 @@ app.get('/logout', function (req, res) {
 * Error Response:   Code 400, Content: {message: [string], success: [bool]}
 * Description:      Checks if a session is already there and destroys it
 * */
+/**
+ * @api                 {get} /login_status login_status
+ * @apiDescription      Checks if a session is already there and destroys it
+ * @apiName             login_status
+ * @apiGroup            session
+ * @apiParam            {type} Mandatory thisIsRequired
+ * @apiParam            {type} thisIsOptional
+ * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
+ * @apiSuccess          {Array} data Array of Users.
+ * @apiSuccess          {boolean} lastname  Lastname of the User.
+ * @apiSuccessExample   Success-Resposne:
+ *                      HTTP/1.1 200 OK
+ *                      {message: 'not logged in', success: true, loggedIn: false}
+ */
 app.get('/login_status', function (req, res) {
   try {
     if (req.session.user) {
@@ -271,96 +324,6 @@ app.get('/login_status', function (req, res) {
   }
 });
 
-/*
-* URL:              /user
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      Checks if there is a session (user is logged in or not) and sends user credentials
-* */
-app.get('/user', function (req, res) {
-  try {
-    if (req.session.user) {
-      res.status(200).send({message: 'success', success: true, data: req.session.user});
-    }
-    else throw({status: 400, data: {message: 'not logged in', success: false}});
-  }
-  catch (error) {
-    console.log(error);
-    res.status(error.status).send(error.data);
-  }
-});
-
-
-/*
-* URL:              /users
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      Checks if there is a session (user is logged in or not)
-*                   and sends user credentials of all sessions (all logged inusers)
-* */
-app.get('/users', function (req, res) {
-  try {
-    if (req.session.user) {
-      db.query('SELECT sess FROM session')
-        .then(function (sessions) {
-          var users = [];
-          for (var e in sessions) {
-            if (sessions[e].sess.user) users.push(sessions[e].sess.user);
-          }
-          res.status(200).send({message: 'success', success: true, data: users});
-        })
-        .catch(function (error) {
-          res.status(400).send({message: 'db error', success: false, error: error});
-        });
-    }
-    else throw({status: 400, data: {message: 'not logged in', success: false}});
-  }
-  catch (error) {
-    console.log(error);
-    res.status(error.status).send(error.data);
-  }
-});
-
-/*TODO
-* URL:              /register
-* Method:           post
-* URL Params:
-*   Required:       username: [string], password: [string], captcha: [string], firstname: [string], lastname: [string]
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
-app.post('/register', function (req, res) {
-  try {
-
-  }
-  catch (error) {
-    console.log(error);
-    res.status(error.status).send(error.data);
-  }
-});
-
-app.get('/', function (req, res) {
-  res.send("IPIM Server is Running");
-});
 
 app.listen(3000);
 

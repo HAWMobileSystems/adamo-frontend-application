@@ -242,7 +242,6 @@ router.post('/password', function (req, res) {
     res.status(400).send({status: 'Password may not be empty!'});
     return;
   }
-
   const uid = req.body.uid;
   const password = req.body.password;
   bcrypt.hash(password, saltRounds, function (err, hash) {
@@ -259,25 +258,6 @@ router.post('/password', function (req, res) {
       });
   });
 });
-
-
-/*
-* URL:              /delete
-* Method:           delete
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
-
-
-
-
 
 /**
  * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste

@@ -213,12 +213,10 @@ export class ApiService {
 
   //Administration page: Create a new model
   //modellerPage: Create a new model
-  public modelCreate(modelname: string, lastchange: string, modelxml: string, version: string) {
+  public modelCreate(modelname: string, modelxml: string) {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/create', {
       modelname: modelname,
-      lastchange: lastchange,
-      modelxml: modelxml,
-      version: version
+      modelxml: modelxml
     }, options)
       .map((response: Response) => response.json());
   }

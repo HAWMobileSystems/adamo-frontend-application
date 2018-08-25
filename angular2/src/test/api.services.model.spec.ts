@@ -155,7 +155,7 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
+                expect(typeof(apiService.modelCreate('PizzaModell', 'yourmodeldata'))).toEqual('object');
 
             }));
 
@@ -172,8 +172,8 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
-                apiService.modelCreate('PizzaModell', '2018-08-22', 'yourmodeldata', '1.0').subscribe((response: any) => {
+                expect(typeof(apiService.modelCreate('PizzaModell', 'yourmodeldata'))).toEqual('object');
+                apiService.modelCreate('PizzaModell', 'yourmodeldata').subscribe((response: any) => {
                     expect(response).toBeDefined();
                     expect(response.success).toBeUndefined();
                     expect(response.status).toBeDefined();
