@@ -42,7 +42,7 @@ export class BPMNStore {
             },
           [COMMANDS.SAVE] : {
             group: 'row',
-            className: ['glyphicon-arrow-circle-down', 'glyphicon'],
+            className: ['glyphicon-circle-arrow-down', 'glyphicon'],
             title: 'Export to BPMN',
             action: {
               click: () => console.log('save')
@@ -50,7 +50,7 @@ export class BPMNStore {
           },
           [COMMANDS.SAVETODB] : {
             group: 'row',
-            className: ['glyphicon-save', 'glyphicon'],
+            className: ['glyphicon-floppy-save', 'glyphicon'],
             title: 'Save to Database',
             action: {
               click: () => console.log('save')
@@ -74,7 +74,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
-                className: ['glyphicon-cube', 'glyphicon'],
+                className: ['glyphicon-th', 'glyphicon'],
                 title: 'Evaluate Process',
                 action: {
                     click: () => console.log('openInputModal')
@@ -82,7 +82,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
-                className: ['glyphicon-cubes', 'glyphicon'],
+                className: ['glyphicon-th-list', 'glyphicon'],
                 title: 'Start cascading Evaluation',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
@@ -90,7 +90,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['glyphicon-object-group', 'glyphicon'],
+                className: ['glyphicon-align-justify', 'glyphicon'],
                 title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
@@ -98,7 +98,7 @@ export class BPMNStore {
             },
             [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
                 group: 'ipim',
-                className: ['glyphicon-beer', 'glyphicon'],
+                className: ['glyphicon-fire', 'glyphicon'],
                 title: 'Open Model of Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
@@ -106,7 +106,7 @@ export class BPMNStore {
             },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
-                className: ['glyphicon-lightbulb-o', 'glyphicon'],
+                className: ['glyphicon-tint', 'glyphicon'],
                 title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
@@ -114,7 +114,7 @@ export class BPMNStore {
             },
             [COMMANDS.RESET]: {
                 group: 'ipim',
-                className: ['glyphicon-undo', 'glyphicon'],
+                className: ['glyphicon-repeat', 'glyphicon'],
                 title: 'Reset Diagram',
                 action: {
                     click: () => console.log('two-column')
