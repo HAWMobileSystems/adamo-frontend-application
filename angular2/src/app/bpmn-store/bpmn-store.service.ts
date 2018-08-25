@@ -34,7 +34,7 @@ export class BPMNStore {
         return Observable.of({
             [COMMANDS.TWO_COLUMN] : {
                 group: 'row',
-                className: ['fa-th-large', 'fa'],
+                className: ['glyphicon-th-large', 'glyphicon'],
                 title: COMMANDS.TWO_COLUMN,
                 action: {
                     click: () => console.log('two-column')
@@ -42,7 +42,7 @@ export class BPMNStore {
             },
           [COMMANDS.SAVE] : {
             group: 'row',
-            className: ['fa-arrow-circle-down', 'fa'],
+            className: ['glyphicon-arrow-circle-down', 'glyphicon'],
             title: 'Export to BPMN',
             action: {
               click: () => console.log('save')
@@ -50,7 +50,7 @@ export class BPMNStore {
           },
           [COMMANDS.SAVETODB] : {
             group: 'row',
-            className: ['fa-save', 'fa'],
+            className: ['glyphicon-save', 'glyphicon'],
             title: 'Save to Database',
             action: {
               click: () => console.log('save')
@@ -58,7 +58,7 @@ export class BPMNStore {
           },
             [COMMANDS.SET_IPIM_VALUES]: {
                 group: 'ipim',
-                className: ['fa-cog', 'fa'],
+                className: ['glyphicon-cog', 'glyphicon'],
                 title: 'Set Variables',
                 action: {
                     click: () => console.log('openVariableModal')
@@ -66,7 +66,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_TERM]: {
                 group: 'ipim',
-                className: ['fa-tasks', 'fa'],
+                className: ['glyphicon-tasks', 'glyphicon'],
                 title: 'Set Term',
                 action: {
                     click: () => console.log('openTermModal')
@@ -74,7 +74,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
-                className: ['fa-cube', 'fa'],
+                className: ['glyphicon-cube', 'glyphicon'],
                 title: 'Evaluate Process',
                 action: {
                     click: () => console.log('openInputModal')
@@ -82,7 +82,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
-                className: ['fa-cubes', 'fa'],
+                className: ['glyphicon-cubes', 'glyphicon'],
                 title: 'Start cascading Evaluation',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
@@ -90,7 +90,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['fa-object-group', 'fa'],
+                className: ['glyphicon-object-group', 'glyphicon'],
                 title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
@@ -98,7 +98,7 @@ export class BPMNStore {
             },
             [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
                 group: 'ipim',
-                className: ['fa-beer', 'fa'],
+                className: ['glyphicon-beer', 'glyphicon'],
                 title: 'Open Model of Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
@@ -106,7 +106,7 @@ export class BPMNStore {
             },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
-                className: ['fa-lightbulb-o', 'fa'],
+                className: ['glyphicon-lightbulb-o', 'glyphicon'],
                 title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
@@ -114,7 +114,7 @@ export class BPMNStore {
             },
             [COMMANDS.RESET]: {
                 group: 'ipim',
-                className: ['fa-undo', 'fa'],
+                className: ['glyphicon-undo', 'glyphicon'],
                 title: 'Reset Diagram',
                 action: {
                     click: () => console.log('two-column')
