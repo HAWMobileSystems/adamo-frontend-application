@@ -198,11 +198,11 @@ export class ModelerComponent implements OnInit {
   }
   private expandToTwoColumns = (palette: JQuery) => {
     palette.addClass('two-column');
-    palette.find('.fa-th-large').removeClass('fa-th-large').addClass('fa-square');
+    palette.find('.glyphicon-th-large').removeClass('glyphicon-th-large').addClass('glyphicon-stop');
   }
   private shrinkToOneColumn = (palette: JQuery) => {
     palette.removeClass('two-column');
-    palette.find('.fa-square').removeClass('fa-square').addClass('fa-th-large');
+    palette.find('.glyphicon-stop').removeClass('glyphicon-stop').addClass('glyphicon-th-large');
   }
 
   private handleTwoColumnToggleClick = () => {
@@ -430,7 +430,7 @@ export class ModelerComponent implements OnInit {
    */
   private createModeler() {
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler, this);
+    this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
 // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
