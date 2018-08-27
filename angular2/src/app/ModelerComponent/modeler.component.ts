@@ -405,6 +405,10 @@ export class ModelerComponent implements OnInit {
         console.log(this.container);
         this.registerFileDrop(this.container, this.openDiagram);
       }
+
+      const img = document.getElementById('ipimlogo-' + this.modelId);
+
+      this.modeler.container.append(img);
     });
   }
 
