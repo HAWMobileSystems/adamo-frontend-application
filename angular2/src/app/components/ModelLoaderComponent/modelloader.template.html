@@ -27,17 +27,17 @@
 
         <div class="row">
             <button class="col-md-offset-1 col-md-1 btn btn-success" type="button" (click)="fileSelectorInput.click()">
-                <i class="glyphicon glyphicon-open-file"></i>
+                <i class="glyphicon glyphicon-open-file"></i> New
             </button>
             <button *ngIf="selected" class="col-md-offset-1 col-md-1 btn btn-success" (click)="loadSelected()">
-                <i class="glyphicon glyphicon-cloud-download"></i>
+                <i class="glyphicon glyphicon-cloud-download"></i> Load
             </button>
             <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
             <div class="col-md-offset-6 col-md-5 input-group">
                 <input type="text" class="form-control" [(ngModel)]="newModelName">
                 <span class="input-group-btn">
                     <button class="btn btn-success" type="button" (click)="createEmpty()">
-                        <i class="glyphicon  glyphicon-file"></i>
+                        <i class="glyphicon  glyphicon-file"></i> Load from disk
                     </button>
                 </span>
             </div>

@@ -13,5 +13,6 @@ export const COMMANDS = {
     SET_IPIM_EVALUATOR: 'start_evaluator',
     ZOOM_TO_FIT: 'zoom2fit',
     EXPORT_SVG: 'Export SVG',
-    OPEN_SUBPROCESS_MODEL: 'Open Model of Subprocess'
+    OPEN_SUBPROCESS_MODEL: 'Open Model of Subprocess',
+    OPEN_USAGE_MODEL: 'See Processes references'
 };

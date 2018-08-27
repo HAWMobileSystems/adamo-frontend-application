@@ -36,6 +36,7 @@ import {VariableComponent} from './ModelerComponent/modals//VariablesComponent/v
 import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
 import {SaveModal} from './ModelerComponent/modals/saveModal/saveModal';
+import {UsageModal} from './ModelerComponent/modals/UsageModal/UsageModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
 import {Timestamp2Date} from './pipes/timestamp.pipe';
 import {Version} from './pipes/version.pipe';
@@ -78,6 +79,7 @@ import {Http} from '@angular/http';
     SubProcessModal,
     EvalModal,
     SaveModal,
+    UsageModal,
     VariableComponent,
     InputVarComponent,
     FilterUnique,

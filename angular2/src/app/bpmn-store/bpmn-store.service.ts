@@ -74,7 +74,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
-                className: ['glyphicon-th', 'glyphicon'],
+                className: ['glyphicon-tag', 'glyphicon'],
                 title: 'Evaluate Process',
                 action: {
                     click: () => console.log('openInputModal')
@@ -82,7 +82,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
-                className: ['glyphicon-th-list', 'glyphicon'],
+                className: ['glyphicon-tags', 'glyphicon'],
                 title: 'Start cascading Evaluation',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
@@ -90,7 +90,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['glyphicon-align-justify', 'glyphicon'],
+                className: ['glyphicon-list-alt', 'glyphicon'],
                 title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
@@ -98,7 +98,7 @@ export class BPMNStore {
             },
             [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
                 group: 'ipim',
-                className: ['glyphicon-fire', 'glyphicon'],
+                className: ['glyphicon-download-alt', 'glyphicon'],
                 title: 'Open Model of Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
@@ -106,7 +106,7 @@ export class BPMNStore {
             },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
-                className: ['glyphicon-tint', 'glyphicon'],
+                className: ['glyphicon-search', 'glyphicon'],
                 title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
@@ -116,6 +116,14 @@ export class BPMNStore {
                 group: 'ipim',
                 className: ['glyphicon-repeat', 'glyphicon'],
                 title: 'Reset Diagram',
+                action: {
+                    click: () => console.log('two-column')
+                }
+            },
+            [COMMANDS.OPEN_USAGE_MODEL]: {
+                group: 'ipim',
+                className: ['glyphicon-share', 'glyphicon'],
+                title: 'See Processes references',
                 action: {
                     click: () => console.log('two-column')
                 }

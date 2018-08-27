@@ -1,0 +1,32 @@
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+    <modal-header [show-close]="true">
+      <h2>IPIM Usage</h2>
+    </modal-header>
+    <modal-body>
+      <p>The following processes reference this as a subprocess: </p>
+        
+      <div *ngIf="referencingModels?.length == 0">No processes reference this model</div>
+
+      <table *ngIf="referencingModels?.length > 0" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr class="active">
+            <th>Model Name</th>
+            <th>Version</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+        <tr *ngFor="let model of (referencingModels | filterUnique: ['mid', search]) | filter:search" 
+            (click)="selectionChanged(model)"
+            [ngClass]="{'info': selectedId === model.mid}">
+            <td>{{model.modelname}}</td>
+            <td>{{model.version | version}}</td>
+        </tr>
+        <tfoot></tfoot>
+      </table>
+      
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="closeModal()">Close</button>
+    </modal-footer>
+  </modal>

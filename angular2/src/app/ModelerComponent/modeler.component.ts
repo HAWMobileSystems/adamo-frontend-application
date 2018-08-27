@@ -18,6 +18,7 @@ import {VariableModal} from './modals/VariableModal/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal/evaluatorModal';
 import {SaveModal} from './modals/saveModal/saveModal';
+import {UsageModal} from './modals/UsageModal/UsageModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';
 import {ApiService} from '../services/api.service';
@@ -72,6 +73,8 @@ export class ModelerComponent implements OnInit {
   private evaluatorModal: EvalModal;
   @ViewChild('saveModal')
   private saveModal: SaveModal;
+  @ViewChild('usageModal')
+  private usageModal: UsageModal;
 
   private ipimTags: any = {
     META: 'IPIM_meta_',
@@ -111,6 +114,11 @@ export class ModelerComponent implements OnInit {
   public openVariableModal = () => {
     this.variableModal.setProps(this.modeler, this);
     this.variableModal.modal.open();
+  }
+
+  public openUsageModal = () => {
+    this.usageModal.setProps(this.modeler, this);
+    this.usageModal.modal.open();
   }
 
   public openSubprocessModal = () => {
@@ -361,16 +369,12 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.SAVETODB]: this.saveToDb,
     [COMMANDS.SET_IPIM_SUBPROCESS]: this.openSubprocessModal,
     [COMMANDS.SET_IPIM_EVALUATOR]: this.openEvaluatorModal,
+    [COMMANDS.OPEN_USAGE_MODEL]: this.openUsageModal,
     [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
     [COMMANDS.EXPORT_SVG]: this.saveSVG,
     [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel
   };
 
-  /**
-   * Using fat Arrow function here manipulates binding of this.
-   * While do not using openDiagram here the "this.modeler.importXML" gets affected by this..
-   * and is no longer recognized as a function
-   */
   public ngOnInit() {
     console.log('modelId: ', this.modelId);
     this.commandQueue = new Subject();
