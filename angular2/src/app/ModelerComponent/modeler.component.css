@@ -100,3 +100,12 @@
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
 }
+
+#logo-img-mod {
+    position: absolute;
+    right: 29.5%;
+    bottom: 15px;
+    height: 52.5px;
+    width: 54.5px;
+    z-index: +1;
+}

@@ -77,7 +77,7 @@ router.post('/create', function (req, res) {
     'WHERE role = $3', [req.body.mid, req.body.uid, req.body.role])
     .then(function (data) {
       console.log('DATA:', data);
-      res.send({data: data, success: true});
+      res.send({success: true, status: 'Permission successfully created'});
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
@@ -116,7 +116,7 @@ router.post('/update', function (req, res) {
     'WHERE pid = $1', [req.body.pid, req.body.role])
     .then(function (data) {
       console.log('DATA:', data);
-      res.send({data: data, success: true});
+      res.send({success: true});
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);

@@ -69,7 +69,7 @@ router.post('/create', function (req, res) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
-  const emailValid = (email) => {
+  const emailValid = function (email) {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(email);
   };
@@ -174,7 +174,7 @@ router.post('/update', function (req, res) {
     res.status(400).send({status: 'E-Mail may not be empty!'});
     return;
   }
-  const emailValid = (email) => {
+  const emailValid = function (email) {
     const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
     return emailRegex.test(email);
   };
@@ -293,7 +293,7 @@ router.post('/delete', function (req, res) {
         db.oneOrNone('delete from permission where uid = $1; delete from users where uid = $1', [uid])
           .then(function (data) {
             console.log('User deleted');
-            res.send({status: 'User deleted successfully', success: true, data: data});
+            res.send({status: 'User deleted successfully', success: true});
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);

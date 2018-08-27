@@ -180,4 +180,84 @@ describe('ApiService', () => {
                 });
             }));
     });
+        describe('modelUpdate()', () => {
+
+            it('should return an object',
+                inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                    const mockResponse = {
+                        status: 'Model updated successfully',
+                        success: true
+                    };
+
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(new Response(new ResponseOptions({
+                            body: JSON.stringify(mockResponse)
+                        })));
+                    });
+
+                    expect(typeof(apiService.modelUpdate(1, 'PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
+                }));
+            it('it should work in case of a failure',
+                inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                    const mockResponse = {
+                        status: 'Database not available'
+                    };
+
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(new Response(new ResponseOptions({
+                            body: JSON.stringify(mockResponse)
+                        })));
+                    });
+
+                    expect(typeof(apiService.modelUpdate(1, 'PizzaModell', '2018-08-22', 'yourmodeldata', '1.0'))).toEqual('object');
+                    apiService.modelUpdate(1, 'PizzaModell', '2018-08-22', 'yourmodeldata', '1.0').subscribe((response: any) => {
+                        expect(response).toBeDefined();
+                        expect(response.success).toBeUndefined();
+                        expect(response.status).toBeDefined();
+                    });
+            }));
+        });
+        describe('modelDelete()', () => {
+
+            it('should return an object',
+                inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                    const mockResponse = {
+                        status: 'Model deleted successfully',
+                        success: true
+                    };
+
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(new Response(new ResponseOptions({
+                            body: JSON.stringify(mockResponse)
+                        })));
+                    });
+
+                    expect(typeof(apiService.modelDelete( 1, '1.0'))).toEqual('object');
+
+                }));
+
+            it('it should work in case of a failure',
+                inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+
+                    const mockResponse = {
+                        status: 'Database not available'
+                    };
+
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(new Response(new ResponseOptions({
+                            body: JSON.stringify(mockResponse)
+                        })));
+                    });
+
+                    expect(typeof(apiService.modelDelete(1, '1.0'))).toEqual('object');
+                    apiService.modelDelete(1, '1.0').subscribe((response: any) => {
+                        expect(response).toBeDefined();
+                        expect(response.success).toBeUndefined();
+                        expect(response.status).toBeDefined();
+                    });
+                }));
+        });
 });
