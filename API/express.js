@@ -67,6 +67,7 @@ app.all('*', function (req, res, next) {
       req.url === '/model/close' ||
       req.url === '/model/upsert' ||
       req.url === '/model/changes' ||
+      req.url.startsWith('/partmodel') ||
       req.url.startsWith('/model/getModel')
     ) {
       next();
