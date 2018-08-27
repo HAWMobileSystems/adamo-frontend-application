@@ -6,7 +6,7 @@
     "start": "webpack-dev-server --inline --progress --port 8080",
     "start-full": "npm-run-all -p start-mqtt-server start-node-backend start",
     "start-mqtt-server": "node ../API/mqttserver.js",
-    "start-node-backend": "node ../API/index.js",
+    "start-node-backend": "node ../API/express.js",
     "test": "karma start",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "tslint": "tslint",
