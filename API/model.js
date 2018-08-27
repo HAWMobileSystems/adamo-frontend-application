@@ -423,7 +423,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Model cannot be deleted as it is maintained as a partial model'});
+              res.status(400).send({status: 'Model could not be deleted'});
             });
         } else {
           res.status(400).send({status: 'Model does not exist'});

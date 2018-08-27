@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 /*
 * URL:              /all
-* Method:           post
+* Method:           get
 * URL Params:
 *   Required:       none
 *   Optional:       none
@@ -31,7 +31,7 @@ router.get('/all', function (req, res) {
             console.log('ERROR POSTGRES:', error)
             res.status(400).send({ status: 'Database not available'});
         })
-    });
+});
 
 
 /*
@@ -65,7 +65,7 @@ router.post('/partmodel', function (req, res) {
             console.log('ERROR POSTGRES:', error)
             res.status(400).send({ status: 'Database not available'});
         })
-    });
+});
 
 
 /*
@@ -84,12 +84,13 @@ router.post('/partmodel', function (req, res) {
     
 router.post('/create', function (req, res) {
     
-    if(!req.body.mid) {
-        res.status(400).send({ status: 'Model may not be empty!'});
+    if(!req.body.mid || !req.body.pid) {
+        res.status(400).send({ status: 'Models may not be empty!'});
         return;
     }  
         
     const mid = req.body.mid;
+    const pid = req.body.pid;
         
     db.oneOrNone('select * from partialmodel where mid = $1', [mid])
         .then(function (data) {
@@ -106,7 +107,7 @@ router.post('/create', function (req, res) {
             console.log('ERROR POSTGRES:', error)
             res.status(400).send({ status: 'Database not available'});
         })
-    });
+});
 
 /*
 * URL:              /delete
