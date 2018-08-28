@@ -9,23 +9,19 @@ router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 
-
-
 /**
  * @api                 {get} /user/all all
- * @apiDescription      Request User ID from all users
+ * @apiDescription      Requests all users from the database.
  * @apiName             all
  * @apiGroup            user
- * @apiParam            (login) {Session} user must be set
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {Boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @apiSuccess          {Array} data Array of users
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      [1, 2, 3, 4, 5]
- * @apiError            Postgress error
+ *                      [1, 2, 3, 4, 5, ...]
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Database not available', error: 'Database not available', success: false}
+ *                      'Something went wrong'
  */
 router.get('/all', function (req, res) {
 
@@ -39,7 +35,7 @@ router.get('/all', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available', error: 'Database not available', success: false});
+      res.status(400).send({status: 'Something went wrong', error: 'Something went wrong', success: false});
     });
 });
 
@@ -47,22 +43,26 @@ router.get('/all', function (req, res) {
 
 
 /**
- * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
- * @apiDescription      this is for copy paste during development
- * @apiName             CopyPaste
- * @apiGroup            CopyPaste
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @api                 {post} /user/create create
+ * @apiDescription      Checks if post parameters email, firstname, lastname, password and profile are set,
+ *                      validates email regarding its correctness,
+ *                      checks if email exists already in database,
+ *                      and if not, creates a new user.
+ * @apiName             create
+ * @apiGroup            user
+ * @apiParam            {String} email Mandatory email of a user
+ * @apiParam            {String} firstname Mandatory firstname of a user
+ * @apiParam            {String} lastname Mandatory lastname of a user
+ * @apiParam            {String} password Mandatory password of a user
+ * @apiParam            {String} profile Mandatory profile of a user
+ * @apiSuccess          status User created successfully
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'Some nice Statustext', success: true, data: data}
- * @apiError            Something went wrong
+ *                      {status: 'User created successfully', success: true}
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong', success: false}
+ *                      {status: 'Something went wrong'}
  */
 router.post('/create', function (req, res) {
   if (!req.body.email) {
@@ -111,51 +111,41 @@ router.post('/create', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Database not available'});
+              res.status(400).send({status: 'Something went wrong'});
             });
         });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong'});
     });
 });
 
 
-/*
-* URL:              /update
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
-
-
 /**
- * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
- * @apiDescription      this is for copy paste during development
- * @apiName             CopyPaste
- * @apiGroup            CopyPaste
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @api                 {post} /user/update update
+ * @apiDescription      Checks if post parameters userid, email, firstname, lastname, and profile are set,
+ *                      validates email regarding its correctness,
+ *                      checks if email exists already in database,
+ *                      and updates the selected user.
+ * @apiName             update
+ * @apiGroup            user
+ * @apiParam            {Int} userid Mandatory userid of a user
+ * @apiParam            {String} email Mandatory email of a user
+ * @apiParam            {String} firstname Mandatory firstname of a user
+ * @apiParam            {String} lastname Mandatory lastname of a user
+ * @apiParam            {String} profile Mandatory profile of a user
+ * @apiSuccess          status User updated successfully
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'Some nice Statustext', success: true, data: data}
- * @apiError            Something went wrong
+ *                      {status: 'User updated successfully', success: true}
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong', success: false}
+ *                      {status: 'Something went wrong'}
  */
+
 router.post('/update', function (req, res) {
 
   if (!req.body.uid) {
@@ -209,30 +199,29 @@ router.post('/update', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong'});
     });
 });
 
 
-
 /**
- * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
- * @apiDescription      this is for copy paste during development
- * @apiName             CopyPaste
- * @apiGroup            CopyPaste
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @api                 {post} /user/password password
+ * @apiDescription      Checks if post parameters userid and password are set,
+ *                      and changes the password of the user in the database.
+ * @apiName             password
+ * @apiGroup            user
+ * @apiParam            {Int} userid Mandatory userid of a user
+ * @apiParam            {String} password Mandatory password of a user
+ * @apiSuccess          status Password changed successfully
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'Some nice Statustext', success: true, data: data}
- * @apiError            Something went wrong
+ *                      {status: 'Password changed successfully', success: true}
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong', success: false}
+ *                      {status: 'Something went wrong'}
  */
+
 router.post('/password', function (req, res) {
   if (!req.body.uid) {
     res.status(400).send({status: 'Uid may not be empty!'});
@@ -254,29 +243,34 @@ router.post('/password', function (req, res) {
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Database not available'});
+        res.status(400).send({status: 'Something went wrong'});
       });
   });
 });
 
+
 /**
- * @api                 {requestType} /here/coems/the/CopyPaste CopyPaste
- * @apiDescription      this is for copy paste during development
- * @apiName             CopyPaste
- * @apiGroup            CopyPaste
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @api                 {post} /user/delete delete
+ * @apiDescription      Checks if post parameter userid is set,
+ *                      deletes all permissions of the selected user, 
+ *                      and finally deletes the selcted user from the database.
+ * @apiName             delete
+ * @apiGroup            user
+ * @apiParam            {Int} userid Mandatory userid of a user
+ * @apiSuccess          status User deleted successfully
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'Some nice Statustext', success: true, data: data}
- * @apiError            Something went wrong
+ *                      {status: 'User deleted successfully', success: true}
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong', success: false}
+ *                      {status: 'Something went wrong'}
+ *                      HTTP/1.1 401 Failure
+ *                      {status: 'Error while deleting user'}
+ *                      HTTP/1.1 404 Failure
+ *                      {status: 'User does not exist in the database'}
  */
+
 router.post('/delete', function (req, res) {
 
   if (!req.body.uid) {
@@ -297,15 +291,15 @@ router.post('/delete', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Error while deleting user'});
+            res.status(401).send({status: 'Error while deleting user'});
           });
       } else {
-        res.status(400).send({status: 'User does not exist'});
+        res.status(404).send({status: 'User does not exist in the database'});
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong'});
     });
 });
 
