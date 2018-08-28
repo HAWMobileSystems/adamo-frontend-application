@@ -102,39 +102,24 @@ app.use('/profile', profileRouter);
 app.use('/role', roleRouter);
 app.use('/permission', permissionRouter);
 
-
-/*
-* URL:              /authenticate
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       username: [string], password: [string], captcha: [string]
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      Checks if post parameters username, password and captcha are set,
-*                   validates captcha,
-*                   checks if username is in database,
-*                   checks if user already has a session,
-*                   checks if the password matches with the stored hash
-*                   and finaly sets session.
-* */
-
 /**
  * @api                 {post} /authenticate authenticate
- * @apiDescription      authenticates a user and sets the Session
+ * @apiDescription      Checks if post parameters email, password and captcha are set,
+ *                      validates captcha,
+ *                      checks if email is in database,
+ *                      checks if user already has a session,
+ *                      checks if the password matches with the stored hash
+ *                      and finally sets session.
  * @apiName             authenticate
  * @apiGroup            session
- * @apiParam            {String} email Mandatory email of an user
- * @apiParam            {String} password Mandatory password of an user
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @apiParam            {String} email Mandatory email of a user
+ * @apiParam            {String} password Mandatory password of a user
+ * @apiParam            {String} captcha Mandatory captcha of a user
+ * @apiSuccess          message success 
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {message: 'Some nice Statustext', success: true, data: data, email: 'maxmuster@gmail.com'}
- * @apiError            Something went wrong
+ *                      {message: 'success', success: true, data: data, email: 'maxmuster@gmail.com'}
+ * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      'Something happend'
@@ -213,7 +198,7 @@ app.post('/authenticate', function (req, res) {
                 }
               })
               .catch(function (error) {
-                console.log(error, 'something happend');
+                console.log(error, 'Something happend');
                 res.status(400).send(error);
               });
           }
@@ -234,37 +219,22 @@ app.post('/authenticate', function (req, res) {
   }
 });
 
-/*
-* URL:              /logout
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      Checks if a session is already there and destroys it
-* */
+
 /**
  * @api                 {get} /logout logout
- * @apiDescription      logout
+ * @apiDescription      Checks if a session is already there and destroys it
  * @apiName             logout
  * @apiGroup            session
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @apiSuccess          message Logging out
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'Some nice Statustext', success: true, data: data}
- * @apiError            Something went wrong
+ *                      {status: 'logging out', success: true, data: data}
+ * @apiError            message Not logged in
  * @apiErrorExample     Error-Response:
- *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong', success: false}
+ *                      HTTP/1.1 200 Failure
+ *                      {message: 'not logged in', success: false}});
  */
+
 app.get('/logout', function (req, res) {
   try {
     if (req.session.user) {
@@ -278,33 +248,23 @@ app.get('/logout', function (req, res) {
     res.status(error.status).send(error.data);
   }
 });
-/*
-* URL:              /login_status
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      Checks if a session is already there and destroys it
-* */
+
+
 /**
  * @api                 {get} /login_status login_status
- * @apiDescription      Checks if a session is already there and destroys it
+ * @apiDescription      Checks the login status of a user
  * @apiName             login_status
  * @apiGroup            session
- * @apiParam            {type} Mandatory thisIsRequired
- * @apiParam            {type} thisIsOptional
- * @apiParam            (login) {Session} user must be set(for routes that require a session or even permissions)
- * @apiSuccess          {Array} data Array of Users.
- * @apiSuccess          {boolean} lastname  Lastname of the User.
- * @apiSuccessExample   Success-Resposne:
+ * @apiSuccess          message Logged in as [userprofile]
+ * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
+ *                      {message: 'logged in as [Admin]', email, profile, permission, success: true, loggedIn: true}
+ * @apiError            message Not logged in
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 200 Failure
  *                      {message: 'not logged in', success: true, loggedIn: false}
  */
+
 app.get('/login_status', function (req, res) {
   try {
     if (req.session.user) {
@@ -327,5 +287,4 @@ app.get('/login_status', function (req, res) {
 
 
 app.listen(3000);
-
 console.log('ExpressJS is up and running');
