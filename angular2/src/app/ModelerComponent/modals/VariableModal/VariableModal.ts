@@ -99,18 +99,7 @@ export class VariableModal extends ModalComponent {
     }
     public cancel(): void {
         console.log('VariableModal cancel');
-        this.clearModal('variablefset');
         this.dismiss();
-    }
-
-    public clearModal(s: string) {
-        //Bereich zum Löschen per getElement abfragen
-        //let changed to const, because it was never assigned
-        const inpNode = document.getElementById(s);
-        //Solange es noch ein firstChild gibt, wird dieses entfernt!
-        while (inpNode.firstChild) {
-          inpNode.removeChild(inpNode.firstChild);
-        }
     }
 
     public accept(): void {
@@ -124,96 +113,6 @@ export class VariableModal extends ModalComponent {
 
     private closed() {
         console.log('VariableModal closed');
-    }
-
-    public insertVariables(): void {
-        console.log('insertVariables');
-        this.insertVariableField('newField', 'NewVariable', 'variablefset', false);
-    }
-
-    private insertVariableField = (pname: string, inpval: string, pform: string, meta: boolean) => {
-        console.log('Variablemodal insertVariableField clicked');
-        const inputField = document.createElement('input');
-        inputField.setAttribute('type', 'text');
-        inputField.setAttribute('name', 'textbox');
-        inputField.setAttribute('value', pname);
-        inputField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-        const valueField = document.createElement('input');
-        valueField.setAttribute('type', 'text');
-        valueField.setAttribute('name', 'valuebox');
-        valueField.setAttribute('value', inpval);
-        valueField.setAttribute('class', 'maxwid');
-        valueField.setAttribute('id', 'Variable_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-
-        // (<HTMLElement> checkingBox).attr({"data-test-1":'num1', "data-test-2": 'num2'});
-        // $('#pform').append('<input>').attr({});
-
-        const checkingbox = document.createElement('input');
-        // checkingbox.attributes;
-        checkingbox.setAttribute('type', 'checkbox');
-        checkingbox.setAttribute('name', 'checkbox');
-        checkingbox.setAttribute('value', 'Meta?');
-        if (meta) {
-            checkingbox.setAttribute('checked', meta.toString());
-        }
-        checkingbox.setAttribute('id', 'Variable_IPIM_'.toLowerCase() + pname.toLowerCase());
-
-        const br = document.createElement('br');
-
-        const node = document.createTextNode('Variable:     ');
-
-        const field = document.getElementById(pform);
-
-        field.appendChild(node);
-        field.appendChild(inputField);
-        field.appendChild(document.createTextNode('    Meta?:'));
-        field.appendChild(checkingbox);
-        field.appendChild(document.createElement('br'));
-        field.appendChild(document.createTextNode('    Default:'));
-        field.appendChild(valueField);
-        //document.getElementById(pform).appendChild(br);
-        field.appendChild(br);
-        field.appendChild(document.createElement('hr'));
-
-    }
-
-    private fillVariableModal() {
-        //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-        const elementRegistry = this.modeler.get('elementRegistry');
-        const modeling = this.modeler.get('modeling');
-        //Alle Elemente der ElementRegistry holen
-        const elements = elementRegistry.getAll();
-        const element = elements[0];
-        //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
-        if (typeof element.businessObject.extensionElements !== 'undefined') {
-            //Wenn vorhandne die Elemente auslesen
-            const extras = element.businessObject.extensionElements.get('values');
-            //Schleife über alle Elemente
-            for (let i = 0; i < extras[0].values.length; i++) {
-                //Prüfen ob der Name des Elementes IPIM_Val entspricht
-                const extrasValues = extras[0].values[i];
-                const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-                const ipimVal: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_VAL + '_'.toLowerCase());
-                const ipimMeta: boolean = extrasValueNameLowerCase.startsWith(this.IPIM_META + '_'.toLowerCase());
-
-                if (ipimVal) {
-                    this.insertVariableField(
-                        extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(),
-                        'variablefset',
-                        false);
-                }
-
-                if (ipimMeta) {
-                    this.insertVariableField(
-                        extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(),
-                        'variablefset',
-                        true);
-                }
-            }
-        }
     }
 
     private writeVariableModalValues() {
@@ -232,10 +131,6 @@ export class VariableModal extends ModalComponent {
 
         //Alle Elemente des Eingabefeldes durchlaufen um Variablen zu finden und dem Root Element hinzuzufügen
         //const fieldset= document.getElementById('variablefset');
-        const fields = document.getElementsByName('textbox');
-        const checkboxes = document.getElementsByName('checkbox');
-        const valueboxes = document.getElementsByName('valuebox');
-
         for (let fieldi = 0; fieldi < this.variables.length; fieldi++) {
             if ((this.variables[fieldi]).value !== '') {
                 extras[0].values.push(moddle.create('camunda:Property'));
@@ -248,7 +143,9 @@ export class VariableModal extends ModalComponent {
                     : extras[0].values[fieldi].value = ' ';
             }
         }
+        //Publish Changes to other subscribers!
         this.root.getCommandStack().publishXML();
+        //finished so close this modal!
         this.modal.close();
     }
 }
