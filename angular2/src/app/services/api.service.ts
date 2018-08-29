@@ -164,8 +164,12 @@ export class ApiService {
 
   //Modeller: Evaluation needs asynchron loading of model
   public async getModelAsync(mid: string): Promise<ModelElement> {
-    const response = await this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid}, options).toPromise();
-    return new ModelElement(response.json().data.modelname, response.json().data.mid.toString(), response.json().data.modelxml);
+    try {
+      const response = await this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid}, options).toPromise();
+      return new ModelElement(response.json().data.modelname, response.json().data.mid.toString(), response.json().data.modelxml);
+    } catch {
+      return new ModelElement('', '', '');
+    }
   }
 
   //Administration page: Show all models
