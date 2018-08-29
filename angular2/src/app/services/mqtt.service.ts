@@ -22,14 +22,14 @@ export class MqttService {
     this.client.end();
   }
 
-  public getClient(email?: string) {
+  //returns the client of the mqtt
+  public getClient(email?: string): any {
     if (this.client) {
       return this.client;
     } else if (email) {
       this.connect(email);
       return this.client;
     } else {
-      // return this.client = mqtt.connect(IPIM_OPTIONS.MQTT_CONNECTION, {clientId: id});
       this.apiService.logout()
         .subscribe(
           response => {
