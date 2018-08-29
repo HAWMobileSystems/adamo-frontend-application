@@ -23,7 +23,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
  */
 router.get('/all', function (req, res) {
 
-    db.query('select * from partialmodel')
+    db.query('select pmid, mid, version from partialmodel')
     .then(function (data) {
         console.log('DATA:', data)
         res.send({data: data, success: true});
@@ -145,7 +145,7 @@ router.post('/delete', function (req, res) {
     const mid = req.body.mid;
     const version = req.body.version;
 
-    db.oneOrNone('select * from partialmodel where mid = $1 and version = $2', [mid,version])
+    db.oneOrNone('select  pmid, mid, version from partialmodel where mid = $1 and version = $2', [mid,version])
     .then(function (data) {
         if(data){
             db.oneOrNone('delete from partialmodel where mid = $1 and version = $2', [mid,version])
