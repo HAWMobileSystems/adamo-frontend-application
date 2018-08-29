@@ -99,7 +99,9 @@ export class InputModal extends ModalComponent {
       }
     });
     this.root.evaluateProcess();
+    //inform other subscribers about action!
     this.root.getCommandStack().publishXML();
+    //we are ready so close modal
     this.modal.close();
   }
 
@@ -127,23 +129,5 @@ export class InputModal extends ModalComponent {
 
   public addVar(name: string, value: string, meta: boolean): void {
     this.variables.push(new Variable(name, value, meta));
-  }
-
-   private insertInputField(pname: string, inpval: string, pform: string) {
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('name', pname);
-    inputField.setAttribute('value', inpval);
-    inputField.setAttribute('id', 'Input_IPIM_Val_'.toLowerCase() + pname.toLowerCase());
-    const br = document.createElement('br');
-
-    const node = document.createTextNode('Variable ' + pname + ':     ');
-
-    document.getElementById(pform).appendChild(node);
-    document.getElementById(pform).appendChild(document.createElement('br'));
-    document.getElementById(pform).appendChild(inputField);
-    //document.getElementById(pform).appendChild(br);
-    document.getElementById(pform).appendChild(br);
-
   }
 }
