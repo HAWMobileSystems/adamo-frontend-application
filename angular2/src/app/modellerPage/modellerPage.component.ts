@@ -3,6 +3,7 @@ import {ApiService} from '../services/api.service';
 import {Model} from '../models/model';
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
 import {MqttService} from '../services/mqtt.service';
+import { IPIM_OPTIONS } from '../modelerConfig.service';
 
 //Include components for interface and styling
 @Component({
@@ -17,16 +18,7 @@ export class ModellerPageComponent implements OnInit {
   public page: string = '+';
   public page2: string = 'User';
   public permission: number;
-  public xml: string = '' +
-    '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
-    ' xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/D' +
-    'I" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schem' +
-    'aLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://b' +
-    'pmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id="StartEven' +
-    't_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bp' +
-    'mnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">\n      ' +
-    '  <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane' +
-    '>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  public xml: string = IPIM_OPTIONS.NEWMODEL;
   public models: Model[] = [];
 
   constructor(private apiService: ApiService, private mqttService: MqttService) {
