@@ -63,7 +63,7 @@ export class SaveModal extends ModalComponent {
         console.log(error);
       });
   }
-
+  //save all active subprocesses for this model/version
   public saveSubProcesses() {
   const partmodels = this.root.returnSubProcessList(this.root.lookup.ELEMENTREGISTRY);
     partmodels.forEach((pmid: string) => {
