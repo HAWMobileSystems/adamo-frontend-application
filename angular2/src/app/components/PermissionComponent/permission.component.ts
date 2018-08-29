@@ -173,13 +173,12 @@ export class PermissionComponent {
       .subscribe(response => {
           if (response.success) {
             this.selectedPermission = response.data;
-            this.alertService.success((JSON.parse(response._body).status) );
           } else {
-            this.alertService.error(response._body);
+            this.alertService.error(response.status);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.alertService.error('Error receiving permissions');
           console.log(error);
         });
   }

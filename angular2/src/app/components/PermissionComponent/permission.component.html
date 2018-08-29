@@ -23,14 +23,12 @@
                 <thead>
                 <tr class="active">
                     <th>ModelName</th>
-                    <th>Version</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
-                <tr *ngFor="let model of models | filter:search" (click)="selectModel(model)"
+                <tr *ngFor="let model of (models | filterUnique: ['mid']) | filter:search" (click)="selectModel(model)"
                     [ngClass]="{'info': selectedModel === model}">
                     <td>{{model.modelname}}</td>
-                    <td>{{model.version | version}}</td>
                 </tr>
                 <tfoot></tfoot>
             </table>
