@@ -544,6 +544,7 @@ export class ModelerComponent implements OnInit {
     this.modeler.importXML(this.newDiagramXML, this.handleError);
     this.loadedCompletely.emit();
     this.showSnackBar('loaded successfully', 'limegreen');
+    this.handleTwoColumnToggleClick();
     return;
 
 // // console.log('load', this.url, this.store);
