@@ -30,6 +30,7 @@ export class TermModal extends ModalComponent {
     this.termList = termList;
     this.modeler = modeler;
     this.root = root;
+    //if more than one term is selected take only the first
     if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
 
@@ -54,25 +55,13 @@ export class TermModal extends ModalComponent {
     this.dismiss();
   }
 
+  //get first selected term, show warning if more are selected
   private  fillTermModal() {
 
     const terms = this.termList;
 
     if (terms.length > 1) {window.alert('Attention! Selected Elements already have different Terms!'); }
 
-  }
-
-  public accept() {
-    console.log(this.constructor.name + ' fillModal');
-    if (this.termList.length > 1) {
-      window.alert('Attention selected Elements already have different Terms!');
-    }
-    const element = <HTMLInputElement>document.getElementById('inputFieldTerm');
-    !element
-      ? console.error('no such element')
-      : (this.termList.length > 0)
-      ? element.value = this.termList[0]
-      : element.value = '';
   }
 
   private writeTermModalValues() {
@@ -99,6 +88,7 @@ export class TermModal extends ModalComponent {
           }
         }
       } else {
+        //if element does not exist create it!
         if (this.firstTerm !== '') {
           element.businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
           const extras = element.businessObject.extensionElements.get('values');
