@@ -127,10 +127,6 @@ router.post('/update', function (req, res) {
     
     db.oneOrNone('select role from role where role = $1', [role])
     .then(function (data) {
-        if(data && data.rid !== +roleid){
-            console.log('MeinLOG', data, data.roleid, role, +roleid)
-            res.status(400).send({status: 'Role name already exists'})
-        } else {
             const tmpRead = (read == true); 
             const tmpWrite = (write == true);
             const tmpAdmin = (admin == true);
@@ -144,7 +140,6 @@ router.post('/update', function (req, res) {
                 console.log('ERROR POSTGRES:', error)
                 res.status(400).send({status: 'Something went wrong', success: false});
             })
-        }
     })
     .catch(function (error) {
         console.log('ERROR POSTGRES:', error)

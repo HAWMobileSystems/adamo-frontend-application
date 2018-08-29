@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('./database');
 const bodyParser = require('body-parser');
 const bigInt = require('big-integer');
-const mqtt = require('mqtt').connect('mqtt://localhost:1883', {clientId: 'Express'});
+const mqtt = require('mqtt').connect('mqtt://localhost:1883', { clientId: 'Express' });
 const openModels = {};
 
 mqtt.subscribe('MODEL/#');
@@ -19,11 +19,15 @@ mqtt.on('message', function (topic, message) {
     var version;
     if (topic === 'modelupsert') {
       event = JSON.parse(message);
+      //console.log('modelupsert all models',openModels);
       // openModels[event.mid] = {};
       // openModels[event.mid][event.newVersion] = openModels[event.mid][event.version];
       if (openModels.hasOwnProperty(event.mid)) {
         if (openModels[event.mid].hasOwnProperty(event.version)) {
-          openModels[event.mid][event.newVersion] = openModels[event.mid][event.version];
+          console.log('modelupsert event',event);
+          let newVersion = event.newVersion;
+           openModels[event.mid][newVersion] = openModels[event.mid][event.version];
+          openModels[event.mid][newVersion].changed = false;
           delete openModels[event.mid][event.version];
         }
       }
@@ -84,7 +88,7 @@ function removeFromOpenModels(mid, version, collaborator) {
   if (openModels.hasOwnProperty(mid)) {
     if (openModels[mid].hasOwnProperty(version)) {
       if (openModels[mid][version].hasOwnProperty('collaborators')) {
-        openModels[mid][version].collaborators.splice(openModels[mid][version].collaborators.indexOf(collaborator),1);
+        openModels[mid][version].collaborators.splice(openModels[mid][version].collaborators.indexOf(collaborator), 1);
         // openModels[mid][version].collaborators.push(collaborator);
         mqtt.publish('collaborator/update/' + mid + '/' + version, JSON.stringify(openModels[mid][version].collaborators));
         if (openModels[mid][version].collaborators.length === 0) {
@@ -110,7 +114,7 @@ function addCollaborator(mid, version, collaborator) {
         openModels[mid][version].collaborators.push(collaborator);
         setTimeout(function () {
           mqtt.publish('collaborator/update/' + mid + '/' + version, JSON.stringify(openModels[mid][version].collaborators));
-        },300);
+        }, 300);
       }
     }
   }
@@ -118,7 +122,7 @@ function addCollaborator(mid, version, collaborator) {
 
 
 router.use(bodyParser.json()); // support json encoded bodies
-router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 /**
@@ -144,11 +148,11 @@ router.get('/all', function (req, res) {
     'FROM model ' +
     'ORDER BY modelname ASC, version DESC')
     .then(function (data) {
-      res.send({data: data, success: true});
+      res.send({ data: data, success: true });
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send( {status: 'Something went wrong', success: false});
+      res.status(400).send({ status: 'Something went wrong', success: false });
     });
 });
 
@@ -166,15 +170,15 @@ router.get('/all', function (req, res) {
  */
 router.post('/close', function (req, res) {
   if (!req.body.mid) {
-    res.status(400).send({status: 'Model name may not be empty!'});
+    res.status(400).send({ status: 'Model name may not be empty!' });
     return;
   }
   if (!req.body.version) {
-    res.status(400).send({status: 'Version name may not be empty!'});
+    res.status(400).send({ status: 'Version name may not be empty!' });
     return;
   }
   // removeFromOpenModels(req.body.mid, req.body.version, req.session.user.email);
-  res.send({message: 'collaborator removed'});
+  res.send({ message: 'collaborator removed' });
 });
 
 
@@ -195,51 +199,81 @@ router.post('/close', function (req, res) {
  */
 router.post('/getModel', function (req, res) {
   if (!req.body.mid) {
-    res.status(400).send({status: 'Model name may not be empty!'});
+    res.status(400).send({ status: 'Model name may not be empty!' });
     return;
   }
   const mid = req.body.mid;
 
-  if (req.body.version) {
-    const version = req.body.version;
-    if (openModels.hasOwnProperty(mid)) {
-      if (openModels[mid].hasOwnProperty(version)) {
-        res.send({data: openModels[mid][version], success: true});
-        // addCollaborator(mid, version, req.session.user.email);
-        return;
+  db.oneOrNone('' +
+    'SELECT read ' +
+    'FROM permission ' +
+    'LEFT JOIN role ON role.rid = permission.rid ' +
+    'WHERE mid = $1 ' +
+    'AND uid = $2', [mid, req.session.user.id]
+  ).then((function (data) {
+
+    if (data) {
+      //permission defined!
+
+      if (data.read) {
+        if (req.body.version) {
+          const version = req.body.version;
+          if (openModels.hasOwnProperty(mid)) {
+            if (openModels[mid].hasOwnProperty(version)) {
+              res.send({ data: openModels[mid][version], success: true });
+              return;
+            }
+          }
+
+          db.one('' +
+            'SELECT modelxml, modelname, mid, version ' +
+            'FROM model ' +
+            'WHERE mid = $1 ' +
+            'AND version = $2', [mid, version])
+            .then(function (data) {
+              res.send({ data: data, success: true });
+              addToOpenModels(data.mid, data.version, data.modelxml, req.session.user.email);
+            })
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error);
+              res.status(400).send({ status: 'Something went wrong', success: false });
+            });
+
+        } else {
+          console.log(req.params);
+          db.one('' +
+            'SELECT modelxml, modelname, mid, version ' +
+            'FROM model ' +
+            'WHERE mid = $1 ' +
+            'ORDER BY version DESC ' +
+            'LIMIT 1', [mid])
+            .then(function (data) {
+              res.send({ data: data, success: true });
+            })
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error);
+              res.status(400).send({ status: 'Something went wrong', success: false });
+            });
+        }
       }
+      //If no Permision
+      else {
+        console.log('no permission to read!');
+        res.status(400).send({ status: 'no permission to read!', success: false });
+      }
+    } else {
+      //no permission defined!
+      console.log('no permission defined');
+      res.status(400).send({ status: 'no permission defined', success: false });
     }
 
-    db.one('' +
-      'SELECT modelxml, modelname, mid, version ' +
-      'FROM model ' +
-      'WHERE mid = $1 ' +
-      'AND version = $2', [mid, version])
-      .then(function (data) {
-        res.send({data: data, success: true});
-        addToOpenModels(data.mid, data.version, data.modelxml, req.session.user.email);
-      })
-      .catch(function (error) {
-        console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Something went wrong', success: false});
-      });
 
-  } else {
-    console.log(req.params);
-    db.one('' +
-      'SELECT modelxml, modelname, mid, version ' +
-      'FROM model ' +
-      'WHERE mid = $1 ' +
-      'ORDER BY version DESC ' +
-      'LIMIT 1', [mid])
-      .then(function (data) {
-        res.send({data: data, success: true});
-      })
-      .catch(function (error) {
-        console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Something went wrong', success: false});
-      });
-  }
+  }))
+    .catch(function (error) {
+      console.log('ERROR POSTGRES:', error);
+      res.status(400).send({ status: 'Something went wrong', success: false, error: error });
+    });
+
 });
 
 
@@ -263,12 +297,12 @@ router.post('/getModel', function (req, res) {
 router.post('/create', function (req, res) {
 
   if (!req.body.modelname) {
-    res.status(400).send({status: 'Model name may not be empty!'});
+    res.status(400).send({ status: 'Model name may not be empty!' });
     return;
   }
 
   if (!req.body.modelxml) {
-    res.status(400).send({status: 'Modelxml name may not be empty!'});
+    res.status(400).send({ status: 'Modelxml name may not be empty!' });
     return;
   }
 
@@ -283,25 +317,39 @@ router.post('/create', function (req, res) {
     'WHERE modelname = $1', [modelname])
     .then(function (data) {
       if (data) {
-        res.status(400).send({status: 'Model name already exists'});
+        res.status(400).send({ status: 'Model name already exists' });
       } else {
         db.oneOrNone('' +
           'INSERT into model ' +
           '(modelname, modelxml, version) ' +
-          'VALUES ($1, $2, $3)', [modelname, modelxml, bigInt('0001000000000000', 16).toString()])
+          'VALUES ($1, $2, $3) ' +
+          'RETURNING mid', [modelname, modelxml, bigInt('0001000000000000', 16).toString()])
           .then(function (data) {
-            res.send({status: 'Model created successfully', success: true});
+            var _mid = data.mid;
+
+            db.query('' +
+              'SELECT DISTINCT(uid) as uid ' +
+              'FROM users')
+              .then(function (rows) {
+                rows.forEach(function (row) {
+                  db.oneOrNone('' +
+                    'INSERT INTO permission (mid, uid, rid)\n' +
+                    'SELECT $1, $2, $3', [_mid, row.uid, 6,])
+                });
+              })
+
+            res.send({ status: 'Model created successfully', success: true });
             mqtt.publish('administration/model', JSON.stringify({}));
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Something went wrong', success: false});
+            res.status(400).send({ status: 'Something went wrong', success: false, error: error });
           });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong', success: false});
+      res.status(400).send({ status: 'Something went wrong', success: false });
     });
 });
 
@@ -325,7 +373,7 @@ router.post('/create', function (req, res) {
 router.post('/update', function (req, res) {
 
   if (!req.body.modelname) {
-    res.status(400).send({status: 'Model name may not be empty!'});
+    res.status(400).send({ status: 'Model name may not be empty!' });
     return;
   }
 
@@ -340,21 +388,21 @@ router.post('/update', function (req, res) {
   db.oneOrNone('select modelname from model where modelname = $1', [modelname])
     .then(function (data) {
       if (data && data.mid !== +mid) {
-        res.status(400).send({status: 'Model name already exists'});
+        res.status(400).send({ status: 'Model name already exists' });
       } else {
         db.oneOrNone('update model set modelname = $1, modelxml = $2, version= $3 where mid = $4', [modelname, modelxml, version, mid])
           .then(function (data) {
-            res.send({status: 'Model updated successfully', success: true});
+            res.send({ status: 'Model updated successfully', success: true });
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Something went wrong', success: false});
+            res.status(400).send({ status: 'Something went wrong', success: false });
           });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong', success: false});
+      res.status(400).send({ status: 'Something went wrong', success: false });
     });
 });
 
@@ -387,7 +435,7 @@ router.post('/update', function (req, res) {
 router.post('/delete', function (req, res) {
 
   if (!req.body.mid) {
-    res.status(400).send({status: 'Mid may not be empty!'});
+    res.status(400).send({ status: 'Mid may not be empty!' });
     return;
   }
   const mid = req.body.mid;
@@ -395,44 +443,44 @@ router.post('/delete', function (req, res) {
 
   if (openModels.hasOwnProperty(mid)) {
     if (!version) {
-      res.status(401).send({status: 'Model cant be deleted while someone is modelling it', success: false});
+      res.status(401).send({ status: 'Model cant be deleted while someone is modelling it', success: false });
       return
     } else if (openModels[mid].hasOwnProperty(version)) {
-      res.status(401).send({status: 'Model version cant be deleted while someone is modelling it', success: false});
+      res.status(401).send({ status: 'Model version cant be deleted while someone is modelling it', success: false });
       return
     }
   }
 
   if (!version) {
-  db.query('' +
-    'SELECT mid ' +
-    'FROM model ' +
-    'WHERE mid = $1 ', [mid])
-    .then(function (data) {
-      if (data) {
-        db.query('' +
-          'DELETE FROM partialmodel ' +
-          'WHERE mid = $1; ' +
-          'DELETE FROM permission ' +
-          'WHERE mid = $1; ' +
-          'DELETE FROM model ' +
-          'WHERE mid = $1', [mid])
-          .then(function (data) {
-            console.log('Model deleted');
-            res.send({status: 'Model deleted successfully', success: true});
-          })
-          .catch(function (error) {
-            console.log('ERROR POSTGRES:', error);
-            res.status(401).send({status: 'Model cannot be deleted as it has still permissions', success: false});
-          });
-      } else {
-        res.status(404).send({status: 'Model does not exist in the database', success: true});
-      }
-    })
-    .catch(function (error) {
-      console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong', success: false});
-    });
+    db.query('' +
+      'SELECT mid ' +
+      'FROM model ' +
+      'WHERE mid = $1 ', [mid])
+      .then(function (data) {
+        if (data) {
+          db.query('' +
+            'DELETE FROM partialmodel ' +
+            'WHERE mid = $1; ' +
+            'DELETE FROM permission ' +
+            'WHERE mid = $1; ' +
+            'DELETE FROM model ' +
+            'WHERE mid = $1', [mid])
+            .then(function (data) {
+              console.log('Model deleted');
+              res.send({ status: 'Model deleted successfully', success: true });
+            })
+            .catch(function (error) {
+              console.log('ERROR POSTGRES:', error);
+              res.status(401).send({ status: 'Model cannot be deleted as it has still permissions', success: false });
+            });
+        } else {
+          res.status(404).send({ status: 'Model does not exist in the database', success: true });
+        }
+      })
+      .catch(function (error) {
+        console.log('ERROR POSTGRES:', error);
+        res.status(400).send({ status: 'Something went wrong', success: false });
+      });
   } else {
     db.oneOrNone('' +
       'SELECT mid ' +
@@ -441,31 +489,49 @@ router.post('/delete', function (req, res) {
       'AND version = $2', [mid, version])
       .then(function (data) {
         if (data) {
-          db.oneOrNone('' +
+          db.query('' +
             'DELETE FROM partialmodel ' +
-            'WHERE mid = $1' +
-            'AND version = $2; ' +
-            'DELETE FROM permission ' +
             'WHERE mid = $1' +
             'AND version = $2; ' +
             'DELETE FROM model ' +
             'WHERE mid = $1' +
             'AND version = $2', [mid, version])
             .then(function (data) {
+
               console.log('Model deleted');
-              res.send({status: 'Model deleted successfully', success: true});
+              res.send({ status: 'Model deleted successfully', success: true });
+
+              db.oneOrNone('' +
+                'SELECT mid ' +
+                'FROM model ' +
+                'WHERE mid = $1 ', [mid])
+                .then(function (data) {
+
+                  if (!data) {
+                    db.query('' +
+                      'DELETE FROM permission ' +
+                      'WHERE mid = $1;', [mid])
+
+                  }
+
+                })
+                .catch(function (error) {
+                  console.log('ERROR POSTGRES:', error);
+                  res.status(400).send({ status: 'Model deleted but permission problem', success: false, error: error });
+                });
+
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Model could not be deleted', success: false, error: error});
+              res.status(400).send({ status: 'Model could not be deleted', success: false, error: error });
             });
         } else {
-          res.status(404).send({status: 'Model does not exist in the database', success: true});
+          res.status(404).send({ status: 'Model does not exist in the database', success: true });
         }
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Something went wrong', success: false});
+        res.status(400).send({ status: 'Something went wrong', success: false });
       });
   }
 });
@@ -495,11 +561,11 @@ router.get('/changes', function (req, res) {
     'ORDER BY lastchange DESC')
     .then(function (data) {
       console.log('DATA:', data);
-      res.send({data: data, success: true});
+      res.send({ data: data, success: true });
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong', success: false});
+      res.status(400).send({ status: 'Something went wrong', success: false });
     });
 });
 
@@ -530,19 +596,19 @@ router.get('/changes', function (req, res) {
 router.post('/upsert', function (req, res) {
 
   if (!req.body.mid) {
-    res.status(400).send({status: 'mid may not be empty!', success: false});
+    res.status(400).send({ status: 'mid may not be empty!', success: false });
     return;
   }
   if (!req.body.version) {
-    res.status(400).send({status: 'version may not be empty!', success: false});
+    res.status(400).send({ status: 'version may not be empty!', success: false });
     return;
   }
   if (!req.body.modelxml) {
-    res.status(400).send({status: 'modelxml may not be empty!', success: false});
+    res.status(400).send({ status: 'modelxml may not be empty!', success: false });
     return;
   }
   if (!req.body.modelname) {
-    res.status(400).send({status: 'modelname may not be empty!', success: false});
+    res.status(400).send({ status: 'modelname may not be empty!', success: false });
     return;
   }
 
@@ -564,86 +630,118 @@ router.post('/upsert', function (req, res) {
     }
   }
 
-  var level = [
-    bigInt('0001000000000000', '16'),
-    bigInt('0000000100000000', '16'),
-    bigInt('0000000000010000', '16'),
-    bigInt('0000000000000001', '16')
-  ];
-  var currentLevel;
-  if (!bigInt(version).and(bigInt('FFFF000000000000', '16')).isZero()) {
-    currentLevel = 0;
-  }
-  if (!bigInt(version).and(bigInt('0000FFFF00000000', '16')).isZero()) {
-    currentLevel = 1;
-  }
-  if (!bigInt(version).and(bigInt('00000000FFFF0000', '16')).isZero()) {
-    currentLevel = 2;
-  }
-  if (!bigInt(version).and(bigInt('000000000000FFFF', '16')).isZero()) {
-    currentLevel = 3;
-  }
   db.oneOrNone('' +
-    'INSERT INTO model' +
-    '(mid, modelname, modelxml, version) ' +
-    'VALUES ' +
-    '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
-    .then(function (data) {
-      res.send({
-        status: 'Model upserted successfully',
-        mid: mid,
-        modelname: modelname,
-        version: bigInt(version).add(level[currentLevel]),
-        success: true
-      });
-      mqtt.publish('administration/model', JSON.stringify({}));
-      mqtt.publish('modelupsert', JSON.stringify({
-        mid: mid,
-        version: version,
-        newVersion: bigInt(version).add(level[currentLevel])
-      }));
-    })
-    .catch(function (error) {
-      if (error.code === '23505') {
-        if (currentLevel < 3) {
-          currentLevel++;
-          db.oneOrNone('' +
-            'INSERT INTO model' +
-            '(mid, modelname, modelxml, version) ' +
-            'VALUES ' +
-            '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
-            .then(function (data) {
-              res.send({
-                status: 'Model upserted successfully',
-                mid: mid,
-                modelname: modelname,
-                version: bigInt(version).add(level[currentLevel]),
-                success: true
-              });
-              mqtt.publish('administration/model', JSON.stringify({}));
-              mqtt.publish('modelupsert', JSON.stringify({
-                mid: mid,
-                version: version,
-                newVersion: bigInt(version).add(level[currentLevel])
-              }));
-            })
-            .catch(function (error) {
-              if (error.code === '23505') {
-                res.send({status: 'Next Version already exists', success: false});
-              } else {
-                console.log('ERROR POSTGRES:', error);
-                res.status(400).send({status: 'Something went wrong', success: false});
-              }
+    'SELECT write ' +
+    'FROM permission ' +
+    'LEFT JOIN role ON role.rid = permission.rid ' +
+    'WHERE mid = $1 ' +
+    'AND uid = $2', [mid, req.session.user.id]
+  ).then((function (data) {
+
+    if (data) {
+      //permission defined!
+
+      if (data.write) {
+
+        var level = [
+          bigInt('0001000000000000', '16'),
+          bigInt('0000000100000000', '16'),
+          bigInt('0000000000010000', '16'),
+          bigInt('0000000000000001', '16')
+        ];
+        var currentLevel;
+        if (!bigInt(version).and(bigInt('FFFF000000000000', '16')).isZero()) {
+          currentLevel = 0;
+        }
+        if (!bigInt(version).and(bigInt('0000FFFF00000000', '16')).isZero()) {
+          currentLevel = 1;
+        }
+        if (!bigInt(version).and(bigInt('00000000FFFF0000', '16')).isZero()) {
+          currentLevel = 2;
+        }
+        if (!bigInt(version).and(bigInt('000000000000FFFF', '16')).isZero()) {
+          currentLevel = 3;
+        }
+
+        db.oneOrNone('' +
+          'INSERT INTO model' +
+          '(mid, modelname, modelxml, version) ' +
+          'VALUES ' +
+          '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
+          .then(function (data) {
+            res.send({
+              status: 'Model upserted successfully',
+              mid: mid,
+              modelname: modelname,
+              version: bigInt(version).add(level[currentLevel]),
+              success: true
             });
-        }
-        else {
-          res.status(400).send({status: 'Max Subversion number reached', success: false});
-        }
-      } else {
-        console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Something went wrong', success: false});
+            mqtt.publish('administration/model', JSON.stringify({}));
+            mqtt.publish('modelupsert', JSON.stringify({
+              mid: mid,
+              version: version,
+              newVersion: bigInt(version).add(level[currentLevel])
+            }));
+          })
+          .catch(function (error) {
+            if (error.code === '23505') {
+              if (currentLevel < 3) {
+                currentLevel++;
+                db.oneOrNone('' +
+                  'INSERT INTO model' +
+                  '(mid, modelname, modelxml, version) ' +
+                  'VALUES ' +
+                  '($1, $2, $3, $4)', [mid, modelname, modelxml, bigInt(version).add(level[currentLevel]).toString()])
+                  .then(function (data) {
+                    res.send({
+                      status: 'Model upserted successfully',
+                      mid: mid,
+                      modelname: modelname,
+                      version: bigInt(version).add(level[currentLevel]),
+                      success: true
+                    });
+                    mqtt.publish('administration/model', JSON.stringify({}));
+                    mqtt.publish('modelupsert', JSON.stringify({
+                      mid: mid,
+                      version: version,
+                      newVersion: bigInt(version).add(level[currentLevel])
+                    }));
+                  })
+                  .catch(function (error) {
+                    if (error.code === '23505') {
+                      res.send({ status: 'Next Version already exists', success: false });
+                    } else {
+                      console.log('ERROR POSTGRES:', error);
+                      res.status(400).send({ status: 'Something went wrong', success: false });
+                    }
+                  });
+              }
+              else {
+                res.status(400).send({ status: 'Max Subversion number reached', success: false });
+              }
+            } else {
+              console.log('ERROR POSTGRES:', error);
+              res.status(400).send({ status: 'Something went wrong', success: false });
+            }
+          });
+
+
       }
-    });
+      //If no Permision
+      else {
+        console.log('no permission to write!');
+        res.status(400).send({ status: 'no permission to write!', success: false });
+      }
+    } else {
+      //no permission defined!
+      console.log('no permission defined');
+      res.status(400).send({ status: 'no permission defined', success: false });
+    }
+  }))
+
+
+
+
 });
 
 
