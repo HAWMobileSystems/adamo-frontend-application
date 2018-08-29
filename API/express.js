@@ -90,7 +90,7 @@ app.all('*', function (req, res, next) {
     res.status(401).send({message: 'you have no session'});
     return;
   }
-  res.status(401).send({message: 'not enoth permissions you permissions are: ' + req.session.user});
+  res.status(401).send({message: 'not enough permissions, your permissions are: ' + req.session.user});
 });
 
 
@@ -226,13 +226,12 @@ app.post('/authenticate', function (req, res) {
  * @apiSuccess          message Logging out
  * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
- *                      {status: 'logging out', success: true, data: data}
+ *                      {message: 'logging out', success: true}
  * @apiError            message Not logged in
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 200 Failure
  *                      {message: 'not logged in', success: false}});
  */
-
 app.get('/logout', function (req, res) {
   try {
     if (req.session.user) {
@@ -262,7 +261,6 @@ app.get('/logout', function (req, res) {
  *                      HTTP/1.1 200 Failure
  *                      {message: 'not logged in', success: true, loggedIn: false}
  */
-
 app.get('/login_status', function (req, res) {
   try {
     if (req.session.user) {
