@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
-import {Http} from '@angular/http';
+import {Http, Jsonp} from '@angular/http';
 import {MqttService} from '../services/mqtt.service';
 import {PaletteProvider} from './palette/palette';
 import {CustomPropertiesProvider} from './properties/props-provider';
@@ -340,7 +340,7 @@ export class ModelerComponent implements OnInit {
             if (response.status === 'Next Version already exists') {
               this.saveModal.setModel(this.model, xml, this.apiService, this);
               this.saveModal.modal.open();
-            } else {
+            } else if (response.status === 'Model upserted successfully') {
               //show snackbar for success
               this.showSnackBar('saved successfully', 'limegreen');
               //also save alls partmodels for later evaluation
@@ -351,12 +351,17 @@ export class ModelerComponent implements OnInit {
                   console.log(response);
                 });
               });
+            } else if (response.status === 'Model has no changes to save') {
+              //show snackbar for success
+              this.showSnackBar('no changes to save', 'grey');
+            } else {
+              this.showSnackBar('unknown error while saving', 'red');
             }
           },
           error => {
             console.log(error);
             //somethig went wrong .. have a snack..
-            this.showSnackBar('Error saving to database', 'red');
+            this.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
           });
     });
   }
@@ -435,9 +440,11 @@ export class ModelerComponent implements OnInit {
                 this.loadSubProcess.emit(model);
                 //remove overlay in any case
                 this.hideOverlay();
+                this.showSnackBar('successfully loaded', 'limegreen');
               },
               (error: any) => {
                 //remove overlay in any case
+                this.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
                 this.hideOverlay();
                 console.log(error);
               });
