@@ -28,7 +28,8 @@ export class SaveModal extends ModalComponent {
   @ViewChild('modal')
   public modal: ModalComponent;
 
-  public setModel(model: Model, xml: string, apiService: ApiService) {
+  public setModel(model: Model, xml: string, apiService: ApiService, root: any) {
+    this.root = root;
     this.xml = xml;
     this.model = model;
     this.apiService = apiService;
@@ -38,6 +39,7 @@ export class SaveModal extends ModalComponent {
     this.version4 = bigInt(model.version).and(bigInt('000000000000FFFF', 16));
   }
   public saveSuperVersion() {
+    //REMEMBER!
     console.log(2);
   }
   public saveWithVersion() {
@@ -54,6 +56,7 @@ export class SaveModal extends ModalComponent {
       }
         this.alsoExists = false;
         console.log(response);
+        this.saveSubProcesses();
         this.modal.close();
       },
       error => {
@@ -61,27 +64,30 @@ export class SaveModal extends ModalComponent {
       });
   }
 
+  public saveSubProcesses() {
+  const partmodels = this.root.returnSubProcessList(this.root.lookup.ELEMENTREGISTRY);
+    partmodels.forEach((pmid: string) => {
+    this.apiService.partModelCreate(this.root.modelId.split('_')[1], this.root.modelId.split('_')[2], pmid)
+      .subscribe(response => {
+        console.log(response);
+      });
+    });
+  }
+
   public opened() {
+    console.log('SaveModal opened');
   }
 
   private dismissed() {
+    console.log('SaveModal dismissed');
   }
 
   private closed() {
+    console.log('SaveModal closed');
   }
 
   public cancel(): void {
     this.dismiss();
-  }
-
-  public clearModal(s: string) {
-    //Bereich zum Löschen per getElement abfragen
-    //let changed to const, because it was never assigned
-    const inpNode = document.getElementById(s);
-    //Solange es noch ein firstChild gibt, wird dieses entfernt!
-    while (inpNode.firstChild) {
-      inpNode.removeChild(inpNode.firstChild);
-    }
   }
 
   public accept(): void {
