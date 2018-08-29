@@ -104,8 +104,7 @@ app.use('/permission', permissionRouter);
 
 /**
  * @api                 {post} /authenticate authenticate
- * @apiDescription      Checks if post parameters email, password and captcha are set,
- *                      validates captcha,
+ * @apiDescription      Checks if post parameters email and password are set,
  *                      checks if email is in database,
  *                      checks if user already has a session,
  *                      checks if the password matches with the stored hash
@@ -114,7 +113,6 @@ app.use('/permission', permissionRouter);
  * @apiGroup            session
  * @apiParam            {String} email Mandatory email of a user
  * @apiParam            {String} password Mandatory password of a user
- * @apiParam            {String} captcha Mandatory captcha of a user
  * @apiSuccess          message success 
  * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
