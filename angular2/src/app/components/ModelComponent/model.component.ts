@@ -71,7 +71,7 @@ export class ModelComponent {
   }
 
   public modelCreate() {
-    this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)  //REMEMBER!
+    this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/create');
