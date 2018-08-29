@@ -180,10 +180,12 @@ export class SubProcessModal extends ModalComponent {
             this.root.loadSubProcess.emit(model);
             //remove Overlay for user
             this.root.hideOverlay();
+            this.root.showSnackBar('successfully loaded', 'limegreen');
           },
           (error: any) => {
             //remove Overlay in any case
             this.root.hideOverlay();
+            this.root.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
             console.log(error);
           });
 
