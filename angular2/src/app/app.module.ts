@@ -28,7 +28,6 @@ import {ModellerPageComponent} from './modellerPage/modellerPage.component';
 import {UserComponent} from './components/UserComponent/user.component';
 import {ModelComponent} from './components/ModelComponent/model.component';
 import {ModelLoaderComponent} from './components/ModelLoaderComponent/modelloader.component';
-import {SubModelLoaderComponent} from './components/SubModelLoaderComponent/submodelloader.component';
 import {RoleComponent} from './components/RoleComponent/role.component';
 import {ProfileComponent} from './components/ProfileComponent/profile.component';
 import {PermissionComponent} from './components/PermissionComponent/permission.component';
@@ -65,7 +64,6 @@ import {Http} from '@angular/http';
     UserComponent,
     ModelComponent,
     ModelLoaderComponent,
-    SubModelLoaderComponent,
     RoleComponent,
     ProfileComponent,
     PermissionComponent,
