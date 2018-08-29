@@ -21,7 +21,7 @@ router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      'Something went wrong'
+ *                      {status: 'Something went wrong', success: false}
  */
 router.get('/all', function (req, res) {
 
@@ -35,11 +35,9 @@ router.get('/all', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong', error: 'Something went wrong', success: false});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
-
-
 
 
 /**
@@ -62,7 +60,7 @@ router.get('/all', function (req, res) {
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong'}
+ *                      {status: 'Something went wrong', success: false}
  */
 router.post('/create', function (req, res) {
   if (!req.body.email) {
@@ -111,14 +109,14 @@ router.post('/create', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Something went wrong'});
+              res.status(400).send({status: 'Something went wrong', success: false});
             });
         });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
@@ -143,9 +141,8 @@ router.post('/create', function (req, res) {
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong'}
+ *                      {status: 'Something went wrong', success: false}
  */
-
 router.post('/update', function (req, res) {
 
   if (!req.body.uid) {
@@ -199,7 +196,7 @@ router.post('/update', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
@@ -219,9 +216,8 @@ router.post('/update', function (req, res) {
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong'}
+ *                      {status: 'Something went wrong', success: false}
  */
-
 router.post('/password', function (req, res) {
   if (!req.body.uid) {
     res.status(400).send({status: 'Uid may not be empty!'});
@@ -243,7 +239,7 @@ router.post('/password', function (req, res) {
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Something went wrong'});
+        res.status(400).send({status: 'Something went wrong', success: false});
       });
   });
 });
@@ -253,7 +249,7 @@ router.post('/password', function (req, res) {
  * @api                 {post} /user/delete delete
  * @apiDescription      Checks if post parameter userid is set,
  *                      deletes all permissions of the selected user, 
- *                      and finally deletes the selcted user from the database.
+ *                      and finally deletes the selected user from the database.
  * @apiName             delete
  * @apiGroup            user
  * @apiParam            {Int} userid Mandatory userid of a user
@@ -264,13 +260,12 @@ router.post('/password', function (req, res) {
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
- *                      {status: 'Something went wrong'}
+ *                      {status: 'Something went wrong', success: false}
  *                      HTTP/1.1 401 Failure
- *                      {status: 'Error while deleting user'}
+ *                      {status: 'Error while deleting user', success: false}
  *                      HTTP/1.1 404 Failure
- *                      {status: 'User does not exist in the database'}
+ *                      {status: 'User does not exist in the database', success: false}
  */
-
 router.post('/delete', function (req, res) {
 
   if (!req.body.uid) {
@@ -291,15 +286,15 @@ router.post('/delete', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(401).send({status: 'Error while deleting user'});
+            res.status(401).send({status: 'Error while deleting user', success: false});
           });
       } else {
-        res.status(404).send({status: 'User does not exist in the database'});
+        res.status(404).send({status: 'User does not exist in the database', success: false});
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Something went wrong'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
