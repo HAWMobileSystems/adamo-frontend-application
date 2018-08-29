@@ -89,12 +89,17 @@ export class Evaluator {
     this.rootID = id;
     this.root = root;
     this.zipArray = [];
+    this.xmls = [];
     this.xmls.push(new ModelElement(root.model.name, id, xml));
     this.root.showOverlay();
     this.createNewModeler();
-    this.getAllSubmodels(xml);
-    console.log(this.xmls);
-    this.getCombinedTermList();
+    this.executeAsyncStuff(xml);
+  }
+
+  public async executeAsyncStuff(xml: string) {
+    await this.getAllSubmodels(xml);
+    console.log('ModelsAfterSubModels', this.xmls);
+    await this.getCombinedTermList(this.xmls);
   }
 
   public createZipDownload() {
@@ -123,6 +128,7 @@ export class Evaluator {
   public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
     const currentSubprocesses: string[] = await this.extractSubmodels(xml);
+    console.log('getAllSubmodels', currentSubprocesses);
     //Iterate over all Subprocess and see if they were already retrieved from DB
     await this.asyncForEach(currentSubprocesses, async (element: string) => {
         //If the Subprocess has no Key, get XML from DB and add it
@@ -132,7 +138,7 @@ export class Evaluator {
           const tempModelElement = await this.getXMLFromDB(element);
           this.xmls.push(tempModelElement);
           //As we just added the XML, we recursively call the function to get all of its Subprocesses
-          this.getAllSubmodels(tempModelElement.xml);
+          await this.getAllSubmodels(tempModelElement.xml);
         }
     });
   }
@@ -141,7 +147,7 @@ export class Evaluator {
      return await this.apiService.getModelAsync(id).then( (value : ModelElement) => {return value; });
   }
 
-  private async importFromXML(xml: string): Promise<void> {
+  public async importFromXML(xml: string): Promise<void> {
     return new Promise<void>( resolve => {
       this.modeler.importXML(xml, (err: any) => {
         resolve();
@@ -149,7 +155,7 @@ export class Evaluator {
     });
   }
 
-  private async exportFromModeler(): Promise<string> {
+  public async exportFromModeler(): Promise<string> {
     return new Promise<string>( resolve => {
       this.modeler.saveXML({format: true}, (err: any, xml: any) => {
         resolve(xml);
@@ -189,15 +195,18 @@ export class Evaluator {
     return subprocesses;
   }
 
-  private async getCombinedTermList(): Promise<void> {
-    await this.asyncForEach(this.xmls, async (element: ModelElement) => {
+  public async getCombinedTermList(xmlList: ModelElement[]): Promise<void> {
+
+    this.variables = [];
+
+    await this.asyncForEach(xmlList, async (element: ModelElement) => {
+      console.log('INLOOP', element);
 
       await this.importFromXML(element.xml);
       const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
       const modeling = this.modeler.get(this.lookup.MODELING);
       //Alle Elemente der ElementRegistry holen
       const elements = elementRegistry.getAll();
-      this.variables = [];
 
       //Alle Elemente durchlaufen um Variablen zu finden
       // elements.forEach((element: any) => {
@@ -229,7 +238,12 @@ export class Evaluator {
   }
 
   public addVar(name: string, value: string, meta: boolean): void {
+    if (this.variables.some(e => e.name === name)) {
+      //We already have it so do nothing!
+    } else {
+      //We do not have it so push it!
     this.variables.push(new Variable(name, value, meta));
+    }
   }
 
   public async evaluateProcesses(variables: Variable[]): Promise<void> {
