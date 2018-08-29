@@ -71,7 +71,7 @@ export class ModelComponent {
   }
 
   public modelCreate() {
-    this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
+    this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)  //REMEMBER!
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/create');
@@ -93,6 +93,10 @@ export class ModelComponent {
               mid: this.selected.mid,
               version: this.selected.version
             }));
+            this.apiService.partModelDelete(this.selected.mid, this.selected.version)
+            .subscribe(response => {
+              console.log(response);
+            });
             this.alertService.success(response.status);
           }
         },
