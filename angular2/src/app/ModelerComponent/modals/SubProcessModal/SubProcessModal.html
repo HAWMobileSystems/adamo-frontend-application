@@ -4,16 +4,17 @@
       <h2>IPIM SubProcess</h2>
     </modal-header>
     <modal-body>
-      <p>Please define a new subprocess ID for all selected Subprocesses!</p>
+      <p *ngIf="(loading == true)">Please wait loading...</p>
+      <p *ngIf="(loading == false)">Please define a new subprocess ID for all selected Subprocesses!</p>
         
         <br>
+        <p *ngIf="(loading == false)">Currently selected:</p>
+        <input *ngIf="(loading == false)" type="text" [(ngModel)]="selectedModelName" class = "modal-form-input" readonly>
+        <br>
 
-
-        <div class="panel panel-default">
+        <div *ngIf="(loading == false)" class="panel panel-default">
           <div class="panel-body">
-              <p>Currently selected:</p>
-              <input type="text" [(ngModel)]="selectedModelName" class = "modal-form-input" readonly>
-              <br>
+              
               <div class="input-group">
                   <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"
                         [(ngModel)]="search">
@@ -41,11 +42,11 @@
             </div>
         </div>
         
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="openSubProcessModel()">Open Model</button>
+        <button *ngIf="(loading == false)" type="button" class="btn btn-large btn-block btn-default" (click)="openSubProcessModel()">Open Model</button>
       <br>
       
     </modal-body>
     <modal-footer [show-default-buttons]="false">
-        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>
+        <button *ngIf="(loading == false)" type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>
     </modal-footer>
   </modal>

@@ -31,19 +31,22 @@ export class SubProcessModal extends ModalComponent {
   public backdrop: string | boolean = true;
   public css: boolean = false;
   public root: any;
+  public loading: boolean = true;
 
   public setProps(modeler: any, subProcessList: any, root: any) {
      this.subProcessList = subProcessList;
     this.modeler = modeler;
     this.root = root;
     if (subProcessList.length > 0) {this.firstSubprocess = subProcessList[0]; } else {this.firstSubprocess = ' '; }
+    this.loading = true;
     this.getAllModels();
   }
 
+  //get a list of all possible processes of models in database to reference
   public getAllModels() {
-
     this.root.apiService.getAllModels()
       .subscribe((response: any) => {
+          this.loading = false;
           if (response.success) {
             this.models = response.data;
             this.models.forEach((element: any) => {
@@ -58,6 +61,7 @@ export class SubProcessModal extends ModalComponent {
           }
         },
         (error: any) => {
+          this.loading = false;
           console.log(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -84,7 +88,7 @@ export class SubProcessModal extends ModalComponent {
   }
 
   private  fillSubprocessModal() {
-
+    //take subprocess list and display first item, warn if more than one is selected
     const terms = this.subProcessList;
 
     if (terms.length > 1) {window.alert('Attention! Selected Elements already have different SubProcesses!'); }
@@ -118,7 +122,7 @@ export class SubProcessModal extends ModalComponent {
             break;
           }
         }
-
+        //value is found so update it
         if (!found) {
           extras[0].values.push(moddle.create('camunda:Property'));
           extras[0].values[extras[0].values.length - 1].name = 'IPIM_SubProcess';
@@ -126,6 +130,7 @@ export class SubProcessModal extends ModalComponent {
         }
 
       } else {
+        //value does not exist so create it
         if (firstSubprocessString !== '') {
           element.businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
           const extras = element.businessObject.extensionElements.get('values');
@@ -137,36 +142,47 @@ export class SubProcessModal extends ModalComponent {
         }
       }
     });
+    //update other subscribers about changes
     this.root.getCommandStack().publishXML();
+    //close modal, process is finished
     this.modal.close();
   }
 
+  //update current selction variables, whenever the list is clicked
   public selectionChanged(model: any) {
     this.selectedModel = model;
     this.selectedModelName = model.modelname;
     console.log(this.selectedModel);
   }
 
+  //opens the selected subprocess in a new tab
   public openSubProcessModel() {
+    //make sure something is selected
     if (typeof this.selectedModel === 'undefined') {
       window.alert('Noting selected!');
       return;
     }
+    //show loading overlay
     this.root.showOverlay();
+    //create a new model with the selected information
     const model = new Model();
     model.xml = this.selectedModel.modelxml;
     model.name = this.selectedModel.modelname;
     model.id = this.selectedModel.mid;
     model.version = this.selectedModel.version;
+    //if there is no data for the selected stop else get model from database
     if (this.selectedModel.mid !== '') {
       this.root.apiService.getModel(this.selectedModel.mid)
         .subscribe((response: any) => {
             model.xml = response.data.modelxml;
             console.info(model);
+            //emit event for new model
             this.root.loadSubProcess.emit(model);
+            //remove Overlay for user
             this.root.hideOverlay();
           },
           (error: any) => {
+            //remove Overlay in any case
             this.root.hideOverlay();
             console.log(error);
           });
