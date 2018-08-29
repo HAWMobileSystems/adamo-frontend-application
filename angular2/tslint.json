@@ -129,7 +129,7 @@
       "http://www.example.com/?.*",
       "http://www.examples.com/?.*"
     ],
-    "no-import-side-effect": true,
+    "no-import-side-effect": false,
     "no-increment-decrement": true,
     "no-inferrable-types": false,
     "no-inferred-empty-object-type": false,
