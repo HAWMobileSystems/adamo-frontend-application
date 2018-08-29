@@ -26,18 +26,18 @@
         </table>
 
         <div class="row">
-            <button class="col-md-offset-1 col-md-1 btn btn-success" type="button" (click)="fileSelectorInput.click()">
-                <i class="glyphicon glyphicon-open-file"></i> New
+            <button class="col-md-offset-1 col-md-2 btn btn-success" type="button" (click)="fileSelectorInput.click()">
+                <i class="glyphicon glyphicon-open-file"></i> Import to DB
             </button>
-            <button *ngIf="selected" class="col-md-offset-1 col-md-1 btn btn-success" (click)="loadSelected()">
-                <i class="glyphicon glyphicon-cloud-download"></i> Load
+            <button *ngIf="selected" class="col-md-offset-1 col-md-2 btn btn-success" (click)="loadSelected()">
+                <i class="glyphicon glyphicon-cloud-download"></i> Load from DB
             </button>
             <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
-            <div class="col-md-offset-6 col-md-5 input-group">
+            <div class="col-md-offset-7 col-md-4 input-group">
                 <input type="text" class="form-control" [(ngModel)]="newModelName">
                 <span class="input-group-btn">
                     <button class="btn btn-success" type="button" (click)="createEmpty()">
-                        <i class="glyphicon  glyphicon-file"></i> Load from disk
+                        <i class="glyphicon  glyphicon-file"></i> New
                     </button>
                 </span>
             </div>
