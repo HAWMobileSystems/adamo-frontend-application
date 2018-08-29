@@ -143,9 +143,13 @@ export class Evaluator {
           //We already have it so do nothing!
         } else {
           const tempModelElement = await this.getXMLFromDB(element);
-          this.xmls.push(tempModelElement);
-          //As we just added the XML, we recursively call the function to get all of its Subprocesses
-          await this.getAllSubmodels(tempModelElement.xml);
+          if (tempModelElement.id !== '') {
+            this.xmls.push(tempModelElement);
+            //As we just added the XML, we recursively call the function to get all of its Subprocesses
+            await this.getAllSubmodels(tempModelElement.xml);
+          } else {
+            this.root.showSnackBar('Error: Some Subprocesses returned permission denied ', 'red');
+          }
         }
     });
   }
