@@ -4,6 +4,7 @@ import {ApiService} from '../../services/api.service';
 import {Model} from '../../models/model';
 
 import {MqttService} from '../../services/mqtt.service';
+import { IPIM_OPTIONS } from '../../modelerConfig.service';
 
 @Component({
   selector: 'modelloader',
@@ -19,20 +20,13 @@ export class ModelLoaderComponent {
   private diskModelName: string;
   private diskModelXml: string;
   private newModelName: string;
-  private newModelXml: string = '' +
-  '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
-  'e" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/201005' +
-  '24/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi' +
-  ':schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="' +
-  'http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id=' +
-  '"StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPM' +
-  'NPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEve' +
-  'nt_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </' +
-  'bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>';
+  //Simple Empty Model ... taken from Camunda
+  private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 
   constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
 
+  //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
   private initMqtt() {
     const self = this;
     this.mqttService.getClient().subscribe('administration/model/#');
@@ -47,6 +41,7 @@ export class ModelLoaderComponent {
     this.apiService.login_status()
       .subscribe(response => {
           if (response.success) {
+            //Only start Working when login was successfull
             this.mqttService.getClient(response.email);
             this.initMqtt();
             this.getAllModels();
@@ -58,25 +53,17 @@ export class ModelLoaderComponent {
         error => {
           console.error(error);
         });
-
+    //defines the structure for a new empty model
     this.newModel = {
       mid: '',
       modelname: '',
-      modelxml: '' +
-      '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
-      'e" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/201005' +
-      '24/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi' +
-      ':schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="' +
-      'http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1" isExecutable="false">\n    <bpmn2:startEvent id=' +
-      '"StartEvent_1"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPM' +
-      'NPlane_1" bpmnElement="Process_1">\n      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEve' +
-      'nt_1">\n        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>\n      </bpmndi:BPMNShape>\n    </' +
-      'bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>',
+      modelxml: this.newModelXml,
       version: '',
       lastchange: ''
     };
   }
 
+  //Create an empty model in the database
   public createEmpty() {
     this.apiService.modelCreate(this.newModelName, this.newModelXml)
       .subscribe(response => {
@@ -86,7 +73,7 @@ export class ModelLoaderComponent {
           console.log(error);
         });
   }
-
+  //import a model from harddisk to database
   public createLoaded() {
     this.apiService.modelCreate(this.diskModelName, this.diskModelXml)
       .subscribe(response => {
@@ -97,6 +84,7 @@ export class ModelLoaderComponent {
         });
   }
 
+  //create a new model without anything
   public createNew() {
     const model = new Model();
     model.xml = this.newModel.modelxml;
@@ -106,31 +94,29 @@ export class ModelLoaderComponent {
     this.loadModel.emit(model);
   }
 
+  //gets the event when the select file dialog finishes
   public changeListener($event: any) : void {
     this.loadFromDisk($event.target);
   }
 
+  //reads a file from disk
   public loadFromDisk(inputValue: any) {
     const file: File = inputValue.files[0];
     const myReader: FileReader = new FileReader();
 
+    //event is called when file is loaded from disk
     myReader.onloadend = (e) => {
       this.diskModelName = file.name.split('.')[0];
       this.diskModelXml = myReader.result;
       this.createLoaded();
-
-      // you can perform an action with readed data here
-      // const model = new Model();
-      // model.xml = myReader.result;
-      // model.name = file.name;
-      // model.id = this.newModel.mid;
-      // this.loadModel.emit(model);
       console.log('loaded successful', file);
     };
 
+    //read File as textfile
     myReader.readAsText(file);
   }
 
+  //Selected model from list will be loaded as new tabbed modeler
   public loadSelected() {
     const model = new Model();
     model.xml = this.selected.modelxml;
@@ -138,6 +124,7 @@ export class ModelLoaderComponent {
     model.id = this.selected.mid;
     model.version = this.selected.version;
     model.collaborator = [];
+    //if model has empty data get the model first else directly emit the event
     if (this.selected.mid !== '') {
       this.apiService.getModel(this.selected.mid, this.selected.version)
         .subscribe(response => {
@@ -155,6 +142,7 @@ export class ModelLoaderComponent {
     }
   }
 
+  //get a list of all models from DB
   public getAllModels() {
     this.models = [];
 
@@ -173,6 +161,7 @@ export class ModelLoaderComponent {
         });
   }
 
+  //Get latest changes to models from database
   public getLatestChanges() {
     this.models = [];
 
@@ -180,7 +169,6 @@ export class ModelLoaderComponent {
       .subscribe(response => {
           if (response.success) {
              this.changesLast7Day = response.data;
-            // this.selected = null;
           } else {
             this.alertService.error(response._body);
           }
