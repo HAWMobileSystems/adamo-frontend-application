@@ -575,7 +575,8 @@ export class ModelerComponent implements OnInit {
     //show snackbar for successfull loading!
     this.showSnackBar('loaded successfully', 'limegreen');
     //set default 2 row palette
-    this.handleTwoColumnToggleClick();
+    const palette = $('.djs-palette');
+    this.expandToTwoColumns(palette);
     return;
   }
 
