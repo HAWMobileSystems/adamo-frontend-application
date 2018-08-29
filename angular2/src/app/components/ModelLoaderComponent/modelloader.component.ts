@@ -13,6 +13,7 @@ import { IPIM_OPTIONS } from '../../modelerConfig.service';
 
 export class ModelLoaderComponent {
   @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
+  @Output() public loadError: EventEmitter<object> = new EventEmitter<any>();
   private selected: any;
   private newModel: any;
   private models: any = [];
@@ -124,6 +125,7 @@ export class ModelLoaderComponent {
     model.id = this.selected.mid;
     model.version = this.selected.version;
     model.collaborator = [];
+
     //if model has empty data get the model first else directly emit the event
     if (this.selected.mid !== '') {
       this.apiService.getModel(this.selected.mid, this.selected.version)
@@ -134,7 +136,8 @@ export class ModelLoaderComponent {
           },
           error => {
             this.alertService.error(JSON.parse(error._body).status);
-            console.log(error);
+            this.loadError.emit(error);
+            console.log('Error Loading', error);
           });
 
     } else {
