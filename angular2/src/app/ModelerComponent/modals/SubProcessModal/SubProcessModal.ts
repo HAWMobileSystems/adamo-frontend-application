@@ -2,7 +2,6 @@ import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input , ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
-import { SubModelLoaderComponent } from '../../../components/SubModelLoaderComponent/submodelloader.component';
 import { Model } from '../../../models/model';
 
 @Component({
@@ -13,6 +12,8 @@ import { Model } from '../../../models/model';
 export class SubProcessModal extends ModalComponent {
 
   public modeler: any;
+  public models: any = [];
+  public selectedModelName: any;
 
   public subProcessList: any;
   public firstSubprocess: any;
@@ -32,10 +33,34 @@ export class SubProcessModal extends ModalComponent {
   public root: any;
 
   public setProps(modeler: any, subProcessList: any, root: any) {
-    this.subProcessList = subProcessList;
+     this.subProcessList = subProcessList;
     this.modeler = modeler;
     this.root = root;
     if (subProcessList.length > 0) {this.firstSubprocess = subProcessList[0]; } else {this.firstSubprocess = ' '; }
+    this.getAllModels();
+  }
+
+  public getAllModels() {
+
+    this.root.apiService.getAllModels()
+      .subscribe((response: any) => {
+          if (response.success) {
+            this.models = response.data;
+            this.models.forEach((element: any) => {
+              if (element.mid.toString() === this.firstSubprocess) {
+                this.selectedModelName = element.modelname;
+                this.selectedModel = element;
+              }
+            });
+
+          } else {
+            console.log(response._body);
+          }
+        },
+        (error: any) => {
+          console.log(JSON.parse(error._body).status);
+          console.log(error);
+        });
   }
 
   private opened() {
@@ -67,7 +92,7 @@ export class SubProcessModal extends ModalComponent {
   }
 
   private writeSubprocessModalValues() {
-    const firstSubprocessString = this.firstSubprocess.toString();
+    const firstSubprocessString = this.selectedModel.mid.toString();
     console.log(firstSubprocessString);
     //get moddle Object
     const moddle = this.modeler.get('moddle');
@@ -114,6 +139,12 @@ export class SubProcessModal extends ModalComponent {
     });
     this.root.getCommandStack().publishXML();
     this.modal.close();
+  }
+
+  public selectionChanged(model: any) {
+    this.selectedModel = model;
+    this.selectedModelName = model.modelname;
+    console.log(this.selectedModel);
   }
 
   public openSubProcessModel() {
