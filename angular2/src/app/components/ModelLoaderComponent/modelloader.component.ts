@@ -115,7 +115,7 @@ export class ModelLoaderComponent {
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.diskModelName = file.name;
+      this.diskModelName = file.name.split('.')[0];
       this.diskModelXml = myReader.result;
       this.createLoaded();
 
