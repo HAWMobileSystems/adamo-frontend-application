@@ -125,12 +125,12 @@ router.post('/create', function (req, res) {
  * @apiSuccessExample   Success-Response:
  *                      HTTP/1.1 200 OK
  *                      {status: 'Partial model deleted successfully', success: true}
+ *                      HTTP/1.1 200 OK
+ *                      {status: 'No partial models exist in this diagram version', success: true}
  * @apiError            error Something went wrong
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
- *                      HTTP/1.1 404 Failure
- *                      {status: 'No partial models exist in this diagram version', success: true}
  */
 router.post('/delete', function (req, res) {
 
