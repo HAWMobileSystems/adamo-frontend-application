@@ -2,8 +2,8 @@ import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input , ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from '@angular/router';
-import { SubModelLoaderComponent } from '../../../components/SubModelLoaderComponent/submodelloader.component';
 import { Model } from '../../../models/model';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'usage-modal',
@@ -28,10 +28,29 @@ export class UsageModal extends ModalComponent {
   public root: any;
   public referencingModels: any[] = [];  //[{mid: '2', modelname: 'Testname', version: 'test'}];
   public noReferences: boolean = true;
+  public apiService: ApiService;
+  public loading: boolean;
 
-  public setProps(modeler: any, root: any) {
+  public setProps(modeler: any, root: any, apiService: ApiService) {
     this.modeler = modeler;
     this.root = root;
+    this.apiService = apiService;
+    this.selected = '';
+    this.referencingModels = [];
+    this.loading = true;
+    this.getSubPartModelsFromDB();
+  }
+
+  private getSubPartModelsFromDB() {
+    this.apiService.getPartModelUsage(this.root.modelId.split('_')[1])
+    .subscribe(response => {
+      this.referencingModels = response.data;
+      console.log('Received referencing Processes', response.data);
+      this.loading = false;
+    },
+    error => {
+      console.log(error);
+    });
   }
 
   private opened() {
