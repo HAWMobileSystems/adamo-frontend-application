@@ -54,6 +54,7 @@ export class ModelerComponent implements OnInit {
   private commandStack: any;
   private evaluator: Evaluator;
   private modelerUrls: Link[];
+  private snackbarText: string;
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
   private container: JQuery; // = '#js-drop-zone';
@@ -117,7 +118,7 @@ export class ModelerComponent implements OnInit {
   }
 
   public openUsageModal = () => {
-    this.usageModal.setProps(this.modeler, this);
+    this.usageModal.setProps(this.modeler, this, this.apiService);
     this.usageModal.modal.open();
   }
 
@@ -162,7 +163,8 @@ export class ModelerComponent implements OnInit {
       }
     }
     if (!validSelection) {
-      window.alert('No Subprocess selected!');
+      // window.alert('No Subprocess selected!');
+      this.showSnackBar('No Subprocess selected!', 'red');
     } else {
       this.subProcessModal.setProps(this.modeler, terms, this);
       this.subProcessModal.modal.open();
@@ -233,6 +235,14 @@ export class ModelerComponent implements OnInit {
     // }
   }
 
+  private showSnackBar(text: string, color: string) {
+      this.snackbarText = text;
+      const x = document.getElementById('snackbar');
+      x.style.backgroundColor = color;
+      x.className = 'show';
+      setTimeout(() => { x.className = x.className.replace('show', ''); }, 3000);
+  }
+
   private resetDiagram = () => {
     this.showOverlay();
     console.log(this.model);
@@ -263,12 +273,22 @@ export class ModelerComponent implements OnInit {
         .subscribe(response => {
             console.log(response);
             if (response.status === 'Next Version already exists') {
-              this.saveModal.setModel(this.model, xml, this.apiService);
+              this.saveModal.setModel(this.model, xml, this.apiService, this);
               this.saveModal.modal.open();
+            } else {
+              this.showSnackBar('saved successfully', 'limegreen');
+              const partmodels = this.returnSubProcessList(this.lookup.ELEMENTREGISTRY);
+              partmodels.forEach((pmid) => {
+                this.apiService.partModelCreate(this.modelId.split('_')[1], this.modelId.split('_')[2], pmid)
+                .subscribe(response => {
+                  console.log(response);
+                });
+              });
             }
           },
           error => {
             console.log(error);
+            this.showSnackBar('Error saving to database', 'red');
           });
     });
   }
@@ -324,7 +344,8 @@ export class ModelerComponent implements OnInit {
       }
     }
     if (!validSelection) {
-      window.alert('No Subprocess selected!');
+      //window.alert('No Subprocess selected!');
+      this.showSnackBar('No Subprocess selected!', 'red');
     } else {
       terms.forEach(element => {
         this.showOverlay();
@@ -522,6 +543,7 @@ export class ModelerComponent implements OnInit {
   private loadBPMN() {
     this.modeler.importXML(this.newDiagramXML, this.handleError);
     this.loadedCompletely.emit();
+    this.showSnackBar('loaded successfully', 'limegreen');
     return;
 
 // // console.log('load', this.url, this.store);
