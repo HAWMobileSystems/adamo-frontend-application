@@ -249,4 +249,22 @@ export class ApiService {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/update', {role: role, pid: pid}, options)
       .map((response: Response) => response.json());
   }
+
+  //Delete partModel
+  public partModelDelete(mid: number, version: string) {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/delete', {mid: mid, version: version}, options)
+      .map((response: Response) => response.json());
+  }
+
+  //Create partModel
+  public partModelCreate(mid: string, version: string, pmid: string) {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/create', {mid: mid, version: version, pmid: pmid}, options)
+      .map((response: Response) => response.json());
+  }
+
+  //get partModels
+  public getPartModelUsage(pmid: string) {
+    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/usage', {pmid: pmid}, options)
+      .map((response: Response) => response.json());
+  }
 }
