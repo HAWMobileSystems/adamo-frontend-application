@@ -14,7 +14,7 @@ export class ModelLoaderComponent {
   @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
   private selected: any;
   private newModel: any;
-  private models: any;
+  private models: any = [];
   private changesLast7Day: any;
   private diskModelName: string;
   private diskModelXml: string;
@@ -44,13 +44,13 @@ export class ModelLoaderComponent {
   }
 
   public ngOnInit() {
-    this.getAllModels();
-    this.getLatestChanges();
     this.apiService.login_status()
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient(response.email);
             this.initMqtt();
+            this.getAllModels();
+            this.getLatestChanges();
           } else {
             console.error(response);
           }
