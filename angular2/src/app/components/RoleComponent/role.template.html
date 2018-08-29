@@ -41,26 +41,30 @@
 
 
         <form>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="rolename">Rolename</label>
-                <input required type="text" class="form-control" id="rolename" placeholder="Rolename" name="role" [(ngModel)]="selected.role">
-            </div>
 
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="read">Read</label>
-                <input required type="checkbox" class="form-control" id="read" name="read" [(ngModel)]="selected.read">
+                <div class="form-group form-inline row">
+                    <label class="col-md-4" style="text-align: left" for="rolename">Rolename</label>
+                    <input required type="text" class="col-md-6" id="rolename" placeholder="Rolename" name="role" [(ngModel)]="selected.role">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4" style="text-align: left" for="read">Read</label>
+                    <input required type="checkbox" class="col-md-8" name="read" [(ngModel)]="selected.read">
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4" style="text-align: left" for="write">Write</label>
+                    <input required type="checkbox" class="col-md-8"  name="write" [(ngModel)]="selected.write">
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4" style="text-align: left" for="admin">Admin</label>
+                    <input required type="checkbox" class="col-md-8" name="admin" [(ngModel)]="selected.admin">
+                </div>
+
+            <div class="row"> 
+                <button *ngIf="selected.rid === ''" type="submit" class="btn btn-success" (click)="roleCreate()">Create</button>
+                <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-primary" (click)="roleUpdate()">Change</button>
+                <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-danger" (click)="roleDelete()">Delete</button>
             </div>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="write">Write</label>
-                <input required type="checkbox" class="form-control" id="write" name="write" [(ngModel)]="selected.write">
-            </div>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="admin">Admin</label>
-                <input required type="checkbox" class="form-control" id="admin" name="admin" [(ngModel)]="selected.admin">
-            </div>
-            <button *ngIf="selected.rid === ''" type="submit" class="btn btn-success" (click)="roleCreate()">Create</button>
-            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-primary" (click)="roleUpdate()">Change</button>
-            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-danger" (click)="roleDelete()">Delete</button>
         </form>
     </div>
 </div>
