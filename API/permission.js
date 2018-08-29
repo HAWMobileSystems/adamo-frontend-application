@@ -151,7 +151,7 @@ router.post('/update', function (req, res) {
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
  *                      HTTP/1.1 404 Failure
- *                      {status: 'Permission does not exist', success: false}
+ *                      {status: 'Permission does not exist', success: true}
  */
 router.post('/delete', function (req, res) {
 
@@ -166,7 +166,7 @@ router.post('/delete', function (req, res) {
         console.log('data is ', data);
         res.send({status: 'Permission deleted successfully', success: true});
       } else {
-        res.status(404).send({status: 'Permission does not exist', success: false})
+        res.status(404).send({status: 'Permission does not exist', success: true})
       }
     })
     .catch(function (error) {

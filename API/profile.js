@@ -164,7 +164,7 @@ router.post('/update', function (req, res) {
  *                      HTTP/1.1 401 Failure
  *                      {status: 'User profile cannot be deleted as it is used by other users', success: false}
  *                      HTTP/1.1 404 Failure
- *                      {status: 'User profile does not exist', success: false}
+ *                      {status: 'User profile does not exist in the database', success: true}
  */
 router.post('/delete', function (req, res) {
 
@@ -188,7 +188,7 @@ router.post('/delete', function (req, res) {
                 res.status(401).send({status: 'User profile cannot be deleted as it is used by other users', success: false});
             })
     } else {
-        res.status(404).send({status: 'User profile does not exist', success: false})
+        res.status(404).send({status: 'User profile does not exist in the database', success: true})
      }
     })
     .catch(function (error) {
