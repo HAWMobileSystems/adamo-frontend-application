@@ -30,10 +30,8 @@ export class Evaluator {
   private modeler: any = require('bpmn-js/lib/Modeler.js');
   private rootxml : string;
   private rootID : string;
-  //private xmls : String[];
   private xmls : ModelElement[] = [];
   private variables: Variable[] = [];
- // private varValMap : any = {};
 
   private modelerComponent : ModelerComponent;
   private containerRef: string = '#js-canvas';
@@ -63,9 +61,10 @@ export class Evaluator {
     SUBPROCESS: 'ipim_subprocess'
   };
 
+  //Creates a new hidden modeler for the evaluation process!
   private createNewModeler() {
     this.modeler = new this.modeler({
-      container: '#evaluatorCanvas',
+      container: '#evaluatorCanvas',  //place the modeler in a special predefined hidden div in html
       propertiesPanel: {
         parent: this.propsPanelRef
       },
@@ -91,17 +90,23 @@ export class Evaluator {
     this.zipArray = [];
     this.xmls = [];
     this.xmls.push(new ModelElement(root.model.name, id, xml));
+    //Show Overlay to signal the user that the process is running
     this.root.showOverlay();
+    //create a new Modeler for evaluation
     this.createNewModeler();
+    //special function call to manage the async process
     this.executeAsyncStuff(xml);
   }
 
   public async executeAsyncStuff(xml: string) {
+    //first get all submodels used by the process or any subprocess and wait until the last request is finished
     await this.getAllSubmodels(xml);
     console.log('ModelsAfterSubModels', this.xmls);
+    //after all models are received, extract all terms from it
     await this.getCombinedTermList(this.xmls);
   }
 
+  //Takes all files evaluated and prepares them for a zip download
   public createZipDownload() {
     const zip = new JSZip();
 
@@ -112,19 +117,21 @@ export class Evaluator {
     });
 
     zip.generateAsync({type: 'blob'}).then( (blob: Blob) => { // 1) generate the zip file
-      FileSaver.saveAs(blob, this.root.model.name + '.zip');                          // 2) trigger the download
+      FileSaver.saveAs(blob, this.root.model.name + '.zip');  // 2) trigger the download
     }, (err) => {
       console.log('could not create zip');
     });
 
   }
 
+  //Central function for evluation ... works through an array but waits for the prior element to finish its callback!
   private async asyncForEach(array: any[], callback: any) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
+  //recursive function that retrievs all subprocesses in a diagram and calls itself again for all new diagramms
   public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
     const currentSubprocesses: string[] = await this.extractSubmodels(xml);
@@ -143,10 +150,12 @@ export class Evaluator {
     });
   }
 
+  //get the model form the database but wait for it to finish
   public async getXMLFromDB(id : string): Promise<ModelElement> {
      return await this.apiService.getModelAsync(id).then( (value : ModelElement) => {return value; });
   }
 
+  //import a file form the modeler but wait for the function to finish
   public async importFromXML(xml: string): Promise<void> {
     return new Promise<void>( resolve => {
       this.modeler.importXML(xml, (err: any) => {
@@ -155,6 +164,7 @@ export class Evaluator {
     });
   }
 
+  //export the xml string form the modeler but wait for it to finish!
   public async exportFromModeler(): Promise<string> {
     return new Promise<string>( resolve => {
       this.modeler.saveXML({format: true}, (err: any, xml: any) => {
@@ -163,6 +173,7 @@ export class Evaluator {
     });
   }
 
+  //takes an xml string and tries to find any referenced subprocesses, return them as string array with respective ids
   public async extractSubmodels(xml : string): Promise<string[]> {
 
     await this.importFromXML(xml);
@@ -195,6 +206,7 @@ export class Evaluator {
     return subprocesses;
   }
 
+  //walks through an array of xml documents and extracts any variable that is unique, returns them as an array of ModelElement
   public async getCombinedTermList(xmlList: ModelElement[]): Promise<void> {
 
     this.variables = [];
@@ -232,11 +244,14 @@ export class Evaluator {
         }
       }
     });
+    //remove Overlay we are ready
     this.root.hideOverlay();
+    //prepare modal to edit variables and show it
     this.root.evaluatorModal.setProps(this.modeler, this.root, this.variables);
     this.root.evaluatorModal.modal.open();
   }
 
+  //adds a Variable to the array ... but only if it is unique
   public addVar(name: string, value: string, meta: boolean): void {
     if (this.variables.some(e => e.name === name)) {
       //We already have it so do nothing!
@@ -246,6 +261,7 @@ export class Evaluator {
     }
   }
 
+  //starts after user finishes variable input, evaluates all models
   public async evaluateProcesses(variables: Variable[]): Promise<void> {
 
     const varValMap = {};
@@ -292,8 +308,10 @@ export class Evaluator {
           }
         }
       }
+      //model is evaluated, push it zip file
       this.zipArray.push(new ModelElement(element.name, element.id, await this.exportFromModeler() ));
     });
+    //all models finished, create zip and remove overlay
     this.createZipDownload();
     this.root.hideOverlay();
   }
