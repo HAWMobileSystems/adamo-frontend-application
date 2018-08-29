@@ -121,21 +121,22 @@ router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 
-
-/*
-* URL:              /all
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
+/**
+ * @api                 {get} /model/all all
+ * @apiDescription      Requests all models from the database.
+ *                      The order of the models and the correspong version is 
+ *                      ascending reagrding the model name and descending reagrding the versions.
+ * @apiName             all
+ * @apiGroup            model
+ * @apiSuccess          {Array} data Array of models
+ * @apiSuccessExample   Success-Response:
+ *                      HTTP/1.1 200 OK
+ *                      [1, 2, 3, 4, 5, ...]
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.get('/all', function (req, res) {
 
   db.query('' +
@@ -147,11 +148,22 @@ router.get('/all', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send( {status: 'Something went wrong', success: false});
     });
 });
 
 
+/**
+ * @api                 {post} /model/close close
+ * @apiDescription      Removes users from open models.
+ * @apiName             close
+ * @apiGroup            model
+ * @apiParam            {Int} modelid Mandatory modelid of a model
+ * @apiParam            {Int} version Mandatory version of a model
+ * @apiSuccess          message collaborator removed
+ * @apiSuccessExample   Success-Response:
+ *                      {message: 'collaborator removed'}
+ */
 router.post('/close', function (req, res) {
   if (!req.body.mid) {
     res.status(400).send({status: 'Model name may not be empty!'});
@@ -161,25 +173,26 @@ router.post('/close', function (req, res) {
     res.status(400).send({status: 'Version name may not be empty!'});
     return;
   }
-
   // removeFromOpenModels(req.body.mid, req.body.version, req.session.user.email);
   res.send({message: 'collaborator removed'});
 });
 
-/*
-* URL:              /getModel
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
 
+/**
+ * @api                 {post} /model/getModel getModel
+ * @apiDescription      Shows one model from the database.
+ * @apiName             getModel
+ * @apiGroup            model
+ * @apiParam            {Int} modelid Mandatory modelid of a model
+ * @apiSuccess          {Array} data Array of models
+ * @apiSuccessExample   Success-Response:
+ *                      HTTP/1.1 200 OK
+ *                      [1, 2, 3, 4, 5, ...]
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/getModel', function (req, res) {
   if (!req.body.mid) {
     res.status(400).send({status: 'Model name may not be empty!'});
@@ -208,7 +221,7 @@ router.post('/getModel', function (req, res) {
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Database not available'});
+        res.status(400).send({status: 'Something went wrong', success: false});
       });
 
   } else {
@@ -224,26 +237,29 @@ router.post('/getModel', function (req, res) {
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Database not available'});
+        res.status(400).send({status: 'Something went wrong', success: false});
       });
   }
 });
 
 
-/*
-* URL:              /create
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
+/**
+ * @api                 {post} /model/create create
+ * @apiDescription      Checks if post parameters modelname and modelxml are set,
+ *                      checks if this model exists already in database,
+ *                      and if not, creates a new model.
+ * @apiName             create
+ * @apiGroup            model
+ * @apiParam            {String} modelname Mandatory name of a model
+ * @apiParam            {String} modelxml Mandatory xml of a model
+ * @apiSuccess          status Model created successfully
+ * @apiSuccessExample   Success-Response:
+ *                      {status: 'Model created successfully', success: true}
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/create', function (req, res) {
 
   if (!req.body.modelname) {
@@ -279,31 +295,33 @@ router.post('/create', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Database not available'});
+            res.status(400).send({status: 'Something went wrong', success: false});
           });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
 
-/*
-* URL:              /update
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
+/**
+ * @api                 {post} /model/update update
+ * @apiDescription      Checks if post parameter modelname is set,
+ *                      checks if this model exists already in database,
+ *                      and if not, updates the selected model.
+ * @apiName             update
+ * @apiGroup            model
+ * @apiParam            {String} modelname Mandatory name of a model
+ * @apiSuccess          status Model updated successfully
+ * @apiSuccessExample   Success-Response:
+ *                      {status: 'Model updated successfully', success: true}
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.post('/update', function (req, res) {
 
   if (!req.body.modelname) {
@@ -330,31 +348,42 @@ router.post('/update', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Database not available'});
+            res.status(400).send({status: 'Something went wrong', success: false});
           });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
 
-/*
-* URL:              /delete
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
+/**
+ * @api                 {post} /model/delete delete
+ * @apiDescription      Checks if post parameter modelid is set,
+ *                      checks if it is used by a user, 
+ *                      if not, checks if it still maintained as a partial model
+ *                      and if not, deletes the selected model.
+ * @apiName             delete
+ * @apiGroup            model
+ * @apiParam            {Int} modelid Mandatory modelid of a model
+ * @apiSuccess          status Model deleted successfully
+ * @apiSuccessExample   Success-Response:
+ *                      {status: 'Model deleted successfully', success: true}
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Model could not be deleted', success: false}
+ *                      HTTP/1.1 401 Failure
+ *                      {status: 'Model cant be deleted while someone is modelling it', success: false}
+ *                      HTTP/1.1 401 Failure
+ *                      {status: 'Model cannot be deleted as it is maintained as a partial model', success: false}
+ *                      HTTP/1.1 404 Failure
+ *                      {status: 'Model does not exist in the database', success: true}
+ */
 router.post('/delete', function (req, res) {
 
   if (!req.body.mid) {
@@ -366,10 +395,10 @@ router.post('/delete', function (req, res) {
 
   if (openModels.hasOwnProperty(mid)) {
     if (!version) {
-      res.status(400).send({status: 'Model cant be deleted while someone is modelling it', success: false});
+      res.status(401).send({status: 'Model cant be deleted while someone is modelling it', success: false});
       return
     } else if (openModels[mid].hasOwnProperty(version)) {
-      res.status(400).send({status: 'Model version cant be deleted while someone is modelling it', success: false});
+      res.status(401).send({status: 'Model version cant be deleted while someone is modelling it', success: false});
       return
     }
   }
@@ -392,15 +421,15 @@ router.post('/delete', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({status: 'Model cannot be deleted as it is maintained as a partial model'});
+            res.status(401).send({status: 'Model cannot be deleted as it is maintained as a partial model', success: false});
           });
       } else {
-        res.status(400).send({status: 'Model does not exist'});
+        res.status(404).send({status: 'Model does not exist in the database', success: true});
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
   } else {
     db.oneOrNone('' +
@@ -423,34 +452,35 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Model could not be deleted'});
+              res.status(400).send({status: 'Model could not be deleted', success: false});
             });
         } else {
-          res.status(400).send({status: 'Model does not exist'});
+          res.status(404).send({status: 'Model does not exist in the database', success: true});
         }
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Database not available'});
+        res.status(400).send({status: 'Something went wrong', success: false});
       });
   }
 });
 
 
-/*
-* URL:              /changes
-* Method:           get
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:      
-* */
-
+/**
+ * @api                 {get} /model/changes changes
+ * @apiDescription      Requests all models that were changed the last 7 days.
+ *                      The order of the models will be shown desecnding regarding the last 7 days. 
+ * @apiName             changes
+ * @apiGroup            model
+ * @apiSuccess          {Array} data Array of models
+ * @apiSuccessExample   Success-Response:
+ *                      HTTP/1.1 200 OK
+ *                      [1, 2, 3, 4, 5, ...]
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ */
 router.get('/changes', function (req, res) {
 
   db.query('' +
@@ -464,25 +494,34 @@ router.get('/changes', function (req, res) {
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({status: 'Database not available'});
+      res.status(400).send({status: 'Something went wrong', success: false});
     });
 });
 
 
-/*
-* URL:              /upsert
-* Method:           post
-* URL Params:
-*   Required:       none
-*   Optional:       none
-* Data Params:
-*   Required:       none
-*   Optional:       none
-* Success Response: Code 200, Content: {message: [string], success: [bool], data: [object]}
-* Error Response:   Code 400, Content: {message: [string], success: [bool]}
-* Description:
-* */
-
+/**
+ * @api                 {post} /model/upsert upsert
+ * @apiDescription      Checks if post parameters modelid, version, modelxml and modelname are set,
+ *                      checks if the selected model has some changes to save,
+ *                      and if so, saves the selected model with a new version one level deeper. 
+ *                      A model with version 1 is then saved with version 1.1, this one is then saved with 1.1.1 and so on. 
+ *                      The current version level is defined at 3, this means a version can at least be 1.1.1.1 and no level deeper.  
+ * @apiName             upsert
+ * @apiGroup            model
+ * @apiParam            {Int} modelid Mandatory modelid of a model
+ * @apiParam            {Int} version Mandatory version of a model
+ * @apiParam            {String} modelxml Mandatory xml of a model
+ * @apiParam            {String} modelname Mandatory name of a model
+ * @apiSuccess          status Model upserted successfully
+ * @apiSuccessExample   Success-Response:
+ *                      {status: 'Model upserted successfully', success: true}
+ * @apiError            error Something went wrong
+ * @apiErrorExample     Error-Response:
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Something went wrong', success: false}
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Max Subversion number reached', success: false}
+ */
 router.post('/upsert', function (req, res) {
 
   if (!req.body.mid) {
@@ -588,7 +627,7 @@ router.post('/upsert', function (req, res) {
                 res.send({status: 'Next Version already exists', success: false});
               } else {
                 console.log('ERROR POSTGRES:', error);
-                res.status(400).send({status: 'Database not available'});
+                res.status(400).send({status: 'Something went wrong', success: false});
               }
             });
         }
@@ -597,7 +636,7 @@ router.post('/upsert', function (req, res) {
         }
       } else {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({status: 'Database not available', success: false});
+        res.status(400).send({status: 'Something went wrong', success: false});
       }
     });
 });
