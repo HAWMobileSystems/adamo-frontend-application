@@ -20,6 +20,7 @@ export class ModellerPageComponent implements OnInit {
   public permission: number;
   public xml: string = IPIM_OPTIONS.NEWMODEL;
   public models: Model[] = [];
+  public snackbarTextPage: string = '';
 
   constructor(private apiService: ApiService, private mqttService: MqttService) {
   }
@@ -73,6 +74,10 @@ export class ModellerPageComponent implements OnInit {
     this.page = '+';
   }
 
+  public loadError(error: any): void {
+    this.showSnackBarPage('Error: ' + JSON.parse(error._body).status, 'red');
+  }
+
   //Show previous versions of a model, if the last one was selected
   public onLoadModel(model: Model): void {
     model.collaborator = [];
@@ -104,4 +109,17 @@ export class ModellerPageComponent implements OnInit {
     this.loading = false;
     console.log('loading complected');
   }
+
+  //simple function to show a snackbar with variable text and color
+  public showSnackBarPage(text: string, color: string) {
+    //set text so the angular component can update
+    this.snackbarTextPage = text;
+    //get snackbar HTML element
+    const x = document.getElementById('snackbarPage');
+    //set color and class
+    x.style.backgroundColor = color;
+    x.className = 'show';
+    //show it for 3 seconds
+    setTimeout(() => { x.className = x.className.replace('show', ''); }, 3000);
+}
 }

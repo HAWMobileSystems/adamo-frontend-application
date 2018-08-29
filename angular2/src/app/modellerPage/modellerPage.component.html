@@ -38,7 +38,7 @@
 
     <!--Models-->
     <div class="col-md-8 col-md-offset-2" [hidden]="page!=='+'">
-        <modelloader (loadModel)="onLoadModel($event)"></modelloader>
+        <modelloader (loadModel)="onLoadModel($event)" (loadError)="loadError($event)"></modelloader>
     </div>
     <modeler (loadedCompletely)="onLoadedCompletely($event)" (exportModel)="onExportModel($event)" (loadSubProcess)="onLoadSubProcess($event)"
              *ngFor="let model of models" [hidden]="page !== model.id + '_' + model.version" [modelId]="'model_'+model.id + '_' + model.version"
@@ -69,3 +69,5 @@
         </div>
     </div>
 </div>
+
+<div id="snackbarPage">{{snackbarTextPage}}</div>
