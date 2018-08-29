@@ -411,6 +411,8 @@ router.post('/delete', function (req, res) {
     .then(function (data) {
       if (data) {
         db.query('' +
+          'DELETE FROM partialmodel ' +
+          'WHERE mid = $1; ' +
           'DELETE FROM permission ' +
           'WHERE mid = $1; ' +
           'DELETE FROM model ' +
@@ -421,7 +423,7 @@ router.post('/delete', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(401).send({status: 'Model cannot be deleted as it is maintained as a partial model', success: false});
+            res.status(401).send({status: 'Model cannot be deleted as it has still permissions', success: false});
           });
       } else {
         res.status(404).send({status: 'Model does not exist in the database', success: true});
@@ -440,6 +442,9 @@ router.post('/delete', function (req, res) {
       .then(function (data) {
         if (data) {
           db.oneOrNone('' +
+            'DELETE FROM partialmodel ' +
+            'WHERE mid = $1' +
+            'AND version = $2; ' +
             'DELETE FROM permission ' +
             'WHERE mid = $1' +
             'AND version = $2; ' +
@@ -452,7 +457,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({status: 'Model could not be deleted', success: false});
+              res.status(400).send({status: 'Model could not be deleted', success: false, error: error});
             });
         } else {
           res.status(404).send({status: 'Model does not exist in the database', success: true});

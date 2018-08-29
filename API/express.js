@@ -15,7 +15,7 @@ const roleRouter = require('./role');
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');  //REMEMBER!
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');  //TODO edit for productive environment!
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

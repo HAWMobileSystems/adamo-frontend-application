@@ -104,9 +104,13 @@ export class PermissionComponent {
     this.getAllUsers();
     this.getAllModels();
     this.mqttService.getClient().subscribe('PERMISSION');
-    this.mqttService.getClient().on('message', function (topic: any, message: any) {
-      this.getAllModels();
-      this.getAllUsers();
+    const self = this;
+    this.mqttService.getClient().on('message', (topic: any, message: any) => {
+      if (topic === 'PERMISSION') {
+      console.log('PermissonMQTT');
+      self.getAllModels();
+      self.getAllUsers();
+      }
     });
   }
 

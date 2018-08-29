@@ -32,8 +32,10 @@ export class RoleComponent {
     this.mqttService.getClient().subscribe('administrations/role');
     const i = this;
     this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      console.log('Test from remote:' + message.toString());
-      i.getAllRoles();
+      if (topic.startsWith('administrations/role')) {
+        console.log('Test from remote:' + message.toString());
+        i.getAllRoles();
+      }
     });
   }
 
@@ -61,7 +63,7 @@ export class RoleComponent {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -79,7 +81,7 @@ export class RoleComponent {
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -97,7 +99,7 @@ export class RoleComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/role');
+            this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);

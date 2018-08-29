@@ -38,8 +38,10 @@ export class UserComponent {
     this.mqttService.getClient().subscribe('administrations/user');
     const i = this;
     this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      console.log('Test from remote:' + message.toString());
-      i.getAllUsers();
+      if (topic.startsWith('administrations/user')) {
+        console.log('Test from remote:' + message.toString());
+        i.getAllUsers();
+      }
     });
   }
 
@@ -96,7 +98,7 @@ export class UserComponent {
             this.selected.profile)
             .subscribe(response => {
                     if (response.success) {
-                        this.mqttService.getClient().publish('administrations/user');
+                        this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
                         this.alertService.success(response);
                         this.alertService.success(response.status);
                         console.log(response);
@@ -117,7 +119,7 @@ export class UserComponent {
     this.apiService.userPassword(this.selected.uid, this.selected.password)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/user');
+            this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.alertService.success(response);
             this.alertService.success(response.status);
             console.log(response);
@@ -142,7 +144,7 @@ export class UserComponent {
               .subscribe(response => {
                       console.log('debug');
                       if (response.success) {
-                          this.mqttService.getClient().publish('administrations/user');
+                          this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
                           this.alertService.success(response.status);
                           console.log(response);
                       } else {
@@ -163,7 +165,7 @@ export class UserComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/user');
+            this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.alertService.success('User successfully deleted');
 
             //console.log(response);

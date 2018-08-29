@@ -29,8 +29,10 @@ export class ModelComponent {
     this.mqttService.getClient().subscribe('administration/model/#');
     const i = this;
     this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      console.log('Test from remote:' + message.toString());
-      i.getAllModels();
+        if (topic.startsWith('administration/model')) {
+        console.log('Test from remote:' + message.toString());
+        i.getAllModels();
+      }
     });
   }
 
@@ -63,7 +65,7 @@ export class ModelComponent {
       this.selected.version)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administration/model/update');
+            this.mqttService.getClient().publish('administration/model/update', JSON.stringify({}));
             this.alertService.success(response.status);
           }
         },
@@ -78,7 +80,7 @@ export class ModelComponent {
     this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administration/model/create');
+            this.mqttService.getClient().publish('administration/model/create', JSON.stringify({}));
             this.alertService.success(response.status);
           }
         },
@@ -98,10 +100,6 @@ export class ModelComponent {
               mid: this.selected.mid,
               version: this.selected.version
             }));
-            this.apiService.partModelDelete(this.selected.mid, this.selected.version)
-            .subscribe(response => {
-              console.log(response);
-            });
             this.alertService.success(response.status);
           }
         },

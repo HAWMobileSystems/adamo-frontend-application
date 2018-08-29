@@ -29,11 +29,13 @@ export class ProfileComponent {
 
     this.getAllProfiles();
 
-    this.mqttService.getClient().subscribe('administrations/Role');
+    this.mqttService.getClient().subscribe('administrations/Profile');
     const i = this;
     this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      console.log('Test from remote:' + message.toString());
-      i.getAllProfiles();
+      if (topic.startsWith('administrations/Profile')) {
+        console.log('Test from remote:' + message.toString());
+        i.getAllProfiles();
+      }
     });
   }
 
@@ -61,7 +63,7 @@ export class ProfileComponent {
     this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/Role');
+            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -78,7 +80,7 @@ export class ProfileComponent {
     this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/Role');
+            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);
@@ -96,7 +98,7 @@ export class ProfileComponent {
       .subscribe(response => {
           console.log(response);
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/Role');
+            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.alertService.success(response.status);
           } else {
             this.alertService.error(response._body);

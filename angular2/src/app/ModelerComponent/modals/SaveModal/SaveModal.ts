@@ -39,8 +39,20 @@ export class SaveModal extends ModalComponent {
     this.version4 = bigInt(model.version).and(bigInt('000000000000FFFF', 16));
   }
   public saveSuperVersion() {
-    //REMEMBER!
-    console.log(2);
+    this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
+    .subscribe(response => {
+      if (response.status === 'Next Version already exists') {
+        this.alsoExists = true;
+        return;
+      }
+        this.alsoExists = false;
+        console.log(response);
+        this.saveSubProcesses();
+        this.modal.close();
+      },
+      error => {
+        console.log(error);
+      });
   }
   public saveWithVersion() {
     this.model.version =

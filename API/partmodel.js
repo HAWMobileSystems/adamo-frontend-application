@@ -152,7 +152,7 @@ router.post('/delete', function (req, res) {
             console.log('data is ', data);
             res.status(200).send({status: 'Partial model deleted successfully', success: true});
         } else {
-            res.status(404).send({status: 'No partial models exist in this diagram version', success: true});
+            res.status(200).send({status: 'No partial models exist in this diagram version', success: true});
         }
     })
     .catch(function (error) {
