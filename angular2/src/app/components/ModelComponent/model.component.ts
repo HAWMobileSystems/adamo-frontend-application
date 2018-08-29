@@ -17,6 +17,7 @@ export class ModelComponent {
   }
 
   public ngOnInit() {
+    //defines the structure for a new empty model
     this.newModel = {
       modelname: '',
       version: '',
@@ -33,6 +34,7 @@ export class ModelComponent {
     });
   }
 
+  //gets a list of all models from DB
   public getAllModels() {
     this.models = [];
 
@@ -51,6 +53,7 @@ export class ModelComponent {
         });
   }
 
+  //updates the selected model
   public modelUpdate() {
     this.apiService.modelUpdate(
       this.selected.mid,
@@ -70,6 +73,7 @@ export class ModelComponent {
         });
   }
 
+  //creates a new model
   public modelCreate() {
     this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
       .subscribe(response => {
@@ -84,6 +88,7 @@ export class ModelComponent {
         });
   }
 
+  //deletes the selected model
   public modelDelete() {
     this.apiService.modelDelete(this.selected.mid, this.selected.version)
       .subscribe(response => {

@@ -18,6 +18,7 @@ export class ProfileComponent {
   }
 
   public ngOnInit() {
+    //defines the structure for a new empty profile
     this.newProfile = {
       rid: '',
       profile: '',
@@ -36,6 +37,7 @@ export class ProfileComponent {
     });
   }
 
+  //gets a list of all profiles from DB
   public getAllProfiles() {
     this.profiles = [];
 
@@ -54,6 +56,7 @@ export class ProfileComponent {
         });
   }
 
+  //updates the selected profile
   public profileUpdate() {
     this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
@@ -70,6 +73,7 @@ export class ProfileComponent {
         });
   }
 
+  //creates a new profile
   public profileCreate() {
     this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
@@ -86,6 +90,7 @@ export class ProfileComponent {
         });
   }
 
+   //deletes the selected profile
   public profileDelete() {
     this.apiService.profileDelete(this.selected.rid)
       .subscribe(response => {

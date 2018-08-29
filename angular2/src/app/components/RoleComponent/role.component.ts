@@ -18,6 +18,7 @@ export class RoleComponent {
   }
 
   public ngOnInit() {
+    //defines the structure for a new empty role
     this.newRole = {
       rid: '',
       role: '',
@@ -36,6 +37,7 @@ export class RoleComponent {
     });
   }
 
+  //gets a list of all roles from DB
   public getAllRoles() {
     this.roles = [];
 
@@ -54,6 +56,7 @@ export class RoleComponent {
         });
   }
 
+  //updates the selected role
   public roleUpdate() {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
@@ -70,6 +73,7 @@ export class RoleComponent {
         });
   }
 
+  //creates a new role
   public roleCreate() {
     console.log(this.selected);
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
@@ -87,6 +91,7 @@ export class RoleComponent {
         });
   }
 
+  //deletes the selected role
   public roleDelete() {
     this.apiService.roleDelete(this.selected.rid)
       .subscribe(response => {

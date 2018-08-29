@@ -21,6 +21,7 @@ export class PermissionComponent {
   constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
   }
 
+  //selects a user that is maintained in a permission
   private selectUser(user: any) {
     this.selectedUser = user;
     if (this.selectedModel) {
@@ -28,6 +29,7 @@ export class PermissionComponent {
     }
   }
 
+  //selects a model that is maintained in a permission
   private selectModel(model: any) {
     this.selectedModel = model;
     if (this.selectedUser) {
@@ -35,6 +37,7 @@ export class PermissionComponent {
     }
   }
 
+  //creates a new permission
   private permissionCreate(uid: any, mid: any, role: any) {
     console.log(uid, mid, role);
     this.apiService.permissionCreate(uid, mid, role)
@@ -55,6 +58,7 @@ export class PermissionComponent {
         });
   }
 
+  //deletes the selected permission
   private permissionDelete(pid: any) {
     console.log(pid);
     this.apiService.permissionDelete(pid)
@@ -74,6 +78,7 @@ export class PermissionComponent {
         });
   }
 
+  //updates the selected permission
   private permissionUpdate(role: any, pid: any) {
     console.log(role, pid);
     this.apiService.permissionUpdate(role, pid)
@@ -105,6 +110,7 @@ export class PermissionComponent {
     });
   }
 
+  //gets a list of all roles from DB
   public getAllRoles() {
     this.roles = [];
     this.apiService.getAllRoles()
@@ -121,6 +127,7 @@ export class PermissionComponent {
         });
   }
 
+  //gets a list of all users from DB
   public getAllUsers() {
     this.users = [];
     this.apiService.getAllUsers()
@@ -138,6 +145,7 @@ export class PermissionComponent {
         });
   }
 
+  //gets a list of all models from DB
   public getAllModels() {
     this.models = [];
     this.apiService.getAllModels()
@@ -155,6 +163,7 @@ export class PermissionComponent {
         });
   }
 
+  //gets the permission of the selected user and model
   public getPermission(user: any, model: any) {
     this.apiService.getPermission(user, model)
       .subscribe(response => {

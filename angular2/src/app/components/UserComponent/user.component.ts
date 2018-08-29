@@ -21,6 +21,7 @@ export class UserComponent {
   }
 
   public ngOnInit() {
+    //defines the structure for a new empty user
     this.newUser = {
       uid: '',
       email: '',
@@ -42,11 +43,13 @@ export class UserComponent {
     });
   }
 
+  //checks if the email which is entered is valid or not
     private validateEmail(email: string) {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
+  //gets a list of all profiles from DB
   public getAllProfiles() {
     this.profiles = [];
 
@@ -63,6 +66,7 @@ export class UserComponent {
         });
   }
 
+  //gets a list of all users from DB
   public getAllUsers() {
     this.users = [];
 
@@ -80,6 +84,7 @@ export class UserComponent {
         });
   }
 
+  //updates the selected user
   public userUpdate() {
       //E-Mail validation Abfrage
     if (this.validateEmail(this.selected.email)) {
@@ -107,6 +112,7 @@ export class UserComponent {
     }
   }
 
+  //updates the password of the selected user
   public userPassword() {
     this.apiService.userPassword(this.selected.uid, this.selected.password)
       .subscribe(response => {
@@ -124,6 +130,7 @@ export class UserComponent {
         });
   }
 
+  //creates a new user
   public userCreate() {
       if (this.validateEmail(this.selected.email)) {
           this.apiService.userCreate(
@@ -150,6 +157,7 @@ export class UserComponent {
       }
   }
 
+  //deletes the selected user
   public userDelete() {
     this.apiService.userDelete(this.selected.uid)
       .subscribe(response => {
