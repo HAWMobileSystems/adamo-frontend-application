@@ -41,6 +41,7 @@ export class UsageModal extends ModalComponent {
     this.getSubPartModelsFromDB();
   }
 
+  //get a list of all processes that refernce this model!
   private getSubPartModelsFromDB() {
     this.apiService.getPartModelUsage(this.root.modelId.split('_')[1])
     .subscribe(response => {
