@@ -185,7 +185,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.status(401).send({status: 'Role cannot be deleted as there are still permissions maintained', success: false});
+                res.status(404).send({status: 'Role cannot be deleted as there are still permissions maintained', success: false});
             })
         } else {
             res.status(404).send({status: 'Role does not exist in the database', success: true})
