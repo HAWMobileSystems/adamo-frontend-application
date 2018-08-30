@@ -289,12 +289,13 @@ export class ModelerComponent implements OnInit {
       //set text so the angular component can update
       this.snackbarText = text;
       //get snackbar HTML element
-      const x = document.getElementById('snackbar');
+      const x = document.getElementById('snackbar-' + this.modelId);
       //set color and class
       x.style.backgroundColor = color;
-      x.className = 'show';
+      //x.className = 'show';
+      x.classList.add('show');
       //show it for 3 seconds
-      setTimeout(() => { x.className = x.className.replace('show', ''); }, 3000);
+      setTimeout(() => { x.classList.remove('show'); }, 3000);
   }
 
   //resets the diagram back to before it was evaluated
@@ -732,12 +733,12 @@ export class ModelerComponent implements OnInit {
 
   //shows an Overlay for loading purposes
   public showOverlay(): void {
-    document.getElementById('overlayLoading').style.display = 'block';
+    const x = document.getElementById('overlayLoading-' + this.modelId).style.display = 'block';
   }
 
   //hides the Overlay again
   public hideOverlay(): void {
-    document.getElementById('overlayLoading').style.display = 'none';
+    const x = document.getElementById('overlayLoading-' + this.modelId).style.display = 'none';
   }
 
   //gets the commandstack for publishing on the mqtt

@@ -26,10 +26,9 @@
 <usage-modal #usageModal>
 </usage-modal>
 
-<div id="overlayLoading" >
-    <div id="overlayLoadingText">
+<div id="{{ 'overlayLoading-' + modelId }}" class="overlayLoading" >
+    <div class="overlayLoadingText">
         Please wait loading...
-
         <div class="app-loading">
             <svg class="spinner" viewBox="25 25 50 50">
                 <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
@@ -40,4 +39,4 @@
 
 <div id="evaluatorCanvas" hidden>The evaluator should stay hidden!</div>
 
-<div id="snackbar">{{snackbarText}}</div>
+<div id="{{ 'snackbar-' + modelId }}" class="snackbar">{{snackbarText}}</div>
