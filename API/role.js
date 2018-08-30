@@ -164,7 +164,7 @@ router.post('/update', function (req, res) {
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
- *                      HTTP/1.1 401 Failure
+ *                      HTTP/1.1 400 Failure
  *                      {status: 'Role cannot be deleted as there are still permissions maintained', success: false}
  *                      HTTP/1.1 404 Failure
  *                      {status: 'Role does not exist in the database', success: true}
@@ -185,7 +185,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
                 console.log('ERROR POSTGRES:', error)
-                res.status(404).send({status: 'Role cannot be deleted as there are still permissions maintained', success: false});
+                res.status(400).send({status: 'Role cannot be deleted as there are still permissions maintained', success: false});
             })
         } else {
             res.status(404).send({status: 'Role does not exist in the database', success: true})

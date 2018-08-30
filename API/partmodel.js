@@ -50,7 +50,7 @@ router.get('/all', function (req, res) {
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
- *                      HTTP/1.1 404 Failure
+ *                      HTTP/1.1 400 Failure
  *                      {status: 'Model does not exist', success: false}
  */
 router.post('/usage', function (req, res) {

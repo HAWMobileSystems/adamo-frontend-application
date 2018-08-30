@@ -281,7 +281,7 @@ router.post('/password', function (req, res) {
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
- *                      HTTP/1.1 401 Failure
+ *                      HTTP/1.1 400 Failure
  *                      {status: 'Error while deleting user', success: false}
  *                      HTTP/1.1 404 Failure
  *                      {status: 'User does not exist in the database', success: true}
@@ -306,7 +306,7 @@ router.post('/delete', function (req, res) {
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(401).send({ status: 'Error while deleting user', success: false });
+            res.status(400).send({ status: 'Error while deleting user', success: false });
           });
       } else {
         res.status(404).send({ status: 'User does not exist in the database', success: true });

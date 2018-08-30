@@ -425,9 +425,9 @@ router.post('/update', function (req, res) {
  *                      {status: 'Something went wrong', success: false}
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Model could not be deleted', success: false}
- *                      HTTP/1.1 401 Failure
- *                      {status: 'Model cant be deleted while someone is modelling it', success: false}
- *                      HTTP/1.1 401 Failure
+ *                      HTTP/1.1 400 Failure
+ *                      {status: 'Model cannot be deleted while someone is modelling it', success: false}
+ *                      HTTP/1.1 400 Failure
  *                      {status: 'Model cannot be deleted as it is maintained as a partial model', success: false}
  *                      HTTP/1.1 404 Failure
  *                      {status: 'Model does not exist in the database', success: true}
@@ -443,10 +443,10 @@ router.post('/delete', function (req, res) {
 
   if (openModels.hasOwnProperty(mid)) {
     if (!version) {
-      res.status(401).send({ status: 'Model cant be deleted while someone is modelling it', success: false });
+      res.status(400).send({ status: 'Model cannot be deleted while someone is modelling it', success: false });
       return
     } else if (openModels[mid].hasOwnProperty(version)) {
-      res.status(401).send({ status: 'Model version cant be deleted while someone is modelling it', success: false });
+      res.status(400).send({ status: 'Model version cannot be deleted while someone is modelling it', success: false });
       return
     }
   }
@@ -471,7 +471,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(401).send({ status: 'Model cannot be deleted as it has still permissions', success: false });
+              res.status(400).send({ status: 'Model cannot be deleted as it has still permissions', success: false });
             });
         } else {
           res.status(404).send({ status: 'Model does not exist in the database', success: true });

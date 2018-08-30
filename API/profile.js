@@ -161,7 +161,7 @@ router.post('/update', function (req, res) {
  * @apiErrorExample     Error-Response:
  *                      HTTP/1.1 400 Failure
  *                      {status: 'Something went wrong', success: false}
- *                      HTTP/1.1 401 Failure
+ *                      HTTP/1.1 400 Failure
  *                      {status: 'User profile cannot be deleted as it is used by other users', success: false}
  *                      HTTP/1.1 404 Failure
  *                      {status: 'User profile does not exist in the database', success: true}
@@ -185,7 +185,7 @@ router.post('/delete', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error)
-                res.status(401).send({status: 'User profile cannot be deleted as it is used by other users', success: false});
+                res.status(400).send({status: 'User profile cannot be deleted as it is used by other users', success: false});
             })
     } else {
         res.status(404).send({status: 'User profile does not exist in the database', success: true})
