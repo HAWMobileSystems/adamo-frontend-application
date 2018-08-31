@@ -133,11 +133,11 @@
 }
 
 .modal-body {
-	padding: 2px 16px;
-	}
+    padding: 2px 16px;
+}
 	
 .modal-body-scroll {
-	height: 60vh;
+	height: 40vh;
     overflow-y: auto;
 }
 

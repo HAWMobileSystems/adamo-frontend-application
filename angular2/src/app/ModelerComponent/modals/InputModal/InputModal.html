@@ -5,7 +5,7 @@
     </modal-header>
     <modal-body>
       <p>Please specify the values used:</p>
-      <form>
+      <form class="modal-body-scroll">
         <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
         <fieldset id="inputfset">
           <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
