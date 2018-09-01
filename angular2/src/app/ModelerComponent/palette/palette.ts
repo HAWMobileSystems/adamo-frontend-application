@@ -1,14 +1,16 @@
 export function PaletteProvider(
-    palette: any, create: any, elementFactory: any, spaceTool: any, lassoTool: any, extraPaletteEntries: any, commandQueue: any) {
+    palette: any, create: any, elementFactory: any, spaceTool: any, lassoTool: any, handTool: any, globalConnect: any, extraPaletteEntries: any, commandQueue: any) {
     this._create = create;
     this._elementFactory = elementFactory;
     this._spaceTool = spaceTool;
     this._lassoTool = lassoTool;
+    this._handTool = handTool;
+    this._globalConnect = globalConnect;
     this._extraPaletteEntries = extraPaletteEntries;
     this._commandQueue = commandQueue;
     palette.registerProvider(this);
 }
-PaletteProvider['$inject'] = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'extraPaletteEntries', 'commandQueue'];
+PaletteProvider['$inject'] = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'handTool', 'globalConnect', 'extraPaletteEntries', 'commandQueue'];
 
 PaletteProvider.prototype.getPaletteEntries = function (element: any) {
     const self = this;
@@ -18,7 +20,9 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
     const elementFactory = this._elementFactory;
     const spaceTool = this._spaceTool;
     const lassoTool = this._lassoTool;
+    const handTool = this._handTool;
     const extraPaletteEntries = this._extraPaletteEntries;
+    const globalConnect = this._globalConnect;
     const commandQueue = this._commandQueue;
 
     console.log('Palette-provider: extraPaletteEntries=', extraPaletteEntries);
@@ -92,6 +96,16 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
             group: 'view',
             separator: true
         },
+        'hand-tool': {
+            group: 'advanced',
+            className: 'bpmn-icon-hand-tool',
+            title: 'Activate the hand tool',
+            action: {
+              click: (event: any) => {
+                handTool.activateHand(event);
+              }
+            }
+        },
         'lasso-tool': {
             group: 'advanced',
             className: 'bpmn-icon-lasso-tool',
@@ -112,6 +126,16 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 }
             }
         },
+        'global-connect-tool': {
+            group: 'advanced',
+            className: 'bpmn-icon-connection-multi',
+            title: 'Activate the global connect tool',
+            action: {
+              click: (event: any) => {
+                globalConnect.toggle(event);
+              }
+            }
+        },
         'create.start-event': createAction(
             'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
         ),
@@ -120,6 +144,18 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         ),
         'create.end-event': createAction(
             'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none'
+        ),
+        'create.exclusive-gateway': createAction(
+            'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-none'
+        ),
+        'create.task': createAction(
+            'bpmn:Task', 'activity', 'bpmn-icon-task'
+        ),
+        'create.data-object': createAction(
+            'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object'
+        ),
+        'create.data-store': createAction(
+            'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store'
         ),
         'tool-separator-event': {
             group: 'event',
