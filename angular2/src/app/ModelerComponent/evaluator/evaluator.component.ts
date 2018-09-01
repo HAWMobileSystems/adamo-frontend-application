@@ -95,10 +95,10 @@ export class Evaluator {
     //create a new Modeler for evaluation
     this.createNewModeler();
     //special function call to manage the async process
-    this.executeAsyncStuff(xml);
+    this.executeAsyncEvaluation(xml);
   }
 
-  public async executeAsyncStuff(xml: string) {
+  public async executeAsyncEvaluation(xml: string) {
     //first get all submodels used by the process or any subprocess and wait until the last request is finished
     await this.getAllSubmodels(xml);
     console.log('ModelsAfterSubModels', this.xmls);
