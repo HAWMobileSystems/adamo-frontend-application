@@ -295,7 +295,7 @@ export class ModelerComponent implements OnInit {
       //x.className = 'show';
       x.classList.add('show');
       //show it for 3 seconds
-      setTimeout(() => { x.classList.remove('show'); }, 3000);
+      setTimeout(() => { x.classList.remove('show'); }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
   }
 
   //resets the diagram back to before it was evaluated

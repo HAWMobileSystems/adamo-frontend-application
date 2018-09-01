@@ -120,6 +120,6 @@ export class ModellerPageComponent implements OnInit {
     x.style.backgroundColor = color;
     x.className = 'show';
     //show it for 3 seconds
-    setTimeout(() => { x.className = x.className.replace('show', ''); }, 3000);
+    setTimeout(() => { x.className = x.className.replace('show', ''); }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
 }
 }

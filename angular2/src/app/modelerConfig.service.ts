@@ -3,6 +3,7 @@ export const IPIM_OPTIONS = {
     COLORS: ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson'],
     EXPRESSJS_CONNECTION: 'http://localhost:3000',
     MQTT_CONNECTION: 'mqtt://localhost:4711',
+    TIMEOUT_SNACKBAR: 10000,
     NEWMODEL: '' +
     '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
     'e" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/201005' +
