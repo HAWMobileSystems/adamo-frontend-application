@@ -94,7 +94,6 @@ export class ModelComponent {
   public modelDelete() {
     this.apiService.modelDelete(this.selected.mid, this.selected.version)
       .subscribe(response => {
-          console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/delete', JSON.stringify({
               mid: this.selected.mid,

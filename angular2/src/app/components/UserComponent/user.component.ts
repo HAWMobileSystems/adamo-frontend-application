@@ -99,7 +99,6 @@ export class UserComponent {
             .subscribe(response => {
                     if (response.success) {
                         this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                        this.snackbarService.success(response);
                         this.snackbarService.success(response.status);
                         console.log(response);
                     } else {
@@ -120,7 +119,6 @@ export class UserComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-            this.snackbarService.success(response);
             this.snackbarService.success(response.status);
             console.log(response);
           } else {
@@ -163,13 +161,10 @@ export class UserComponent {
   public userDelete() {
     this.apiService.userDelete(this.selected.uid)
       .subscribe(response => {
-          console.log(response);
+
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.snackbarService.success('User successfully deleted');
-
-            //console.log(response);
-
           } else {
             this.snackbarService.error(response._body);
           }

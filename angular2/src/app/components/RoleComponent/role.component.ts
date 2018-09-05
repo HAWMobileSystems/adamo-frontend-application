@@ -77,7 +77,6 @@ export class RoleComponent {
 
   //creates a new role
   public roleCreate() {
-    console.log(this.selected);
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
           if (response.success) {

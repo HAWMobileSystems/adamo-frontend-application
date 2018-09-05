@@ -35,7 +35,6 @@ export class EvalModal extends ModalComponent {
     this.modeler = modeler;
     this.variables = variables;
     this.root = root;
-    console.log(variables);
   }
 
   public cancel() : void {

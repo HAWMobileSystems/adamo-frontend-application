@@ -39,7 +39,6 @@ export class PermissionComponent {
 
   //creates a new permission
   private permissionCreate(uid: any, mid: any, role: any) {
-    console.log(uid, mid, role);
     this.apiService.permissionCreate(uid, mid, role)
       .subscribe(response => {
           if (response.success) {
@@ -60,7 +59,6 @@ export class PermissionComponent {
 
   //deletes the selected permission
   private permissionDelete(pid: any) {
-    console.log(pid);
     this.apiService.permissionDelete(pid)
       .subscribe(response => {
           if (response.success) {
@@ -74,13 +72,13 @@ export class PermissionComponent {
           }
         },
         error => {
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
 
   //updates the selected permission
   private permissionUpdate(role: any, pid: any) {
-    console.log(role, pid);
     this.apiService.permissionUpdate(role, pid)
       .subscribe(response => {
           if (response.success) {
@@ -94,6 +92,7 @@ export class PermissionComponent {
           }
         },
         error => {
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }

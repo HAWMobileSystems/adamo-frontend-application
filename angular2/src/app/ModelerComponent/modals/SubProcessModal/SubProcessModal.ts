@@ -57,12 +57,13 @@ export class SubProcessModal extends ModalComponent {
             });
 
           } else {
+            this.root.snackbarService.error('Could not get permissons');
             console.log(response._body);
           }
         },
         (error: any) => {
           this.loading = false;
-          console.log(JSON.parse(error._body).status);
+          this.root.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -180,12 +181,12 @@ export class SubProcessModal extends ModalComponent {
             this.root.loadSubProcess.emit(model);
             //remove Overlay for user
             this.root.hideOverlay();
-            this.root.showSnackBar('successfully loaded', 'limegreen');
+            this.root.snackbarService.newSnackBarMessage('successfully loaded', 'limegreen');
           },
           (error: any) => {
             //remove Overlay in any case
             this.root.hideOverlay();
-            this.root.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
+            this.root.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
             console.log(error);
           });
 

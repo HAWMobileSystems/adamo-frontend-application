@@ -96,7 +96,6 @@ export class ProfileComponent {
   public profileDelete() {
     this.apiService.profileDelete(this.selected.rid)
       .subscribe(response => {
-          console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);

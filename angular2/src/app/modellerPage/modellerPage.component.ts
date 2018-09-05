@@ -6,6 +6,7 @@ import {MqttService} from '../services/mqtt.service';
 import { IPIM_OPTIONS } from '../modelerConfig.service';
 import { SnackBarService } from '../services/snackbar.service';
 import { SnackBarMessage } from '../services/snackBarMessage';
+import { Router } from '@angular/router';
 
 //Include components for interface and styling
 @Component({
@@ -26,7 +27,7 @@ export class ModellerPageComponent implements OnInit {
   public snackbarTextPage: string = '';
   public username: string = '';
 
-  constructor(private apiService: ApiService, private mqttService: MqttService, private snackbarService: SnackBarService) {
+  constructor(private apiService: ApiService, private router: Router, private mqttService: MqttService, private snackbarService: SnackBarService) {
   }
 
   private initMqtt() {
@@ -71,11 +72,13 @@ export class ModellerPageComponent implements OnInit {
           } else {
             this.username = '';
             this.snackbarService.error(response);
+            this.router.navigate(['/front-page']);
           }
         },
         error => {
           this.username = '';
           this.snackbarService.error(error);
+          this.router.navigate(['/front-page']);
         });
   }
 

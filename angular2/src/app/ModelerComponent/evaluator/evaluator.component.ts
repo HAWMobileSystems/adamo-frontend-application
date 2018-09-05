@@ -16,6 +16,7 @@ import { resolve } from 'q';
 import { Variable } from '../modals/variable';
 import { ModelElement} from './modelElement';
 import { Model } from '../../models/model';
+import { SnackBarService } from '../../services/snackbar.service';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -101,7 +102,6 @@ export class Evaluator {
   public async executeAsyncEvaluation(xml: string) {
     //first get all submodels used by the process or any subprocess and wait until the last request is finished
     await this.getAllSubmodels(xml);
-    console.log('ModelsAfterSubModels', this.xmls);
     //after all models are received, extract all terms from it
     await this.getCombinedTermList(this.xmls);
   }
@@ -119,7 +119,7 @@ export class Evaluator {
     zip.generateAsync({type: 'blob'}).then( (blob: Blob) => { // 1) generate the zip file
       FileSaver.saveAs(blob, this.root.model.name + '.zip');  // 2) trigger the download
     }, (err) => {
-      console.log('could not create zip');
+     this.root.snackbarService.error(err);
     });
 
   }
@@ -135,7 +135,6 @@ export class Evaluator {
   public async getAllSubmodels(xml : string) {
     //Create Array for Subprocesses of current XML
     const currentSubprocesses: string[] = await this.extractSubmodels(xml);
-    console.log('getAllSubmodels', currentSubprocesses);
     //Iterate over all Subprocess and see if they were already retrieved from DB
     await this.asyncForEach(currentSubprocesses, async (element: string) => {
         //If the Subprocess has no Key, get XML from DB and add it
@@ -148,7 +147,7 @@ export class Evaluator {
             //As we just added the XML, we recursively call the function to get all of its Subprocesses
             await this.getAllSubmodels(tempModelElement.xml);
           } else {
-            this.root.showSnackBar('Error: Some Subprocesses returned permission denied ', 'red');
+            this.root.snackbarService.newSnackBarMessage('Error: Some Subprocesses returned permission denied ', 'red');
           }
         }
     });
@@ -216,7 +215,6 @@ export class Evaluator {
     this.variables = [];
 
     await this.asyncForEach(xmlList, async (element: ModelElement) => {
-      console.log('INLOOP', element);
 
       await this.importFromXML(element.xml);
       const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);

@@ -5,6 +5,7 @@ import {Model} from '../../models/model';
 import {MqttService} from '../../services/mqtt.service';
 import { IPIM_OPTIONS } from '../../modelerConfig.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'modelloader',
@@ -24,7 +25,7 @@ export class ModelLoaderComponent {
   //Simple Empty Model ... taken from Camunda
   private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 
-  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private router: Router, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
@@ -48,11 +49,15 @@ export class ModelLoaderComponent {
             this.getAllModels();
             this.getLatestChanges();
           } else {
+            this.snackbarService.error(response.status);
             console.error(response);
+            this.router.navigate(['/front-page']);
           }
         },
         error => {
           console.error(error);
+          this.snackbarService.error(JSON.parse(error._body).status);
+          this.router.navigate(['/front-page']);
         });
     //defines the structure for a new empty model
     this.newModel = {
@@ -68,9 +73,11 @@ export class ModelLoaderComponent {
   public createEmpty() {
     this.apiService.modelCreate(this.newModelName, this.newModelXml)
       .subscribe(response => {
+          this.snackbarService.success(response.status);
           console.log(response);
         },
         error => {
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -78,9 +85,11 @@ export class ModelLoaderComponent {
   public createLoaded() {
     this.apiService.modelCreate(this.diskModelName, this.diskModelXml)
       .subscribe(response => {
+          this.snackbarService.success(response.status);
           console.log(response);
         },
         error => {
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -110,7 +119,6 @@ export class ModelLoaderComponent {
       this.diskModelName = file.name.split('.')[0];
       this.diskModelXml = myReader.result;
       this.createLoaded();
-      console.log('loaded successful', file);
     };
 
     //read File as textfile

@@ -37,10 +37,7 @@ export class CommandStack {
       this.modelerComponenetRoot.model.id +
       '_' +
       this.modelerComponenetRoot.model.version;
-    console.log(this.topic);
-    console.log(this.modelerComponenetRoot.model, this.modelerComponenetRoot.model.version);
     this.stopEvaluationisRunning = false;
-    console.log('MODEL/' + this.topic);
 
     this.mqttService.getClient().subscribe('MODEL/' + this.topic);  //subscribe Client to defaulttopic on MQTT Server
     this.mqttService.getClient().subscribe('modelupsert');
@@ -92,8 +89,6 @@ export class CommandStack {
 
     } else if (topic === 'modelupsert') {
       const model = this.modelerComponenetRoot.model;
-      console.log(event);
-      console.log(model);
       if (model.id === event.mid && model.version === event.version) {
         model.version = event.newVersion;
         this.mqttService.getClient().unsubscribe('MODEL/model_' + event.mid + '_' + event.version);
@@ -146,7 +141,6 @@ export class CommandStack {
     commandInterceptor.prototype.executed.call(commandInterceptor, (event: any) => {
       if (typeof event.context.IPIMremote === 'undefined') { //&& event.command === 'shape.create') {  //lane.updateRefs
         event.context.IPIMremote = 'yes';
-        console.log('IPIM command execute logger', event);
 
         this.mqttService.getClient().publish('IPIM', JSON.stringify(event));
 

@@ -50,6 +50,7 @@ export class UsageModal extends ModalComponent {
       this.loading = false;
     },
     error => {
+      this.root.snackbarService.newSnackBarMessage(error);
       console.log(error);
     });
   }
