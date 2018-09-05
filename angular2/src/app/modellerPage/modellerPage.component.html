@@ -37,7 +37,7 @@
     </div>
 
     <!--Models-->
-    <div class="col-md-8 col-md-offset-2" [hidden]="page!=='+'">
+    <div class="col-md-8 col-md-offset-2 centered" [hidden]="page!=='+'">
         <modelloader (loadModel)="onLoadModel($event)" (loadError)="loadError($event)"></modelloader>
     </div>
     <modeler (loadedCompletely)="onLoadedCompletely($event)" (exportModel)="onExportModel($event)" (loadSubProcess)="onLoadSubProcess($event)"
@@ -45,8 +45,7 @@
              [newDiagramXML]="model.xml" [model]="model">
     </modeler>
 
-    <div *ngIf="page==='administration' && permission === 1" class="col-md-6 col-md-offset-3" [ngSwitch]="page2">
-        <alert></alert>
+    <div *ngIf="page==='administration' && permission === 1" class="col-md-6 col-md-offset-3 centered" [ngSwitch]="page2">
         <nav class="navbar navbar-default" role="navigation">
             <ul class="nav navbar-nav">
                 <li [ngClass]="{'active': page2 ==='User'}" (click)="page2 = 'User'"><a>User</a></li>
@@ -70,4 +69,8 @@
     </div>
 </div>
 
-<div id="snackbarPage">{{snackbarTextPage}}</div>
+<div id="snackbarPage">
+        <div *ngFor="let message of snackBarMessages" [style.backgroundColor]="message.color" class="snackbarItem">
+                {{message.text}}
+        </div>
+</div>
