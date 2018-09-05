@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 import {MqttService} from '../../services/mqtt.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'model-management',
@@ -13,7 +13,7 @@ export class ModelComponent {
   private newModel: any;
   private models: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -46,12 +46,12 @@ export class ModelComponent {
             this.models = response.data;
             this.selected = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
           console.log(error);
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
 
@@ -66,11 +66,11 @@ export class ModelComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/update', JSON.stringify({}));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -81,11 +81,11 @@ export class ModelComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/create', JSON.stringify({}));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -100,11 +100,11 @@ export class ModelComponent {
               mid: this.selected.mid,
               version: this.selected.version
             }));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }

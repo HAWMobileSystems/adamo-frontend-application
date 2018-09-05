@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 
 import {MqttService} from '../../services/mqtt.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'role-management',
@@ -14,7 +14,7 @@ export class RoleComponent {
   private newRole: any;
   private roles: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -49,11 +49,11 @@ export class RoleComponent {
             this.roles = response.data;
             this.selected = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -64,13 +64,13 @@ export class RoleComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -82,13 +82,13 @@ export class RoleComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -100,13 +100,13 @@ export class RoleComponent {
           console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.alertService.success(response.status);
+            this.snackbarService.success(response.status);
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }

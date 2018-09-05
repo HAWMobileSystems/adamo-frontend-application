@@ -8,7 +8,6 @@ import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {ReCaptchaModule} from 'angular2-recaptcha';
 import {AppRoutingModule} from './app-routing.module';
 import {FrontPageComponent} from './front-page/front-page.component';
-import {AdministrationPageComponent} from './administration-page/administration-page.component';
 import {ViewerComponent} from './viewer/viewer.component';
 import {ModelerComponent} from './ModelerComponent/modeler.component';
 import {Ng2Bs3ModalModule} from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -41,6 +40,7 @@ import {Timestamp2Date} from './pipes/timestamp.pipe';
 import {Version} from './pipes/version.pipe';
 import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
+import { SnackBarService } from './services/snackbar.service';
 
 //check for correct branch!
 
@@ -60,7 +60,6 @@ import {Http} from '@angular/http';
     AppFooterComponent,
     AppHeaderComponent,
     FrontPageComponent,
-    AdministrationPageComponent,
     UserComponent,
     ModelComponent,
     ModelLoaderComponent,
@@ -87,6 +86,7 @@ import {Http} from '@angular/http';
   providers: [
     AuthGuard,
     AlertService,
+    SnackBarService,
     ApiService,
     MqttService,
     {

@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 
 import {MqttService} from '../../services/mqtt.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'permission-management',
@@ -18,7 +18,7 @@ export class PermissionComponent {
   private roles: any;
   private models: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   //selects a user that is maintained in a permission
@@ -43,17 +43,17 @@ export class PermissionComponent {
     this.apiService.permissionCreate(uid, mid, role)
       .subscribe(response => {
           if (response.success) {
-            this.alertService.success('Permission successfully created');
+            this.snackbarService.success('Permission successfully created');
             this.selectedPermission = null;
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.alertService.error(response.error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -64,12 +64,12 @@ export class PermissionComponent {
     this.apiService.permissionDelete(pid)
       .subscribe(response => {
           if (response.success) {
-            this.alertService.success('Permission deleted');
+            this.snackbarService.success('Permission deleted');
             this.selectedPermission = null;
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.alertService.error(response.error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
@@ -84,12 +84,12 @@ export class PermissionComponent {
     this.apiService.permissionUpdate(role, pid)
       .subscribe(response => {
           if (response.success) {
-            this.alertService.success('Permission updated');
+            this.snackbarService.success('Permission updated');
             this.selectedPermission = null;
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.alertService.error(response.error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
@@ -122,11 +122,11 @@ export class PermissionComponent {
           if (response.success) {
             this.roles = response.data;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -140,11 +140,11 @@ export class PermissionComponent {
             this.users = response.data;
             this.selectedUser = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -158,11 +158,11 @@ export class PermissionComponent {
             this.models = response.data;
             this.selectedModel = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -174,11 +174,11 @@ export class PermissionComponent {
           if (response.success) {
             this.selectedPermission = response.data;
           } else {
-            this.alertService.error(response.status);
+            this.snackbarService.error(response.status);
           }
         },
         error => {
-          this.alertService.error('Error receiving permissions');
+          this.snackbarService.error('Error receiving permissions');
           console.log(error);
         });
   }

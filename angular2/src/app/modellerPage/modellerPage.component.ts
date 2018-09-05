@@ -4,6 +4,8 @@ import {Model} from '../models/model';
 import {ModelerComponent} from '../ModelerComponent/modeler.component';
 import {MqttService} from '../services/mqtt.service';
 import { IPIM_OPTIONS } from '../modelerConfig.service';
+import { SnackBarService } from '../services/snackbar.service';
+import { SnackBarMessage } from '../services/snackBarMessage';
 
 //Include components for interface and styling
 @Component({
@@ -20,9 +22,10 @@ export class ModellerPageComponent implements OnInit {
   public permission: number;
   public xml: string = IPIM_OPTIONS.NEWMODEL;
   public models: Model[] = [];
+  public snackBarMessages: SnackBarMessage[] = [];
   public snackbarTextPage: string = '';
 
-  constructor(private apiService: ApiService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private mqttService: MqttService, private snackbarService: SnackBarService) {
   }
 
   private initMqtt() {
@@ -52,6 +55,11 @@ export class ModellerPageComponent implements OnInit {
 
   //Initialization after ModellerPageComponent component was loaded
   public ngOnInit() {
+    this.snackbarService.snackBarMessages$.subscribe(
+      (data: SnackBarMessage[]) => {
+        this.snackBarMessages = data;
+      });
+
     this.apiService.login_status()
       .subscribe(response => {
           if (response.success) {
@@ -75,7 +83,7 @@ export class ModellerPageComponent implements OnInit {
   }
 
   public loadError(error: any): void {
-    this.showSnackBarPage('Error: ' + JSON.parse(error._body).status, 'red');
+    this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
   }
 
   //Show previous versions of a model, if the last one was selected
@@ -109,17 +117,4 @@ export class ModellerPageComponent implements OnInit {
     this.loading = false;
     console.log('loading complected');
   }
-
-  //simple function to show a snackbar with variable text and color
-  public showSnackBarPage(text: string, color: string) {
-    //set text so the angular component can update
-    this.snackbarTextPage = text;
-    //get snackbar HTML element
-    const x = document.getElementById('snackbarPage');
-    //set color and class
-    x.style.backgroundColor = color;
-    x.className = 'show';
-    //show it for 3 seconds
-    setTimeout(() => { x.className = x.className.replace('show', ''); }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
-}
 }

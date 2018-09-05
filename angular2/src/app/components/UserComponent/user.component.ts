@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 import {MqttService} from '../../services/mqtt.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'user-management',
@@ -17,7 +17,7 @@ export class UserComponent {
   private profiles: any;
   private mqtt: any;
 
-  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -60,11 +60,11 @@ export class UserComponent {
           if (response.success) {
             this.profiles = response.data;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
 
@@ -78,11 +78,11 @@ export class UserComponent {
             this.users = response.data;
             this.selected = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
 
@@ -99,18 +99,18 @@ export class UserComponent {
             .subscribe(response => {
                     if (response.success) {
                         this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                        this.alertService.success(response);
-                        this.alertService.success(response.status);
+                        this.snackbarService.success(response);
+                        this.snackbarService.success(response.status);
                         console.log(response);
                     } else {
-                        this.alertService.error(response._body);
+                        this.snackbarService.error(response._body);
                     }
                 },
                 error => {
-                    this.alertService.error(JSON.parse(error._body).status);
+                    this.snackbarService.error(JSON.parse(error._body).status);
                 });
     } else {
-        this.alertService.error('Not a valid E-Mail!');
+        this.snackbarService.error('Not a valid E-Mail!');
     }
   }
 
@@ -120,15 +120,15 @@ export class UserComponent {
       .subscribe(response => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-            this.alertService.success(response);
-            this.alertService.success(response.status);
+            this.snackbarService.success(response);
+            this.snackbarService.success(response.status);
             console.log(response);
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
 
@@ -145,17 +145,17 @@ export class UserComponent {
                       console.log('debug');
                       if (response.success) {
                           this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                          this.alertService.success(response.status);
+                          this.snackbarService.success(response.status);
                           console.log(response);
                       } else {
-                          this.alertService.error(response._body);
+                          this.snackbarService.error(response._body);
                       }
                   },
                   error => {
-                      this.alertService.error(JSON.parse(error._body).status);
+                      this.snackbarService.error(JSON.parse(error._body).status);
                   });
       } else {
-          this.alertService.error('Not a valid E-Mail!');
+          this.snackbarService.error('Not a valid E-Mail!');
       }
   }
 
@@ -166,16 +166,16 @@ export class UserComponent {
           console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-            this.alertService.success('User successfully deleted');
+            this.snackbarService.success('User successfully deleted');
 
             //console.log(response);
 
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
 }

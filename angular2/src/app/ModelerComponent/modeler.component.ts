@@ -26,6 +26,7 @@ import {Evaluator} from './evaluator/evaluator.component';
 import * as FileSaver from 'file-saver';
 import {Model} from '../models/model';
 import { IPIM_OPTIONS } from '../modelerConfig.service';
+import { SnackBarService } from '../services/snackbar.service';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider]
@@ -98,7 +99,7 @@ export class ModelerComponent implements OnInit {
   };
 
   constructor(private apiService: ApiService, private http: Http, private store: BPMNStore,
-    private ref: ChangeDetectorRef, private router: Router, private mqttService: MqttService) {
+    private ref: ChangeDetectorRef, private snackbarService: SnackBarService, private router: Router, private mqttService: MqttService) {
   }
 
   public ngOnInit() {
@@ -212,7 +213,7 @@ export class ModelerComponent implements OnInit {
     }
     if (!validSelection) {
       // window.alert('No Subprocess selected!');
-      this.showSnackBar('No Subprocess selected!', 'red');
+      this.snackbarService.newSnackBarMessage('No Subprocess selected!', 'red');
     } else {
       this.subProcessModal.setProps(this.modeler, terms, this);
       this.subProcessModal.modal.open();
@@ -284,20 +285,6 @@ export class ModelerComponent implements OnInit {
     this.termsColored = !this.termsColored;
   }
 
-  //simple function to show a snackbar with variable text and color
-  private showSnackBar(text: string, color: string) {
-      //set text so the angular component can update
-      this.snackbarText = text;
-      //get snackbar HTML element
-      const x = document.getElementById('snackbar-' + this.modelId);
-      //set color and class
-      x.style.backgroundColor = color;
-      //x.className = 'show';
-      x.classList.add('show');
-      //show it for 3 seconds
-      setTimeout(() => { x.classList.remove('show'); }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
-  }
-
   //resets the diagram back to before it was evaluated
   private resetDiagram = () => {
     //show loading overlay
@@ -343,7 +330,7 @@ export class ModelerComponent implements OnInit {
               this.saveModal.modal.open();
             } else if (response.status === 'Model upserted successfully') {
               //show snackbar for success
-              this.showSnackBar('saved successfully', 'limegreen');
+              this.snackbarService.newSnackBarMessage('saved successfully', 'limegreen');
               //also save alls partmodels for later evaluation
               const partmodels = this.returnSubProcessList(this.lookup.ELEMENTREGISTRY);
               partmodels.forEach((pmid) => {
@@ -354,15 +341,15 @@ export class ModelerComponent implements OnInit {
               });
             } else if (response.status === 'Model has no changes to save') {
               //show snackbar for success
-              this.showSnackBar('no changes to save', 'grey');
+              this.snackbarService.newSnackBarMessage('no changes to save', 'grey');
             } else {
-              this.showSnackBar('unknown error while saving', 'red');
+              this.snackbarService.newSnackBarMessage('unknown error while saving', 'red');
             }
           },
           error => {
             console.log(error);
             //somethig went wrong .. have a snack..
-            this.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
+            this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
           });
     });
   }
@@ -423,7 +410,7 @@ export class ModelerComponent implements OnInit {
     }
     //if selecton is valid show processes
     if (!validSelection) {
-      this.showSnackBar('No Subprocess selected!', 'red');
+      this.snackbarService.newSnackBarMessage('No Subprocess selected!', 'red');
     } else {
       //get through each element and open it in new tab
       terms.forEach(element => {
@@ -441,11 +428,11 @@ export class ModelerComponent implements OnInit {
                 this.loadSubProcess.emit(model);
                 //remove overlay in any case
                 this.hideOverlay();
-                this.showSnackBar('successfully loaded', 'limegreen');
+                this.snackbarService.newSnackBarMessage('successfully loaded', 'limegreen');
               },
               (error: any) => {
                 //remove overlay in any case
-                this.showSnackBar('Error: ' + JSON.parse(error._body).status, 'red');
+                this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
                 this.hideOverlay();
                 console.log(error);
               });
@@ -581,7 +568,7 @@ export class ModelerComponent implements OnInit {
     this.modeler.importXML(this.newDiagramXML, this.handleError);
     this.loadedCompletely.emit();
     //show snackbar for successfull loading!
-    this.showSnackBar('loaded successfully', 'limegreen');
+    this.snackbarService.newSnackBarMessage('loaded successfully', 'limegreen');
     //set default 2 row palette
     const palette = $('.djs-palette');
     this.expandToTwoColumns(palette);

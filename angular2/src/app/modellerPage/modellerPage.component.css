@@ -7,11 +7,15 @@
     opacity: 0.6;
 }
 
+.centered {
+    text-align: center;
+}
+
 #snackbarPage {
     visibility: hidden;
     min-width: 250px;
     margin-left: -125px;
-    background-color: #333;
+    background: transparent;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -23,10 +27,22 @@
     font-size: 17px;
 }
 
+.snackbarItem {
+    min-width: 250px;
+    /* margin-left: -125px; */
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    font-size: 17px;
+    margin-bottom: 25px;
+    border-radius: 25px;
+}
+
 #snackbarPage.show {
     visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    /* -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; */
+    /* animation: fadein 0.5s, fadeout 0.5s 2.5s; */
 }
 
 @-webkit-keyframes fadein {

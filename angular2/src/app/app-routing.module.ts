@@ -4,13 +4,11 @@ import {ViewerComponent} from './viewer/viewer.component';
 import {FrontPageComponent} from './front-page/front-page.component';
 import {AuthGuard} from './guards/auth.guard';
 import {ModellerPageComponent} from './modellerPage/modellerPage.component';
-import {AdministrationPageComponent} from './administration-page/administration-page.component';
 
 const routes: Routes = [
   {path: 'front-page', component: FrontPageComponent},
   {path: 'viewer', component: ViewerComponent, canActivate: [AuthGuard]},
   {path: 'modeler', component: ModellerPageComponent},
-  {path: 'administration-page', component: AdministrationPageComponent, canActivate: [AuthGuard]},
 
   {path: '', redirectTo: '/front-page', pathMatch: 'full'},
   {path: '**', redirectTo: '/front-page', pathMatch: 'full'}

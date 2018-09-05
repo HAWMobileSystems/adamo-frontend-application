@@ -1,10 +1,10 @@
 import {Component, Output, EventEmitter} from '@angular/core';
-import {AlertService} from '../../services/alert.service';
 import {ApiService} from '../../services/api.service';
 import {Model} from '../../models/model';
 
 import {MqttService} from '../../services/mqtt.service';
 import { IPIM_OPTIONS } from '../../modelerConfig.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'modelloader',
@@ -24,7 +24,7 @@ export class ModelLoaderComponent {
   //Simple Empty Model ... taken from Camunda
   private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 
-  constructor(private apiService: ApiService, private alertService: AlertService, private mqttService: MqttService) {
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
   }
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
@@ -135,7 +135,7 @@ export class ModelLoaderComponent {
             this.loadModel.emit(model);
           },
           error => {
-            this.alertService.error(JSON.parse(error._body).status);
+            this.snackbarService.error(JSON.parse(error._body).status);
             this.loadError.emit(error);
             console.log('Error Loading', error);
           });
@@ -155,11 +155,11 @@ export class ModelLoaderComponent {
             this.models = response.data;
             this.selected = null;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
@@ -173,11 +173,11 @@ export class ModelLoaderComponent {
           if (response.success) {
              this.changesLast7Day = response.data;
           } else {
-            this.alertService.error(response._body);
+            this.snackbarService.error(response._body);
           }
         },
         error => {
-          this.alertService.error(JSON.parse(error._body).status);
+          this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
   }
