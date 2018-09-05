@@ -50,7 +50,7 @@ export class BPMNStore {
           },
           [COMMANDS.SAVETODB] : {
             group: 'row',
-            className: ['glyphicon-floppy-save', 'glyphicon'],
+            className: ['glyphicon-cloud-upload', 'glyphicon'],
             title: 'Save to Database',
             action: {
               click: () => console.log('save')
@@ -106,7 +106,7 @@ export class BPMNStore {
             },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
-                className: ['glyphicon-search', 'glyphicon'],
+                className: ['glyphicon-tint', 'glyphicon'],
                 title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
