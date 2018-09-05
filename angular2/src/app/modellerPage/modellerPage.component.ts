@@ -24,6 +24,7 @@ export class ModellerPageComponent implements OnInit {
   public models: Model[] = [];
   public snackBarMessages: SnackBarMessage[] = [];
   public snackbarTextPage: string = '';
+  public username: string = '';
 
   constructor(private apiService: ApiService, private mqttService: MqttService, private snackbarService: SnackBarService) {
   }
@@ -63,15 +64,18 @@ export class ModellerPageComponent implements OnInit {
     this.apiService.login_status()
       .subscribe(response => {
           if (response.success) {
+            this.username = response.email;
             this.mqttService.getClient(response.email);
             this.initMqtt();
             this.permission = parseInt(response.permission);
           } else {
-            console.error(response);
+            this.username = '';
+            this.snackbarService.error(response);
           }
         },
         error => {
-          console.error(error);
+          this.username = '';
+          this.snackbarService.error(error);
         });
   }
 

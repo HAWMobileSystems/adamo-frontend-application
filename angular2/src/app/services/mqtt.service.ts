@@ -11,15 +11,21 @@ export class MqttService {
   private subject: Subject<any> = new Subject<any>();
   private keepAfterNavigationChange: boolean = true;
   private client: any;
+  private id: string;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   public connect(id: string) {
+    this.id = id;
     this.client = mqtt.connect(IPIM_OPTIONS.MQTT_CONNECTION, {clientId: id});
   }
 
   public disconnect() {
-    this.client.end();
+     this.client.end();
+  }
+
+  public getID(): string {
+    return this.id;
   }
 
   //returns the client of the mqtt
