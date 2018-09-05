@@ -71,13 +71,13 @@ export class ModellerPageComponent implements OnInit {
             this.permission = parseInt(response.permission);
           } else {
             this.username = '';
-            this.snackbarService.error(response);
+            this.snackbarService.error('error while retrieving session');
             this.router.navigate(['/front-page']);
           }
         },
         error => {
           this.username = '';
-          this.snackbarService.error(error);
+          this.snackbarService.error('Error could not connect to session management');
           this.router.navigate(['/front-page']);
         });
   }

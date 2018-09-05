@@ -31,7 +31,7 @@ export class FrontPageComponent implements OnInit {
         console.log('Successfully logged out!');
       }, error => {
         console.log(error);
-        this.alertService.error(error);
+        this.alertService.error('No connection to Server');
       });
   }
 
