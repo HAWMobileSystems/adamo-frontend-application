@@ -144,9 +144,13 @@ router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 router.get('/all', function (req, res) {
 
   db.query('' +
-    'SELECT mid, modelname, lastchange, modelxml, version ' +
-    'FROM model ' +
-    'ORDER BY modelname ASC, version DESC')
+    'SELECT m.mid AS mid, m.modelname AS modelname, m.lastchange AS lastchange, m.modelxml AS modelxml, m.version AS version, r.read AS read, r.write as write ' +
+    'FROM model m ' +
+    'LEFT JOIN permission p ON p.mid = m.mid ' +
+    'LEFT JOIN role r ON r.rid = p.rid ' +
+    'WHERE uid = $1 ' +
+    'ORDER BY modelname ASC, version DESC', [req.session.user.id])
+
     .then(function (data) {
       res.send({ data: data, success: true });
     })

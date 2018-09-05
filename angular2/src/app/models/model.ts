@@ -57,6 +57,22 @@ export class Model {
     this._showInfo = value;
   }
 
+  get read(): boolean {
+    return this._read;
+  }
+
+  set read(value: boolean) {
+    this._read = value;
+  }
+
+  get write(): boolean {
+    return this._write;
+  }
+
+  set write(value: boolean) {
+    this._write = value;
+  }
+
   private _xml: string;
   private _name: string;
   private _id: number;
@@ -64,6 +80,8 @@ export class Model {
   private _version: string;
   private _collaborator: string[];
   private _showInfo: boolean;
+  private _read: boolean;
+  private _write: boolean;
 
     constructor(){}
 }

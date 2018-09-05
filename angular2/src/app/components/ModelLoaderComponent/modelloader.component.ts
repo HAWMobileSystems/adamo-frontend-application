@@ -50,13 +50,13 @@ export class ModelLoaderComponent {
             this.getLatestChanges();
           } else {
             this.snackbarService.error(response.status);
-            console.error(response);
+            console.error('Error while retrieving session');
             this.router.navigate(['/front-page']);
           }
         },
         error => {
           console.error(error);
-          this.snackbarService.error(JSON.parse(error._body).status);
+          this.snackbarService.error('Error could not connect to session management');
           this.router.navigate(['/front-page']);
         });
     //defines the structure for a new empty model
@@ -132,6 +132,8 @@ export class ModelLoaderComponent {
     model.name = this.selected.modelname;
     model.id = this.selected.mid;
     model.version = this.selected.version;
+    model.read = this.selected.read;
+    model.write = this.selected.write;
     model.collaborator = [];
 
     //if model has empty data get the model first else directly emit the event

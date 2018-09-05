@@ -90,7 +90,9 @@ export class ModellerPageComponent implements OnInit {
   }
 
   public loadError(error: any): void {
-    this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
+    if (JSON.parse(error._body).status !== 'no permission to read!') {
+      this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
+    }
   }
 
   //Show previous versions of a model, if the last one was selected
