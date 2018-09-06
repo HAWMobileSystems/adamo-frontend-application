@@ -6,8 +6,8 @@
                 <li *ngFor="let model of models; let i = index" [ngClass]="{'active': page === model.id + '_' + model.version}" (click)="page = model.id + '_' + model.version">
                     <a (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false" style="padding-right: 30px;">
                         {{model.name + ' v' +(model.version | version) || 'unsaved model'}}
-                        <i *ngIf="model.read" class="glyphicon  glyphicon-eye-open"></i> 
-                        <i *ngIf="model.write" class="glyphicon  glyphicon-pencil"></i>
+                        <i *ngIf="model.read" class="glyphicon  glyphicon-eye-open" title="read permission"></i> 
+                        <i *ngIf="model.write" class="glyphicon  glyphicon-pencil" title="write permission"></i>
                         <span *ngIf="model.collaborator.length > 1" style="margin-right: 0;" class="badge badge-light">
                             {{model.collaborator.length}}
                         </span>
