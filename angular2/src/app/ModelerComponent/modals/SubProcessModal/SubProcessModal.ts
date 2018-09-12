@@ -109,27 +109,28 @@ export class SubProcessModal extends ModalComponent {
       if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
+        if (extras[0].values) {
         //Schleife über alle Elemente
-        let found = false;
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Calc entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_SubProcess'.toLowerCase())) {
-            if (firstSubprocessString !== '') {
-              extras[0].values[i].value = firstSubprocessString.trim();
-            } else {
-              extras[0].values.splice(i, 1);
+          let found = false;
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Calc entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_SubProcess'.toLowerCase())) {
+              if (firstSubprocessString !== '') {
+                extras[0].values[i].value = firstSubprocessString.trim();
+              } else {
+                extras[0].values.splice(i, 1);
+              }
+              found = true;
+              break;
             }
-            found = true;
-            break;
           }
-        }
-        //value is found so update it
+          //value is found so update it
         if (!found) {
           extras[0].values.push(moddle.create('camunda:Property'));
           extras[0].values[extras[0].values.length - 1].name = 'IPIM_SubProcess';
           extras[0].values[extras[0].values.length - 1].value = firstSubprocessString.trim();
         }
-
+        }
       } else {
         //value does not exist so create it
         if (firstSubprocessString !== '') {

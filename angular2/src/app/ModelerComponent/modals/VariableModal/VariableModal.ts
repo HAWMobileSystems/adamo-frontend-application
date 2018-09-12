@@ -75,24 +75,26 @@ export class VariableModal extends ModalComponent {
         if (element.businessObject.extensionElements) {
             //Wenn vorhandne die Elemente auslesen
             const extras = element.businessObject.extensionElements.get('values');
-            //Schleife über alle Elemente
-            for (let i = 0; i < extras[0].values.length; i++) {
-                //Prüfen ob der Name des Elementes IPIM_Val entspricht
-                const extrasValues = extras[0].values[i];
-                const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
-                const startsWithIpimVal: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_VAL + '_').toLowerCase());
-                const startsWithIpimMeta: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_META + '_').toLowerCase());
+            if (extras[0].values) {
+                //Schleife über alle Elemente
+                for (let i = 0; i < extras[0].values.length; i++) {
+                    //Prüfen ob der Name des Elementes IPIM_Val entspricht
+                    const extrasValues = extras[0].values[i];
+                    const extrasValueNameLowerCase = extrasValues.name.toLowerCase();
+                    const startsWithIpimVal: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_VAL + '_').toLowerCase());
+                    const startsWithIpimMeta: boolean = extrasValueNameLowerCase.startsWith((this.IPIM_META + '_').toLowerCase());
 
-                if (startsWithIpimVal) {
-                    this.addVar(
-                        extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(), false);
-                }
+                    if (startsWithIpimVal) {
+                        this.addVar(
+                            extrasValues.name.toLowerCase().replace('IPIM_Val_'.toLowerCase(), ''),
+                            extrasValues.value.toLowerCase(), false);
+                    }
 
-                if (startsWithIpimMeta) {
-                    this.addVar(
-                        extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
-                        extrasValues.value.toLowerCase(), true);
+                    if (startsWithIpimMeta) {
+                        this.addVar(
+                            extrasValues.name.toLowerCase().replace('IPIM_META_'.toLowerCase(), ''),
+                            extrasValues.value.toLowerCase(), true);
+                    }
                 }
             }
         }

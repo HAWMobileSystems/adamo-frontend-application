@@ -79,25 +79,28 @@ export class InputModal extends ModalComponent {
       if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
-            let inpelement = 'Error Variable not found';
+        if (extras[0].values) {
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Val_'.toLowerCase())) {
+              let inpelement = 'Error Variable not found';
 
-            for (let u = 0; u < this.variables.length; u++) {
-              if (('IPIM_Val_' + this.variables[u].name).toLowerCase() === extras[0].values[i].name.toLowerCase()) {
-                inpelement = this.variables[u].value;
-                break;
+              for (let u = 0; u < this.variables.length; u++) {
+                if (('IPIM_Val_' + this.variables[u].name).toLowerCase() === extras[0].values[i].name.toLowerCase()) {
+                  inpelement = this.variables[u].value;
+                  break;
+                }
               }
-            }
 
-            //Variablen aus Inputfeld zurückschreiben
-            extras[0].values[i].value = inpelement;
+              //Variablen aus Inputfeld zurückschreiben
+              extras[0].values[i].value = inpelement;
+            }
           }
         }
       }
     });
+    console.log('starting Evaluation');
     this.root.evaluateProcess();
     //inform other subscribers about action!
     this.root.getCommandStack().publishXML();
@@ -115,14 +118,15 @@ export class InputModal extends ModalComponent {
     for (const element of elements) {
       if (element.businessObject.extensionElements) {
         const extras = element.businessObject.extensionElements.get('values'); //'values');
-        extras[0].values.map((extra: any, index: number) => {
-          if (extras[0].values[index].name.toLowerCase().startsWith(this.IPIM_VAL.toLowerCase() + '_')) {
-            this.addVar(
-              extras[0].values[index].name.toLowerCase().replace(this.IPIM_VAL.toLowerCase()  + '_', ''),
-              extras[0].values[index].value.toLowerCase(), false);
-          }
+        if (extras[0].values) {
+          extras[0].values.map((extra: any, index: number) => {
+            if (extras[0].values[index].name.toLowerCase().startsWith(this.IPIM_VAL.toLowerCase() + '_')) {
+              this.addVar(
+                extras[0].values[index].name.toLowerCase().replace(this.IPIM_VAL.toLowerCase()  + '_', ''),
+                extras[0].values[index].value.toLowerCase(), false);
+            }
+          });
         }
-        );
       }
     }
   }

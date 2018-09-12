@@ -199,12 +199,14 @@ export class ModelerComponent implements OnInit {
         if (element.businessObject.extensionElements) {
           //Wenn vorhandne die Elemente auslesen
           const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-          //Schleife über alle Elemente
-          for (let i = 0; i < extras[0].values.length; i++) {
-            //Prüfen ob der Name des Elementes IPIM_Val entspricht
-            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
-              if (terms.indexOf(extras[0].values[i].value) === -1) {
-                terms.push(extras[0].values[i].value);
+          if (extras[0].values) {
+            //Schleife über alle Elemente
+            for (let i = 0; i < extras[0].values.length; i++) {
+              //Prüfen ob der Name des Elementes IPIM_Val entspricht
+              if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                if (terms.indexOf(extras[0].values[i].value) === -1) {
+                  terms.push(extras[0].values[i].value);
+                }
               }
             }
           }
@@ -238,12 +240,14 @@ export class ModelerComponent implements OnInit {
             if (element.businessObject.extensionElements) {
               //Wenn vorhandne die Elemente auslesen
               const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-              //Schleife über alle Elemente
-              for (let i = 0; i < extras[0].values.length; i++) {
-                //Prüfen ob der Name des Elementes IPIM_Val entspricht
-                if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
-                  if (terms.indexOf(extras[0].values[i].value) === -1) {
-                    terms.push(extras[0].values[i].value);
+              if (extras[0].values) {
+                //Schleife über alle Elemente
+                for (let i = 0; i < extras[0].values.length; i++) {
+                  //Prüfen ob der Name des Elementes IPIM_Val entspricht
+                  if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                    if (terms.indexOf(extras[0].values[i].value) === -1) {
+                      terms.push(extras[0].values[i].value);
+                    }
                   }
                 }
               }
@@ -396,12 +400,14 @@ export class ModelerComponent implements OnInit {
         if (element.businessObject.extensionElements) {
           //Wenn vorhandne die Elemente auslesen
           const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-          //Schleife über alle Elemente
-          for (let i = 0; i < extras[0].values.length; i++) {
-            //Prüfen ob der Name des Elementes IPIM_Val entspricht
-            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
-              if (terms.indexOf(extras[0].values[i].value) === -1) {
-                terms.push(extras[0].values[i].value);
+          if (extras[0].values) {
+            //Schleife über alle Elemente
+            for (let i = 0; i < extras[0].values.length; i++) {
+              //Prüfen ob der Name des Elementes IPIM_Val entspricht
+              if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+                if (terms.indexOf(extras[0].values[i].value) === -1) {
+                  terms.push(extras[0].values[i].value);
+                }
               }
             }
           }
@@ -605,12 +611,14 @@ export class ModelerComponent implements OnInit {
       if (element.businessObject.extensionElements) {
       //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.CALC)) {
-            if (terms.indexOf(extras[0].values[i].value) === -1) {
-              terms.push(extras[0].values[i].value);
+        if (extras[0].values) {
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.CALC)) {
+              if (terms.indexOf(extras[0].values[i].value) === -1) {
+                terms.push(extras[0].values[i].value);
+              }
             }
           }
         }
@@ -635,18 +643,20 @@ export class ModelerComponent implements OnInit {
       if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          const valueName = extras[0].values[i].name.toLowerCase();
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (valueName.startsWith('IPIM_Val_'.toLowerCase())) {
-            //Variablen als Key mit Wert in Map übernehmen
-            varValMap[valueName.replace('IPIM_Val_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
-          }
-          //Prüfen ob der Name des Elementes IPIM_Val entspricht
-          if (valueName.startsWith('IPIM_META_'.toLowerCase())) {
-            //Variablen als Key mit Wert in Map übernehmen
-            varValMap[valueName.replace('IPIM_META_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+        if (extras[0].values) {
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            const valueName = extras[0].values[i].name.toLowerCase();
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (valueName.startsWith('IPIM_Val_'.toLowerCase())) {
+              //Variablen als Key mit Wert in Map übernehmen
+              varValMap[valueName.replace('IPIM_Val_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+            }
+            //Prüfen ob der Name des Elementes IPIM_Val entspricht
+            if (valueName.startsWith('IPIM_META_'.toLowerCase())) {
+              //Variablen als Key mit Wert in Map übernehmen
+              varValMap[valueName.replace('IPIM_META_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+            }
           }
         }
       }
@@ -657,26 +667,27 @@ export class ModelerComponent implements OnInit {
       if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM entspricht
-          if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
-            //Stringoperationen um den Wert anzupassen.
-            let evalterm = extras[0].values[i].value.toLowerCase();
-
-            //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
-            while (evalterm.includes('[')) {
-              // [ ist vorhanden, daher String nach Substrings durchsuchen
-              const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
-              //evalterm mit String.replace veränderun und variablenwert einsetzen.
-              evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
-            }
-            //sichere Sandbox für Eval Auswertung schaffen --- derzeit inaktiv da konflikt mit andern Variablen
-            const safeEval = require('safe-eval');
-            // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-            if (!eval(evalterm)) {
-              //Element über modeling Objekt löschen
-              modeling.removeElements([element]);
+        if (extras[0].values) {
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM entspricht
+            if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+              //Stringoperationen um den Wert anzupassen.
+              let evalterm = extras[0].values[i].value.toLowerCase();
+              //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
+              while (evalterm.includes('[')) {
+                // [ ist vorhanden, daher String nach Substrings durchsuchen
+                const substr = evalterm.substring(evalterm.indexOf('[') + '['.length, evalterm.indexOf(']'));
+                //evalterm mit String.replace veränderun und variablenwert einsetzen.
+                evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
+              }
+              //sichere Sandbox für Eval Auswertung schaffen --- derzeit inaktiv da konflikt mit andern Variablen
+              const safeEval = require('safe-eval');
+              // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
+              if (!eval(evalterm)) {
+                //Element über modeling Objekt löschen
+                modeling.removeElements([element]);
+              }
             }
           }
         }
@@ -700,10 +711,12 @@ export class ModelerComponent implements OnInit {
       if (element.businessObject.extensionElements) {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM entspricht
-          if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
-            colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
+        if (extras[0].values) {
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM entspricht
+            if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+              colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
+            }
           }
         }
       }

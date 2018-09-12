@@ -75,16 +75,18 @@ export class TermModal extends ModalComponent {
       if (typeof element.businessObject.extensionElements !== 'undefined') {
         //Wenn vorhandne die Elemente auslesen
         const extras = element.businessObject.extensionElements.get('values');
-        //Schleife über alle Elemente
-        for (let i = 0; i < extras[0].values.length; i++) {
-          //Prüfen ob der Name des Elementes IPIM_Calc entspricht
-          if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Calc'.toLowerCase())) {
-            if (this.firstTerm !== '') {
-              extras[0].values[i].value = this.firstTerm;
-            } else {
-              extras[0].values.splice(i, 1);
+        if (extras[0].values) {
+          //Schleife über alle Elemente
+          for (let i = 0; i < extras[0].values.length; i++) {
+            //Prüfen ob der Name des Elementes IPIM_Calc entspricht
+            if (extras[0].values[i].name.toLowerCase().startsWith('IPIM_Calc'.toLowerCase())) {
+              if (this.firstTerm !== '') {
+                extras[0].values[i].value = this.firstTerm;
+              } else {
+                extras[0].values.splice(i, 1);
+              }
+              break;
             }
-            break;
           }
         }
       } else {
