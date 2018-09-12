@@ -11,20 +11,24 @@ export class SnackBarService {
   public snackBarMessages$: Observable<SnackBarMessage[]> = this.snackBarMessages.asObservable();
 
   public newSnackBarMessage(text: string, color: string) {
-    this.snackBarMessageArray.push(new SnackBarMessage(text, color));
-    this.snackBarMessages.next(this.snackBarMessageArray);
     //get snackbar HTML element
-    const x = document.getElementById('snackbarPage');
-     x.className = 'show';
-    //show it for 3 seconds
-    setTimeout(() => {
-        //delete first element after timer
-        this.snackBarMessageArray.shift();
-        //if there is nothing to show anymore then hide snackbar
-        if (this.snackBarMessageArray.length <= 0) {
-            x.className = x.className.replace('show', '');
-        }
-    }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
+    const snackBarHTML = document.getElementById('snackbarPage');
+    if (snackBarHTML) {
+        this.snackBarMessageArray.push(new SnackBarMessage(text, color));
+        this.snackBarMessages.next(this.snackBarMessageArray);
+
+        //show it for some seconds
+        snackBarHTML.className = 'show';
+        setTimeout(() => {
+            //delete first element after timer
+            this.snackBarMessageArray.shift();
+            //if there is nothing to show anymore then hide snackbar
+            if (this.snackBarMessageArray.length <= 0) {
+                const snackBarHTMLdel = document.getElementById('snackbarPage');
+                if (snackBarHTMLdel) {snackBarHTMLdel.className = snackBarHTMLdel.className.replace('show', ''); }
+            }
+        }, IPIM_OPTIONS.TIMEOUT_SNACKBAR);
+    }
   }
 
   public error(text: string) {
