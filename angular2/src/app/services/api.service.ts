@@ -271,4 +271,17 @@ export class ApiService {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/usage', {pmid: pmid}, options)
       .map((response: Response) => response.json());
   }
+
+  //Administration page: Create permission
+  public uploadToEngine(name: string, tenantId: string, modelXML: any) {
+    return this.http.post(IPIM_OPTIONS.ENGINE_CONNECTION, {
+      'deployment-name': name,
+      'enable-duplicate-filtering': false,
+      'deploy-changed-only': false,
+      'deployment-source': 'local',
+      'tenant-id': tenantId,
+      'pay_taxes.bpmn': modelXML
+    }, options)
+      .map((response: Response) => response.json());
+  }
 }

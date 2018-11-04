@@ -80,6 +80,14 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
                 click: () => commandQueue.next({action: 'Export SVG'})
             }
         },
+        'upload-engine': {
+            group: 'storage',
+            className: ['glyphicon-copy', 'glyphicon'],
+            title: 'Export to Engine',
+            action: {
+                click: () => commandQueue.next({action: 'Export to Engine'})
+            }
+        },
         'tool-separator-storage': {
             group: 'storage',
             separator: true

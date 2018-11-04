@@ -14,5 +14,6 @@ export const COMMANDS = {
     ZOOM_TO_FIT: 'zoom2fit',
     EXPORT_SVG: 'Export SVG',
     OPEN_SUBPROCESS_MODEL: 'Open Model of Subprocess',
-    OPEN_USAGE_MODEL: 'See Processes references'
+    OPEN_USAGE_MODEL: 'See Processes references',
+    EXPORT_ENGINE: 'Export to Engine'
 };
