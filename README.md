@@ -1,6 +1,6 @@
-# IntSys (Intelligente Systeme) 
+# IPIM Modeler
 
-Teilprojekt aus dem EFRE geförderten Projekt Intelligente Produktionssysteme
+Der Modeler wird im Rahmen des Teilprojekts "Intelligent kooperative Materialflussysteme" (IntSys) entwickelt. Das Teilprojekt stellt dabei einen Teil des EFRE (Europäischen Fonds für regionale Entwicklung) geförderten Projekt "Intelligente Produktionssysteme" dar. 
 
 Ziel ist es durch Zugriff auf digitalisiertes Expertenwissen und einer (Teil-) Automatisierung von Routineaufgaben 
 eine Entlastung für Logistikplaner herbeizuführen.
