@@ -692,10 +692,18 @@ export class ModelerComponent implements OnInit {
                 //evalterm mit String.replace veränderun und variablenwert einsetzen.
                 evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
               }
-              //sichere Sandbox für Eval Auswertung schaffen --- derzeit inaktiv da konflikt mit andern Variablen
-              const safeEval = require('safe-eval');
+
+            // import Interpreter from 'js-interpreter';
+            const jSInterpreter = require('js-interpreter');
+            const interpreter = new jSInterpreter(evalterm);
+
+            interpreter.run();
+            // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
+            const evalResult : boolean = interpreter.value.data;
+            console.log('using js-interpreter for: ', evalterm, 'Result: ', evalResult);
+            if (!evalResult) {
               // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-              if (!eval(evalterm)) {
+              // if (!eval(evalterm)) {
                 //Element über modeling Objekt löschen
                 modeling.removeElements([element]);
               }
