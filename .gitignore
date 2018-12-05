@@ -1,7 +1,6 @@
 angular/
 node_modules/
 angular2/src/**/*.map
-angular2/src/**/*.js
 angular2/package-lock.json
 API/package-lock.json
 .idea

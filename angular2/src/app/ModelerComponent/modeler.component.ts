@@ -378,10 +378,10 @@ export class ModelerComponent implements OnInit {
 
   private exportToEngine = () => {
     this.modeler.saveXML({format: true}, (err: any, xml: any) => {
-      this.apiService.uploadToEngine(this.modelId, 'DontKnow', xml)
-      .subscribe(response => {
-        console.log(response);
-      });
+      this.apiService.uploadToEngine(this.model.name + '.bpmn', xml);
+      // .subscribe(response => {
+      //   console.log(response);
+      // });
     });
   }
 
