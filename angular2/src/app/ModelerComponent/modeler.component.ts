@@ -374,7 +374,15 @@ export class ModelerComponent implements OnInit {
       const blob = new Blob([svg], {type: 'image/svg+xml;charset=utf-8'});
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
     });
+  }
 
+  private exportToEngine = () => {
+    this.modeler.saveXML({format: true}, (err: any, xml: any) => {
+      this.apiService.uploadToEngine(this.model.name + '.bpmn', xml);
+      // .subscribe(response => {
+      //   console.log(response);
+      // });
+    });
   }
 
   //loads the currently selected subprocess in a new tab
@@ -457,6 +465,8 @@ export class ModelerComponent implements OnInit {
     canvasObject.zoom('fit-viewport');
   }
 
+  
+
   //functionmap to link the palette buttons with an actual function
   private funcMap: any = {
     [COMMANDS.SET_IPIM_VALUES]: this.openVariableModal,
@@ -472,6 +482,7 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.OPEN_USAGE_MODEL]: this.openUsageModal,
     [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
     [COMMANDS.EXPORT_SVG]: this.saveSVG,
+    [COMMANDS.EXPORT_ENGINE]: this.exportToEngine,
     [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel
   };
 
@@ -681,10 +692,18 @@ export class ModelerComponent implements OnInit {
                 //evalterm mit String.replace veränderun und variablenwert einsetzen.
                 evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
               }
-              //sichere Sandbox für Eval Auswertung schaffen --- derzeit inaktiv da konflikt mit andern Variablen
-              const safeEval = require('safe-eval');
+
+            // import Interpreter from 'js-interpreter';
+            const jSInterpreter = require('js-interpreter');
+            const interpreter = new jSInterpreter(evalterm);
+
+            interpreter.run();
+            // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
+            const evalResult : boolean = interpreter.value.data;
+            console.log('using js-interpreter for: ', evalterm, 'Result: ', evalResult);
+            if (!evalResult) {
               // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-              if (!eval(evalterm)) {
+              // if (!eval(evalterm)) {
                 //Element über modeling Objekt löschen
                 modeling.removeElements([element]);
               }

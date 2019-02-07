@@ -11,8 +11,9 @@
                         <span *ngIf="model.collaborator.length > 1" style="margin-right: 0;" class="badge badge-light">
                             {{model.collaborator.length}}
                         </span>
+                        <button type="button" class="close" aria-label="Close" (click)="remove(i)"><span aria-hidden="true">&times;</span></button>
                     </a>
-                    <button class="badge badge-light" style="position: absolute; top: 0; right: 0;" (click)="remove(i)">X</button>
+                    <!-- <button class="badge badge-light" style="position: absolute; top: 0; right: 0;" (click)="remove(i)">X</button> -->
                     <div *ngIf="model.collaborator.length > 1 && model.showInfo"
                          style="position: absolute; top: 100%; z-index: 100"
                          class="panel panel-default">

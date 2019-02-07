@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A webpack starter for Angular",
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --port 8080",
+    "start": "webpack-dev-server --inline --progress --port 8081",
     "start-full": "npm-run-all -p start-mqtt-server start-node-backend start",
     "start-mqtt-server": "node ../API/mqttserver.js",
     "start-node-backend": "node ../API/express.js",
@@ -42,6 +42,7 @@
     "file-saver": "^1.3.8",
     "immutable": "^3.7.6",
     "jquery": "^3.2.1",
+    "js-interpreter": "^1.4.6",
     "json-loader": "^0.5.4",
     "jszip": "^3.1.5",
     "mosca": "^2.7.0",

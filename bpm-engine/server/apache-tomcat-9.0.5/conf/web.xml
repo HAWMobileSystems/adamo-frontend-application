@@ -476,7 +476,14 @@
         <async-supported>true</async-supported>
     </filter>
 -->
-
+<filter>
+  <filter-name>CorsFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>CorsFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
   <!-- A filter that sets character encoding that is used to decode -->
   <!-- parameters in a POST request -->
 <!--

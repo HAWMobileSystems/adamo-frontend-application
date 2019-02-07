@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RequestOptions, Http, Response} from '@angular/http';
+import {RequestOptions, Http, Response, Headers} from '@angular/http';
 import {IPIM_OPTIONS} from '../modelerConfig.service';
 import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
 import 'rxjs/Rx';
@@ -271,4 +271,50 @@ export class ApiService {
     return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/usage', {pmid: pmid}, options)
       .map((response: Response) => response.json());
   }
+
+  //Upload to Camunda Engine
+  public uploadToEngine(name: string, modelXML: any) {
+
+    const deploy = require('./deploymenthelper');
+
+    const req = {
+      apiUrl: IPIM_OPTIONS.ENGINE_CONNECTION,
+      filename: name
+    };
+
+    deploy(req, modelXML, (err: any, res: any) => {
+
+      if (err) {
+        console.log('ERROR DEPLOYING', err);
+        // TODO: log error
+      } else {
+        console.log('Success', res);
+      }
+
+    });
+
+    // const headerDict = {
+    //   'Content-Type': 'multipart/form-data'
+    // };
+
+    // const requestOptions = {
+    //   headers: new Headers(headerDict)
+    // };
+    // return this.http.post(IPIM_OPTIONS.ENGINE_CONNECTION, {
+    //   upload:
+    //     { value: modelXML,
+    //       options:
+    //        { filename: 'diagramm model_23_1407374883553280.bpmn',
+    //          contentType: null } }
+    //   // 'upload': modelXML
+    //   // 'deployment-name': name,
+    //   // 'enable-duplicate-filtering': false,
+    //   // 'deploy-changed-only': false,
+    //   // 'deployment-source': 'local',
+    //   // 'tenant-id': tenantId,
+    //   // 'pay_taxes.bpmn': modelXML
+    // }, requestOptions)
+    //   .map((response: Response) => response.json());
+  }
+
 }

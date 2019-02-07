@@ -20,7 +20,7 @@ Setup / Installation
 ---
 
 - `npm install`
-- `npm start` to start dev-server on localhost:8080
+- `npm start` to start dev-server on localhost:8081
 - `npm run build` to build distribution into `dist` directory.  
 
 

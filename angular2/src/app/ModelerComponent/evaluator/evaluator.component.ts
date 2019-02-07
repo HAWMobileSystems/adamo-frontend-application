@@ -300,9 +300,17 @@ export class Evaluator {
                 evalterm = evalterm.replace('[' + substr + ']', varValMap[substr]);
               }
               //Sichere Eval Sandbox schaffen
-              const safeEval = require('safe-eval');
+              // const safeEval = require('safe-eval');
+              // import Interpreter from 'js-interpreter';
+              const jSInterpreter = require('js-interpreter');
+              const interpreter = new jSInterpreter(evalterm);
+
+              interpreter.run();
               // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
-              if (!eval(evalterm)) {
+              const evalResult : boolean = interpreter.value.data;
+              console.log('using js-interpreter for: ', evalterm, 'Result: ', evalResult);
+              if (!evalResult) {
+              // Mittels Teufelsmagie(eval) prüfen ob der zugehörige Wert TRUE ist
                 //Element über modeling Objekt löschen
                 modeling.removeElements([element]);
               }
