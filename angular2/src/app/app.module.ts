@@ -5,12 +5,11 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
-import {ReCaptchaModule} from 'angular2-recaptcha';
 import {AppRoutingModule} from './app-routing.module';
 import {FrontPageComponent} from './front-page/front-page.component';
 import {ViewerComponent} from './viewer/viewer.component';
 import {ModelerComponent} from './ModelerComponent/modeler.component';
-import {Ng2Bs3ModalModule} from 'ng2-bs3-modal/ng2-bs3-modal';
+import {BsModalModule} from 'ng2-bs3-modal';
 import {TermModal} from './ModelerComponent/modals/TermModal/TermModal';
 import {VariableModal} from './ModelerComponent/modals/VariableModal/VariableModal';
 import {InputModal} from './ModelerComponent/modals/InputModal/InputModal';
@@ -50,9 +49,8 @@ import { SnackBarService } from './services/snackbar.service';
     HttpModule,
     AppRoutingModule,
     FormsModule,
-    Ng2Bs3ModalModule,
+    BsModalModule ,
     HttpClientModule,
-    ReCaptchaModule,
     Ng2SearchPipeModule
   ],
   declarations: [
