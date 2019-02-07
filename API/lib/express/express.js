@@ -4,7 +4,7 @@ const db = require('./database');
 const userRouter = require('./user');
 const permissionRouter = require('./permission');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const modelRouter = require('./model');
@@ -15,7 +15,7 @@ const roleRouter = require('./role');
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');  //TODO edit for productive environment!
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); //TODO edit for productive environment!
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -31,18 +31,25 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // support encoded bodies
 
 
 const store = new pgSession({
   pgPromise: db
 });
+
+
+// console.log('express.js', ' - database', db);
 app.use(session({
   store: store,
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  cookie: {maxAge: 3600000} //1 hour
+  cookie: {
+    maxAge: 3600000
+  } //1 hour
 }));
 
 
@@ -87,10 +94,14 @@ app.all('*', function (req, res, next) {
       }
     }
   } else {
-    res.status(401).send({message: 'you have no session'});
+    res.status(401).send({
+      message: 'you have no session'
+    });
     return;
   }
-  res.status(401).send({message: 'not enough permissions, your permissions are: ' + req.session.user});
+  res.status(401).send({
+    message: 'not enough permissions, your permissions are: ' + req.session.user
+  });
 });
 
 
@@ -131,16 +142,34 @@ app.post('/authenticate', function (req, res) {
     var response = {};
     console.log(req);
     if (req.body.email) var email = req.body.email;
-    else throw({status: 400, data: {message: 'missing email', success: false}});
+    else throw ({
+      status: 400,
+      data: {
+        message: 'missing email',
+        success: false
+      }
+    });
     if (req.body.password) var password = req.body.password;
-    else throw({status: 400, data: {message: 'missing password', success: false}});
+    else throw ({
+      status: 400,
+      data: {
+        message: 'missing password',
+        success: false
+      }
+    });
     db.one('' +
-      'SELECT uid, email, password, firstname, lastname, profile, permission ' +
-      'FROM users ' +
-      'LEFT JOIN userprofile On users.upid = userprofile.upid ' +
-      'WHERE email = $1', email)
+        'SELECT uid, email, password, firstname, lastname, profile, permission ' +
+        'FROM users ' +
+        'LEFT JOIN userprofile On users.upid = userprofile.upid ' +
+        'WHERE email = $1', email)
       .then(function (user) {
-        if (!user) throw ({status: 400, data: {message: 'user not found', success: false}});
+        if (!user) throw ({
+          status: 400,
+          data: {
+            message: 'user not found',
+            success: false
+          }
+        });
         bcrypt.compare(password, user.password, function (err, match) {
           if (err) throw (err);
           if (match) {
@@ -174,8 +203,7 @@ app.post('/authenticate', function (req, res) {
                     });
                     res.send(response);
                   });
-                }
-                else {
+                } else {
                   response.message = 'success';
                   response.success = true;
                   response.email = user.email;
@@ -199,8 +227,7 @@ app.post('/authenticate', function (req, res) {
                 console.log(error, 'Something happend');
                 res.status(400).send(error);
               });
-          }
-          else {
+          } else {
             res.status(401).send('User and password do not match');
           }
         });
@@ -210,8 +237,7 @@ app.post('/authenticate', function (req, res) {
         response.message = 'User not found in the database';
         res.status(404).send(response.message);
       });
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(error.status).send(error.data);
   }
@@ -236,11 +262,18 @@ app.get('/logout', function (req, res) {
   try {
     if (req.session.user) {
       req.session.destroy();
-      res.status(200).clearCookie('connect.sid').send({message: 'logging out', success: true});
-    }
-    else throw({status: 200, data: {message: 'not logged in', success: false}});
-  }
-  catch (error) {
+      res.status(200).clearCookie('connect.sid').send({
+        message: 'logging out',
+        success: true
+      });
+    } else throw ({
+      status: 200,
+      data: {
+        message: 'not logged in',
+        success: false
+      }
+    });
+  } catch (error) {
     console.log(error);
     res.status(error.status).send(error.data);
   }
@@ -272,10 +305,15 @@ app.get('/login_status', function (req, res) {
         success: true,
         loggedIn: true
       });
-    }
-    else res.status(200).send({status: 200, data: {message: 'not logged in', success: true, loggedIn: false}});
-  }
-  catch (error) {
+    } else res.status(200).send({
+      status: 200,
+      data: {
+        message: 'not logged in',
+        success: true,
+        loggedIn: false
+      }
+    });
+  } catch (error) {
     console.log(error);
     res.status(error.status).send(error.data);
   }
@@ -283,4 +321,4 @@ app.get('/login_status', function (req, res) {
 
 
 app.listen(3000);
-console.log('ExpressJS is up and running');
+console.log('express.js', 'ExpressJS is up and running');

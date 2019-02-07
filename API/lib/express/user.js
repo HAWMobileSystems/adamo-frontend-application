@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('./database');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 router.use(bodyParser.json()); // support json encoded bodies
-router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+router.use(bodyParser.urlencoded({
+  extended: true
+})); // support encoded bodies
 
 
 /**
@@ -26,45 +28,53 @@ router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 router.get('/all', function (req, res) {
 
   db.query('' +
-    'SELECT * ' +
-    'FROM users ' +
-    'LEFT JOIN userprofile ON users.upid = userprofile.upid')
+      'SELECT * ' +
+      'FROM users ' +
+      'LEFT JOIN userprofile ON users.upid = userprofile.upid')
     .then(function (data) {
       console.log('DATA:', data);
-      res.send({ data: data, success: true });
+      res.send({
+        data: data,
+        success: true
+      });
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({ status: 'Something went wrong', success: false });
+      res.status(400).send({
+        status: 'Something went wrong',
+        success: false
+      });
     });
 });
 
 
 /**
-* @api {post} /user/create create
-* @apiDescription Checks if post parameters email, firstname, lastname, password and profile are set,
-* validates email regarding its correctness,
-* checks if email exists already in database,
-* and if not, creates a new user.
-* @apiName create
-* @apiGroup user
-* @apiParam {String} email Mandatory email of a user
-* @apiParam {String} firstname Mandatory firstname of a user
-* @apiParam {String} lastname Mandatory lastname of a user
-* @apiParam {String} password Mandatory password of a user
-* @apiParam {String} profile Mandatory profile of a user
-* @apiSuccess status User created successfully
-* @apiSuccessExample Success-Response:
-* HTTP/1.1 200 OK
-* {status: 'User created successfully', success: true}
-* @apiError error Something went wrong
-* @apiErrorExample Error-Response:
-* HTTP/1.1 400 Failure
-* {status: 'Something went wrong', success: false}
-*/
+ * @api {post} /user/create create
+ * @apiDescription Checks if post parameters email, firstname, lastname, password and profile are set,
+ * validates email regarding its correctness,
+ * checks if email exists already in database,
+ * and if not, creates a new user.
+ * @apiName create
+ * @apiGroup user
+ * @apiParam {String} email Mandatory email of a user
+ * @apiParam {String} firstname Mandatory firstname of a user
+ * @apiParam {String} lastname Mandatory lastname of a user
+ * @apiParam {String} password Mandatory password of a user
+ * @apiParam {String} profile Mandatory profile of a user
+ * @apiSuccess status User created successfully
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {status: 'User created successfully', success: true}
+ * @apiError error Something went wrong
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Failure
+ * {status: 'Something went wrong', success: false}
+ */
 router.post('/create', function (req, res) {
   if (!req.body.email) {
-    res.status(400).send({ status: 'E-Mail may not be empty!' });
+    res.status(400).send({
+      status: 'E-Mail may not be empty!'
+    });
     return;
   }
   const emailValid = function (email) {
@@ -72,56 +82,70 @@ router.post('/create', function (req, res) {
     return emailRegex.test(email);
   };
   if (!emailValid(req.body.email)) {
-    res.status(400).send({ status: 'E-Mail is not valid!' });
+    res.status(400).send({
+      status: 'E-Mail is not valid!'
+    });
     return;
   }
   if (!req.body.firstname) {
-    res.status(400).send({ status: 'First name may not be empty!' });
+    res.status(400).send({
+      status: 'First name may not be empty!'
+    });
     return;
   }
   if (!req.body.lastname) {
-    res.status(400).send({ status: 'Last name may not be empty!' });
+    res.status(400).send({
+      status: 'Last name may not be empty!'
+    });
     return;
   }
   if (!req.body.password) {
-    res.status(400).send({ status: 'Password may not be empty!' });
+    res.status(400).send({
+      status: 'Password may not be empty!'
+    });
     return;
   }
   if (!req.body.profile) {
-    res.status(400).send({ status: 'User profile may not be empty!' });
+    res.status(400).send({
+      status: 'User profile may not be empty!'
+    });
     return;
   }
 
   db.oneOrNone('select email from users where email = $1', [req.body.email])
     .then(function (data) {
       if (data) {
-        res.status(400).send({ status: 'User already exists' });
+        res.status(400).send({
+          status: 'User already exists'
+        });
       } else {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
           db.oneOrNone('' +
-            'INSERT INTO users (firstname, lastname, email, password, upid)\n' +
-            'SELECT $1, $2, $3, $4, upid \n' +
-            'FROM userprofile\n' +
-            'WHERE profile = $5\n' +
-            'RETURNING uid',
-            [req.body.firstname, req.body.lastname, req.body.email, hash, req.body.profile])
+              'INSERT INTO users (firstname, lastname, email, password, upid)\n' +
+              'SELECT $1, $2, $3, $4, upid \n' +
+              'FROM userprofile\n' +
+              'WHERE profile = $5\n' +
+              'RETURNING uid',
+              [req.body.firstname, req.body.lastname, req.body.email, hash, req.body.profile])
             .then(function (rows) {
               var _uid = rows.uid;
-              res.send({ status: 'User created successfully', success: true });
+              res.send({
+                status: 'User created successfully',
+                success: true
+              });
 
               try {
                 db.query('' +
-                  'SELECT DISTINCT(mid) as mid ' +
-                  'FROM model')
+                    'SELECT DISTINCT(mid) as mid ' +
+                    'FROM model')
                   .then(function (rows) {
                     rows.forEach(function (row) {
                       db.oneOrNone('' +
                         'INSERT INTO permission (mid, uid, rid)\n' +
-                        'SELECT $1, $2, $3', [row.mid, _uid, 6,])
+                        'SELECT $1, $2, $3', [row.mid, _uid, 6, ])
                     });
                   })
-              }
-              catch (error) {
+              } catch (error) {
                 console.error(error);
               }
 
@@ -129,14 +153,22 @@ router.post('/create', function (req, res) {
             })
             .catch(function (error) {
               console.log('ERROR POSTGRES:', error);
-              res.status(400).send({ status: 'First Something went wrong', success: false, error: error });
+              res.status(400).send({
+                status: 'First Something went wrong',
+                success: false,
+                error: error
+              });
             });
         });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({ status: 'Second Something went wrong', success: false, error: error });
+      res.status(400).send({
+        status: 'Second Something went wrong',
+        success: false,
+        error: error
+      });
     });
 });
 
@@ -166,19 +198,27 @@ router.post('/create', function (req, res) {
 router.post('/update', function (req, res) {
 
   if (!req.body.uid) {
-    res.status(400).send({ status: 'Uid may not be empty!' });
+    res.status(400).send({
+      status: 'Uid may not be empty!'
+    });
     return;
   }
   if (!req.body.firstname) {
-    res.status(400).send({ status: 'Firstname may not be empty!' });
+    res.status(400).send({
+      status: 'Firstname may not be empty!'
+    });
     return;
   }
   if (!req.body.lastname) {
-    res.status(400).send({ status: 'Lastname may not be empty!' });
+    res.status(400).send({
+      status: 'Lastname may not be empty!'
+    });
     return;
   }
   if (!req.body.email) {
-    res.status(400).send({ status: 'E-Mail may not be empty!' });
+    res.status(400).send({
+      status: 'E-Mail may not be empty!'
+    });
     return;
   }
   const emailValid = function (email) {
@@ -186,11 +226,15 @@ router.post('/update', function (req, res) {
     return emailRegex.test(email);
   };
   if (!emailValid(req.body.email)) {
-    res.status(400).send({ status: 'E-Mail is not valid!' });
+    res.status(400).send({
+      status: 'E-Mail is not valid!'
+    });
     return;
   }
   if (!req.body.profile) {
-    res.status(400).send({ status: 'Profile may not be empty!' });
+    res.status(400).send({
+      status: 'Profile may not be empty!'
+    });
     return;
   }
 
@@ -201,22 +245,28 @@ router.post('/update', function (req, res) {
   const profile = req.body.profile;
 
   db.oneOrNone('' +
-    'UPDATE users\n' +
-    '          SET firstname = $1, \n' +
-    '            lastname = $2, \n' +
-    '            email = $3,  \n' +
-    '            upid = (SELECT upid\n' +
-    '                      FROM userprofile\n' +
-    '                      WHERE profile = $4)\n' +
-    '          where uid = $5',
-    [firstname, lastname, email, profile, uid])
+      'UPDATE users\n' +
+      '          SET firstname = $1, \n' +
+      '            lastname = $2, \n' +
+      '            email = $3,  \n' +
+      '            upid = (SELECT upid\n' +
+      '                      FROM userprofile\n' +
+      '                      WHERE profile = $4)\n' +
+      '          where uid = $5',
+      [firstname, lastname, email, profile, uid])
     .then(function (data) {
       console.log('data is ', data);
-      res.send({ status: 'User updated successfully', success: true });
+      res.send({
+        status: 'User updated successfully',
+        success: true
+      });
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({ status: 'Something went wrong', success: false });
+      res.status(400).send({
+        status: 'Something went wrong',
+        success: false
+      });
     });
 });
 
@@ -240,26 +290,36 @@ router.post('/update', function (req, res) {
  */
 router.post('/password', function (req, res) {
   if (!req.body.uid) {
-    res.status(400).send({ status: 'Uid may not be empty!' });
+    res.status(400).send({
+      status: 'Uid may not be empty!'
+    });
     return;
   }
   if (!req.body.password) {
-    res.status(400).send({ status: 'Password may not be empty!' });
+    res.status(400).send({
+      status: 'Password may not be empty!'
+    });
     return;
   }
   const uid = req.body.uid;
   const password = req.body.password;
   bcrypt.hash(password, saltRounds, function (err, hash) {
     db.oneOrNone('' +
-      'UPDATE users ' +
-      'SET password = $1 ' +
-      'WHERE uid = $2', [hash, uid])
+        'UPDATE users ' +
+        'SET password = $1 ' +
+        'WHERE uid = $2', [hash, uid])
       .then(function () {
-        res.send({ status: 'Password changed successfully', success: true });
+        res.send({
+          status: 'Password changed successfully',
+          success: true
+        });
       })
       .catch(function (error) {
         console.log('ERROR POSTGRES:', error);
-        res.status(400).send({ status: 'Something went wrong', success: false });
+        res.status(400).send({
+          status: 'Something went wrong',
+          success: false
+        });
       });
   });
 });
@@ -289,7 +349,9 @@ router.post('/password', function (req, res) {
 router.post('/delete', function (req, res) {
 
   if (!req.body.uid) {
-    res.status(400).send({ status: 'User may not be empty!' });
+    res.status(400).send({
+      status: 'User may not be empty!'
+    });
     return;
   }
 
@@ -302,19 +364,31 @@ router.post('/delete', function (req, res) {
         db.oneOrNone('delete from permission where uid = $1; delete from users where uid = $1', [uid])
           .then(function (data) {
             console.log('User deleted');
-            res.send({ status: 'User deleted successfully', success: true });
+            res.send({
+              status: 'User deleted successfully',
+              success: true
+            });
           })
           .catch(function (error) {
             console.log('ERROR POSTGRES:', error);
-            res.status(400).send({ status: 'Error while deleting user', success: false });
+            res.status(400).send({
+              status: 'Error while deleting user',
+              success: false
+            });
           });
       } else {
-        res.status(404).send({ status: 'User does not exist in the database', success: true });
+        res.status(404).send({
+          status: 'User does not exist in the database',
+          success: true
+        });
       }
     })
     .catch(function (error) {
       console.log('ERROR POSTGRES:', error);
-      res.status(400).send({ status: 'Something went wrong', success: false });
+      res.status(400).send({
+        status: 'Something went wrong',
+        success: false
+      });
     });
 });
 

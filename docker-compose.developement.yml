@@ -1,0 +1,68 @@
+version: "3.6"
+services:
+  adamo-application: 
+    build: ./angular2
+    env_file: 
+      - .env
+    ports: 
+      - "8000:8000"
+    command: ["npm", "run", "start"]
+
+  adamo-server:
+    build: ./API 
+    # container_name: 
+    # image: "node:10"
+    # working_dir: /usr/src/app
+    # image: dockerhubusername/practice_docker
+    env_file:
+      - .env
+    ports: 
+      - "3000:3000"
+      - "4711:4711"
+      # volumes:
+      # - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    command: ["npm", "run", "start"]
+    depends_on:
+      - postgres
+        # condition: service_healthy
+    # environment:
+      # - DATABASE_URL=postgres://postgres:12341324@postgres:5432/ipim
+      # - PORT=3000   
+    # networks: 
+    #   - back-tier
+
+  postgres:
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    image: postgres:${POSTGRES_IMAGE_VERSION}
+    environment:
+       POSTGRES_DB: ${DB_NAME}
+       POSTGRES_USER: "${DB_USER}"
+       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+    # networks: 
+    #   - back-tier
+
+  # application: 
+  #   build: ./angular2
+  #   networks:
+  #     - front-tier
+  #     - back-tier
+
+
+volumes:
+  db-data:
+
+      # POSTGRES_DB: ${POSTGRES_DB}
+      # POSTGRES_USER: ${POSTGRES_USER}
+# networks:
+#   front-tier:
+#   back-tier:
