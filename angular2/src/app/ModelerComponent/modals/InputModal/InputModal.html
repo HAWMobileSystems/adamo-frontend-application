@@ -1,9 +1,9 @@
-<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+<bs-modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
   (onOpen)="opened()" [cssClass]="cssClass" #modal>
-    <modal-header [show-close]="true">
+    <bs-modal-header [showDismiss]="true">
       <h2>IPIM Evaluation</h2>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <p>Please specify the values used:</p>
       <form class="modal-body-scroll">
         <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
@@ -11,9 +11,9 @@
           <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
         </fieldset>
       </form>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false">
         <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
     <!--<input type="button" value=" Evaluate " id="EvalModal"> -->
-    </modal-footer>
-</modal>
+    </bs-modal-footer>
+</bs-modal>

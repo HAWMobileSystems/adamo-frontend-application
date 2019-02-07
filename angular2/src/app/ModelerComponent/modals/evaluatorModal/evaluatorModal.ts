@@ -1,6 +1,6 @@
 import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Router } from '@angular/router';
 import { Variable } from '../variable';
 import { InputVarComponent } from '../InputComponent/input.component';
@@ -10,7 +10,7 @@ import { InputVarComponent } from '../InputComponent/input.component';
   templateUrl: './evaluatorModal.html'
 })
 
-export class EvalModal extends ModalComponent {
+export class EvalModal extends BsModalComponent {
   private IPIM_VAL : string = 'IPIM_Val';
   private IPIM_META : string = 'IPIM_Meta';
 
@@ -20,7 +20,7 @@ export class EvalModal extends ModalComponent {
   public variables: Variable[] = [];
 
   @ViewChild('modal')
-  public modal: ModalComponent;
+  public modal: BsModalComponent;
   public selected: string;
   public output: string;
   public index: number = 0;

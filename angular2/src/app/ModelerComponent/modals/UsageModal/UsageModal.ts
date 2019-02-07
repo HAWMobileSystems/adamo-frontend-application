@@ -1,6 +1,6 @@
 import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input , ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal/';
 import { Router } from '@angular/router';
 import { Model } from '../../../models/model';
 import { ApiService } from '../../../services/api.service';
@@ -10,12 +10,12 @@ import { ApiService } from '../../../services/api.service';
   templateUrl: './UsageModal.html'
 })
 
-export class UsageModal extends ModalComponent {
+export class UsageModal extends BsModalComponent {
 
   public modeler: any;
 
   @ViewChild('modal')
-  public modal: ModalComponent;
+  public modal: BsModalComponent;
   public selected: string;
   public output: string;
   public index: number = 0;

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Component, ViewChild} from '@angular/core';
-import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import {BsModalComponent} from 'ng2-bs3-modal';
 import {Model} from '../../../models/model';
 import {ApiService} from '../../../services/api.service';
 import {Http} from '@angular/http';
@@ -13,7 +13,7 @@ const bigInt = require('big-integer');
 })
 
 @Injectable()
-export class SaveModal extends ModalComponent {
+export class SaveModal extends BsModalComponent {
 
   public apiService: ApiService;
   public root: any;
@@ -26,7 +26,7 @@ export class SaveModal extends ModalComponent {
   public alsoExists: boolean = false;
 
   @ViewChild('modal')
-  public modal: ModalComponent;
+  public modal: BsModalComponent;
 
   public setModel(model: Model, xml: string, apiService: ApiService, root: any) {
     this.root = root;

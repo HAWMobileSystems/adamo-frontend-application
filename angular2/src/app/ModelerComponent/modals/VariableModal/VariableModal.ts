@@ -1,6 +1,6 @@
 import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { VariableComponent } from '../VariablesComponent/variables.component';
 import { Variable } from '../variable';
 
@@ -9,7 +9,7 @@ import { Variable } from '../variable';
     templateUrl: './VariableModal.html'
   })
 
-export class VariableModal extends ModalComponent {
+export class VariableModal extends BsModalComponent {
     private IPIM_VAL : string = 'IPIM_Val';
     private IPIM_META : string = 'IPIM_Meta';
 
@@ -32,7 +32,7 @@ export class VariableModal extends ModalComponent {
     } */
 
     @ViewChild('modal')
-    public modal: ModalComponent;
+    public modal: BsModalComponent;
     public selected: string;
     public output: string;
     public index: number = 0;

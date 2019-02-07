@@ -1,6 +1,6 @@
 import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input , ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,14 +8,14 @@ import { Router } from '@angular/router';
   templateUrl: './TermModal.html'
 })
 
-export class TermModal extends ModalComponent {
+export class TermModal extends BsModalComponent {
   public modeler: any;
   public termList: any;
   public firstTerm: any;
   public root : any;
 
   @ViewChild('modal')
-  public modal: ModalComponent;
+  public modal: BsModalComponent;
   public selected: string;
   public output: string;
   public index: number = 0;

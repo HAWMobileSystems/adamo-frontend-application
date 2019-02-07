@@ -1,10 +1,10 @@
-<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()"
+<bs-modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()"
        (onDismiss)="dismissed()"
        (onOpen)="opened()" [cssClass]="cssClass" #modal>
-    <modal-header [show-close]="true">
+    <bs-modal-header [showDismiss]="true">
         <h2>Save Model</h2>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
         <p>
             Next Version would already exist
             Save it with newest version
@@ -18,13 +18,13 @@
         <p *ngIf="alsoExists">
             given version also exists
         </p>
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false">
         <button type="button" class="btn btn-large btn-block btn-default" (click)="saveWithVersion()">
             Save with given version
         </button>
         <button type="button" class="btn btn-large btn-block btn-default" (click)="saveSuperVersion()">
             Save as newest version
         </button>
-    </modal-footer>
-</modal>
+    </bs-modal-footer>
+</bs-modal>

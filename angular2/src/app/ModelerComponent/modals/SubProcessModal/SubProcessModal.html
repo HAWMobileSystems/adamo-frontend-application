@@ -1,9 +1,9 @@
-<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+<bs-modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
   (onOpen)="opened()" [cssClass]="cssClass" #modal  >
-    <modal-header [show-close]="true">
+    <bs-modal-header [showDismiss]="true">
       <h2>IPIM SubProcess</h2>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <p *ngIf="(loading == true)">Please wait loading...</p>
       <p *ngIf="(loading == false)">Please define a new subprocess ID for all selected Subprocesses!</p>
         
@@ -45,8 +45,8 @@
         <button *ngIf="(loading == false)" type="button" class="btn btn-large btn-block btn-default" (click)="openSubProcessModel()">Open Model</button>
       <br>
       
-    </modal-body>
-    <modal-footer [show-default-buttons]="false">
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false">
         <button *ngIf="(loading == false)" type="button" class="btn btn-large btn-block btn-default" (click)="writeSubprocessModalValues()">Set Subprocess</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
