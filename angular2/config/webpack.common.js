@@ -93,7 +93,7 @@ module.exports = {
         //     }
         // }),
         // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'bpmn',
+        //     name: 'bpmn',gitkr
         // }),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'vendor',

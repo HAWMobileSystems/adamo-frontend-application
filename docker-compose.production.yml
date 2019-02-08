@@ -1,12 +1,12 @@
 version: "3.6"
 services:
-  # adamo-application: 
-  #   build: ./angular2
-  #   env_file: 
-  #     - .env
-  #   ports: 
-  #     - "8000:8000"
-  #   command: ["npm", "run", "start"]
+  adamo-application: 
+    build: ./angular2
+    env_file: 
+      - .env
+    ports: 
+      - "8000:8000"
+    command: ["npm", "run", "build"]
 
   adamo-server:
     build: ./API 
