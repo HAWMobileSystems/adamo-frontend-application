@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "version": "1.0.0",
+    "name": "new-cli"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "styles": [
+        "styles.css"
+      ],
+      "prefix": "app",
+      "scripts": [],
+      "environmentSource": "environments/environment.ts"
+    }
+  ]
+}

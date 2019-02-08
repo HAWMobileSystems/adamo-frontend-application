@@ -1,4 +1,4 @@
-import * as uuid from 'node-uuid';
+import uuid from 'uuid';
 
 export class Entry {
   public selected: boolean;

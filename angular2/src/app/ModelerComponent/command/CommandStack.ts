@@ -1,4 +1,4 @@
-import {Inherits} from 'inherits';
+// import {Inherits} from 'inherits';
 import {ModelComponent} from '../../components/ModelComponent/model.component';
 import {ModelerComponent} from '../modeler.component';
 import {IPIM_OPTIONS} from '../../modelerConfig.service';

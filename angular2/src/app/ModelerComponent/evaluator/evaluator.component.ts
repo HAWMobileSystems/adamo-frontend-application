@@ -1,4 +1,4 @@
-import { Inherits } from 'inherits';
+// import { Inherits } from 'inherits';
 import {Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 
 import {PaletteProvider} from '../palette/palette';
