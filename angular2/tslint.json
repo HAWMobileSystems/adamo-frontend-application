@@ -47,10 +47,7 @@
     "jquery-deferred-must-complete": true,
     "jsdoc-format": false,
     "label-position": true,
-    "linebreak-style": [
-      true,
-      "CRLF"
-    ],
+    
     "max-classes-per-file": [
       false, 
       10
