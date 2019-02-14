@@ -1,13 +1,21 @@
-FROM node:10.15-alpine
+# FROM node:10.15-alpine
 
-WORKDIR /usr/src/application
+# WORKDIR /usr/src/application
 
-COPY package*.json ./
-RUN apk --no-cache add --virtual git && npm install 
+# COPY package*.json ./
+# RUN apk --no-cache add --virtual git && npm install 
 
 
-# Bundle app source
-COPY . .
+# # Bundle app source
+# COPY . .
 
-EXPOSE 8080
-CMD [ "npm", "run", "build" ]
+# EXPOSE 8080
+# CMD [ "npm", "run", "serve" ]
+
+
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+WORKDIR /usr/share/nginx/html
+COPY dist/ .
