@@ -1,4 +1,4 @@
-import { AbstractCustomModal } from '../AbstractCustomModal';
+// import { AbstractCustomModal } from '../AbstractCustomModal';
 import { Component, Input, ViewChild } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { VariableComponent } from '../VariablesComponent/variables.component';

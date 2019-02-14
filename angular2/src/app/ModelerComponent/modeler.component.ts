@@ -17,7 +17,7 @@ import {InputModal} from './modals/InputModal/InputModal';
 import {VariableModal} from './modals/VariableModal/VariableModal';
 import {SubProcessModal} from './modals/SubProcessModal/SubProcessModal';
 import {EvalModal} from './modals/evaluatorModal/evaluatorModal';
-import {SaveModal} from './modals/saveModal/saveModal';
+import {SaveModal} from './modals/SaveModal/SaveModal';
 import {UsageModal} from './modals/UsageModal/UsageModal';
 
 import {COMMANDS} from '../bpmn-store/commandstore.service';

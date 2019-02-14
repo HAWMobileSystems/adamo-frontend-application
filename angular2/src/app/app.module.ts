@@ -32,7 +32,7 @@ import {PermissionComponent} from './components/PermissionComponent/permission.c
 import {VariableComponent} from './ModelerComponent/modals//VariablesComponent/variables.component';
 import {InputVarComponent} from './ModelerComponent/modals/InputComponent/input.component';
 import {EvalModal} from './ModelerComponent/modals/evaluatorModal/evaluatorModal';
-import {SaveModal} from './ModelerComponent/modals/saveModal/saveModal';
+import {SaveModal} from './ModelerComponent/modals/SaveModal/SaveModal';
 import {UsageModal} from './ModelerComponent/modals/UsageModal/UsageModal';
 import {FilterUnique} from './pipes/filterUnique.pipe';
 import {Timestamp2Date} from './pipes/timestamp.pipe';

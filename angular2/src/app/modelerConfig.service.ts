@@ -3,7 +3,7 @@ export const IPIM_OPTIONS = {
     COLORS: ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson'],
     EXPRESSJS_CONNECTION: 'http://localhost:3000',
     ENGINE_CONNECTION: 'http://localhost:8080/engine-rest/deployment/create',
-    MQTT_CONNECTION: 'mqtt://localhost:4711',
+    MQTT_CONNECTION: 'mqtt://127.0.0.1:4711',
     TIMEOUT_SNACKBAR: 10000,
     NEWMODEL: '' +
     '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
