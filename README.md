@@ -4,7 +4,32 @@ Der Modeler wird im Rahmen des Teilprojekts "Intelligent kooperative Materialflu
 
 Ziel ist es durch Zugriff auf digitalisiertes Expertenwissen und einer (Teil-) Automatisierung von Routineaufgaben 
 eine Entlastung für Logistikplaner herbeizuführen.
+Dazu wurde die BPMN 2.0, zur Darstellung verschiedener Prozessvarianten erweitert. Diese können über Konfigurationsterme aus dem Gesamtmodell erzeugt werden. 
 
+
+
+## Einfacher Start
+
+Fürs einfache loslegen kann derzeit docker-compose genutzt werden. 
+```
+docker-compose up // im Rootverzeichnis aufrufen
+```
+Derzeit wird dabei noch eine leere Datenbank erzeugt (diese kann über pgadmin initialisiert werden - username und passwort sind in der .env zu finden)
+
+Achtung: 
+```
+mv .env.exampe .env 
+vi .env // nach belieben anpassen
+```
+
+Als bisherige Entwicklungsumgebung diente Visual-Studio-Code, allerdings kann auch problemlos Webstorm genutzt werden. 
+
+## TODO
+
+Nachdem inzwischen Varianten modelliert und extrahiert werden können: 
+
+    - Variante auf Workflow-Engine deployen
+    - Beispiel-Implementierung eines Prozesses auf Basis des konfigurierbaren Prozessmodells ausführen
 
 ## Abhängigkeiten:
 
@@ -19,10 +44,3 @@ Dieses wird mit jQuery erweitert.
 
 Die weitere Entwicklung wird unter Einsatz aktuellerer Tools geschehen. 
 Eine Idee ist die Nutzung von TypeScript in Kombination mit React, um typsicheren Javascript Code zu schreiben und diesen in Komponenten zu gliedern.
-
-## React
-Benötigt:
-    Yarn
-    node-js
-
-ps. Developing with MacOs would work like charm.. (thanks to windows...)
