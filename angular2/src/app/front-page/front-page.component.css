@@ -31,7 +31,8 @@ body, html {
 .login-form{
     background-repeat: no-repeat;
     /*background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
-    background-image: linear-gradient(#f5f5f5, #DDDDDD)
+    background-image: linear-gradient(#f5f5f5, #DDDDDD);
+    height: inherit;
 
 ;
 }
@@ -44,10 +45,15 @@ body, html {
     border-color: #be0000;
     /*GREEN
     border-color: #3d8610;*/
-    position: absolute;
+    /* margin-top: 20%; */
+    /* position: absolute;
     top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 50%; */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    /* transform: translate(-50%, -50%); */
 }
 
 .btn {
