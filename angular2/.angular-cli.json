@@ -4,26 +4,28 @@
     "version": "1.0.0",
     "name": "new-cli"
   },
-  "apps": [
-    {
-      "root": "src",
-      "outDir": "dist",
-      "assets": [
-        "assets"
-      ],
-      "index": "index.html",
-      "main": "main.ts",
-      "polyfills": "polyfills.ts",
-      "styles": [
-        "styles.css"
-      ],
-      "prefix": "app",
-      "scripts": [],
-      "environmentSource": "environments/environment.ts", 
-      "environments": {
-        "local": "environments/environment.local.ts",
-        "dev": "environments/environment.dev.ts"
-      }
+  "apps": [{
+    "root": "src",
+    "outDir": "dist",
+    "assets": [
+      "assets"
+    ],
+    "index": "index.html",
+    "main": "main.ts",
+    "polyfills": "polyfills.ts",
+    "styles": [
+      "styles.css",
+      "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "../node_modules/diagram-js/assets/diagram-js.css",
+      "../node_modules/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css",
+      "../node_modules/bpmn-js-properties-panel/styles/properties.less"
+    ],
+    "prefix": "app",
+    "scripts": [],
+    "environmentSource": "environments/environment.ts",
+    "environments": {
+      "local": "environments/environment.local.ts",
+      "dev": "environments/environment.dev.ts"
     }
-  ]
+  }]
 }
