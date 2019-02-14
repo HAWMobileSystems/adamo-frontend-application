@@ -14,18 +14,19 @@
     "main": "main.ts",
     "polyfills": "polyfills.ts",
     "styles": [
-      "styles.css",
       "../node_modules/bootstrap/dist/css/bootstrap.min.css",
       "../node_modules/diagram-js/assets/diagram-js.css",
       "../node_modules/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css",
-      "../node_modules/bpmn-js-properties-panel/styles/properties.less"
+      "../node_modules/bpmn-js-properties-panel/styles/properties.less",
+      "styles.less"
     ],
     "prefix": "app",
     "scripts": [],
     "environmentSource": "environments/environment.ts",
     "environments": {
       "local": "environments/environment.local.ts",
-      "dev": "environments/environment.dev.ts"
+      "dev": "environments/environment.dev.ts",
+      "prod": "environments/environment.prod.ts"
     }
   }]
 }
