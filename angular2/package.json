@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "description": "A webpack starter for Angular",
   "scripts": {
-    "serve": "ng serve",
-    "start": "webpack-dev-server --inline --progress --port 8081",
+    "serve": "ng serve --port 8080",
+    "start": "webpack-dev-server --inline --progress --port 8080",
     "start-full": "npm-run-all -p start-mqtt-server start-node-backend start",
     "start-mqtt-server": "node ../API/mqttserver.js",
     "start-node-backend": "node ../API/express.js",
     "test": "karma start",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "tslint": "tslint",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
+    "build": "ng build"
   },
   "license": "MIT",
   "dependencies": {

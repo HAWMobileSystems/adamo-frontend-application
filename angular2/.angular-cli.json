@@ -19,7 +19,11 @@
       ],
       "prefix": "app",
       "scripts": [],
-      "environmentSource": "environments/environment.ts"
+      "environmentSource": "environments/environment.ts", 
+      "environments": {
+        "local": "environments/environment.local.ts",
+        "dev": "environments/environment.dev.ts"
+      }
     }
   ]
 }
