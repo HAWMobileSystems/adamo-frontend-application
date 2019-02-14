@@ -6,7 +6,7 @@ FROM node:10.15-alpine
 #   apk del make gcc g++ python
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/server
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)

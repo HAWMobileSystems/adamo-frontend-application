@@ -12,10 +12,12 @@ const partmodelRouter = require('./partmodel');
 const profileRouter = require('./profile');
 const roleRouter = require('./role');
 
-
+require('dotenv').config({
+  path: './../.env'
+})
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); //TODO edit for productive environment!
+  res.setHeader('Access-Control-Allow-Origin', process.env.APP_URI + ':' + process.env.APP_PORT); //TODO edit for productive environment!
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
