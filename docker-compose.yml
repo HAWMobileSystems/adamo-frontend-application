@@ -47,10 +47,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql
+      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
     # networks: 
     #   - back-tier
 
+  # camunda-platform:
+    # image: docker-camunda-platform
+  # 
+  
   # application: 
   #   build: ./angular2
   #   networks:
@@ -66,3 +70,4 @@ volumes:
 # networks:
 #   front-tier:
 #   back-tier:
+
