@@ -4,14 +4,16 @@
   "description": "A webpack starter for Angular",
   "scripts": {
     "serve": "ng serve --host 0.0.0.0 --port 8080",
-    "start": "webpack-dev-server --inline --progress --port 8080",
+    "serve-dev": "ng serve --environment=dev --host 0.0.0.0 --port 8085",
+    "config": "ts-node ./src/set-env.ts",
+    "start": "npm run config -- --environment=dev && npm run serve-dev",
+    "build": "npm run config -- --environment=dev && ng build --environment=dev",
     "start-full": "npm-run-all -p start-mqtt-server start-node-backend start",
-    "start-mqtt-server": "node ../API/mqttserver.js",
-    "start-node-backend": "node ../API/express.js",
+    "start-mqtt-server": "node ../API/lib/mqtt/mqttserver.js",
+    "start-node-backend": "node ../API/lib/express/express.js",
     "test": "karma start",
     "lint": "npm run tslint \"src/**/*.ts\"",
-    "tslint": "tslint",
-    "build": "ng build"
+    "tslint": "tslint"
   },
   "license": "MIT",
   "dependencies": {
@@ -23,8 +25,6 @@
     "@angular/platform-browser": "^4.1.0",
     "@angular/platform-browser-dynamic": "^4.1.0",
     "@angular/router": "^4.1.0",
-    "@types/file-saver": "^1.3.0",
-    "@types/jszip": "^3.1.4",
     "array-unique": "^0.3.2",
     "big-integer": "^1.6.34",
     "bootstrap": "^3.3.7",
@@ -53,16 +53,20 @@
     "sass-loader": "^6.0.5",
     "systemjs": "0.19.6",
     "uuid": "^3.3.2",
+    "yargs": "^13.2.1",
     "zone.js": "^0.8.9"
   },
   "devDependencies": {
     "@angular/cli": "1.4.10",
     "@angular/compiler-cli": "^4.1.0",
+    "@types/file-saver": "^1.3.0",
     "@types/jasmine": "2.5.47",
     "@types/jquery": "^2.0.42",
-    "@types/node": "~6.0.71",
+    "@types/jszip": "^3.1.4",
+    "@types/node": "^11.9.4",
     "@types/redux-logger": "^3.0.0",
     "@types/uuid": "^3.4.4",
+    "@types/yargs": "12.0.2",
     "codelyzer": "~3.0.1",
     "jasmine-core": "~2.6.1",
     "jasmine-spec-reporter": "~4.1.0",
@@ -81,7 +85,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "protractor": "~5.1.1",
     "rimraf": "^2.5.2",
-    "ts-node": "~3.0.2",
+    "ts-node": "^8.0.2",
     "tslint": "~5.11.0",
     "typescript": "^2.3.4"
   }

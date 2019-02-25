@@ -20,7 +20,7 @@ const cn = {
   // user: 'postgres',
   // password: '12341234'
 };
-console.log("cn: ", cn)
+// console.log("cn: ", cn)
 // console.log("proces env", process.env)
 const db = pgp(cn);
 

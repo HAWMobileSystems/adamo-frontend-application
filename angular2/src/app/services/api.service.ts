@@ -3,18 +3,20 @@ import {RequestOptions, Http, Response, Headers} from '@angular/http';
 import {IPIM_OPTIONS} from '../modelerConfig.service';
 import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
 import 'rxjs/Rx';
-
+import { environment } from '../../environments/environment';
 const options = new RequestOptions({withCredentials: true});
 
 @Injectable()
 export class ApiService {
   constructor(public http: Http) {
   }
+  private BACKEND_URI: string = environment.SERVER_HOST + ':' + environment.SERVER_PORT;
+  private CAMUNDA_ENGINE_URI: string = environment.CAMUNDA_ENGINE_HOST;
 
   //Session handling: Authentication when user is logging in
   public authenticate(email: string, password: string) {
     return this.http.post(
-      IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/authenticate',
+      this.BACKEND_URI + '/authenticate',
       {
         email: email,
         password: password
@@ -25,31 +27,31 @@ export class ApiService {
 
   //Session handling: Login status of user
   public login_status() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/login_status', options)
+    return this.http.get(this.BACKEND_URI + '/login_status', options)
       .map((response: Response) => response.json());
   }
 
   //Session handling: Logout of user
   public logout() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/logout', options)
+    return this.http.get(this.BACKEND_URI + '/logout', options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Show all users
   public getAllUsers() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/all', options)
+    return this.http.get(this.BACKEND_URI + '/user/all', options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Delete user
   public userDelete(uid: number) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/delete', {uid: uid}, options)
+    return this.http.post(this.BACKEND_URI + '/user/delete', {uid: uid}, options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Update user
   public userUpdate(uid: number, email: string, firstname: string, lastname: string, profile: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/update', {
+    return this.http.post(this.BACKEND_URI + '/user/update', {
       uid: uid,
       email: email,
       firstname: firstname,
@@ -61,7 +63,7 @@ export class ApiService {
 
   //Administration page: Change password
   public userPassword(uid: number, password: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/password', {
+    return this.http.post(this.BACKEND_URI + '/user/password', {
       uid: uid,
       password: password
     }, options)
@@ -70,7 +72,7 @@ export class ApiService {
 
   //Administration page: Create user
   public userCreate(email: string, firstname: string, lastname: string, profile: string, password: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/user/create', {
+    return this.http.post(this.BACKEND_URI + '/user/create', {
       email: email,
       firstname: firstname,
       lastname: lastname,
@@ -82,19 +84,19 @@ export class ApiService {
 
   //Administration page: Show all roles
   public getAllRoles() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/all', options)
+    return this.http.get(this.BACKEND_URI + '/role/all', options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Delete role
   public roleDelete(roleid: number) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/delete', {roleid: roleid}, options)
+    return this.http.post(this.BACKEND_URI + '/role/delete', {roleid: roleid}, options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Update role
   public roleUpdate(roleid: number, role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/update', {
+    return this.http.post(this.BACKEND_URI + '/role/update', {
       roleid: roleid,
       role: role,
       read: read,
@@ -106,7 +108,7 @@ export class ApiService {
 
   //Administration page: Create role
   public roleCreate(role: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/role/create', {
+    return this.http.post(this.BACKEND_URI + '/role/create', {
       role: role,
       read: read,
       write: write,
@@ -117,19 +119,19 @@ export class ApiService {
 
   //Administration page: Show all profiles when creating a new user
   public getAllProfiles() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/all', options)
+    return this.http.get(this.BACKEND_URI + '/profile/all', options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Delete profile of user
   public profileDelete(profileid: number) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/delete', {profileid: profileid}, options)
+    return this.http.post(this.BACKEND_URI + '/profile/delete', {profileid: profileid}, options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Update profile of user
   public profileUpdate(profileid: number, profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/update', {
+    return this.http.post(this.BACKEND_URI + '/profile/update', {
       profileid: profileid,
       profile: profile,
       read: read,
@@ -141,7 +143,7 @@ export class ApiService {
 
   //Administration page: Create new profile
   public profileCreate(profile: string, read: boolean, write: boolean, admin: boolean) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/profile/create', {
+    return this.http.post(this.BACKEND_URI + '/profile/create', {
       profile: profile,
       read: read,
       write: write,
@@ -152,20 +154,20 @@ export class ApiService {
 
   //Modeller: changes to model in last 7 days
   public getModelsChangedLast7Days() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/changes', options)
+    return this.http.get(this.BACKEND_URI + '/model/changes', options)
       .map((response: Response) => response.json());
   }
 
   //Modeller: Load model
   public getModel(mid: string, version?: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid, version: version}, options)
+    return this.http.post(this.BACKEND_URI + '/model/getModel', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
   //Modeller: Evaluation needs asynchron loading of model
   public async getModelAsync(mid: string): Promise<ModelElement> {
     try {
-      const response = await this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/getModel', {mid: mid}, options).toPromise();
+      const response = await this.http.post(this.BACKEND_URI + '/model/getModel', {mid: mid}, options).toPromise();
       return new ModelElement(response.json().data.modelname, response.json().data.mid.toString(), response.json().data.modelxml);
     } catch {
       return new ModelElement('', '', '');
@@ -175,19 +177,19 @@ export class ApiService {
   //Administration page: Show all models
   //modellerPage: Show all models
   public getAllModels() {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/all', options)
+    return this.http.get(this.BACKEND_URI + '/model/all', options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Delete model
   public modelDelete(mid: number, version: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/delete', {mid: mid, version: version}, options)
+    return this.http.post(this.BACKEND_URI + '/model/delete', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
   //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
   public modelUpsert(mid: number, modelname: string, modelxml: string, version: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/upsert', {
+    return this.http.post(this.BACKEND_URI + '/model/upsert', {
       mid: mid,
       modelname: modelname,
       modelxml: modelxml,
@@ -198,7 +200,7 @@ export class ApiService {
 
   //Administration page: Update model information
   public modelUpdate(mid: number, modelname: string, lastchange: string, modelxml: string, version: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/update', {
+    return this.http.post(this.BACKEND_URI + '/model/update', {
       mid: mid,
       modelname: modelname,
       lastchange: lastchange,
@@ -208,7 +210,7 @@ export class ApiService {
       .map((response: Response) => response.json());
   }
   public modelClose(mid: number, version: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/close', {
+    return this.http.post(this.BACKEND_URI + '/model/close', {
       mid: mid,
       version: version
     }, options)
@@ -218,7 +220,7 @@ export class ApiService {
   //Administration page: Create a new model
   //modellerPage: Create a new model
   public modelCreate(modelname: string, modelxml: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/model/create', {
+    return this.http.post(this.BACKEND_URI + '/model/create', {
       modelname: modelname,
       modelxml: modelxml
     }, options)
@@ -228,13 +230,13 @@ export class ApiService {
   //Administration page: Get permission
   //Modeller: Get permission
   public getPermission(user: any, model: any) {
-    return this.http.get(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/' + user + '/' + model, options)
+    return this.http.get(this.BACKEND_URI + '/permission/' + user + '/' + model, options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Create permission
   public permissionCreate(uid: any, mid: any, role: any) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/create', {
+    return this.http.post(this.BACKEND_URI + '/permission/create', {
       uid: uid,
       mid: mid,
       role: role
@@ -244,31 +246,31 @@ export class ApiService {
 
   //Administration page: Delete permission
   public permissionDelete(pid: any) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/delete', {pid: pid}, options)
+    return this.http.post(this.BACKEND_URI + '/permission/delete', {pid: pid}, options)
       .map((response: Response) => response.json());
   }
 
   //Administration page: Update permission
   public permissionUpdate(role: any, pid: any) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/permission/update', {role: role, pid: pid}, options)
+    return this.http.post(this.BACKEND_URI + '/permission/update', {role: role, pid: pid}, options)
       .map((response: Response) => response.json());
   }
 
   //Delete partModel
   public partModelDelete(mid: number, version: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/delete', {mid: mid, version: version}, options)
+    return this.http.post(this.BACKEND_URI + '/partmodel/delete', {mid: mid, version: version}, options)
       .map((response: Response) => response.json());
   }
 
   //Create partModel
   public partModelCreate(mid: string, version: string, pmid: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/create', {mid: mid, version: version, pmid: pmid}, options)
+    return this.http.post(this.BACKEND_URI + '/partmodel/create', {mid: mid, version: version, pmid: pmid}, options)
       .map((response: Response) => response.json());
   }
 
   //get partModels
   public getPartModelUsage(pmid: string) {
-    return this.http.post(IPIM_OPTIONS.EXPRESSJS_CONNECTION + '/partmodel/usage', {pmid: pmid}, options)
+    return this.http.post(this.BACKEND_URI + '/partmodel/usage', {pmid: pmid}, options)
       .map((response: Response) => response.json());
   }
 
@@ -278,7 +280,7 @@ export class ApiService {
     const deploy = require('./deploymenthelper');
 
     const req = {
-      apiUrl: IPIM_OPTIONS.ENGINE_CONNECTION,
+      apiUrl: this.CAMUNDA_ENGINE_URI,
       filename: name
     };
 

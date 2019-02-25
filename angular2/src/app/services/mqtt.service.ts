@@ -5,7 +5,7 @@ import {ApiService} from './api.service';
 import {Router} from '@angular/router';
 
 const mqtt = require('mqtt');
-
+import { environment } from './../../environments/environment';
 @Injectable()
 export class MqttService {
   private subject: Subject<any> = new Subject<any>();
@@ -17,7 +17,7 @@ export class MqttService {
 
   public connect(id: string) {
     this.id = id;
-    this.client = mqtt.connect(IPIM_OPTIONS.MQTT_CONNECTION, {clientId: id});
+    this.client = mqtt.connect(environment.SERVER_HOST + ':' + environment.MQTT_PORT, {clientId: id});
   }
 
   public disconnect() {

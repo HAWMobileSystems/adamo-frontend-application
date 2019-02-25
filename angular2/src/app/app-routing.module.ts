@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ViewerComponent} from './viewer/viewer.component';
-import {FrontPageComponent} from './front-page/front-page.component';
+import {FrontPageComponent} from './front-page/FrontPageComponent';
 import {AuthGuard} from './guards/auth.guard';
 import {ModellerPageComponent} from './modellerPage/modellerPage.component';
 

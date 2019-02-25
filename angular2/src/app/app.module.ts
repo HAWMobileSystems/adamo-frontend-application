@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {AppRoutingModule} from './app-routing.module';
-import {FrontPageComponent} from './front-page/front-page.component';
+import {FrontPageComponent} from './front-page/FrontPageComponent';
 import {ViewerComponent} from './viewer/viewer.component';
 import {ModelerComponent} from './ModelerComponent/modeler.component';
 import {BsModalModule} from 'ng2-bs3-modal';
