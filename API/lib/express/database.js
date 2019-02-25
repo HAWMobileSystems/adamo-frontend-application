@@ -3,9 +3,12 @@ const pgp = require('pg-promise')( /*options*/ )
 // if (process.env.NODE_ENV !== 'production') {
 //   require('dotenv').load();
 // }
-require('dotenv').config({
-  path: './../.env'
-})
+
+require('dotenv').config()
+//   require('dotenv').config({
+//     path: './../.env'
+//   })
+
 const cn = {
   type: 'postgres',
   host: process.env.DB_HOST,
