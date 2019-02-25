@@ -11,8 +11,13 @@ Dazu wurde die BPMN 2.0, zur Darstellung verschiedener Prozessvarianten erweiter
 ## Einfacher Start
 
 Fürs einfache loslegen kann derzeit docker-compose genutzt werden. 
+Dazu muss jedoch vorher eine Version des Frontends gebaut werden. Da der /dist Ordner direkt in das Image geschoben wird um Speicherplatz zu sparen
 ```
-docker-compose up // im Rootverzeichnis aufrufen
+cd angular2
+npm run build
+cd ..
+docker-compose build 
+docker-compose up 
 ```
 Derzeit wird dabei noch eine leere Datenbank erzeugt (diese kann über pgadmin initialisiert werden - username und passwort sind in der .env zu finden)
 
