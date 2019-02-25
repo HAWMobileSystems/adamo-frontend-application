@@ -31,5 +31,5 @@ RUN apk --no-cache add --virtual builds-deps build-base python && npm install &&
 #   apk del native-deps
 
 
-EXPOSE 3000 4711
+EXPOSE 3330 4711
 # CMD [ "node ./lib/mqttserver.js", "node ./lib/express.js" ]

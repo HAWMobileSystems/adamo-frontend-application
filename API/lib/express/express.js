@@ -17,7 +17,7 @@ require('dotenv').config({
 })
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', process.env.APP_URI + ':' + process.env.APP_PORT); //TODO edit for productive environment!
+  res.setHeader('Access-Control-Allow-Origin', process.env.APP_HOST + ':' + process.env.APP_PORT); //TODO edit for productive environment!
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -322,5 +322,5 @@ app.get('/login_status', function (req, res) {
 });
 
 
-app.listen(3000);
+app.listen(process.env.SERVER_PORT);
 console.log('express.js', 'ExpressJS is up and running');
