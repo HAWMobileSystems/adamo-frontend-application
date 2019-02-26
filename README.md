@@ -13,7 +13,15 @@ Dazu wurde die BPMN 2.0, zur Darstellung verschiedener Prozessvarianten erweiter
 Fürs einfache loslegen kann derzeit docker-compose genutzt werden. 
 Dazu muss jedoch vorher eine Version des Frontends gebaut werden. Da der /dist Ordner direkt in das Image geschoben wird um Speicherplatz zu sparen
 ```
+# Projekt herunterladen und in Verzeichnis wechseln
+git clone <project url>
+cd IntSys
+# eigenes Environment erstellen und Benutzer + Passwörter setzen
+mv .env.exampe .env 
+vi .env // nach belieben anpassen
+# Die Webanwendung bauen damit Docker Container gebaut werden könnnen 
 cd angular2
+npm install
 npm run build
 cd ..
 docker-compose build 
@@ -23,8 +31,7 @@ Derzeit wird dabei noch eine leere Datenbank erzeugt (diese kann über pgadmin i
 
 Achtung: 
 ```
-mv .env.exampe .env 
-vi .env // nach belieben anpassen
+
 ```
 
 Als bisherige Entwicklungsumgebung diente Visual-Studio-Code, allerdings kann auch problemlos Webstorm genutzt werden. 
