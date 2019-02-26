@@ -17,6 +17,7 @@ const isProduction = environment === 'prod';
 const targetPath = `./src/environments/environment.${environment}.ts`;
 const envConfigFile = `
 export const environment = {
+  PROJECTNAME: '${process.env.PROJECTNAME}',
   production: ${isProduction},
   NODE_ENV: '${process.env.NODE_ENV}',
   SERVER_HOST: '${process.env.SERVER_HOST}',
