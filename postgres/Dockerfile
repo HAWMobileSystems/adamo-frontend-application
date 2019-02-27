@@ -1,3 +1,3 @@
 FROM postgres
 
-ADD ./dump.sql /docker-entrypoint-initdb.d
+ADD ./dump-UTF-8.sql /docker-entrypoint-initdb.d
