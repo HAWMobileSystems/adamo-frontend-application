@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { ApiService } from '../services/api.service';
 import { MqttService } from '../services/mqtt.service';
+import { environment } from '../../environments/environment';
 //Include components for interface and styling
 @Component({
   selector: 'front-page',
@@ -10,6 +11,7 @@ import { MqttService } from '../services/mqtt.service';
   styleUrls: ['./front-page.component.less']
 })
 export class FrontPageComponent implements OnInit {
+  private project = environment.PROJECTNAME;
   private title: string = 'Angular 2 with BPMN-JS';
   private model: any = {};
   private loading: boolean = false;
@@ -34,8 +36,7 @@ export class FrontPageComponent implements OnInit {
         if (response.success) {
           this.mqttService.connect(response.email);
           this.router.navigate(['/modeler']);
-        }
-        else {
+        } else {
           this.alertService.error(response.error);
         }
       }, error => {
