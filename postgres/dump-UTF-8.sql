@@ -780,14 +780,14 @@ COPY public.userprofile (upid, profile, permission) FROM stdin;
 
 COPY public.users (uid, email, password, lastlogin, firstname, lastname, upid) FROM stdin;
 125	daniel.hilpoltsteiner@haw-landshut.de	$2a$10$ZrQ4zaUrgcHYCNJhL7.PVu4MCbjfh4pw0p61nLjXi.1JEAtFNVPTe	2018-09-12 13:36:32.313086	Daniel	Hilpoltsteiner	5
--- 78	lackmann1994@gmail.com	$2a$10$tmMkXNGDklhH.PX5xNm0E.AFS9aL/1X7djHdkjGqg6hek/tEOfX4e	2018-08-22 08:25:30.242244	Daniel	Lackman	5
--- 44	Markus@haw-landshut.de	$2a$10$Chy9atdhTwoZmTacsWEDUeJ1g6n449guJ6GxvGy0DHAGAoPCu5LCm	2018-08-29 14:27:30.048568	Markus	Markus	5
--- 120	christina@demo.com	$2a$10$nLC/.5u3K/dyrK7tj71Du.Sv5ElbrfcsReumTZfYW77ba6SHTxRxK	2018-08-30 21:25:57.553123	Christina	Frank	5
--- 86	masood@md.de	$2a$10$pgWcKXZ/nVs9qWSCzBuefOgCEoRjKyMXhvGleIrjMOhUvrpnfFmnK	2018-08-30 22:01:00.533824	Masood	Ahmed	5
--- 121	granit@haw-landshut.de	$2a$10$O/s.UorL2Cs.QFdVbogRke3BxYq36p0MCvPxw03ngQNLW44pFwrue	2018-08-31 10:07:01.414783	Granit	Gecaj	5
+78	lackmann1994@gmail.com	$2a$10$tmMkXNGDklhH.PX5xNm0E.AFS9aL/1X7djHdkjGqg6hek/tEOfX4e	2018-08-22 08:25:30.242244	Daniel	Lackman	5
+44	Markus@haw-landshut.de	$2a$10$Chy9atdhTwoZmTacsWEDUeJ1g6n449guJ6GxvGy0DHAGAoPCu5LCm	2018-08-29 14:27:30.048568	Markus	Markus	5
+120	christina@demo.com	$2a$10$nLC/.5u3K/dyrK7tj71Du.Sv5ElbrfcsReumTZfYW77ba6SHTxRxK	2018-08-30 21:25:57.553123	Christina	Frank	5
+86	masood@md.de	$2a$10$pgWcKXZ/nVs9qWSCzBuefOgCEoRjKyMXhvGleIrjMOhUvrpnfFmnK	2018-08-30 22:01:00.533824	Masood	Ahmed	5
+121	granit@haw-landshut.de	$2a$10$O/s.UorL2Cs.QFdVbogRke3BxYq36p0MCvPxw03ngQNLW44pFwrue	2018-08-31 10:07:01.414783	Granit	Gecaj	5
 117	user@demo.com	$2a$10$LQarciIwnmL3dvg91yXj1eRxHT790vHdFl2VJsdPdFp.rtT9eJu8O	2018-09-07 12:51:29.82901	User	Demo	1
 118	admin@demo.com	$2a$10$NeuKwahWN8fYdGh5E0CUFOq4JeDSNzfKoDYix.akqzDxVgA520uEK	2018-09-07 12:51:39.321041	Admin	Demo	5
--- 124	s-jwitt2@haw-landshut.de	$2a$10$NxHAD48a.Y9BnkZ8Npiun.1qkucKvhJB1KX63wXLzEc.Ak.LPkW22	2018-09-09 15:17:56.177582	Jakob	Wittmann	5
+124	s-jwitt2@haw-landshut.de	$2a$10$NxHAD48a.Y9BnkZ8Npiun.1qkucKvhJB1KX63wXLzEc.Ak.LPkW22	2018-09-09 15:17:56.177582	Jakob	Wittmann	5
 123	test@test.de	$2a$10$iU4HM71bB/NvfP4agZ48JOOZwBiZu0mjKDnh4533SK8.bEsugqxgO	2018-09-09 15:18:09.428808	test	test	1
 \.
 
