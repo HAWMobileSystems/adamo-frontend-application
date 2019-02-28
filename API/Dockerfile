@@ -15,8 +15,9 @@ COPY package*.json ./
 # RUN npm install --only=production
 # Bundle app source
 COPY . .
-RUN apk --no-cache add --virtual builds-deps build-base python && npm install && apk del builds-deps
-# RUN npm install
+# RUN apk --no-cache add --virtual builds-deps build-base python && npm install && apk del builds-deps
+
+RUN npm install
 
 # RUN apk --no-cache add krb5-dev
 # RUN apk add --no-cache --virtual .build-deps alpine-sdk python \

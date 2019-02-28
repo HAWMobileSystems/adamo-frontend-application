@@ -1,78 +1,92 @@
-version: "3.6"
+version: '3.6'
 
 volumes:
-  # local_postgres_data: 
-  # local_postgres_data_backups: 
+  # local_postgres_data:
+  # local_postgres_data_backups:
   postgres-data: {}
 
 services:
-  adamo-application: 
-    build: 
+  adamo-application:
+    build:
       context: ./angular2
     image: adamo-application/latest
-    ports: 
-      - "${APP_PORT}:80"
-
-  adamo-server:
-    build: ./API 
-    # container_name: 
-    # image: "node:10"
-    # working_dir: /usr/src/app
-    # image: dockerhubusername/practice_docker
+    ports:
+      - '${APP_PORT}:80'
+  adamo-mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    # container_name: mosquitto
     env_file:
       - .env
-    ports: 
-      - "${SERVER_PORT}:${SERVER_PORT}"
-      - "${MQTT_PORT}:${MQTT_PORT}"
-      # volumes:
-      # - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
-    
-    command: ["npm", "run", "server", "--", "npm", "run", "mqtt" ]
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mqtt/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      # - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /mosquitto/data 
+      - /mosquitto/log
+    networks:
+      - default
+
+# docker run -it -p 1883:1883 -p 9001:9001 
+# -v mosquitto.conf:/mosquitto/config/mosquitto.conf 
+# -v /mosquitto/data -v /mosquitto/log eclipse-mosquitto
+  # adamo-mqtt:
+  #   build: ./API
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - '${MQTT_PORT}:${MQTT_PORT}'
+  #   command: ['npm', 'run', 'mqtt']
+  adamo-server:
+    build: ./API
+    env_file:
+      - .env
+    ports:
+      - '${SERVER_PORT}:${SERVER_PORT}'
+      # - '${MQTT_PORT}:${MQTT_PORT}'
+    command: ['npm', 'run', 'server']
     depends_on:
       - postgres
         # condition: service_healthy
     environment:
       # - DATABASE_URL=postgres://postgres:12341324@postgres:5432/ipim
       - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_HOST}/${DB_NAME}
-      # - PORT=3000   
-    # networks: 
+      # - PORT=3000
+    # networks:
     #   - back-tier
 
   postgres:
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
     build: ./postgres
     # image: postgres:${POSTGRES_IMAGE_VERSION}
     environment:
-       POSTGRES_DB: ${DB_NAME}
-       POSTGRES_USER: "${DB_USER}"
-       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     env_file: .env
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
       # - postgres-data:/backups
     # volumes:
-      # - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
-    # networks: 
+    # - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+    # networks:
     #   - back-tier
-
   # camunda-platform:
-    # image: docker-camunda-platform
-  # 
-  
-  # application: 
+  # image: docker-camunda-platform
+  #
+  # application:
   #   build: ./angular2
   #   networks:
   #     - front-tier
   #     - back-tier
-
-      # POSTGRES_DB: ${POSTGRES_DB}
-      # POSTGRES_USER: ${POSTGRES_USER}
+  # POSTGRES_DB: ${POSTGRES_DB}
+  # POSTGRES_USER: ${POSTGRES_USER}
 # networks:
 #   front-tier:
 #   back-tier:
