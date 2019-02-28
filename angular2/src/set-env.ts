@@ -22,6 +22,7 @@ export const environment = {
   NODE_ENV: '${process.env.NODE_ENV}',
   SERVER_HOST: '${process.env.SERVER_HOST}',
   SERVER_PORT: ${process.env.SERVER_PORT},
+  MQTT_HOST: ${process.env.MQTT_HOST},
   MQTT_PORT: ${process.env.MQTT_PORT},
   DB_HOST: '${process.env.DB_HOST}',
   DB_NAME: '${process.env.DB_NAME}',
