@@ -8,14 +8,17 @@ require('dotenv').config()
 //   require('dotenv').config({
 //     path: './../.env'
 //   })
+const sanitize = (value) => {
+  return value.replace(/\'/g, '');
+}
 
 const cn = {
   type: 'postgres',
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
+  host: sanitize(process.env.DB_HOST),
+  database: sanitize(process.env.DB_NAME),
   port: parseInt(process.env.DB_PORT, 10),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  user: sanitize(process.env.DB_USER),
+  password: sanitize(process.env.DB_PASSWORD),
   // host: '0.0.0.0',
   // // host: 'ipim-intsys.lab.if.haw-landshut.de',
   // port: 5432,
@@ -26,5 +29,6 @@ const cn = {
 // console.log("cn: ", cn)
 // console.log("proces env", process.env)
 const db = pgp(cn);
+
 
 module.exports = db;

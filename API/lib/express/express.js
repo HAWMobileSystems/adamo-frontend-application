@@ -17,7 +17,10 @@ require('dotenv').config({
 })
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', process.env.APP_HOST + ':' + process.env.APP_PORT); //TODO edit for productive environment!
+  const sanitizedHost = process.env.APP_HOST.replace(/\'/g, '');
+  console.log(sanitizedHost)
+  const uri = sanitizedHost + ':' + process.env.APP_PORT
+  res.setHeader('Access-Control-Allow-Origin', uri); //TODO edit for productive environment!
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
