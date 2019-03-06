@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import {Observable, Subject} from 'rxjs/Rx';
+import {Observable, Subject, from} from 'rxjs';
 import {ApiService} from '../services/api.service';
+import { first } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -30,7 +31,7 @@ export class AuthGuard implements CanActivate {
           this.router.navigate(['/front-page']);
           subject.next(false);
         });
-    return subject.asObservable().first();
+    return from(subject).pipe(first()); // subject.asObservable().first();
 
   }
 }

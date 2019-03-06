@@ -44,7 +44,7 @@ export class RoleComponent {
     this.roles = [];
 
     this.apiService.getAllRoles()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.roles = response.data;
             this.selected = null;
@@ -52,7 +52,7 @@ export class RoleComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -61,7 +61,7 @@ export class RoleComponent {
   //updates the selected role
   public roleUpdate() {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
             this.snackbarService.success(response.status);
@@ -69,7 +69,7 @@ export class RoleComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -78,7 +78,7 @@ export class RoleComponent {
   //creates a new role
   public roleCreate() {
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
             this.snackbarService.success(response.status);
@@ -86,7 +86,7 @@ export class RoleComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -95,7 +95,7 @@ export class RoleComponent {
   //deletes the selected role
   public roleDelete() {
     this.apiService.roleDelete(this.selected.rid)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; _body: string; }) => {
           console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
@@ -104,7 +104,7 @@ export class RoleComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });

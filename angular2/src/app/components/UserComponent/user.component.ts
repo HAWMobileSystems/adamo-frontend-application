@@ -56,14 +56,14 @@ export class UserComponent {
     this.profiles = [];
 
     this.apiService.getAllProfiles()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.profiles = response.data;
           } else {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
@@ -73,7 +73,7 @@ export class UserComponent {
     this.users = [];
 
     this.apiService.getAllUsers()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.users = response.data;
             this.selected = null;
@@ -81,7 +81,7 @@ export class UserComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
@@ -96,7 +96,7 @@ export class UserComponent {
             this.selected.firstname,
             this.selected.lastname,
             this.selected.profile)
-            .subscribe(response => {
+            .subscribe((response: { success: any; status: string; _body: string; }) => {
                     if (response.success) {
                         this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
                         this.snackbarService.success(response.status);
@@ -105,7 +105,7 @@ export class UserComponent {
                         this.snackbarService.error(response._body);
                     }
                 },
-                error => {
+              (                error: { _body: string; }) => {
                     this.snackbarService.error(JSON.parse(error._body).status);
                 });
     } else {
@@ -116,7 +116,7 @@ export class UserComponent {
   //updates the password of the selected user
   public userPassword() {
     this.apiService.userPassword(this.selected.uid, this.selected.password)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.snackbarService.success(response.status);
@@ -125,7 +125,7 @@ export class UserComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
         });
   }
@@ -139,7 +139,7 @@ export class UserComponent {
               this.selected.lastname,
               this.selected.profile,
               this.selected.password)
-              .subscribe(response => {
+              .subscribe((response: { success: any; status: string; _body: string; }) => {
                       console.log('debug');
                       if (response.success) {
                           this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
@@ -149,7 +149,7 @@ export class UserComponent {
                           this.snackbarService.error(response._body);
                       }
                   },
-                  error => {
+                (                  error: { _body: string; }) => {
                       this.snackbarService.error(JSON.parse(error._body).status);
                   });
       } else {
@@ -160,7 +160,7 @@ export class UserComponent {
   //deletes the selected user
   public userDelete() {
     this.apiService.userDelete(this.selected.uid)
-      .subscribe(response => {
+      .subscribe((response: { success: any; _body: string; }) => {
 
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
@@ -169,7 +169,7 @@ export class UserComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
         });
   }

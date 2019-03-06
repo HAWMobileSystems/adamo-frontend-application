@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Request, RequestOptions, RequestOptionsArgs, Response, XHRBackend} from '@angular/http';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticatedHttpService extends Http {
@@ -11,7 +12,7 @@ export class AuthenticatedHttpService extends Http {
   }
 
   public request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-    return super.request(url, options).catch((error: Response) => {
+    return super.request(url, options).pipe(catchError((error: Response) => {
       if (
         error.status === 401 ||
         error.status === 403 ||
@@ -23,6 +24,6 @@ export class AuthenticatedHttpService extends Http {
 
       }
       return Observable.throw(error);
-    });
+    }));
   }
 }

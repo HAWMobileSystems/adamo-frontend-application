@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { COMMANDS } from './commandstore.service';
 
 export class Link {
@@ -31,7 +31,7 @@ export class BPMNStore {
 
     public paletteEntries(): Observable<any> {
         // This could be async and coming from a server:
-        return Observable.of({
+        return of({
             [COMMANDS.TWO_COLUMN] : {
                 group: 'row',
                 className: ['glyphicon-th-large', 'glyphicon'],
@@ -128,6 +128,6 @@ export class BPMNStore {
                     click: () => console.log('two-column')
                 }
             }
-        }).delay(1);
+        }); //.delay(1);
     }
 }

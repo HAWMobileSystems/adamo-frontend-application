@@ -1,8 +1,8 @@
-import {Component, Output, EventEmitter} from '@angular/core';
-import {ApiService} from '../../services/api.service';
-import {Model} from '../../models/model';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { ApiService } from '../../services/api.service';
+import { Model } from '../../models/model';
 
-import {MqttService} from '../../services/mqtt.service';
+import { MqttService } from '../../services/mqtt.service';
 import { IPIM_OPTIONS } from '../../modelerConfig.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   selector: 'modelloader',
   templateUrl: './modelloader.template.html'
 })
-
 export class ModelLoaderComponent {
   @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
   @Output() public loadError: EventEmitter<object> = new EventEmitter<any>();
@@ -25,8 +24,12 @@ export class ModelLoaderComponent {
   //Simple Empty Model ... taken from Camunda
   private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 
-  constructor(private apiService: ApiService, private router: Router, private snackbarService: SnackBarService, private mqttService: MqttService) {
-  }
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private snackbarService: SnackBarService,
+    private mqttService: MqttService
+  ) {}
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
   private initMqtt() {
@@ -40,25 +43,28 @@ export class ModelLoaderComponent {
   }
 
   public ngOnInit() {
-    this.apiService.login_status()
-      .subscribe(response => {
-          if (response.success) {
-            //Only start Working when login was successfull
-            this.mqttService.getClient(response.email);
-            this.initMqtt();
-            this.getAllModels();
-            this.getLatestChanges();
-          } else {
-            this.snackbarService.error(response.status);
-            console.error('Error while retrieving session');
-            this.router.navigate(['/front-page']);
-          }
-        },
-        error => {
-          console.error(error);
-          this.snackbarService.error('Error could not connect to session management');
+    this.apiService.login_status().subscribe(
+      (response: { success: any; email: string; status: string }) => {
+        if (response.success) {
+          //Only start Working when login was successfull
+          this.mqttService.getClient(response.email);
+          this.initMqtt();
+          this.getAllModels();
+          this.getLatestChanges();
+        } else {
+          this.snackbarService.error(response.status);
+          console.error('Error while retrieving session');
           this.router.navigate(['/front-page']);
-        });
+        }
+      },
+      (error: any) => {
+        console.error(error);
+        this.snackbarService.error(
+          'Error could not connect to session management'
+        );
+        this.router.navigate(['/front-page']);
+      }
+    );
     //defines the structure for a new empty model
     this.newModel = {
       mid: '',
@@ -71,27 +77,31 @@ export class ModelLoaderComponent {
 
   //Create an empty model in the database
   public createEmpty() {
-    this.apiService.modelCreate(this.newModelName, this.newModelXml)
-      .subscribe(response => {
-          this.snackbarService.success(response.status);
-          console.log(response);
-        },
-        error => {
-          this.snackbarService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
+    this.apiService.modelCreate(this.newModelName, this.newModelXml).subscribe(
+      (response: { status: string }) => {
+        this.snackbarService.success(response.status);
+        console.log(response);
+      },
+      (error: { _body: string }) => {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
   }
   //import a model from harddisk to database
   public createLoaded() {
-    this.apiService.modelCreate(this.diskModelName, this.diskModelXml)
-      .subscribe(response => {
+    this.apiService
+      .modelCreate(this.diskModelName, this.diskModelXml)
+      .subscribe(
+        (response: { status: string }) => {
           this.snackbarService.success(response.status);
           console.log(response);
         },
-        error => {
+        (error: { _body: string }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
-        });
+        }
+      );
   }
 
   //create a new model without anything
@@ -105,7 +115,7 @@ export class ModelLoaderComponent {
   }
 
   //gets the event when the select file dialog finishes
-  public changeListener($event: any) : void {
+  public changeListener($event: any): void {
     this.loadFromDisk($event.target);
   }
 
@@ -115,9 +125,9 @@ export class ModelLoaderComponent {
     const myReader: FileReader = new FileReader();
 
     //event is called when file is loaded from disk
-    myReader.onloadend = (e) => {
+    myReader.onloadend = e => {
       this.diskModelName = file.name.split('.')[0];
-      this.diskModelXml = myReader.result;
+      this.diskModelXml = myReader.result as string;
       this.createLoaded();
     };
 
@@ -138,18 +148,20 @@ export class ModelLoaderComponent {
 
     //if model has empty data get the model first else directly emit the event
     if (this.selected.mid !== '') {
-      this.apiService.getModel(this.selected.mid, this.selected.version)
-        .subscribe(response => {
+      this.apiService
+        .getModel(this.selected.mid, this.selected.version)
+        .subscribe(
+          (response: { data: { modelxml: string } }) => {
             model.xml = response.data.modelxml;
             console.info(model);
             this.loadModel.emit(model);
           },
-          error => {
+          (error: { _body: string }) => {
             this.snackbarService.error(JSON.parse(error._body).status);
             this.loadError.emit(error);
             console.log('Error Loading', error);
-          });
-
+          }
+        );
     } else {
       this.loadModel.emit(model);
     }
@@ -159,36 +171,38 @@ export class ModelLoaderComponent {
   public getAllModels() {
     this.models = [];
 
-    this.apiService.getAllModels()
-      .subscribe(response => {
-          if (response.success) {
-            this.models = response.data;
-            this.selected = null;
-          } else {
-            this.snackbarService.error(response._body);
-          }
-        },
-        error => {
-          this.snackbarService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
+    this.apiService.getAllModels().subscribe(
+      (response: { success: any; data: any; _body: string }) => {
+        if (response.success) {
+          this.models = response.data;
+          this.selected = null;
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) => {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
   }
 
   //Get latest changes to models from database
   public getLatestChanges() {
     this.models = [];
 
-    this.apiService.getModelsChangedLast7Days()
-      .subscribe(response => {
-          if (response.success) {
-             this.changesLast7Day = response.data;
-          } else {
-            this.snackbarService.error(response._body);
-          }
-        },
-        error => {
-          this.snackbarService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
+    this.apiService.getModelsChangedLast7Days().subscribe(
+      (response: { success: any; data: any; _body: string }) => {
+        if (response.success) {
+          this.changesLast7Day = response.data;
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) => {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
   }
 }

@@ -40,7 +40,7 @@ export class SaveModal extends BsModalComponent {
   }
   public saveSuperVersion() {
     this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
-    .subscribe(response => {
+    .subscribe((response: { status: string; }) => {
       if (response.status === 'Next Version already exists') {
         this.alsoExists = true;
         return;
@@ -50,7 +50,7 @@ export class SaveModal extends BsModalComponent {
         this.saveSubProcesses();
         this.modal.close();
       },
-      error => {
+      (      error: any) => {
         console.log(error);
       });
   }
@@ -61,7 +61,7 @@ export class SaveModal extends BsModalComponent {
       bigInt(this.version3).shiftLeft(16) +
       bigInt(this.version4);
     this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
-    .subscribe(response => {
+    .subscribe((response: { status: string; }) => {
       if (response.status === 'Next Version already exists') {
         this.alsoExists = true;
         return;
@@ -71,7 +71,7 @@ export class SaveModal extends BsModalComponent {
         this.saveSubProcesses();
         this.modal.close();
       },
-      error => {
+      (      error: any) => {
         console.log(error);
       });
   }
@@ -80,7 +80,7 @@ export class SaveModal extends BsModalComponent {
   const partmodels = this.root.returnSubProcessList(this.root.lookup.ELEMENTREGISTRY);
     partmodels.forEach((pmid: string) => {
     this.apiService.partModelCreate(this.root.modelId.split('_')[1], this.root.modelId.split('_')[2], pmid)
-      .subscribe(response => {
+      .subscribe((response: any) => {
         console.log(response);
       });
     });

@@ -4,6 +4,7 @@ import { AlertService } from '../services/alert.service';
 import { ApiService } from '../services/api.service';
 import { MqttService } from '../services/mqtt.service';
 import { environment } from '../../environments/environment';
+import { NGXLogger } from 'ngx-logger';
 //Include components for interface and styling
 @Component({
   selector: 'front-page',
@@ -15,16 +16,16 @@ export class FrontPageComponent implements OnInit {
   private title: string = 'Angular 2 with BPMN-JS';
   private model: any = {};
   private loading: boolean = false;
-  constructor(private router: Router, private alertService: AlertService, private apiService: ApiService, private mqttService: MqttService) {
+  constructor(private router: Router, private alertService: AlertService, private apiService: ApiService, private mqttService: MqttService, private logger: NGXLogger) {
   }
   //Initialization after front-page component was loaded
   public ngOnInit(): void {
     // reset login status
     this.apiService.logout()
       .subscribe(response => {
-        console.log('Successfully logged out!');
+        this.logger.debug('Successfully logged out!');
       }, error => {
-        console.log(error);
+        this.logger.debug(error);
         this.alertService.error('No connection to Server');
       });
   }
@@ -41,7 +42,7 @@ export class FrontPageComponent implements OnInit {
         }
       }, error => {
         this.alertService.error(error._body);
-        console.log('loginerror: ', error);
+        this.logger.debug('loginerror: ', error);
         this.loading = false;
       });
   }

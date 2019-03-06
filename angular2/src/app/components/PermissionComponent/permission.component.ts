@@ -40,7 +40,7 @@ export class PermissionComponent {
   //creates a new permission
   private permissionCreate(uid: any, mid: any, role: any) {
     this.apiService.permissionCreate(uid, mid, role)
-      .subscribe(response => {
+      .subscribe((response: { success: any; error: string; }) => {
           if (response.success) {
             this.snackbarService.success('Permission successfully created');
             this.selectedPermission = null;
@@ -51,7 +51,7 @@ export class PermissionComponent {
             ;
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -60,7 +60,7 @@ export class PermissionComponent {
   //deletes the selected permission
   private permissionDelete(pid: any) {
     this.apiService.permissionDelete(pid)
-      .subscribe(response => {
+      .subscribe((response: { success: any; error: string; }) => {
           if (response.success) {
             this.snackbarService.success('Permission deleted');
             this.selectedPermission = null;
@@ -71,7 +71,7 @@ export class PermissionComponent {
             ;
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -80,7 +80,7 @@ export class PermissionComponent {
   //updates the selected permission
   private permissionUpdate(role: any, pid: any) {
     this.apiService.permissionUpdate(role, pid)
-      .subscribe(response => {
+      .subscribe((response: { success: any; error: string; }) => {
           if (response.success) {
             this.snackbarService.success('Permission updated');
             this.selectedPermission = null;
@@ -91,7 +91,7 @@ export class PermissionComponent {
             ;
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -117,14 +117,14 @@ export class PermissionComponent {
   public getAllRoles() {
     this.roles = [];
     this.apiService.getAllRoles()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.roles = response.data;
           } else {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -134,7 +134,7 @@ export class PermissionComponent {
   public getAllUsers() {
     this.users = [];
     this.apiService.getAllUsers()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.users = response.data;
             this.selectedUser = null;
@@ -142,7 +142,7 @@ export class PermissionComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -152,7 +152,7 @@ export class PermissionComponent {
   public getAllModels() {
     this.models = [];
     this.apiService.getAllModels()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.models = response.data;
             this.selectedModel = null;
@@ -160,7 +160,7 @@ export class PermissionComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -169,14 +169,14 @@ export class PermissionComponent {
   //gets the permission of the selected user and model
   public getPermission(user: any, model: any) {
     this.apiService.getPermission(user, model)
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; status: string; }) => {
           if (response.success) {
             this.selectedPermission = response.data;
           } else {
             this.snackbarService.error(response.status);
           }
         },
-        error => {
+        (        error: any) => {
           this.snackbarService.error('Error receiving permissions');
           console.log(error);
         });

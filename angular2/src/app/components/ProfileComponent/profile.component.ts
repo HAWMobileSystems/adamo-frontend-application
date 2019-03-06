@@ -1,21 +1,23 @@
-import {Component} from '@angular/core';
-import {ApiService} from '../../services/api.service';
+import { Component } from '@angular/core';
+import { ApiService } from '../../services/api.service';
 
-import {MqttService} from '../../services/mqtt.service';
+import { MqttService } from '../../services/mqtt.service';
 import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'profile-management',
   templateUrl: './profile.template.html'
 })
-
 export class ProfileComponent {
   private selected: any;
   private newProfile: any;
   private profiles: any;
 
-  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: MqttService) {
-  }
+  constructor(
+    private apiService: ApiService,
+    private snackbarService: SnackBarService,
+    private mqttService: MqttService
+  ) {}
 
   public ngOnInit() {
     //defines the structure for a new empty profile
@@ -43,69 +45,94 @@ export class ProfileComponent {
   public getAllProfiles() {
     this.profiles = [];
 
-    this.apiService.getAllProfiles()
-      .subscribe(response => {
-          if (response.success) {
-            this.profiles = response.data;
-            this.selected = null;
-          } else {
-            this.snackbarService.error(response._body);
-          }
-        },
-        error => {
-          this.snackbarService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
+    this.apiService.getAllProfiles().subscribe(
+      (response: { success: any; data: any; _body: string }) => {
+        if (response.success) {
+          this.profiles = response.data;
+          this.selected = null;
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) => {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
   }
 
   //updates the selected profile
   public profileUpdate() {
-    this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
-      .subscribe(response => {
+    this.apiService
+      .profileUpdate(
+        this.selected.rid,
+        this.selected.profile,
+        this.selected.read,
+        this.selected.write,
+        this.selected.admin
+      )
+      .subscribe(
+        (response: { success: any; status: string; _body: string }) => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
+            this.mqttService
+              .getClient()
+              .publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (error: { _body: string }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
-        });
+        }
+      );
   }
 
   //creates a new profile
   public profileCreate() {
-    this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
-      .subscribe(response => {
+    this.apiService
+      .profileCreate(
+        this.selected.profile,
+        this.selected.read,
+        this.selected.write,
+        this.selected.admin
+      )
+      .subscribe(
+        (response: { success: any; status: string; _body: string }) => {
           if (response.success) {
-            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
+            this.mqttService
+              .getClient()
+              .publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (error: { _body: string }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
-        });
+        }
+      );
   }
 
-   //deletes the selected profile
+  //deletes the selected profile
   public profileDelete() {
-    this.apiService.profileDelete(this.selected.rid)
-      .subscribe(response => {
-          if (response.success) {
-            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
-            this.snackbarService.success(response.status);
-          } else {
-            this.snackbarService.error(response._body);
-          }
-        },
-        error => {
-          this.snackbarService.error(JSON.parse(error._body).status);
-          console.log(error);
-        });
+    this.apiService.profileDelete(this.selected.rid).subscribe(
+      (response: { success: any; status: string; _body: string }) => {
+        if (response.success) {
+          this.mqttService
+            .getClient()
+            .publish('administrations/Profile', JSON.stringify({}));
+          this.snackbarService.success(response.status);
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) => {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
   }
 }

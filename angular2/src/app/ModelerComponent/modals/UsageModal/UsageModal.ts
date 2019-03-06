@@ -44,12 +44,12 @@ export class UsageModal extends BsModalComponent {
   //get a list of all processes that refernce this model!
   private getSubPartModelsFromDB() {
     this.apiService.getPartModelUsage(this.root.modelId.split('_')[1])
-    .subscribe(response => {
+    .subscribe((response: { data: any[]; }) => {
       this.referencingModels = response.data;
       console.log('Received referencing Processes', response.data);
       this.loading = false;
     },
-    error => {
+      (    error: any) => {
       this.root.snackbarService.newSnackBarMessage(error);
       console.log(error);
     });

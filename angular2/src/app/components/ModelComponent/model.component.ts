@@ -41,7 +41,7 @@ export class ModelComponent {
     this.models = [];
 
     this.apiService.getAllModels()
-      .subscribe(response => {
+      .subscribe((response: { success: any; data: any; _body: string; }) => {
           if (response.success) {
             this.models = response.data;
             this.selected = null;
@@ -49,7 +49,7 @@ export class ModelComponent {
             this.snackbarService.error(response._body);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           console.log(error);
           this.snackbarService.error(JSON.parse(error._body).status);
         });
@@ -63,13 +63,13 @@ export class ModelComponent {
       this.selected.lastchange,
       this.selected.modelxml,
       this.selected.version)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/update', JSON.stringify({}));
             this.snackbarService.success(response.status);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -78,13 +78,13 @@ export class ModelComponent {
   //creates a new model
   public modelCreate() {
     this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/create', JSON.stringify({}));
             this.snackbarService.success(response.status);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
@@ -93,7 +93,7 @@ export class ModelComponent {
   //deletes the selected model
   public modelDelete() {
     this.apiService.modelDelete(this.selected.mid, this.selected.version)
-      .subscribe(response => {
+      .subscribe((response: { success: any; status: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/delete', JSON.stringify({
               mid: this.selected.mid,
@@ -102,7 +102,7 @@ export class ModelComponent {
             this.snackbarService.success(response.status);
           }
         },
-        error => {
+        (        error: { _body: string; }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
         });
