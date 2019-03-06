@@ -36,6 +36,7 @@
     "bootstrap": "^4.3.1",
     "bpmn-js": "^3.2.1",
     "bpmn-js-properties-panel": "^0.29.0",
+    "buffer": "^5.2.1",
     "camunda-bpmn-moddle": "^3.2.0",
     "core-js": "^2.4.1",
     "diagram-js-origin": "^1.1.1",
@@ -97,6 +98,6 @@
     "rimraf": "^2.5.2",
     "ts-node": "^8.0.2",
     "tslint": "~5.13.1",
-    "typescript": "3.3.0"
+    "typescript": "^3.2.0"
   }
 }
