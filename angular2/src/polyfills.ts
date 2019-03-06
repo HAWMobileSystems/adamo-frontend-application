@@ -10,8 +10,8 @@ if (process.env.ENV === 'production') {
 }
 declare global {
   interface Window {
-    File: any,
-    FileReader: any, 
-    FileList: any, 
+    File: any;
+    FileReader: any;
+    FileList: any;
   }
 }

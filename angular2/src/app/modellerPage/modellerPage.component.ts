@@ -105,11 +105,9 @@ export class ModellerPageComponent implements OnInit {
         exists = true;
       }
     });
-    if (!exists) {
-      this.models.push(model);
-    } else {
-      this.loading = false;
-    }
+    !exists
+      ?  this.models.push(model)
+      : this.loading = false;
     this.page = model.id + '_' + model.version;
   }
 
