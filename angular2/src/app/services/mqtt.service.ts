@@ -17,7 +17,8 @@ export class MqttService {
 
   public connect(id: string) {
     this.id = id;
-    this.client = mqtt.connect(environment.SERVER_HOST + ':' + environment.MQTT_PORT, {clientId: id});
+    console.log('mqtt', environment.MQTT_HOST + ':' + environment.MQTT_PORT, {clientId: id});
+    this.client = mqtt.connect(environment.MQTT_HOST + ':' + environment.MQTT_PORT, {clientId: id});
   }
 
   public disconnect() {
