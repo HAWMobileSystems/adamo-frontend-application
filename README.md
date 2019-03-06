@@ -7,6 +7,14 @@ eine Entlastung für Logistikplaner herbeizuführen.
 Dazu wurde die BPMN 2.0, zur Darstellung verschiedener Prozessvarianten erweitert. Diese können über Konfigurationsterme aus dem Gesamtmodell erzeugt werden. 
 
 
+## Vorbedingungen 
+
+git muss vorhanden sein
+node wäre ganz schön
+docker installieren 
+```
+
+```
 
 ## Einfacher Start
 
@@ -17,20 +25,26 @@ Dazu muss jedoch vorher eine Version des Frontends gebaut werden. Da der /dist O
 git clone <project url>
 cd IntSys
 # eigenes Environment erstellen und Benutzer + Passwörter setzen
-mv .env.exampe .env 
+mv .env.exampe .env
 vi .env // nach belieben anpassen
 # Die Webanwendung bauen damit Docker Container gebaut werden könnnen 
-cd angular2
-npm install
-npm run build
+setup-project.sh
+
+# BTW node-gyp is a messy shit
+npm install -g node-gyp
+# and yes.. this takes like forever
+npm install --global windows-build-tools
+# Build things
 cd ..
-docker-compose build 
-docker-compose up 
+docker-compose build
+docker-compose up
 ```
 Derzeit wird dabei noch eine leere Datenbank erzeugt (diese kann über pgadmin initialisiert werden - username und passwort sind in der .env zu finden)
 
 Achtung: 
 ```
+User: user@demo.com
+Passwort: 12341234
 
 ```
 
