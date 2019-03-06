@@ -1,9 +1,11 @@
 
 export const environment = {
+  PROJECTNAME: 'kip',
   production: false,
   NODE_ENV: 'development',
   SERVER_HOST: 'http://localhost',
   SERVER_PORT: 3330,
+  MQTT_HOST: 'mqtt://localhost',
   MQTT_PORT: 4711,
   DB_HOST: 'postgres',
   DB_NAME: 'ipim',

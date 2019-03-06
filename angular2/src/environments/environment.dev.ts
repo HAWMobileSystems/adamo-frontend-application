@@ -1,10 +1,12 @@
 
 export const environment = {
+  PROJECTNAME: 'ipim',
   production: false,
   NODE_ENV: 'development',
   SERVER_HOST: 'http://localhost',
   SERVER_PORT: 3330,
-  MQTT_PORT: 4711,
+  MQTT_HOST: 'mqtt://localhost',
+  MQTT_PORT: 9001,
   DB_HOST: 'postgres',
   DB_NAME: 'ipim',
   DB_USER: 'postgres',
