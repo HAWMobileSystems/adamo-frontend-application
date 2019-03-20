@@ -42,11 +42,11 @@ export class ModelComponent {
 
     this.apiService.getAllModels()
       .subscribe(response => {
-          if (response.success) {
-            this.models = response.data;
+          if (response.json().success) {
+            this.models = response.json().data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -64,9 +64,9 @@ export class ModelComponent {
       this.selected.modelxml,
       this.selected.version)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json()) {
             this.mqttService.getClient().publish('administration/model/update', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           }
         },
         error => {
@@ -79,9 +79,9 @@ export class ModelComponent {
   public modelCreate() {
     this.apiService.modelCreate(this.selected.modelname, this.selected.modelxml)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administration/model/create', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           }
         },
         error => {
@@ -94,12 +94,12 @@ export class ModelComponent {
   public modelDelete() {
     this.apiService.modelDelete(this.selected.mid, this.selected.version)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administration/model/delete', JSON.stringify({
               mid: this.selected.mid,
               version: this.selected.version
             }));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           }
         },
         error => {

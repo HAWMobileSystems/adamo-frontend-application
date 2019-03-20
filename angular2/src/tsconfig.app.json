@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es2015", "dom"],
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [ "../node_modules/@types", "../index.d.ts" ]
   }

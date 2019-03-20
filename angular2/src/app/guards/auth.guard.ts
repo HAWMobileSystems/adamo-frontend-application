@@ -16,11 +16,10 @@ export class AuthGuard implements CanActivate {
     const subject = new Subject<boolean>();
     this.apiService.login_status()
       .subscribe(
-        response => {
-          if (response.loggedIn) {
+        (response) => {
+          if (response.json().loggedIn) {
             subject.next(true);
           } else {
-            console.log(response);
             this.router.navigate(['/front-page']);
             subject.next(false);
           }

@@ -45,8 +45,8 @@ export class UsageModal extends BsModalComponent {
   private getSubPartModelsFromDB() {
     this.apiService.getPartModelUsage(this.root.modelId.split('_')[1])
     .subscribe(response => {
-      this.referencingModels = response.data;
-      console.log('Received referencing Processes', response.data);
+      this.referencingModels = response.json().data;
+      console.log('Received referencing Processes', response.json().data);
       this.loading = false;
     },
     error => {

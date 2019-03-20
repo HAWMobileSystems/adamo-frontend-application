@@ -1,13 +1,15 @@
 import { writeFile } from 'fs';
 import { argv } from 'yargs';
-
 // This is good for local dev environments, when it's better to
 // store a projects environment variables in a .gitignore'd file
 
 require('dotenv').config({
-  path: './../.env'
+  path: './../../.env'
 });
-
+// Notice: environment could be called from project root so double check on config path
+// Added logs will provide further insights.
+//console.log('current path', process.cwd()); // adamo\adamo-frontend-application\angular2
+//console.log(__dirname); // adamo\adamo-frontend-application\angular2\src
 // Would be passed to script like this:
 // `ts-node set-env.ts --environment=dev`
 // we get it from yargs's argv object
@@ -36,6 +38,8 @@ export const environment = {
   CAMUNDA_ENGINE_HOST: '${process.env.CAMUNDA_ENGINE_HOST}'
 };
 `;
+
+console.log('Configuration for Environment: ', envConfigFile);
 writeFile(targetPath, envConfigFile, err => {
   if (err) {
     console.log(err);

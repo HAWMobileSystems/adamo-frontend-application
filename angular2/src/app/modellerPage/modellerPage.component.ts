@@ -64,11 +64,11 @@ export class ModellerPageComponent implements OnInit {
 
     this.apiService.login_status()
       .subscribe(response => {
-          if (response.success) {
-            this.username = response.email;
-            this.mqttService.getClient(response.email);
+          if (response.json().success) {
+            this.username = response.json().email;
+            this.mqttService.getClient(response.json().email);
             this.initMqtt();
-            this.permission = parseInt(response.permission);
+            this.permission = parseInt(response.json().permission);
           } else {
             this.username = '';
             this.snackbarService.error('error while retrieving session');

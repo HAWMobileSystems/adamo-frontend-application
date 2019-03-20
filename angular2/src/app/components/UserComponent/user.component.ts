@@ -57,10 +57,10 @@ export class UserComponent {
 
     this.apiService.getAllProfiles()
       .subscribe(response => {
-          if (response.success) {
-            this.profiles = response.data;
+          if (response.json().json().success) {
+            this.profiles = response.json().json().data;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json().json()._body);
           }
         },
         error => {
@@ -74,11 +74,11 @@ export class UserComponent {
 
     this.apiService.getAllUsers()
       .subscribe(response => {
-          if (response.success) {
-            this.users = response.data;
+          if (response.json().json().success) {
+            this.users = response.json().json().data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json().json()._body);
           }
         },
         error => {
@@ -97,12 +97,12 @@ export class UserComponent {
             this.selected.lastname,
             this.selected.profile)
             .subscribe(response => {
-                    if (response.success) {
+                    if (response.json().json().success) {
                         this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                        this.snackbarService.success(response.status);
+                        this.snackbarService.success(response.json().json().status);
                         console.log(response);
                     } else {
-                        this.snackbarService.error(response._body);
+                        this.snackbarService.error(response.json().json()._body);
                     }
                 },
                 error => {
@@ -117,12 +117,12 @@ export class UserComponent {
   public userPassword() {
     this.apiService.userPassword(this.selected.uid, this.selected.password)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
             console.log(response);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -141,12 +141,12 @@ export class UserComponent {
               this.selected.password)
               .subscribe(response => {
                       console.log('debug');
-                      if (response.success) {
+                      if (response.json().success) {
                           this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                          this.snackbarService.success(response.status);
+                          this.snackbarService.success(response.json().status);
                           console.log(response);
                       } else {
-                          this.snackbarService.error(response._body);
+                          this.snackbarService.error(response.json()._body);
                       }
                   },
                   error => {
@@ -162,11 +162,11 @@ export class UserComponent {
     this.apiService.userDelete(this.selected.uid)
       .subscribe(response => {
 
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.snackbarService.success('User successfully deleted');
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {

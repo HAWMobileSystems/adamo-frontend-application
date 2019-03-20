@@ -41,7 +41,7 @@ export class SaveModal extends BsModalComponent {
   public saveSuperVersion() {
     this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
     .subscribe(response => {
-      if (response.status === 'Next Version already exists') {
+      if (response.json().status === 'Next Version already exists') {
         this.alsoExists = true;
         return;
       }
@@ -62,7 +62,7 @@ export class SaveModal extends BsModalComponent {
       bigInt(this.version4);
     this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
     .subscribe(response => {
-      if (response.status === 'Next Version already exists') {
+      if (response.json().status === 'Next Version already exists') {
         this.alsoExists = true;
         return;
       }

@@ -45,11 +45,11 @@ export class ProfileComponent {
 
     this.apiService.getAllProfiles()
       .subscribe(response => {
-          if (response.success) {
-            this.profiles = response.data;
+          if (response.json().success) {
+            this.profiles = response.json().data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -62,11 +62,11 @@ export class ProfileComponent {
   public profileUpdate() {
     this.apiService.profileUpdate(this.selected.rid, this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -79,11 +79,11 @@ export class ProfileComponent {
   public profileCreate() {
     this.apiService.profileCreate(this.selected.profile, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -96,11 +96,11 @@ export class ProfileComponent {
   public profileDelete() {
     this.apiService.profileDelete(this.selected.rid)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {

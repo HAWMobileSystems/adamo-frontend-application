@@ -297,7 +297,7 @@ export class ModelerComponent implements OnInit {
     //get latest version from expressjs (can be database or collaborativ)
     this.apiService.getModel(this.model.id, this.model.version)
       .subscribe(response => {
-          const xml = response.data.modelxml;
+          const xml = response.json().data.modelxml;
           console.info('Reset-Model', xml);
           //Import Model
           this.modeler.importXML(xml);
@@ -329,10 +329,10 @@ export class ModelerComponent implements OnInit {
         .subscribe(response => {
             console.log(response);
             //if version exists, show save modal else save it with new version+1
-            if (response.status === 'Next Version already exists') {
+            if (response.json().status === 'Next Version already exists') {
               this.saveModal.setModel(this.model, xml, this.apiService, this);
               this.saveModal.modal.open();
-            } else if (response.status === 'Model upserted successfully') {
+            } else if (response.json().status === 'Model upserted successfully') {
               //show snackbar for success
               this.snackbarService.newSnackBarMessage('saved successfully', 'limegreen');
               //also save alls partmodels for later evaluation
@@ -343,7 +343,7 @@ export class ModelerComponent implements OnInit {
                   console.log(response);
                 });
               });
-            } else if (response.status === 'Model has no changes to save') {
+            } else if (response.json().status === 'Model has no changes to save') {
               //show snackbar for success
               this.snackbarService.newSnackBarMessage('no changes to save', 'grey');
             } else {
@@ -433,10 +433,10 @@ export class ModelerComponent implements OnInit {
           this.apiService.getModel(element)
             .subscribe((response: any) => {
                 const model = new Model();
-                model.xml = response.data.modelxml;
-                model.name = response.data.modelname;
-                model.id = response.data.mid;
-                model.version = response.data.version;
+                model.xml = response.json().data.modelxml;
+                model.name = response.json().data.modelname;
+                model.id = response.json().data.mid;
+                model.version = response.json().data.version;
                 console.info(model);
                 //emit event for new model
                 this.loadSubProcess.emit(model);
@@ -464,8 +464,6 @@ export class ModelerComponent implements OnInit {
     const canvasObject = this.modeler.get('canvas');
     canvasObject.zoom('fit-viewport');
   }
-
-  
 
   //functionmap to link the palette buttons with an actual function
   private funcMap: any = {

@@ -45,11 +45,11 @@ export class RoleComponent {
 
     this.apiService.getAllRoles()
       .subscribe(response => {
-          if (response.success) {
-            this.roles = response.data;
+          if (response.json().success) {
+            this.roles = response.json().data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -62,11 +62,11 @@ export class RoleComponent {
   public roleUpdate() {
     this.apiService.roleUpdate(this.selected.rid, this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -79,11 +79,11 @@ export class RoleComponent {
   public roleCreate() {
     this.apiService.roleCreate(this.selected.role, this.selected.read, this.selected.write, this.selected.admin)
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json());
           }
         },
         error => {
@@ -96,12 +96,11 @@ export class RoleComponent {
   public roleDelete() {
     this.apiService.roleDelete(this.selected.rid)
       .subscribe(response => {
-          console.log(response);
-          if (response.success) {
+          if (response.json().success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.status);
+            this.snackbarService.success(response.json().status);
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json.toString());
           }
         },
         error => {

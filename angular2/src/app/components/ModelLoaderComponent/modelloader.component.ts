@@ -42,14 +42,14 @@ export class ModelLoaderComponent {
   public ngOnInit() {
     this.apiService.login_status()
       .subscribe(response => {
-          if (response.success) {
+          if (response.json().success) {
             //Only start Working when login was successfull
-            this.mqttService.getClient(response.email);
+            this.mqttService.getClient(response.json().email);
             this.initMqtt();
             this.getAllModels();
             this.getLatestChanges();
           } else {
-            this.snackbarService.error(response.status);
+            this.snackbarService.error(response.json().status);
             console.error('Error while retrieving session');
             this.router.navigate(['/front-page']);
           }
@@ -73,7 +73,7 @@ export class ModelLoaderComponent {
   public createEmpty() {
     this.apiService.modelCreate(this.newModelName, this.newModelXml)
       .subscribe(response => {
-          this.snackbarService.success(response.status);
+          this.snackbarService.success(response.json().status);
           console.log(response);
         },
         error => {
@@ -85,7 +85,7 @@ export class ModelLoaderComponent {
   public createLoaded() {
     this.apiService.modelCreate(this.diskModelName, this.diskModelXml)
       .subscribe(response => {
-          this.snackbarService.success(response.status);
+          this.snackbarService.success(response.json().status);
           console.log(response);
         },
         error => {
@@ -140,7 +140,7 @@ export class ModelLoaderComponent {
     if (this.selected.mid !== '') {
       this.apiService.getModel(this.selected.mid, this.selected.version)
         .subscribe(response => {
-            model.xml = response.data.modelxml;
+            model.xml = response.json().data.modelxml;
             console.info(model);
             this.loadModel.emit(model);
           },
@@ -161,11 +161,11 @@ export class ModelLoaderComponent {
 
     this.apiService.getAllModels()
       .subscribe(response => {
-          if (response.success) {
-            this.models = response.data;
+          if (response.json().success) {
+            this.models = response.json().data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {
@@ -180,10 +180,10 @@ export class ModelLoaderComponent {
 
     this.apiService.getModelsChangedLast7Days()
       .subscribe(response => {
-          if (response.success) {
-             this.changesLast7Day = response.data;
+          if (response.json().success) {
+             this.changesLast7Day = response.json().data;
           } else {
-            this.snackbarService.error(response._body);
+            this.snackbarService.error(response.json()._body);
           }
         },
         error => {

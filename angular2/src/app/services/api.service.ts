@@ -22,31 +22,32 @@ export class ApiService {
         password: password
       },
       options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Session handling: Login status of user
   public login_status() {
     return this.http.get(this.BACKEND_URI + '/login_status', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Session handling: Logout of user
   public logout() {
     return this.http.get(this.BACKEND_URI + '/logout', options)
-      .map((response: Response) => response.json());
+      // .subscribe((response: any) => response
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Show all users
   public getAllUsers() {
     return this.http.get(this.BACKEND_URI + '/user/all', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Delete user
   public userDelete(uid: number) {
     return this.http.post(this.BACKEND_URI + '/user/delete', {uid: uid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Update user
@@ -57,8 +58,8 @@ export class ApiService {
       firstname: firstname,
       lastname: lastname,
       profile: profile
-    }, options)
-      .map((response: Response) => response.json());
+    }, options);
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Change password
@@ -67,7 +68,7 @@ export class ApiService {
       uid: uid,
       password: password
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Create user
@@ -79,19 +80,19 @@ export class ApiService {
       profile: profile,
       password: password
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Show all roles
   public getAllRoles() {
     return this.http.get(this.BACKEND_URI + '/role/all', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Delete role
   public roleDelete(roleid: number) {
     return this.http.post(this.BACKEND_URI + '/role/delete', {roleid: roleid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Update role
@@ -103,7 +104,7 @@ export class ApiService {
       write: write,
       admin: admin
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Create role
@@ -114,19 +115,19 @@ export class ApiService {
       write: write,
       admin: admin
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Show all profiles when creating a new user
   public getAllProfiles() {
     return this.http.get(this.BACKEND_URI + '/profile/all', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Delete profile of user
   public profileDelete(profileid: number) {
     return this.http.post(this.BACKEND_URI + '/profile/delete', {profileid: profileid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Update profile of user
@@ -138,7 +139,7 @@ export class ApiService {
       write: write,
       admin: admin
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Create new profile
@@ -149,19 +150,19 @@ export class ApiService {
       write: write,
       admin: admin
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Modeller: changes to model in last 7 days
   public getModelsChangedLast7Days() {
     return this.http.get(this.BACKEND_URI + '/model/changes', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Modeller: Load model
   public getModel(mid: string, version?: string) {
     return this.http.post(this.BACKEND_URI + '/model/getModel', {mid: mid, version: version}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Modeller: Evaluation needs asynchron loading of model
@@ -178,13 +179,13 @@ export class ApiService {
   //modellerPage: Show all models
   public getAllModels() {
     return this.http.get(this.BACKEND_URI + '/model/all', options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Delete model
   public modelDelete(mid: number, version: string) {
     return this.http.post(this.BACKEND_URI + '/model/delete', {mid: mid, version: version}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
@@ -195,7 +196,7 @@ export class ApiService {
       modelxml: modelxml,
       version: version
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Update model information
@@ -207,14 +208,14 @@ export class ApiService {
       modelxml: modelxml,
       version: version
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
   public modelClose(mid: number, version: string) {
     return this.http.post(this.BACKEND_URI + '/model/close', {
       mid: mid,
       version: version
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Create a new model
@@ -224,14 +225,14 @@ export class ApiService {
       modelname: modelname,
       modelxml: modelxml
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Get permission
   //Modeller: Get permission
   public getPermission(user: any, model: any) {
     return this.http.get(this.BACKEND_URI + '/permission/' + user + '/' + model, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Create permission
@@ -241,37 +242,37 @@ export class ApiService {
       mid: mid,
       role: role
     }, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Delete permission
   public permissionDelete(pid: any) {
     return this.http.post(this.BACKEND_URI + '/permission/delete', {pid: pid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Administration page: Update permission
   public permissionUpdate(role: any, pid: any) {
     return this.http.post(this.BACKEND_URI + '/permission/update', {role: role, pid: pid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Delete partModel
   public partModelDelete(mid: number, version: string) {
     return this.http.post(this.BACKEND_URI + '/partmodel/delete', {mid: mid, version: version}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Create partModel
   public partModelCreate(mid: string, version: string, pmid: string) {
     return this.http.post(this.BACKEND_URI + '/partmodel/create', {mid: mid, version: version, pmid: pmid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //get partModels
   public getPartModelUsage(pmid: string) {
     return this.http.post(this.BACKEND_URI + '/partmodel/usage', {pmid: pmid}, options)
-      .map((response: Response) => response.json());
+      // .map((response: Response) => response.json());
   }
 
   //Upload to Camunda Engine
