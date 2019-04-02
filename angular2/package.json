@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "A webpack starter for Angular",
   "scripts": {
-    "serve": "ng serve --host 0.0.0.0 --port 8080",
+    "serve": "ng serve --host 0.0.0.0 --port 8085",
     "serve-dev": "ng serve --environment=dev --host 0.0.0.0 --port 8085",
     "config": "ts-node ./src/set-env.ts",
     "start": "npm run config -- --environment=dev && npm run serve-dev",
     "build": "npm run config -- --environment=dev && ng build --environment=dev",
+    "docker:build": "ng build --environment=dev",
     "config-prod": "node -r ./../.env",
     "config-dev": "node -r ./../.env.dev",
     "start-full-prod": "npm-run-all -p config-prod start-mqtt-server-prod start-node-backend-prod start",
