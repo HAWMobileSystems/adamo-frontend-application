@@ -391,10 +391,10 @@ export class ModelerComponent implements OnInit {
           (          response: { status: string; }) => {
             this.logger.debug(response);
             //if version exists, show save modal else save it with new version+1
-            if (response.status === 'Next Version already exists') {
+            if (response.json().status === 'Next Version already exists') {
               this.saveModal.setModel(this.model, xml, this.apiService, this);
               this.saveModal.modal.open();
-            } else if (response.status === 'Model upserted successfully') {
+            } else if (response.json().status === 'Model upserted successfully') {
               //show snackbar for success
               this.snackbarService.newSnackBarMessage(
                 'saved successfully',
@@ -415,7 +415,7 @@ export class ModelerComponent implements OnInit {
                     this.logger.debug(response);
                   });
               });
-            } else if (response.status === 'Model has no changes to save') {
+            } else if (response.json().status === 'Model has no changes to save') {
               //show snackbar for success
               this.snackbarService.newSnackBarMessage(
                 'no changes to save',

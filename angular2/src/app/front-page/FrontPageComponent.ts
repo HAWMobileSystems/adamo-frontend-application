@@ -38,7 +38,7 @@ export class FrontPageComponent implements OnInit {
           this.mqttService.connect(response.email);
           this.router.navigate(['/modeler']);
         } else {
-          this.alertService.error(response.error);
+          this.alertService.error(response.json().error);
         }
       }, error => {
         this.alertService.error(error._body);

@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
           if (response.loggedIn) {
             subject.next(true);
           } else {
-            console.log(response);
             this.router.navigate(['/front-page']);
             subject.next(false);
           }

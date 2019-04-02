@@ -6,7 +6,7 @@ export const environment = {
   SERVER_HOST: 'http://localhost',
   SERVER_PORT: 3330,
   MQTT_HOST: 'mqtt://localhost',
-  MQTT_PORT: 9001,
+  MQTT_PORT: 1883,
   DB_HOST: 'postgres',
   DB_NAME: 'ipim',
   DB_USER: 'postgres',
