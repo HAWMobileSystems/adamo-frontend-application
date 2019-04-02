@@ -33,7 +33,7 @@ export class FrontPageComponent implements OnInit {
   public login() {
     this.loading = true;
     this.apiService.authenticate(this.model.username, this.model.password)
-      .subscribe(response => {
+      .subscribe((response: any) => {
         if (response.success) {
           this.mqttService.connect(response.email);
           this.router.navigate(['/modeler']);

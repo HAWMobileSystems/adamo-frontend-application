@@ -40,7 +40,7 @@ import {Version} from './pipes/version.pipe';
 import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
 import { SnackBarService } from './services/snackbar.service';
-
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 //check for correct branch!
 
 @NgModule({
@@ -51,7 +51,8 @@ import { SnackBarService } from './services/snackbar.service';
     FormsModule,
     BsModalModule ,
     HttpClientModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR})
   ],
   declarations: [
     AppComponent,

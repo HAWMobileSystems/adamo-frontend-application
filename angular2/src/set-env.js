@@ -1,6 +1,11 @@
-import { writeFile } from 'fs';
-import { argv } from 'yargs';
-
+// import {
+//   writeFile
+// } from 'fs';
+// import {
+//   argv
+// } from 'yargs';
+const argv = require('yargs').argv
+const fs = require('fs');
 // This is good for local dev environments, when it's better to
 // store a projects environment variables in a .gitignore'd file
 
@@ -36,7 +41,7 @@ export const environment = {
   CAMUNDA_ENGINE_HOST: '${process.env.CAMUNDA_ENGINE_HOST}'
 };
 `;
-writeFile(targetPath, envConfigFile, err => {
+fs.writeFile(targetPath, envConfigFile, err => {
   if (err) {
     console.log(err);
   }

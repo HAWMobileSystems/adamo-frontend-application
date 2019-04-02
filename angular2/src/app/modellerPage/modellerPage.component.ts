@@ -63,7 +63,7 @@ export class ModellerPageComponent implements OnInit {
       });
 
     this.apiService.login_status()
-      .subscribe(response => {
+      .subscribe((response: any) => {
           if (response.success) {
             this.username = response.email;
             this.mqttService.getClient(response.email);

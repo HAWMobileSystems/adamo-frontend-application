@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const subject = new Subject<boolean>();
     this.apiService.login_status()
       .subscribe(
-        response => {
+        (response: any) => {
           if (response.loggedIn) {
             subject.next(true);
           } else {

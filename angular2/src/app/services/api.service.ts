@@ -24,37 +24,37 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => {
-        return response.json();
-      }));
+      //.pipe(map((response: any) => {
+      //   return response.json();
+      // }));
   }
 
   //Session handling: Login status of user
   public login_status() {
     return this.http
       .get(this.BACKEND_URI + '/login_status', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Session handling: Logout of user
   public logout() {
     return this.http
       .get(this.BACKEND_URI + '/logout', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Show all users
   public getAllUsers() {
     return this.http
       .get(this.BACKEND_URI + '/user/all', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Delete user
   public userDelete(uid: number) {
     return this.http
       .post(this.BACKEND_URI + '/user/delete', { uid: uid }, options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Update user
@@ -77,7 +77,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Change password
@@ -91,7 +91,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Create user
@@ -114,21 +114,21 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Show all roles
   public getAllRoles() {
     return this.http
       .get(this.BACKEND_URI + '/role/all', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Delete role
   public roleDelete(roleid: number) {
     return this.http
       .post(this.BACKEND_URI + '/role/delete', { roleid: roleid }, options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Update role
@@ -151,7 +151,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Create role
@@ -172,14 +172,14 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Show all profiles when creating a new user
   public getAllProfiles() {
     return this.http
       .get(this.BACKEND_URI + '/profile/all', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Delete profile of user
@@ -190,7 +190,7 @@ export class ApiService {
         { profileid: profileid },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Update profile of user
@@ -213,7 +213,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Create new profile
@@ -234,14 +234,14 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Modeller: changes to model in last 7 days
   public getModelsChangedLast7Days() {
     return this.http
       .get(this.BACKEND_URI + '/model/changes', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Modeller: Load model
@@ -252,7 +252,7 @@ export class ApiService {
         { mid: mid, version: version },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Modeller: Evaluation needs asynchron loading of model
@@ -277,7 +277,7 @@ export class ApiService {
   public getAllModels() {
     return this.http
       .get(this.BACKEND_URI + '/model/all', options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Delete model
@@ -288,7 +288,7 @@ export class ApiService {
         { mid: mid, version: version },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
@@ -309,7 +309,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Update model information
@@ -332,7 +332,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
   public modelClose(mid: number, version: string) {
     return this.http
@@ -344,7 +344,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Create a new model
@@ -359,7 +359,7 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Get permission
@@ -367,7 +367,7 @@ export class ApiService {
   public getPermission(user: any, model: any) {
     return this.http
       .get(this.BACKEND_URI + '/permission/' + user + '/' + model, options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Create permission
@@ -382,14 +382,14 @@ export class ApiService {
         },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Delete permission
   public permissionDelete(pid: any) {
     return this.http
       .post(this.BACKEND_URI + '/permission/delete', { pid: pid }, options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Administration page: Update permission
@@ -400,7 +400,7 @@ export class ApiService {
         { role: role, pid: pid },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Delete partModel
@@ -411,7 +411,7 @@ export class ApiService {
         { mid: mid, version: version },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Create partModel
@@ -422,14 +422,14 @@ export class ApiService {
         { mid: mid, version: version, pmid: pmid },
         options
       )
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //get partModels
   public getPartModelUsage(pmid: string) {
     return this.http
       .post(this.BACKEND_URI + '/partmodel/usage', { pmid: pmid }, options)
-      .pipe(map((response: any) => response.json()));
+      //.pipe(map((response: any) => response.json()));
   }
 
   //Upload to Camunda Engine
@@ -471,6 +471,6 @@ export class ApiService {
     //   // 'tenant-id': tenantId,
     //   // 'pay_taxes.bpmn': modelXML
     // }, requestOptions)
-    //   .pipe(map((response: any) => response.json());
+    //   //.pipe(map((response: any) => response.json());
   }
 }
