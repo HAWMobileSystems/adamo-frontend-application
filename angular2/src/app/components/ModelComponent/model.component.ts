@@ -46,7 +46,7 @@ export class ModelComponent {
             this.models = response.data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -66,7 +66,7 @@ export class ModelComponent {
       .subscribe((response: { success: any; status: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/update', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           }
         },
         (        error: { _body: string; }) => {
@@ -81,7 +81,7 @@ export class ModelComponent {
       .subscribe((response: { success: any; status: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administration/model/create', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           }
         },
         (        error: { _body: string; }) => {
@@ -99,7 +99,7 @@ export class ModelComponent {
               mid: this.selected.mid,
               version: this.selected.version
             }));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           }
         },
         (        error: { _body: string; }) => {
