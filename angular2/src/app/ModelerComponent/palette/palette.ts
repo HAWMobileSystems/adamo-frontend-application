@@ -66,7 +66,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         save: {
             group: 'storage',
-            className: ['glyphicon-circle-arrow-down', 'glyphicon'],
+            className: ['fa-arrow-circle-down', 'fas'],
             title: 'Export to BPMN',
             action: {
                 click: () => commandQueue.next({action: 'save'})
@@ -74,7 +74,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'export-svg': {
             group: 'storage',
-            className: ['glyphicon-download', 'glyphicon'],
+            className: ['fas-download', 'fa'],
             title: 'Export to SVG',
             action: {
                 click: () => commandQueue.next({action: 'Export SVG'})
@@ -82,7 +82,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'upload-engine': {
             group: 'storage',
-            className: ['glyphicon-copy', 'glyphicon'],
+            className: ['fa-copy', 'fas'],
             title: 'Export to Engine',
             action: {
                 click: () => commandQueue.next({action: 'Export to Engine'})
@@ -94,7 +94,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'view.zoom-to-fit': {
             group: 'view',
-            className: ['glyphicon-fullscreen', 'glyphicon'],
+            className: ['fa-fullscreen', 'fas'],
             title: 'Zoom-To-Fit',
             action: {
                 click: () => commandQueue.next({action: 'zoom2fit'})

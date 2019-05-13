@@ -3,6 +3,9 @@ import { Http, Headers } from '@angular/http';
 import { Observable, of } from 'rxjs';
 import { COMMANDS } from './commandstore.service';
 
+import {faChevronLeft, faChevronRight} from '@fortawesome/fontawesome-free-solid';
+import fontawesome from '@fortawesome/fontawesome';
+
 export class Link {
     constructor(public readonly href: string, public readonly text?: string, public readonly rel?: string) {
         this.text = text || href;
@@ -14,6 +17,7 @@ export class Link {
 export class BPMNStore {
 
     constructor(private http: Http) {
+        fontawesome.library.add(faChevronLeft, faChevronRight);
     }
 
     // public listDiagrams(): Observable<Link[]> {
@@ -34,7 +38,7 @@ export class BPMNStore {
         return of({
             [COMMANDS.TWO_COLUMN] : {
                 group: 'row',
-                className: ['glyphicon-th-large', 'glyphicon'],
+                className: ['fa', 'fa-th-large', 'fa-lg'],
                 title: COMMANDS.TWO_COLUMN,
                 action: {
                     click: () => console.log('two-column')
@@ -42,7 +46,7 @@ export class BPMNStore {
             },
           [COMMANDS.SAVE] : {
             group: 'row',
-            className: ['glyphicon-circle-arrow-down', 'glyphicon'],
+            className: ['fa-arrow-circle-down', 'glyphicfaon'],
             title: 'Export to BPMN',
             action: {
               click: () => console.log('save')
@@ -50,7 +54,7 @@ export class BPMNStore {
           },
           [COMMANDS.SAVETODB] : {
             group: 'row',
-            className: ['glyphicon-cloud-upload', 'glyphicon'],
+            className: ['fa-cloud-upload-alt', 'fa'],
             title: 'Save to Database',
             action: {
               click: () => console.log('save')
@@ -58,7 +62,7 @@ export class BPMNStore {
           },
             [COMMANDS.SET_IPIM_VALUES]: {
                 group: 'ipim',
-                className: ['glyphicon-cog', 'glyphicon'],
+                className: ['fa-cog', 'fas'],
                 title: 'Set Variables',
                 action: {
                     click: () => console.log('openVariableModal')
@@ -66,7 +70,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_TERM]: {
                 group: 'ipim',
-                className: ['glyphicon-tasks', 'glyphicon'],
+                className: ['fa-tasks', 'fas'],
                 title: 'Set Term',
                 action: {
                     click: () => console.log('openTermModal')
@@ -74,7 +78,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
                 group: 'ipim',
-                className: ['glyphicon-tag', 'glyphicon'],
+                className: ['fa-tag', 'fas'],
                 title: 'Evaluate Process',
                 action: {
                     click: () => console.log('openInputModal')
@@ -82,7 +86,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_EVALUATOR]: {
                 group: 'ipim',
-                className: ['glyphicon-tags', 'glyphicon'],
+                className: ['fa-tags', 'fas'],
                 title: 'Start cascading Evaluation',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_EVALUATOR)
@@ -90,7 +94,7 @@ export class BPMNStore {
             },
             [COMMANDS.SET_IPIM_SUBPROCESS]: {
                 group: 'ipim',
-                className: ['glyphicon-list-alt', 'glyphicon'],
+                className: ['fa-list-alt', 'fas'],
                 title: 'Set Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.SET_IPIM_SUBPROCESS)
@@ -98,7 +102,7 @@ export class BPMNStore {
             },
             [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
                 group: 'ipim',
-                className: ['glyphicon-download-alt', 'glyphicon'],
+                className: ['fa-download', 'fas'],
                 title: 'Open Model of Subprocess',
                 action: {
                     click: () => console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
@@ -106,7 +110,7 @@ export class BPMNStore {
             },
             [COMMANDS.HIGHLIGHT]: {
                 group: 'ipim',
-                className: ['glyphicon-tint', 'glyphicon'],
+                className: ['fa-tint', 'fas'],
                 title:  'Highlight Elements',
                 action: {
                     click: () => console.log('two-column')
@@ -114,7 +118,7 @@ export class BPMNStore {
             },
             [COMMANDS.RESET]: {
                 group: 'ipim',
-                className: ['glyphicon-repeat', 'glyphicon'],
+                className: ['fa-undo', 'fas'],
                 title: 'Reset Diagram',
                 action: {
                     click: () => console.log('two-column')
@@ -122,7 +126,7 @@ export class BPMNStore {
             },
             [COMMANDS.OPEN_USAGE_MODEL]: {
                 group: 'ipim',
-                className: ['glyphicon-share', 'glyphicon'],
+                className: ['fa-share', 'fas'],
                 title: 'See Processes references',
                 action: {
                     click: () => console.log('two-column')

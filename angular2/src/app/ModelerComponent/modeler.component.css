@@ -9,6 +9,12 @@
 @import './modals/Modal.css';
 
 
+.diagram-parent {
+    height: inherit;
+}
+.diagram-container {
+    height: inherit;
+}
 .overlayLoading{
     position: fixed;
     display: none;
