@@ -33,13 +33,18 @@ export class ModelLoaderComponent {
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
   private initMqtt() {
-    const self = this;
-    this.mqttService.getClient().subscribe('administration/model/#');
-    this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      if (topic.startsWith('administration/model')) {
-        self.getAllModels();
-      }
-    });
+    try {
+
+      const self = this;
+      this.mqttService.getClient().subscribe('administration/model/#');
+      this.mqttService.getClient().on('message', (topic: any, message: any) => {
+        if (topic.startsWith('administration/model')) {
+          self.getAllModels();
+        }
+      });
+    } catch(error) {
+      console.log(error)
+    }
   }
 
   public ngOnInit() {

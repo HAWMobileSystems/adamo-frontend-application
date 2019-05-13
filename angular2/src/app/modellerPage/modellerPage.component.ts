@@ -31,28 +31,32 @@ export class ModellerPageComponent implements OnInit {
   }
 
   private initMqtt() {
-    this.mqttService.getClient().subscribe('collaborator/update/+/+');
-    this.mqttService.getClient().subscribe('modelupsert');
-    this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      console.log(topic);
-      if (topic === 'modelupsert') {
-        const event = JSON.parse(message);
-        const idAndVersion = this.page.split('_');
-        if (idAndVersion[0] === event.mid.toString() && idAndVersion[1] === event.version) {
-          this.page = event.mid + '_' + event.newVersion;
-          console.log(this.page);
-        }
-      } else if (topic.startsWith('collaborator/update')) {
-        console.log(topic, JSON.parse(message));
-        console.log(this.models);
-        this.models.forEach(model => {
-          console.log(model.id, parseInt(topic.split('/')[2]), model.version, topic.split('/')[3]);
-          if (model.id === parseInt(topic.split('/')[2]) && model.version === topic.split('/')[3]) {
-            model.collaborator = JSON.parse(message);
+    try {
+      this.mqttService.getClient().subscribe('collaborator/update/+/+');
+      this.mqttService.getClient().subscribe('modelupsert');
+      this.mqttService.getClient().on('message', (topic: any, message: any) => {
+        console.log(topic);
+        if (topic === 'modelupsert') {
+          const event = JSON.parse(message);
+          const idAndVersion = this.page.split('_');
+          if (idAndVersion[0] === event.mid.toString() && idAndVersion[1] === event.version) {
+            this.page = event.mid + '_' + event.newVersion;
+            console.log(this.page);
           }
-        });
-      }
-    });
+        } else if (topic.startsWith('collaborator/update')) {
+          console.log(topic, JSON.parse(message));
+          console.log(this.models);
+          this.models.forEach(model => {
+            console.log(model.id, parseInt(topic.split('/')[2]), model.version, topic.split('/')[3]);
+            if (model.id === parseInt(topic.split('/')[2]) && model.version === topic.split('/')[3]) {
+              model.collaborator = JSON.parse(message);
+            }
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   //Initialization after ModellerPageComponent component was loaded
@@ -68,7 +72,7 @@ export class ModellerPageComponent implements OnInit {
             this.username = response.email;
             this.mqttService.getClient(response.email);
             this.initMqtt();
-            this.permission = parseInt(response.json().permission);
+            this.permission = parseInt(response.permission);
           } else {
             this.username = '';
             this.snackbarService.error('error while retrieving session');
@@ -84,7 +88,11 @@ export class ModellerPageComponent implements OnInit {
 
   public remove(index: number): void {
     console.log(this.models[index]);
-    this.mqttService.getClient().unsubscribe('MODEL/model_' + this.models[index].id + '_' + this.models[index].version);
+    try {
+      this.mqttService.getClient().unsubscribe('MODEL/model_' + this.models[index].id + '_' + this.models[index].version);
+    }  catch (error) {
+      console.log('error', error);
+    }
     this.models.splice(index, 1);
     this.page = '+';
   }

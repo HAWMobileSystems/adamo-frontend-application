@@ -42,15 +42,15 @@ export class MqttService {
       this.connect(email);
       return this.client;
     } else {
-      this.apiService.logout().subscribe(
-        (        response: any) => {
-          this.router.navigate(['/front-page']);
-        },
-        (        error: any) => {
-          console.log(error);
-          this.router.navigate(['/front-page']);
-        }
-      );
+      // this.apiService.logout().subscribe(
+      //   (        response: any) => {
+      //     this.router.navigate(['/front-page']);
+      //   },
+      //   (        error: any) => {
+      //     console.log(error);
+      //     this.router.navigate(['/front-page']);
+      //   }
+      // );
     }
   }
 }
