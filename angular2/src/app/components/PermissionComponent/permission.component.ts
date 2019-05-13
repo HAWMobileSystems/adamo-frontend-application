@@ -47,7 +47,7 @@ export class PermissionComponent {
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.snackbarService.error(response.json().error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
@@ -67,7 +67,7 @@ export class PermissionComponent {
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.snackbarService.error(response.json().error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
@@ -87,7 +87,7 @@ export class PermissionComponent {
             this.selectedUser = null;
             this.selectedModel = null;
           } else {
-            this.snackbarService.error(response.json().error)
+            this.snackbarService.error(response.error)
             ;
           }
         },
@@ -121,7 +121,7 @@ export class PermissionComponent {
           if (response.success) {
             this.roles = response.data;
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -139,7 +139,7 @@ export class PermissionComponent {
             this.users = response.data;
             this.selectedUser = null;
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -157,7 +157,7 @@ export class PermissionComponent {
             this.models = response.data;
             this.selectedModel = null;
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -173,7 +173,7 @@ export class PermissionComponent {
           if (response.success) {
             this.selectedPermission = response.data;
           } else {
-            this.snackbarService.error(response.json().status);
+            this.snackbarService.error(response.status);
           }
         },
         (        error: any) => {

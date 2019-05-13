@@ -79,7 +79,7 @@ export class ProfileComponent {
               .publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (error: { _body: string }) => {
@@ -106,7 +106,7 @@ export class ProfileComponent {
               .publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (error: { _body: string }) => {

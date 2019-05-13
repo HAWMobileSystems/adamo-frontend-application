@@ -60,7 +60,7 @@ export class UserComponent {
           if (response.success) {
             this.profiles = response.data;
           } else {
-            this.snackbarService.error(response.json().json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -78,7 +78,7 @@ export class UserComponent {
             this.users = response.data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response.json().json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -99,10 +99,10 @@ export class UserComponent {
             .subscribe((response: { success: any; status: string; _body: string; }) => {
                     if (response.success) {
                         this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                        this.snackbarService.success(response.json().json().status);
+                        this.snackbarService.success(response.status);
                         console.log(response);
                     } else {
-                        this.snackbarService.error(response.json().json()._body);
+                        this.snackbarService.error(response._body);
                     }
                 },
               (                error: { _body: string; }) => {
@@ -119,10 +119,10 @@ export class UserComponent {
       .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
             console.log(response);
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -141,12 +141,12 @@ export class UserComponent {
               this.selected.password)
               .subscribe((response: { success: any; status: string; _body: string; }) => {
                       console.log('debug');
-                      if (response.json().success) {
+                      if (response.success) {
                           this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
-                          this.snackbarService.success(response.json().status);
+                          this.snackbarService.success(response.status);
                           console.log(response);
                       } else {
-                          this.snackbarService.error(response.json()._body);
+                          this.snackbarService.error(response._body);
                       }
                   },
                 (                  error: { _body: string; }) => {
@@ -162,11 +162,11 @@ export class UserComponent {
     this.apiService.userDelete(this.selected.uid)
       .subscribe((response: { success: any; _body: string; }) => {
 
-          if (response.json().success) {
+          if (response.success) {
             this.mqttService.getClient().publish('administrations/user', JSON.stringify({}));
             this.snackbarService.success('User successfully deleted');
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {

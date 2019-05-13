@@ -4,8 +4,10 @@ import { IPIM_OPTIONS } from '../modelerConfig.service';
 import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-const options = {params : new HttpParams() };
-options.params.set('withCredentials', 'true');
+const options = {
+  withCredentials: true
+ }
+// options.params.set('withCredentials', 'true');
 @Injectable()
 export class ApiService {
   constructor(public http: HttpClient ) {}
@@ -22,7 +24,9 @@ export class ApiService {
           email: email,
           password: password
         },
-        options
+         {
+          withCredentials: true
+         }
       )
       //.pipe(map((response: any) => {
       //   return response.json();
@@ -32,14 +36,18 @@ export class ApiService {
   //Session handling: Login status of user
   public login_status() {
     return this.http
-      .get(this.BACKEND_URI + '/login_status', options)
+      .get(this.BACKEND_URI + '/login_status', {
+        withCredentials: true
+       })
       //.pipe(map((response: any) => response.json()));
   }
 
   //Session handling: Logout of user
   public logout() {
     return this.http
-      .get(this.BACKEND_URI + '/logout', options)
+      .get(this.BACKEND_URI + '/logout', {
+        withCredentials: true
+       })
       //.pipe(map((response: any) => response.json()));
   }
 

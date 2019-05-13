@@ -181,7 +181,7 @@ export class ModelLoaderComponent {
         }
       },
       (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+        this.snackbarService.error(error._body);
         console.log(error);
       }
     );
@@ -200,7 +200,7 @@ export class ModelLoaderComponent {
         }
       },
       (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+        this.snackbarService.error(error._body);
         console.log(error);
       }
     );

@@ -49,7 +49,7 @@ export class RoleComponent {
             this.roles = response.data;
             this.selected = null;
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -64,9 +64,9 @@ export class RoleComponent {
       .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           } else {
-            this.snackbarService.error(response.json()._body);
+            this.snackbarService.error(response._body);
           }
         },
         (        error: { _body: string; }) => {
@@ -81,9 +81,9 @@ export class RoleComponent {
       .subscribe((response: { success: any; status: string; _body: string; }) => {
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           } else {
-            this.snackbarService.error(response.json());
+            this.snackbarService.error(response.status);
           }
         },
         (        error: { _body: string; }) => {
@@ -99,9 +99,9 @@ export class RoleComponent {
           console.log(response);
           if (response.success) {
             this.mqttService.getClient().publish('administrations/role', JSON.stringify({}));
-            this.snackbarService.success(response.json().status);
+            this.snackbarService.success(response.status);
           } else {
-            this.snackbarService.error(response.json.toString());
+            this.snackbarService.error(response.toString());
           }
         },
         (        error: { _body: string; }) => {
