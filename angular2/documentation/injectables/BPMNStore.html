@@ -1,0 +1,396 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular2-webpack documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">angular2-webpack documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>BPMNStore</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/bpmn-store/bpmn-store.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#paletteEntries">paletteEntries</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: Http)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/bpmn-store/bpmn-store.service.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>Http</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="paletteEntries"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            paletteEntries
+                        </b>
+                        <a href="#paletteEntries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>paletteEntries()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/app/bpmn-store/bpmn-store.service.ts:36</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Http, Headers } from &#x27;@angular/http&#x27;;
+import { Observable, of } from &#x27;rxjs&#x27;;
+import { COMMANDS } from &#x27;./commandstore.service&#x27;;
+
+import {faChevronLeft, faChevronRight} from &#x27;@fortawesome/fontawesome-free-solid&#x27;;
+import fontawesome from &#x27;@fortawesome/fontawesome&#x27;;
+
+export class Link {
+    constructor(public readonly href: string, public readonly text?: string, public readonly rel?: string) {
+        this.text &#x3D; text || href;
+        this.rel &#x3D; rel || &#x27;none&#x27;;
+    }
+}
+
+@Injectable()
+export class BPMNStore {
+
+    constructor(private http: Http) {
+        fontawesome.library.add(faChevronLeft, faChevronRight);
+    }
+
+    // public listDiagrams(): Observable&lt;Link[]&gt; {
+    //     // console.log(&#x27;listDiagrams&#x27;);
+    //     // This could be async and coming from a server:
+
+    //     // TODO: async read from folder via fs read async
+    //     return Observable.of([
+    //         new Link(&#x27;/diagrams/scrum.bpmn&#x27;),
+    //         new Link(&#x27;/diagrams/initial.bpmn&#x27;),
+    //         new Link(&#x27;/diagrams/initial2.bpmn&#x27;),
+    //         new Link(&#x27;/diagrams/pizza-collaboration.bpmn&#x27;)
+    //     ]).delay(2);
+    // }
+
+    public paletteEntries(): Observable&lt;any&gt; {
+        // This could be async and coming from a server:
+        return of({
+            [COMMANDS.TWO_COLUMN] : {
+                group: &#x27;row&#x27;,
+                className: [&#x27;fa&#x27;, &#x27;fa-th-large&#x27;, &#x27;fa-lg&#x27;],
+                title: COMMANDS.TWO_COLUMN,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;two-column&#x27;)
+                }
+            },
+          [COMMANDS.SAVE] : {
+            group: &#x27;row&#x27;,
+            className: [&#x27;fa-arrow-circle-down&#x27;, &#x27;glyphicfaon&#x27;],
+            title: &#x27;Export to BPMN&#x27;,
+            action: {
+              click: () &#x3D;&gt; console.log(&#x27;save&#x27;)
+            }
+          },
+          [COMMANDS.SAVETODB] : {
+            group: &#x27;row&#x27;,
+            className: [&#x27;fa-cloud-upload-alt&#x27;, &#x27;fa&#x27;],
+            title: &#x27;Save to Database&#x27;,
+            action: {
+              click: () &#x3D;&gt; console.log(&#x27;save&#x27;)
+            }
+          },
+            [COMMANDS.SET_IPIM_VALUES]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-cog&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Set Variables&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;openVariableModal&#x27;)
+                }
+            },
+            [COMMANDS.SET_TERM]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-tasks&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Set Term&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;openTermModal&#x27;)
+                }
+            },
+            [COMMANDS.SET_IPIM_VALUES_EVALUATE]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-tag&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Evaluate Process&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;openInputModal&#x27;)
+                }
+            },
+            [COMMANDS.SET_IPIM_EVALUATOR]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-tags&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Start cascading Evaluation&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(COMMANDS.SET_IPIM_EVALUATOR)
+                }
+            },
+            [COMMANDS.SET_IPIM_SUBPROCESS]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-list-alt&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Set Subprocess&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(COMMANDS.SET_IPIM_SUBPROCESS)
+                }
+            },
+            [COMMANDS.OPEN_SUBPROCESS_MODEL]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-download&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Open Model of Subprocess&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(COMMANDS.OPEN_SUBPROCESS_MODEL)
+                }
+            },
+            [COMMANDS.HIGHLIGHT]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-tint&#x27;, &#x27;fas&#x27;],
+                title:  &#x27;Highlight Elements&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;two-column&#x27;)
+                }
+            },
+            [COMMANDS.RESET]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-undo&#x27;, &#x27;fas&#x27;],
+                title: &#x27;Reset Diagram&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;two-column&#x27;)
+                }
+            },
+            [COMMANDS.OPEN_USAGE_MODEL]: {
+                group: &#x27;ipim&#x27;,
+                className: [&#x27;fa-share&#x27;, &#x27;fas&#x27;],
+                title: &#x27;See Processes references&#x27;,
+                action: {
+                    click: () &#x3D;&gt; console.log(&#x27;two-column&#x27;)
+                }
+            }
+        }); //.delay(1);
+    }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'BPMNStore.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

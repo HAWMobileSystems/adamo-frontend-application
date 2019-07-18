@@ -1,0 +1,1506 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular2-webpack documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">angular2-webpack documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>PermissionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/PermissionComponent/permission.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>permission-management</code></td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./permission.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#models">models</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#roles">roles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectedModel">selectedModel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectedPermission">selectedPermission</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectedRole">selectedRole</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectedUser">selectedUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#users">users</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAllModels">getAllModels</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAllRoles">getAllRoles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAllUsers">getAllUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getPermission">getPermission</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#permissionCreate">permissionCreate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#permissionDelete">permissionDelete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#permissionUpdate">permissionUpdate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectModel">selectModel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selectUser">selectUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(apiService: <a href="../injectables/ApiService.html">ApiService</a>, snackbarService: <a href="../injectables/SnackBarService.html">SnackBarService</a>, mqttService: <a href="../injectables/AdamoMqttService.html">AdamoMqttService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>apiService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackbarService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SnackBarService.html" target="_self" >SnackBarService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mqttService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AdamoMqttService.html" target="_self" >AdamoMqttService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllModels"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getAllModels
+                        </b>
+                        <a href="#getAllModels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllModels()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="152"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:152</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllRoles"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getAllRoles
+                        </b>
+                        <a href="#getAllRoles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllRoles()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="117"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:117</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllUsers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getAllUsers
+                        </b>
+                        <a href="#getAllUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllUsers()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPermission"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getPermission
+                        </b>
+                        <a href="#getPermission"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPermission(user: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, model: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:170</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permissionCreate"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            permissionCreate
+                        </b>
+                        <a href="#permissionCreate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>permissionCreate(uid: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, mid: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, role: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:41</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>uid</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>mid</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>role</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permissionDelete"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            permissionDelete
+                        </b>
+                        <a href="#permissionDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>permissionDelete(pid: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pid</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permissionUpdate"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            permissionUpdate
+                        </b>
+                        <a href="#permissionUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>permissionUpdate(role: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, pid: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="81"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:81</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>role</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pid</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectModel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            selectModel
+                        </b>
+                        <a href="#selectModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>selectModel(model: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:33</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            selectUser
+                        </b>
+                        <a href="#selectUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>selectUser(user: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:25</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="models"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            models</b>
+                            <a href="#models"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="roles"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            roles</b>
+                            <a href="#roles"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:18</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedModel"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            selectedModel</b>
+                            <a href="#selectedModel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedPermission"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            selectedPermission</b>
+                            <a href="#selectedPermission"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:14</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedRole"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            selectedRole</b>
+                            <a href="#selectedRole"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:16</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedUser"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            selectedUser</b>
+                            <a href="#selectedUser"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="users"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            users</b>
+                            <a href="#users"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/components/PermissionComponent/permission.component.ts:17</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component} from &#x27;@angular/core&#x27;;
+import {ApiService} from &#x27;../../services/api.service&#x27;;
+
+import {AdamoMqttService} from &#x27;../../services/mqtt.service&#x27;;
+import { SnackBarService } from &#x27;../../services/snackbar.service&#x27;;
+
+@Component({
+  selector: &#x27;permission-management&#x27;,
+  templateUrl: &#x27;./permission.component.html&#x27;
+})
+
+export class PermissionComponent {
+  private selectedUser: any;
+  private selectedPermission: any;
+  private selectedModel: any;
+  private selectedRole: any;
+  private users: any;
+  private roles: any;
+  private models: any;
+
+  constructor(private apiService: ApiService, private snackbarService: SnackBarService, private mqttService: AdamoMqttService) {
+  }
+
+  //selects a user that is maintained in a permission
+  private selectUser(user: any) {
+    this.selectedUser &#x3D; user;
+    if (this.selectedModel) {
+      this.getPermission(user.uid, this.selectedModel.mid);
+    }
+  }
+
+  //selects a model that is maintained in a permission
+  private selectModel(model: any) {
+    this.selectedModel &#x3D; model;
+    if (this.selectedUser) {
+      this.getPermission(this.selectedUser.uid, model.mid);
+    }
+  }
+
+  //creates a new permission
+  private permissionCreate(uid: any, mid: any, role: any) {
+    this.apiService.permissionCreate(uid, mid, role)
+      .subscribe((response: { success: any; error: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.snackbarService.success(&#x27;Permission successfully created&#x27;);
+            this.selectedPermission &#x3D; null;
+            this.selectedUser &#x3D; null;
+            this.selectedModel &#x3D; null;
+          } else {
+            this.snackbarService.error(response.error)
+            ;
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  //deletes the selected permission
+  private permissionDelete(pid: any) {
+    this.apiService.permissionDelete(pid)
+      .subscribe((response: { success: any; error: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.snackbarService.success(&#x27;Permission deleted&#x27;);
+            this.selectedPermission &#x3D; null;
+            this.selectedUser &#x3D; null;
+            this.selectedModel &#x3D; null;
+          } else {
+            this.snackbarService.error(response.error)
+            ;
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  //updates the selected permission
+  private permissionUpdate(role: any, pid: any) {
+    this.apiService.permissionUpdate(role, pid)
+      .subscribe((response: { success: any; error: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.snackbarService.success(&#x27;Permission updated&#x27;);
+            this.selectedPermission &#x3D; null;
+            this.selectedUser &#x3D; null;
+            this.selectedModel &#x3D; null;
+          } else {
+            this.snackbarService.error(response.error)
+            ;
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  public ngOnInit() {
+
+    this.getAllRoles();
+    this.getAllUsers();
+    this.getAllModels();
+    this.mqttService.getClient().subscribe(&#x27;PERMISSION&#x27;);
+    const self &#x3D; this;
+    this.mqttService.getClient().on(&#x27;message&#x27;, (topic: any, message: any) &#x3D;&gt; {
+      if (topic &#x3D;&#x3D;&#x3D; &#x27;PERMISSION&#x27;) {
+      console.log(&#x27;PermissonMQTT&#x27;);
+      self.getAllModels();
+      self.getAllUsers();
+      }
+    });
+  }
+
+  //gets a list of all roles from DB
+  public getAllRoles() {
+    this.roles &#x3D; [];
+    this.apiService.getAllRoles()
+      .subscribe((response: { success: any; data: any; _body: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.roles &#x3D; response.data;
+          } else {
+            this.snackbarService.error(response._body);
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  //gets a list of all users from DB
+  public getAllUsers() {
+    this.users &#x3D; [];
+    this.apiService.getAllUsers()
+      .subscribe((response: { success: any; data: any; _body: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.users &#x3D; response.data;
+            this.selectedUser &#x3D; null;
+          } else {
+            this.snackbarService.error(response._body);
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  //gets a list of all models from DB
+  public getAllModels() {
+    this.models &#x3D; [];
+    this.apiService.getAllModels()
+      .subscribe((response: { success: any; data: any; _body: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.models &#x3D; response.data;
+            this.selectedModel &#x3D; null;
+          } else {
+            this.snackbarService.error(response._body);
+          }
+        },
+        (        error: { _body: string; }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        });
+  }
+
+  //gets the permission of the selected user and model
+  public getPermission(user: any, model: any) {
+    this.apiService.getPermission(user, model)
+      .subscribe((response: { success: any; data: any; status: string; }) &#x3D;&gt; {
+          if (response.success) {
+            this.selectedPermission &#x3D; response.data;
+          } else {
+            this.snackbarService.error(response.status);
+          }
+        },
+        (        error: any) &#x3D;&gt; {
+          this.snackbarService.error(&#x27;Error receiving permissions&#x27;);
+          console.log(error);
+        });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;panel panel-default&quot;&gt;
+    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;
+        &lt;h3 class&#x3D;&quot;panel-title&quot;&gt;Permission&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;panel-body row&quot;&gt;
+        &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+            &lt;table class&#x3D;&quot;table table-striped table-bordered table-hover&quot;&gt;
+                &lt;thead&gt;
+                &lt;tr class&#x3D;&quot;active&quot;&gt;
+                    &lt;th&gt;Email&lt;/th&gt;
+                &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;&lt;/tbody&gt;
+                &lt;tr *ngFor&#x3D;&quot;let user of users | filter:search&quot; (click)&#x3D;&quot;selectUser(user)&quot;
+                    [ngClass]&#x3D;&quot;{&#x27;info&#x27;: selectedUser &#x3D;&#x3D;&#x3D; user}&quot;&gt;
+                    &lt;td&gt;{{user.email}}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tfoot&gt;&lt;/tfoot&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+            &lt;table class&#x3D;&quot;table table-striped table-bordered table-hover&quot;&gt;
+                &lt;thead&gt;
+                &lt;tr class&#x3D;&quot;active&quot;&gt;
+                    &lt;th&gt;ModelName&lt;/th&gt;
+                &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;&lt;/tbody&gt;
+                &lt;tr *ngFor&#x3D;&quot;let model of (models | filterUnique: [&#x27;mid&#x27;]) | filter:search&quot; (click)&#x3D;&quot;selectModel(model)&quot;
+                    [ngClass]&#x3D;&quot;{&#x27;info&#x27;: selectedModel &#x3D;&#x3D;&#x3D; model}&quot;&gt;
+                    &lt;td&gt;{{model.modelname}}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tfoot&gt;&lt;/tfoot&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;panel panel-default&quot; *ngIf&#x3D;&quot;selectedPermission&quot;&gt;
+    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;
+        &lt;h3 class&#x3D;&quot;panel-title&quot;&gt;{{selectedUser.email}} - {{selectedModel.modelname}} {{selectedModel.version | version}}&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;panel-body&quot;&gt;
+        &lt;!--&lt;div class&#x3D;&quot;panel-body&quot;&gt;--&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedPermission?.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            &lt;div class&#x3D;&quot;form-group form-inline&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot;&gt;Role&lt;/label&gt;
+                &lt;select required class&#x3D;&quot;form-control&quot; name&#x3D;&quot;role&quot; [(ngModel)]&#x3D;&quot;selectedPermission.role&quot;&gt;
+                    &lt;option *ngFor&#x3D;&quot;let role of roles&quot;&gt;{{role.role}}&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;button class&#x3D;&quot;btn btn-success&quot;
+                    (click)&#x3D;&quot;permissionCreate(selectedUser.uid, selectedModel.mid, selectedPermission.role)&quot;&gt;
+                create relation
+            &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedPermission?.length !&#x3D;&#x3D; 0&quot;&gt;
+            &lt;div class&#x3D;&quot;form-group form-inline&quot; *ngIf&#x3D;&quot;selectedPermission?.length !&#x3D;&#x3D; 0&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot;&gt;Role&lt;/label&gt;
+                &lt;select required class&#x3D;&quot;form-control&quot; name&#x3D;&quot;role&quot; [(ngModel)]&#x3D;&quot;selectedPermission[0].role&quot;&gt;
+                    &lt;option *ngFor&#x3D;&quot;let role of roles&quot;&gt;{{role.role}}&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;button class&#x3D;&quot;btn btn-primary&quot;
+                    (click)&#x3D;&quot;permissionUpdate(selectedPermission[0].role, selectedPermission[0].pid)&quot;&gt;
+                change relation
+            &lt;/button&gt;
+
+            &lt;button class&#x3D;&quot;btn btn-danger&quot;
+                    (click)&#x3D;&quot;permissionDelete(selectedPermission[0].pid)&quot;&gt;delete
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+
+&lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="panel panel-default">    <div class="panel-heading">        <h3 class="panel-title">Permission</h3>    </div>    <div class="panel-body row">        <div class="col-md-6">            <table class="table table-striped table-bordered table-hover">                <thead>                <tr class="active">                    <th>Email</th>                </tr>                </thead>                <tbody></tbody>                <tr *ngFor="let user of users | filter:search" (click)="selectUser(user)"                    [ngClass]="{\'info\': selectedUser === user}">                    <td>{{user.email}}</td>                </tr>                <tfoot></tfoot>            </table>        </div>        <div class="col-md-6">            <table class="table table-striped table-bordered table-hover">                <thead>                <tr class="active">                    <th>ModelName</th>                </tr>                </thead>                <tbody></tbody>                <tr *ngFor="let model of (models | filterUnique: [\'mid\']) | filter:search" (click)="selectModel(model)"                    [ngClass]="{\'info\': selectedModel === model}">                    <td>{{model.modelname}}</td>                </tr>                <tfoot></tfoot>            </table>        </div>    </div></div><div class="panel panel-default" *ngIf="selectedPermission">    <div class="panel-heading">        <h3 class="panel-title">{{selectedUser.email}} - {{selectedModel.modelname}} {{selectedModel.version | version}}</h3>    </div>    <div class="panel-body">        <!--<div class="panel-body">-->        <div *ngIf="selectedPermission?.length === 0">            <div class="form-group form-inline">                <label class="col-md-4" style="text-align: left">Role</label>                <select required class="form-control" name="role" [(ngModel)]="selectedPermission.role">                    <option *ngFor="let role of roles">{{role.role}}</option>                </select>            </div>            <button class="btn btn-success"                    (click)="permissionCreate(selectedUser.uid, selectedModel.mid, selectedPermission.role)">                create relation            </button>        </div>        <div *ngIf="selectedPermission?.length !== 0">            <div class="form-group form-inline" *ngIf="selectedPermission?.length !== 0">                <label class="col-md-4" style="text-align: left">Role</label>                <select required class="form-control" name="role" [(ngModel)]="selectedPermission[0].role">                    <option *ngFor="let role of roles">{{role.role}}</option>                </select>            </div>            <button class="btn btn-primary"                    (click)="permissionUpdate(selectedPermission[0].role, selectedPermission[0].pid)">                change relation            </button>            <button class="btn btn-danger"                    (click)="permissionDelete(selectedPermission[0].pid)">delete            </button>        </div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AdministrationComponent', 'selector': 'administration'},{'name': 'AlertComponent', 'selector': 'alert'},{'name': 'AppComponent', 'selector': 'my-app'},{'name': 'AppFooterComponent', 'selector': 'app-footer'},{'name': 'AppHeaderComponent', 'selector': 'app-header'},{'name': 'EvalModal', 'selector': 'eval-modal'},{'name': 'FrontPageComponent', 'selector': 'front-page'},{'name': 'InputModal', 'selector': 'input-modal'},{'name': 'InputVarComponent', 'selector': 'inputvar-comp'},{'name': 'ModelComponent', 'selector': 'model-management'},{'name': 'ModelerComponent', 'selector': 'modeler'},{'name': 'ModellerPageComponent', 'selector': ''},{'name': 'ModelLoaderComponent', 'selector': 'modelloader'},{'name': 'PermissionComponent', 'selector': 'permission-management'},{'name': 'ProfileComponent', 'selector': 'profile-management'},{'name': 'RoleComponent', 'selector': 'role-management'},{'name': 'SaveModal', 'selector': 'save-modal'},{'name': 'SubProcessModal', 'selector': 'subprocess-modal'},{'name': 'TermModal', 'selector': 'term-modal'},{'name': 'UsageModal', 'selector': 'usage-modal'},{'name': 'UserComponent', 'selector': 'user-management'},{'name': 'VariableComponent', 'selector': 'variable-comp'},{'name': 'VariableModal', 'selector': 'variable-modal'},{'name': 'ViewerComponent', 'selector': 'viewer'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'PermissionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PermissionComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

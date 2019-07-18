@@ -22,6 +22,7 @@
     "tslint": "tslint",
     "clean": "rm -rf node_modules package-lock.json yarn.lock",
     "clean:install": "npm run clean && npm install"
+    "compodoc": "npx compodoc -p src/tsconfig.app.json"
   },
   "license": "MIT",
   "dependencies": {
@@ -73,6 +74,7 @@
   "devDependencies": {
     "@angular/cli": "^7.3.4",
     "@angular/compiler-cli": "^7.2.7",
+    "@compodoc/compodoc": "^1.1.10",
     "@types/file-saver": "^2.0.0",
     "@types/jasmine": "3.3.9",
     "@types/jquery": "^3.3.29",
