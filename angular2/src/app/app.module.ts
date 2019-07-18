@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {AppRoutingModule} from './app-routing.module';
-import {FrontPageComponent} from './front-page/FrontPageComponent';
+
 import {ViewerComponent} from './viewer/viewer.component';
 import {ModelerComponent} from './ModelerComponent/modeler.component';
 import {BsModalModule} from 'ng2-bs3-modal';
@@ -41,6 +41,7 @@ import {AuthenticatedHttpService} from './services/authenticatedHttp.service';
 import {Http} from '@angular/http';
 import { SnackBarService } from './services/snackbar.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import {FrontPageModule} from "./frontpage/frontpage.module"
 //check for correct branch!
 
 @NgModule({
@@ -53,12 +54,13 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     HttpClientModule,
     Ng2SearchPipeModule,
     LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR})
+    FrontPageModule
   ],
   declarations: [
     AppComponent,
     AppFooterComponent,
     AppHeaderComponent,
-    FrontPageComponent,
+    // DiagramComponent,
     UserComponent,
     ModelComponent,
     ModelLoaderComponent,
