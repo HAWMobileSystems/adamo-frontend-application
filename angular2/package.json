@@ -47,6 +47,7 @@
     "bpmn-js": "^3.2.1",
     "bpmn-js-properties-panel": "^0.29.0",
     "buffer": "^5.2.1",
+    "bulma": "^0.7.5",
     "camunda-bpmn-moddle": "^3.2.0",
     "core-js": "^2.4.1",
     "diagram-js-origin": "^1.1.1",
