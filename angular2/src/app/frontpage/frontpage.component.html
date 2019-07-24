@@ -11,127 +11,106 @@
 <!-- <appHeader class="frontpage-header"></appHeader>  -->
 
 <header class="frontpage-header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">ADAMO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light is-fixed-top">
+    <a class="navbar-brand" href="#">
+      
+        <img src="/assets/adamo-only-logo.svg" width="28" height="28" alt="adamo">DAMO</a>
 
-        <div class="navbar-menu">
-            <div class="navbar-end">
-             
-                <a class="navbar-item" href="http://ipim.institute">Documentation
-                    <div class="svg">
-                        <svg version="1.1" baseProfile="full" width="32" height="32"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="black" />
-                            <circle cx="150" cy="100" r="90" fill="blue" />
-                        </svg>
-                    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-                </a>
-                <a class="navbar-item" href="http://ipim.institute">Tutorial
-                    <div class="svg">
-                        <svg version="1.1" baseProfile="full" width="32" height="32"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="black" />
-                            <circle cx="150" cy="100" r="90" fill="blue" />
-                        </svg>
-                    </div>
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-link" href="http://ipim.institute">Documentation
+          <img src=" /assets/book.svg" width="32" height="32" alt="documentation">
+        </a>
+        <a class="navbar-link" href="http://ipim.institute">Tutorial
+  
 
-                </a>
-                <a class="navbar-item" href="http://github.com/HAWMobileSystems/adamo">GitHub
-                    <div class="svg">
-                        <svg version="1.1" baseProfile="full" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="black" />
-                            <circle cx="150" cy="100" r="90" fill="blue" />
-                        </svg>
-                    </div>
+          <img src=" /assets/tutorial.svg" width="32" height="32" alt="tutorial">
+        </a>
+        <a class="navbar-link" href="http://github.com/HAWMobileSystems/adamo">GitHub
+          <img src="/assets/github-logo.svg" width="28" height="28" alt="github">
 
-                </a>
-                <a class="navbar-item" href="http://ipim.institute">IPIM
-                    <div class="svg ipim-logo">
-                        <!-- <svg version="1.1" baseProfile="full" width="32" height="32"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="black" />
-                            <circle cx="150" cy="100" r="90" fill="blue" />
-                        </svg> -->
-                    </div>
+        </a>
+        <a class="navbar-link" href="http://ipim.institute">IPIM
+          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+        </a>
+      </div>
 
-                </a>
-                <!-- <a class="navbar-item" routerLink="users">Users</a> -->
-            </div>
-        </div>
-    </nav>
+    </div>
+  </nav>
 </header>
 <div class="frontpage-container login-form h-100 col-md-12">
-    <div class="card card-container centered flex-column" [ngClass]="[project]">
-        <div id="profile-img" class="profile-img-card card-img-top" alt=""></div>
-        <!-- <img id="profile-img" class="profile-img-card card-img-top" src="./ipim-logo.png"/> -->
-        <!-- <p id="profile-name" class="profile-name-card"></p> -->
-        <div class="card-body">
-            <form name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" formControlName="email" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                        <div *ngIf="f.email.errors.required">Username is required</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" formControlName="password" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required">Password is required</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button [disabled]="loading" class="btn btn-primary btn-lg  btn-block btn-signin">Login</button>
-                    <img *ngIf="loading" class="pl-2"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                </div>
-                <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-            </form>
+  <div class="card card-container centered flex-column" [ngClass]="[project]">
+    <div id="profile-img" class="profile-img-card card-img-top" alt=""></div>
+    <!-- <img id="profile-img" class="profile-img-card card-img-top" src="./ipim-logo.png"/> -->
+    <!-- <p id="profile-name" class="profile-name-card"></p> -->
+    <div class="card-body">
+      <form name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" formControlName="email" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Username is required</div>
+          </div>
         </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" formControlName="password" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary btn-lg  btn-block btn-signin">Login</button>
+          <img *ngIf="loading" class="pl-2"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      </form>
     </div>
+  </div>
 
 </div>
 <div class="frontpage-sections">
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Die Idee</h1>
-        </div>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Die Idee</h1>
+      <p>Variantenreiche Modellierung von Geschäftsprozessen mithilfe von Konfigurtionstermen. </p>
+    </div>
 
-    </section>
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Die Hintergründe</h1>
-        </div>
-    </section>
-
-
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Die Menschen dahinter</h1>
-        </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Die Hintergründe</h1>
+    </div>
+  </section>
 
 
-    </section>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Die Menschen dahinter</h1>
+    </div>
+
+
+  </section>
 
 </div>
 
 <!-- footer -->
 <footer class="frontpage-footer">
-    <div class="container">
-        <div class="content has-text-centered">
-            <p>
-                Made with <3 by <a href="https://twitter.com/danielhilpoltsteiner">Daniel and Friends from IPIM</a>
-            </p>
-        </div>
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        Made with <3 by <a href="https://twitter.com/danielhilpoltsteiner">Daniel and Friends from IPIM</a>
+      </p>
     </div>
+  </div>
 </footer>
 <!-- <footer class="frontpage-footer">do some footer thing</footer> -->
 <!-- </form>
