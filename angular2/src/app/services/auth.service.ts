@@ -16,10 +16,10 @@ export class AuthService {
   private CAMUNDA_ENGINE_URI: string = environment.CAMUNDA_ENGINE_HOST;
 
   //Session handling: Authentication when user is logging in
-  public authenticate(email: string, password: string) {
+  public login(email: string, password: string) {
     return this.http
       .post(
-        this.BACKEND_URI + '/authenticate',
+        this.BACKEND_URI + '/auth/login',
         {
           email: email,
           password: password
@@ -28,15 +28,12 @@ export class AuthService {
           withCredentials: true
          }
       )
-      //.pipe(map((response: any) => {
-      //   return response.json();
-      // }));
   }
 
   //Session handling: Login status of user
   public login_status() {
     return this.http
-      .get(this.BACKEND_URI + '/login_status', {
+      .get(this.BACKEND_URI + '/auth/me', {
         withCredentials: true
        })
       //.pipe(map((response: any) => response.json()));
