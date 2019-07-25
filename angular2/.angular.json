@@ -62,7 +62,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/diagram-js/assets/diagram-js.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/styles/properties.less"
+              "node_modules/bpmn-js-properties-panel/styles/properties.less",
+              "node_modules/bulma/css/bulma.min.css",
+              "src/styles.less"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
