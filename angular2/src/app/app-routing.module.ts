@@ -9,9 +9,11 @@ const routes: Routes = [
   { path: "front-page", component: FrontPageComponent },
   {path: 'viewer', component: ViewerComponent, canActivate: [AuthGuard]},
   {path: 'modeler', component: ModellerPageComponent},
+// {
 
-    path: "administration",
-    component: AdministrationComponent,
+//   path: "administration",
+//   component: AdministrationComponent,
+// },
 
   { path: "", redirectTo: "/front-page", pathMatch: "full" },
   { path: "**", redirectTo: "/front-page", pathMatch: "full" }
