@@ -6,7 +6,7 @@ import { AdamoMqttService } from "../services/mqtt.service";
 import { environment } from "../../environments/environment";
 import { NGXLogger } from "ngx-logger";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { AuthService } from "../services";
+// import { AuthService } from "../services";
 import { first } from "rxjs/operators";
 
 // import {version} from "./../../../package.json"; TODO
@@ -30,12 +30,12 @@ export class FrontPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private logger: NGXLogger,
-    private authService: AuthService
+    // private authService: AuthService
   ) {
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(["/"]);
-    }
+    // if (this.authService.currentUserValue) {
+    //   this.router.navigate(["/"]);
+    // }
   }
 
   ngOnInit() {
@@ -65,21 +65,21 @@ export class FrontPageComponent implements OnInit {
 
     this.logger.debug("form valid");
     this.loading = true;
-    this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.logger.debug(`data received ${this.returnUrl}`);
+    // this.authService
+    //   .login(this.f.email.value, this.f.password.value)
+    //   .pipe(first())
+    //   .subscribe(
+    //     data => {
+    //       this.logger.debug(`data received ${this.returnUrl}`);
 
-          this.router.navigate(["/modeler"]);
-          // this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.logger.debug("error received ", error);
-          this.error = error;
-          this.loading = false;
-        }
-      );
+    //       this.router.navigate(["/modeler"]);
+    //       // this.router.navigate([this.returnUrl]);
+    //     },
+    //     error => {
+    //       this.logger.debug("error received ", error);
+    //       this.error = error;
+    //       this.loading = false;
+    //     }
+    //   );
   }
 }

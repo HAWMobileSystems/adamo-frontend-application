@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Model } from '../../models/model';
 
-import { MqttService } from '../../services/mqtt.service';
+import { AdamoMqttService } from '../../services/mqtt.service';
 import { IPIM_OPTIONS } from '../../modelerConfig.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ export class ModelLoaderComponent {
     private apiService: ApiService,
     private router: Router,
     private snackbarService: SnackBarService,
-    private mqttService: MqttService
+    private mqttService: AdamoMqttService
   ) {}
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden

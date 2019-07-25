@@ -1,54 +1,68 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../services/api.service';
-import {Model} from '../models/model';
-import {ModelerComponent} from '../ModelerComponent/modeler.component';
-import {MqttService} from '../services/mqtt.service';
-import { IPIM_OPTIONS } from '../modelerConfig.service';
-import { SnackBarService } from '../services/snackbar.service';
-import { SnackBarMessage } from '../services/snackBarMessage';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../services/api.service";
+import { Model } from "../models/model";
+import { ModelerComponent } from "../ModelerComponent/modeler.component";
+import { AdamoMqttService } from "../services/mqtt.service";
+import { IPIM_OPTIONS } from "../modelerConfig.service";
+import { SnackBarService } from "../services/snackbar.service";
+import { SnackBarMessage } from "../services/snackBarMessage";
+import { Router } from "@angular/router";
 
 //Include components for interface and styling
 @Component({
-  templateUrl: './modellerPage.component.html',
-  styleUrls: ['./modellerPage.component.css']
+  templateUrl: "./modellerPage.component.html",
+  styleUrls: ["./modellerPage.component.css"]
 })
-
 export class ModellerPageComponent implements OnInit {
-  public title: string = 'Angular 2 with BPMN-JS';
+  public title: string = "Angular 2 with BPMN-JS";
   public model: any = {};
   public loading: boolean = false;
-  public page: string = '+';
-  public page2: string = 'User';
+  public page: string = "+";
+  public page2: string = "User";
   public permission: number;
   public xml: string = IPIM_OPTIONS.NEWMODEL;
   public models: Model[] = [];
   public snackBarMessages: SnackBarMessage[] = [];
-  public snackbarTextPage: string = '';
-  public username: string = '';
+  public snackbarTextPage: string = "";
+  public username: string = "";
 
-  constructor(private apiService: ApiService, private router: Router, private mqttService: MqttService, private snackbarService: SnackBarService) {
-  }
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private mqttService: AdamoMqttService,
+    private snackbarService: SnackBarService
+  ) {}
 
   private initMqtt() {
     try {
-      this.mqttService.getClient().subscribe('collaborator/update/+/+');
-      this.mqttService.getClient().subscribe('modelupsert');
-      this.mqttService.getClient().on('message', (topic: any, message: any) => {
+      this.mqttService.getClient().subscribe("collaborator/update/+/+");
+      this.mqttService.getClient().subscribe("modelupsert");
+      this.mqttService.getClient().on("message", (topic: any, message: any) => {
         console.log(topic);
-        if (topic === 'modelupsert') {
+        if (topic === "modelupsert") {
           const event = JSON.parse(message);
-          const idAndVersion = this.page.split('_');
-          if (idAndVersion[0] === event.mid.toString() && idAndVersion[1] === event.version) {
-            this.page = event.mid + '_' + event.newVersion;
+          const idAndVersion = this.page.split("_");
+          if (
+            idAndVersion[0] === event.mid.toString() &&
+            idAndVersion[1] === event.version
+          ) {
+            this.page = event.mid + "_" + event.newVersion;
             console.log(this.page);
           }
-        } else if (topic.startsWith('collaborator/update')) {
+        } else if (topic.startsWith("collaborator/update")) {
           console.log(topic, JSON.parse(message));
           console.log(this.models);
           this.models.forEach(model => {
-            console.log(model.id, parseInt(topic.split('/')[2]), model.version, topic.split('/')[3]);
-            if (model.id === parseInt(topic.split('/')[2]) && model.version === topic.split('/')[3]) {
+            console.log(
+              model.id,
+              parseInt(topic.split("/")[2]),
+              model.version,
+              topic.split("/")[3]
+            );
+            if (
+              model.id === parseInt(topic.split("/")[2]) &&
+              model.version === topic.split("/")[3]
+            ) {
               model.collaborator = JSON.parse(message);
             }
           });
@@ -64,42 +78,56 @@ export class ModellerPageComponent implements OnInit {
     this.snackbarService.snackBarMessages$.subscribe(
       (data: SnackBarMessage[]) => {
         this.snackBarMessages = data;
-      });
+      }
+    );
 
-    this.apiService.login_status()
-      .subscribe((response: any) => {
-          if (response.success) {
-            this.username = response.email;
-            this.mqttService.getClient(response.email);
-            this.initMqtt();
-            this.permission = parseInt(response.permission);
-          } else {
-            this.username = '';
-            this.snackbarService.error('error while retrieving session');
-            this.router.navigate(['/front-page']);
-          }
-        },
-        error => {
-          this.username = '';
-          this.snackbarService.error('Error could not connect to session management');
-          this.router.navigate(['/front-page']);
-        });
+    this.apiService.login_status().subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.username = response.email;
+          this.mqttService.getClient(response.email);
+          this.initMqtt();
+          this.permission = parseInt(response.permission);
+        } else {
+          this.username = "";
+          this.snackbarService.error("error while retrieving session");
+          this.router.navigate(["/front-page"]);
+        }
+      },
+      error => {
+        this.username = "";
+        this.snackbarService.error(
+          "Error could not connect to session management"
+        );
+        this.router.navigate(["/front-page"]);
+      }
+    );
   }
 
   public remove(index: number): void {
     console.log(this.models[index]);
     try {
-      this.mqttService.getClient().unsubscribe('MODEL/model_' + this.models[index].id + '_' + this.models[index].version);
-    }  catch (error) {
-      console.log('error', error);
+      this.mqttService
+        .getClient()
+        .unsubscribe(
+          "MODEL/model_" +
+            this.models[index].id +
+            "_" +
+            this.models[index].version
+        );
+    } catch (error) {
+      console.log("error", error);
     }
     this.models.splice(index, 1);
-    this.page = '+';
+    this.page = "+";
   }
 
   public loadError(error: any): void {
-    if (JSON.parse(error._body).status !== 'no permission to read!') {
-      this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
+    if (JSON.parse(error._body).status !== "no permission to read!") {
+      this.snackbarService.newSnackBarMessage(
+        "Error: " + JSON.parse(error._body).status,
+        "red"
+      );
     }
   }
 
@@ -113,10 +141,8 @@ export class ModellerPageComponent implements OnInit {
         exists = true;
       }
     });
-    !exists
-      ?  this.models.push(model)
-      : this.loading = false;
-    this.page = model.id + '_' + model.version;
+    !exists ? this.models.push(model) : (this.loading = false);
+    this.page = model.id + "_" + model.version;
   }
 
   public onExportModel(modelerComponent: ModelerComponent): void {
@@ -124,12 +150,12 @@ export class ModellerPageComponent implements OnInit {
   }
 
   public onLoadSubProcess(model: Model): void {
-    console.log('loadedModel', model);
+    console.log("loadedModel", model);
     this.onLoadModel(model);
   }
 
   public onLoadedCompletely(): void {
     this.loading = false;
-    console.log('loading complected');
+    console.log("loading complected");
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 
-import { MqttService } from '../../services/mqtt.service';
+import { AdamoMqttService } from '../../services/mqtt.service';
 import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class ProfileComponent {
   constructor(
     private apiService: ApiService,
     private snackbarService: SnackBarService,
-    private mqttService: MqttService
+    private mqttService: AdamoMqttService
   ) {}
 
   public ngOnInit() {

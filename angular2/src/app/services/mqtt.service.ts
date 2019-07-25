@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 // const mqtt = require('mqtt');
 import { environment } from './../../environments/environment';
 @Injectable()
-export class MqttService {
+export class AdamoMqttService {
   private subject: Subject<any> = new Subject<any>();
   private keepAfterNavigationChange: boolean = true;
   private client: any;

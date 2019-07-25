@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Http, Jsonp } from "@angular/http";
-import { MqttService } from "../services/mqtt.service";
+import { AdamoMqttService } from "../services/mqtt.service";
 import { PaletteProvider } from "./palette/palette";
 import { CustomPropertiesProvider } from "./properties/props-provider";
 import { BPMNStore, Link } from "../bpmn-store/bpmn-store.service";
@@ -59,8 +59,12 @@ export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
   @Input() public model: any;
-  @Output() public exportModel: EventEmitter<object> = new EventEmitter<object>();
-  @Output() public loadSubProcess: EventEmitter<Model> = new EventEmitter<Model>();
+  @Output() public exportModel: EventEmitter<object> = new EventEmitter<
+    object
+  >();
+  @Output() public loadSubProcess: EventEmitter<Model> = new EventEmitter<
+    Model
+  >();
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<
     null
   >();
@@ -87,7 +91,7 @@ export class ModelerComponent implements OnInit {
 
   //viewchilds import the html part of the modals and links them
 
-  @ViewChild('ref') private el: ElementRef;
+  @ViewChild("ref") private el: ElementRef;
   @ViewChild("variableModal")
   private variableModal: VariableModal;
   @ViewChild("inputModal")
@@ -126,7 +130,7 @@ export class ModelerComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private snackbarService: SnackBarService,
     private router: Router,
-    private mqttService: MqttService,
+    private mqttService: AdamoMqttService,
     private logger: NGXLogger
   ) {}
 
@@ -638,11 +642,15 @@ export class ModelerComponent implements OnInit {
    */
   private createModeler() {
     this.initializeModeler();
-   try {
-     this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
-   } catch ( error ) {
-     this.logger.debug("error in commandstack init", error)
-   }
+    try {
+      this.commandStack = new CommandStack(
+        this.modeler,
+        this,
+        this.mqttService
+      );
+    } catch (error) {
+      this.logger.debug("error in commandstack init", error);
+    }
     // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
@@ -915,12 +923,16 @@ export class ModelerComponent implements OnInit {
 
   //shows an Overlay for loading purposes
   public showOverlay(): void {
-    const x = (document.getElementById("overlayLoading-" + this.modelId).style.display = "block");
+    const x = (document.getElementById(
+      "overlayLoading-" + this.modelId
+    ).style.display = "block");
   }
 
   //hides the Overlay again
   public hideOverlay(): void {
-    const x = (document.getElementById("overlayLoading-" + this.modelId).style.display = "none");
+    const x = (document.getElementById(
+      "overlayLoading-" + this.modelId
+    ).style.display = "none");
   }
 
   //gets the commandstack for publishing on the mqtt
