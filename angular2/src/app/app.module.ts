@@ -42,6 +42,8 @@ import { Http } from "@angular/http";
 import { SnackBarService } from "./services/snackbar.service";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
+
+import { TokenInterceptor } from "./interceptor/token.interceptor";
 //check for correct branch!
 
 @NgModule({
@@ -94,9 +96,14 @@ import { FrontPageModule } from "./frontpage/frontpage.module";
     SnackBarService,
     ApiService,
     AdamoMqttService,
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: JwtInterceptor,
+    //   multi: true
+    // },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
+      useClass: TokenInterceptor,
       multi: true
     },
     {
