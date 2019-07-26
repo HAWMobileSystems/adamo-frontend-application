@@ -6,6 +6,7 @@ import { AdamoMqttService } from '../../services/mqtt.service';
 import { IPIM_OPTIONS } from '../../modelerConfig.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'modelloader',
@@ -26,6 +27,7 @@ export class ModelLoaderComponent {
 
   constructor(
     private apiService: ApiService,
+    private authService: AuthService,
     private router: Router,
     private snackbarService: SnackBarService,
     private mqttService: AdamoMqttService
@@ -48,28 +50,28 @@ export class ModelLoaderComponent {
   }
 
   public ngOnInit() {
-    this.apiService.login_status().subscribe(
-      (response: { success: any; email: string; status: string }) => {
-        if (response.success) {
-          //Only start Working when login was successfull
-          this.mqttService.getClient(response.email);
-          this.initMqtt();
-          this.getAllModels();
-          this.getLatestChanges();
-        } else {
-          this.snackbarService.error(response.status);
-          console.error('Error while retrieving session');
-          this.router.navigate(['/front-page']);
-        }
-      },
-      (error: any) => {
-        console.error(error);
-        this.snackbarService.error(
-          'Error could not connect to session management'
-        );
-        this.router.navigate(['/front-page']);
-      }
-    );
+    // this.authService.login_status().subscribe(
+    //   (response: { success: any; email: string; status: string }) => {
+    //     if (response.success) {
+    //       //Only start Working when login was successfull
+    //       this.mqttService.getClient(response.email);
+    //       this.initMqtt();
+    //       this.getAllModels();
+    //       this.getLatestChanges();
+    //     } else {
+    //       this.snackbarService.error(response.status);
+    //       console.error('Error while retrieving session');
+    //       this.router.navigate(['/front-page']);
+    //     }
+    //   },
+    //   (error: any) => {
+    //     console.error(error);
+    //     this.snackbarService.error(
+    //       'Error could not connect to session management'
+    //     );
+    //     this.router.navigate(['/front-page']);
+    //   }
+    // );
     //defines the structure for a new empty model
     this.newModel = {
       mid: '',

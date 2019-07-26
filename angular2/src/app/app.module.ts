@@ -22,7 +22,7 @@ import { AppFooterComponent } from "./components/AppFooterComponent/footer.compo
 import { AppHeaderComponent } from "./components/AppHeaderComponent/header.component";
 import { ApiService } from "./services/api.service";
 import { AdamoMqttService } from "./services/mqtt.service";
-import { ModellerPageComponent } from "./modellerPage/modellerPage.component";
+import { OverviewComponent } from "./overview/overview.component"
 import { UserComponent } from "./components/UserComponent/user.component";
 import { ModelComponent } from "./components/ModelComponent/model.component";
 import { ModelLoaderComponent } from "./components/ModelLoaderComponent/modelloader.component";
@@ -73,7 +73,7 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
     RoleComponent,
     ProfileComponent,
     PermissionComponent,
-    ModellerPageComponent,
+    OverviewComponent,
     ViewerComponent,
     ModelerComponent,
     AlertComponent,

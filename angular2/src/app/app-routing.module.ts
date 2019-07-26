@@ -1,19 +1,21 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {ViewerComponent} from './viewer/viewer.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { ViewerComponent } from "./viewer/viewer.component";
 import { FrontPageComponent } from "./frontpage/frontpage.component";
-import {AuthGuard} from './guards/auth.guard';
-import {ModellerPageComponent} from './modellerPage/modellerPage.component';
+import { AuthGuard } from "./guards/auth.guard";
+import { OverviewComponent } from "./overview/overview.component";
+import { ModelerComponent } from "./ModelerComponent/modeler.component";
 
 const routes: Routes = [
   { path: "front-page", component: FrontPageComponent },
-  {path: 'viewer', component: ViewerComponent, canActivate: [AuthGuard]},
-  {path: 'modeler', component: ModellerPageComponent},
-// {
+  { path: "viewer", component: ViewerComponent, canActivate: [AuthGuard] },
+  { path: "overview", component: OverviewComponent },
+  { path: "modeler", component: ModelerComponent },
+  // {
 
-//   path: "administration",
-//   component: AdministrationComponent,
-// },
+  //   path: "administration",
+  //   component: AdministrationComponent,
+  // },
 
   { path: "", redirectTo: "/front-page", pathMatch: "full" },
   { path: "**", redirectTo: "/front-page", pathMatch: "full" }
@@ -23,5 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

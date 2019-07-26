@@ -7,13 +7,14 @@ import { IPIM_OPTIONS } from "../modelerConfig.service";
 import { SnackBarService } from "../services/snackbar.service";
 import { SnackBarMessage } from "../services/snackBarMessage";
 import { Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
 //Include components for interface and styling
 @Component({
-  templateUrl: "./modellerPage.component.html",
-  styleUrls: ["./modellerPage.component.css"]
+  templateUrl: "./overview.component.html",
+  styleUrls: ["./overview.component.css"]
 })
-export class ModellerPageComponent implements OnInit {
+export class OverviewComponent implements OnInit {
   public title: string = "Angular 2 with BPMN-JS";
   public model: any = {};
   public loading: boolean = false;
@@ -27,7 +28,8 @@ export class ModellerPageComponent implements OnInit {
   public username: string = "";
 
   constructor(
-    private apiService: ApiService,
+    // private apiService: ApiService,
+    private authService: AuthService,
     private router: Router,
     private mqttService: AdamoMqttService,
     private snackbarService: SnackBarService
@@ -80,28 +82,30 @@ export class ModellerPageComponent implements OnInit {
         this.snackBarMessages = data;
       }
     );
+      const currentUser = this.authService.getCurrentUser();
+    // this.authService.login_status().subscribe(
+    //   (response: any) => {
 
-    this.apiService.login_status().subscribe(
-      (response: any) => {
-        if (response.success) {
-          this.username = response.email;
-          this.mqttService.getClient(response.email);
-          this.initMqtt();
-          this.permission = parseInt(response.permission);
-        } else {
-          this.username = "";
-          this.snackbarService.error("error while retrieving session");
-          this.router.navigate(["/front-page"]);
-        }
-      },
-      error => {
-        this.username = "";
-        this.snackbarService.error(
-          "Error could not connect to session management"
-        );
-        this.router.navigate(["/front-page"]);
-      }
-    );
+    //     console.log(response);
+    //     //         if (response.success) {
+    //     //   this.username = response.email;
+    //     //   this.mqttService.getClient(response.email);
+    //     //   this.initMqtt();
+    //     //   this.permission = parseInt(response.permission);
+    //     // } else {
+    //     //   this.username = "";
+    //     //   this.snackbarService.error("error while retrieving session");
+    //     //   this.router.navigate(["/front-page"]);
+    //     // }
+    //   },
+    //   error => {
+    //     this.username = "";
+    //     this.snackbarService.error(
+    //       "Error could not connect to session management"
+    //     );
+    //     this.router.navigate(["/front-page"]);
+    //   }
+    // );
   }
 
   public remove(index: number): void {
