@@ -11,14 +11,10 @@ import { Router } from "@angular/router";
   styleUrls: ["./modellerPage.component.css"]
 })
 export class AdministrationComponent  {
-
-
     constructor(
         // private apiService: ApiService,
         // private router: Router,
         // private mqttService: AdamoMqttService,
         // private snackbarService: SnackBarService
       ) {}
-
-
 }

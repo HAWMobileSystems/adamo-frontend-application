@@ -1,15 +1,3 @@
-<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
-
-<!-- 
-<main> -->
-<!--<h1>The front page</h1>-->
-<!--
-    <h2>Front-Page</h2>
-<!-- -->
-<!-- <appHeader class="frontpage-header"></appHeader>  -->
-
 <header class="frontpage-header">
   <nav class="navbar bg-light is-fixed-top" role="navigation" aria-label="main navigation">
     <a class="navbar-brand" href="#">
@@ -29,82 +17,31 @@
     <!-- </div> -->
 
     <div id="navbarElements" class="navbar-menu">
-      <!-- <div class="navbar-start">
-        <a class="navbar-item">
-          Home
-        </a>
-
-        <a class="navbar-item">
-          Documentation
-          <img src=" /assets/book.svg" width="32" height="32" alt="documentation">
-        </a>
-
-        <!-- <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Documentation
-              <img src=" /assets/book.svg" width="32" height="32" alt="documentation">
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
-          </div>
-        </div> -->
-      <!-- </div> -->
-
       <div class="navbar-end">
-        <a class="navbar-item" href="/docs">
-          Documentation
-          <img src=" /assets/book.svg" width="32" height="32" alt="documentation">
+        <a class="navbar-item has-icon-right" href="/docs">
+          <span>Documentation</span>
+          <span class="icon"><i class="fa fa-book"></i></span>
+
         </a>
-        <a class="navbar-item" href="/tutorial">Tutorial
-          <img src=" /assets/tutorial.svg" width="32" height="32" alt="tutorial">
+        <a class="navbar-item" href="/tutorial">
+          <span>Tutorial</span>
+          <span class="icon"><i class="fa fa-graduation-cap"></i></span>
         </a>
         <a class="navbar-item" href="github.com/HAWMobileSystems/adamo">
-          GitHub
-          <img src="/assets/github-logo.svg" width="28" height="28" alt="github">
+          <span>GitHub</span>
+          <span class="icon"><i class="fab fa-github"></i></span>
         </a>
         <a class="navbar-item" href="ipim.institute">
-          IPIM
-          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+           <span>IPIM</span>
+          <span class="icon">
+              <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+          </span>
         </a>
-
       </div>
     </div>
   </nav>
-  <!-- <div class="navbar-menu">
-      <div class="navbar-end">
-        <div class="navbar-link" href="http://ipim.institute">Documentation
-          <img src=" /assets/book.svg" width="32" height="32" alt="documentation">
-        </div>
-        <div class="navbar-link" href="http://ipim.institute">Tutorial
-
-
-          <img src=" /assets/tutorial.svg" width="32" height="32" alt="tutorial">
-        </div>
-        <div class="navbar-link" href="http://github.com/HAWMobileSystems/adamo">GitHub
-          <img src="/assets/github-logo.svg" width="28" height="28" alt="github">
-
-        </div>
-        <div class="navbar-link" href="http://ipim.institute">IPIM
-          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
-        </div>
-      </div>
-
-    </div> -->
-  <!-- </nav> -->
 </header>
+
 <div class="frontpage-container login-form h-100 col-md-12">
   <!-- <div class="card card-container centered flex-column" [ngClass]="[project]"> -->
   <div class="card card-container centered flex-column">
@@ -153,16 +90,11 @@
       <h1 class="title">Die Hintergründe</h1>
     </div>
   </section>
-
-
   <section class="section">
     <div class="container">
       <h1 class="title">Die Menschen dahinter</h1>
     </div>
-
-
   </section>
-
 </div>
 
 <!-- footer -->
@@ -175,41 +107,6 @@
     </div>
   </div>
 </footer>
-<!-- <footer class="frontpage-footer">do some footer thing</footer> -->
-<!-- </form>
-        <form name="form-sigsnin" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
-            <span id="reauth-email" class="reauth-email"></span>
-
-            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
-
-                <input id="username" type="text" class="form-control" placeholder="Username eingeben"
-                       name="username" [(ngModel)]="model.username"
-                       #username="ngModel" required autofocus/>
-                <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
-            </div>
-
-            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
-
-                <input id="inputPassword" type="password" class="form-control" placeholder="Passwort eingeben"
-                       name="password" [(ngModel)]="model.password"
-                       #password="ngModel" required autofocus/>
-                <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
-                <alert></alert>
-            </div>
-            <div class="form-group">
-                <button [disabled]="loading" class="btn btn-lg btn-primary btn-block btn-signin">Login <i
-                        class="glyphicon glyphicon-log-in"></i></button>
-                <img *ngIf="loading"
-                     src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-            </div>
-
-        </form> -->
-
-
-<!-- /card-container -->
-
-
-<!-- /container -->
 <!-- </main> -->
 
 

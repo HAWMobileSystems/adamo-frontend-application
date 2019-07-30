@@ -70,13 +70,12 @@ export class FrontPageComponent implements OnInit {
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
-        data => {
+        (data: any) => {
           this.logger.debug(`data received ${this.returnUrl}`);
-
-          this.router.navigate(["/modeler"]);
+          this.router.navigate(["/overview"]);
           // this.router.navigate([this.returnUrl]);
         },
-        error => {
+        (error: any) => {
           this.logger.debug("error received ", error);
           this.error = error;
           this.loading = false;
