@@ -1,4 +1,4 @@
-import {ModelerComponent} from '../ModelerComponent/modeler.component';
+import { ModelerComponent } from "../ModelerComponent/modeler.component";
 
 export class Model {
   get version(): string {
@@ -83,5 +83,16 @@ export class Model {
   private _read: boolean;
   private _write: boolean;
 
-    constructor(){}
+  // constructor() {}
+
+  constructor(model: any) {
+    model.xml = model.modelxml;
+    model.name = model.modelname;
+    model.id = model.mid;
+    model.version = model.version || null;
+    model.read = model.read || null;
+    model.write = model.write|| null;
+    model.collaborator = [];
+  }
+
 }

@@ -16,9 +16,16 @@ export class ModelLoaderComponent {
   @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
   @Output() public loadError: EventEmitter<object> = new EventEmitter<any>();
   private selected: any;
-  private newModel: any;
+  //defines the structure for a new empty model
+  private newModel = {
+    mid: '',
+    modelname: '',
+    modelxml: IPIM_OPTIONS.NEWMODEL,
+    version: '',
+    lastchange: ''
+  };
   private models: any = [];
-  private changesLast7Day: any;
+  private modelDataChangedLast7Days: any;
   private diskModelName: string;
   private diskModelXml: string;
   private newModelName: string;
@@ -34,9 +41,10 @@ export class ModelLoaderComponent {
   ) {}
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
+  
+
   private initMqtt() {
     try {
-
       const self = this;
       this.mqttService.getClient().subscribe('administration/model/#');
       this.mqttService.getClient().on('message', (topic: any, message: any) => {
@@ -55,9 +63,9 @@ export class ModelLoaderComponent {
     //     if (response.success) {
     //       //Only start Working when login was successfull
     //       this.mqttService.getClient(response.email);
-    //       this.initMqtt();
-    //       this.getAllModels();
-    //       this.getLatestChanges();
+          this.initMqtt();
+          this.getAllModels();
+          this.getLatestChanges();
     //     } else {
     //       this.snackbarService.error(response.status);
     //       console.error('Error while retrieving session');
@@ -72,25 +80,18 @@ export class ModelLoaderComponent {
     //     this.router.navigate(['/front-page']);
     //   }
     // );
-    //defines the structure for a new empty model
-    this.newModel = {
-      mid: '',
-      modelname: '',
-      modelxml: this.newModelXml,
-      version: '',
-      lastchange: ''
-    };
+   
   }
 
   //Create an empty model in the database
   public createEmpty() {
     this.apiService.modelCreate(this.newModelName, this.newModelXml).subscribe(
-      (response: { status: string }) => {
-        this.snackbarService.success(response.status);
+      (response: any) => {
+        this.snackbarService.success(response);
         console.log(response);
       },
-      (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+      (error: any) => {
+        this.snackbarService.error(JSON.parse(error).status);
         console.log(error);
       }
     );
@@ -100,12 +101,12 @@ export class ModelLoaderComponent {
     this.apiService
       .modelCreate(this.diskModelName, this.diskModelXml)
       .subscribe(
-        (response: { status: string }) => {
-          this.snackbarService.success(response.status);
+        (response: any) => {
+          this.snackbarService.success(response);
           console.log(response);
         },
-        (error: { _body: string }) => {
-          this.snackbarService.error(JSON.parse(error._body).status);
+        (error: any) => {
+          this.snackbarService.error(JSON.parse(error).status);
           console.log(error);
         }
       );
@@ -116,7 +117,7 @@ export class ModelLoaderComponent {
     const model = new Model();
     model.xml = this.newModel.modelxml;
     model.name = this.newModel.modelname;
-    model.id = this.newModel.mid;
+    model.id = Number(this.newModel.mid);
     model.collaborator = [];
     this.loadModel.emit(model);
   }
@@ -130,41 +131,39 @@ export class ModelLoaderComponent {
   public loadFromDisk(inputValue: any) {
     const file: File = inputValue.files[0];
     const myReader: FileReader = new FileReader();
-
     //event is called when file is loaded from disk
     myReader.onloadend = e => {
       this.diskModelName = file.name.split('.')[0];
       this.diskModelXml = myReader.result as string;
       this.createLoaded();
     };
-
     //read File as textfile
     myReader.readAsText(file);
   }
 
   //Selected model from list will be loaded as new tabbed modeler
   public loadSelected() {
-    const model = new Model();
-    model.xml = this.selected.modelxml;
-    model.name = this.selected.modelname;
-    model.id = this.selected.mid;
-    model.version = this.selected.version;
-    model.read = this.selected.read;
-    model.write = this.selected.write;
-    model.collaborator = [];
+    const model = new Model(this.selected);
+    // model.xml = this.selected.modelxml;
+    // model.name = this.selected.modelname;
+    // model.id = this.selected.mid;
+    // model.version = this.selected.version;
+    // model.read = this.selected.read;
+    // model.write = this.selected.write;
+    // model.collaborator = [];
 
     //if model has empty data get the model first else directly emit the event
     if (this.selected.mid !== '') {
       this.apiService
         .getModel(this.selected.mid, this.selected.version)
-        .subscribe(
-          (response: { data: { modelxml: string } }) => {
-            model.xml = response.data.modelxml;
+        .subscribe( 
+          (response: any) => { // this will be a ModelResponseDTO
+            model.xml = response.modelXML;
             console.info(model);
             this.loadModel.emit(model);
           },
-          (error: { _body: string }) => {
-            this.snackbarService.error(JSON.parse(error._body).status);
+          (error: any) => {
+            this.snackbarService.error(JSON.parse(error).status);
             this.loadError.emit(error);
             console.log('Error Loading', error);
           }
@@ -176,18 +175,13 @@ export class ModelLoaderComponent {
 
   //get a list of all models from DB
   public getAllModels() {
-    this.models = [];
-
+    // this.models = [];
     this.apiService.getAllModels().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.models = response.data;
+      (response: Object) => {
+          this.models = response;
           this.selected = null;
-        } else {
-          this.snackbarService.error(response._body);
-        }
       },
-      (error: { _body: string }) => {
+      (error: any) => {
         this.snackbarService.error(error._body);
         console.log(error);
       }
@@ -196,17 +190,11 @@ export class ModelLoaderComponent {
 
   //Get latest changes to models from database
   public getLatestChanges() {
-    this.models = [];
-
     this.apiService.getModelsChangedLast7Days().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.changesLast7Day = response.data;
-        } else {
-          this.snackbarService.error(response._body);
-        }
+      (response: any) => { // Change to ModelResponseDTO[]
+          this.modelDataChangedLast7Days = response;
       },
-      (error: { _body: string }) => {
+      (error: any) => {
         this.snackbarService.error(error._body);
         console.log(error);
       }
