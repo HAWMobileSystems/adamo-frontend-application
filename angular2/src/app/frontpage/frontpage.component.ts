@@ -21,10 +21,10 @@ export class FrontPageComponent implements OnInit {
   public loginForm: FormGroup;
 
   private project = environment.PROJECTNAME;
-  loading = false;
-  submitted = false;
-  returnUrl: string;
-  error = "";
+  public loading = false;
+  private submitted = false;
+  private returnUrl: string;
+  private error = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,12 +72,16 @@ export class FrontPageComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.logger.debug(`data received ${this.returnUrl}`);
-          this.router.navigate(["/overview"]);
+
+          this.router.navigate(['overview']);
           // this.router.navigate([this.returnUrl]);
         },
         (error: any) => {
           this.logger.debug("error received ", error);
-          this.error = error;
+          this.error = error.statusText;
+          if(error.name === "HttpErrorResponse") {
+            this.error = "Server is not reachable";
+          }
           this.loading = false;
         }
       );
