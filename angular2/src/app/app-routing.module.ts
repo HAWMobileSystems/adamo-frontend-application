@@ -5,12 +5,14 @@ import { FrontPageComponent } from "./frontpage/frontpage.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { OverviewComponent } from "./overview/overview.component";
 import { ModelerComponent } from "./ModelerComponent/modeler.component";
+import { TutorialComponent } from "./components/tutorial/tutorial.component"
 
 const routes: Routes = [
   { path: "front-page", component: FrontPageComponent },
   { path: "viewer", component: ViewerComponent, canActivate: [AuthGuard] },
   { path: "overview", component: OverviewComponent },
   { path: "modeler", component: ModelerComponent },
+  { path: "tutorial", component: TutorialComponent },
   // {
 
   //   path: "administration",

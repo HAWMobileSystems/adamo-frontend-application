@@ -44,6 +44,7 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
 
 import { TokenInterceptor } from "./interceptor/token.interceptor";
+import { TutorialComponent } from './components/tutorial/tutorial.component';
 //check for correct branch!
 
 @NgModule({
@@ -88,7 +89,8 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
     InputVarComponent,
     FilterUnique,
     Timestamp2Date,
-    Version
+    Version,
+    TutorialComponent
   ],
   providers: [
     AuthGuard,
