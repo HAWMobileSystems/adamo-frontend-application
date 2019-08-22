@@ -548,11 +548,11 @@ export class ModelerComponent implements OnInit {
         if (element !== "") {
           this.apiService.getModel(element).subscribe(
             (response: any) => {
-              const model = new Model();
-              model.xml = response.data.modelxml;
-              model.name = response.data.modelname;
-              model.id = response.data.mid;
-              model.version = response.data.version;
+              const model = new Model(response.data);
+              // model.xml = response.data.modelxml;
+              // model.name = response.data.modelname;
+              // model.id = response.data.mid;
+              // model.version = response.data.version;
               console.info(model);
               //emit event for new model
               this.loadSubProcess.emit(model);
