@@ -43,8 +43,12 @@ import { SnackBarService } from "./services/snackbar.service";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
 
-import { TokenInterceptor } from "./interceptor/token.interceptor";
+//tutorial purposes
+import { MatExpansionModule } from '@angular/material/expansion';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TutorialComponent } from './components/tutorial/tutorial.component';
+
+import { TokenInterceptor } from "./interceptor/token.interceptor";
 //check for correct branch!
 
 @NgModule({
@@ -61,6 +65,9 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
+    //tutorial purposes
+    BrowserAnimationsModule,
+    MatExpansionModule,
     FrontPageModule
   ],
   declarations: [
@@ -90,7 +97,8 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
     FilterUnique,
     Timestamp2Date,
     Version,
-    TutorialComponent
+    TutorialComponent,
+    
   ],
   providers: [
     AuthGuard,
