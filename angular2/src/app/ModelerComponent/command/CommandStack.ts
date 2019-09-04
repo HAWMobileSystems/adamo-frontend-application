@@ -5,7 +5,7 @@ import {IPIM_OPTIONS} from '../../modelerConfig.service';
 
 import {MqttService} from '../../services/mqtt.service';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
-import { environment } from './../../../environments/environment';
+// import { environment } from './../../../environments/environment';
 
 export class CommandStack {
   private modeler: any;  //Modeler from Main Application
@@ -13,7 +13,7 @@ export class CommandStack {
   private EVENTBUS: string = 'eventBus';  //Eventbus from Modeler to trigger for element changed Event
   private ELEMENTREGISTRY: string = 'elementRegistry';  //ElementRegistry from Modeler for testing purposes
   private DRAGGING: string = 'dragging';   //Dragging Class from Modeler, used for aborting possible movement while refreshing
-  private mqttString: string = environment.SERVER_HOST + ':' + environment.MQTT_PORT;  //Connection path for the mqtt Server
+  private mqttString: string = IPIM_OPTIONS.MQTT_CONNECTION;  //Connection path for the mqtt Server
   private defaultTopic: string = 'IPIM Default';  //Default Topic to subscribe on
   private commandStack: any;   //commandStack for testing purposes
   private eleReg: any;  //elementRegistry for Testing purposes
@@ -119,8 +119,8 @@ export class CommandStack {
         XMLDoc: xml
 
       };
-      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
-      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`)
+      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer));
+      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`);
     });
   }
 
@@ -130,6 +130,7 @@ export class CommandStack {
     this.commandStack.execute(testTerm.command, testTerm.context);
   }
 
+  // tslint:disable-next-line:linebreak-style
   public commandLogger = (eventBus: any) => {
 //Call Constructor for CommandInterceptor, Call function gets the Object itself and the required eventbus
     commandInterceptor.call(commandInterceptor, eventBus);
