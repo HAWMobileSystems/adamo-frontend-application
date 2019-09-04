@@ -119,8 +119,8 @@ export class CommandStack {
         XMLDoc: xml
 
       };
-      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer));
-      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`);
+      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
+      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`)
     });
   }
 
