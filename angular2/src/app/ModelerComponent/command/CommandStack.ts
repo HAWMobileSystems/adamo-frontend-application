@@ -1,10 +1,11 @@
-import {Inherits} from 'inherits';
+// import {Inherits} from 'inherits';
 import {ModelComponent} from '../../components/ModelComponent/model.component';
 import {ModelerComponent} from '../modeler.component';
 import {IPIM_OPTIONS} from '../../modelerConfig.service';
 
 import {MqttService} from '../../services/mqtt.service';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
+import { environment } from './../../../environments/environment';
 
 export class CommandStack {
   private modeler: any;  //Modeler from Main Application
@@ -12,7 +13,7 @@ export class CommandStack {
   private EVENTBUS: string = 'eventBus';  //Eventbus from Modeler to trigger for element changed Event
   private ELEMENTREGISTRY: string = 'elementRegistry';  //ElementRegistry from Modeler for testing purposes
   private DRAGGING: string = 'dragging';   //Dragging Class from Modeler, used for aborting possible movement while refreshing
-  private mqttString: string = IPIM_OPTIONS.MQTT_CONNECTION;  //Connection path for the mqtt Server
+  private mqttString: string = environment.SERVER_HOST + ':' + environment.MQTT_PORT;  //Connection path for the mqtt Server
   private defaultTopic: string = 'IPIM Default';  //Default Topic to subscribe on
   private commandStack: any;   //commandStack for testing purposes
   private eleReg: any;  //elementRegistry for Testing purposes
@@ -67,6 +68,7 @@ export class CommandStack {
 
 //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
+    console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
     console.log(topic);
     const event = JSON.parse(message);
     if (topic.startsWith('MODEL/')) {
@@ -117,7 +119,8 @@ export class CommandStack {
         XMLDoc: xml
 
       };
-      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer));
+      this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
+      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`)
     });
   }
 
