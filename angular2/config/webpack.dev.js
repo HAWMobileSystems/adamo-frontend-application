@@ -36,6 +36,9 @@ module.exports = webpackMerge(commonConfig, {
 
     devServer: {
         historyApiFallback: true,
-        stats: 'minimal'
+	public: 'ipim-intsys.lab.if.haw-landshut.de',
+	host: '0.0.0.0',
+        stats: 'minimal',
+	disableHostcheck: true,
     }
 });
