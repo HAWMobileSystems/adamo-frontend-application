@@ -1,8 +1,8 @@
 //contains the basic configurations for the modeler
 export const IPIM_OPTIONS = {
     COLORS: ['blue', 'red', 'green', 'aquamarine', 'royalblue', 'darkviolet', 'fuchsia', 'crimson'],
-    EXPRESSJS_CONNECTION: 'http://ipim-intys.lab.if.haw-landshut.de:3000',
-    MQTT_CONNECTION: 'mqtt://ipim-intys.lab.if.haw-landshut.de:4711',
+    EXPRESSJS_CONNECTION: 'http://ipim-intsys.lab.if.haw-landshut.de:3000',
+    MQTT_CONNECTION: 'mqtt://ipim-intsys.lab.if.haw-landshut.de:4711',
     TIMEOUT_SNACKBAR: 10000,
     NEWMODEL: '' +
     '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instanc' +
