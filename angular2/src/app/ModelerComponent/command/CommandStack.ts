@@ -116,8 +116,9 @@ export class CommandStack {
       }
       const transfer: any = {
         IPIMID: this.id,
+        ID: `ID+${Math.random()}`,
+        TIMSTAMP: new Date().getTime(),
         XMLDoc: xml,
-        TIMESTAMP: `ID+${Math.random()}`
       };
       this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
       console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`)
