@@ -6,10 +6,14 @@ var settings = {
     port: 4711,
     bundle: true,
     static: './'
-  }
+  },
+  level: 'verbose'
 };
 
-
+function getMicSecTime() {
+  var hrTime = process.hrtime();
+  return hrTime[0] * 1000000 + parseInt(hrTime[1] / 1000);
+}
 //here we start mosca
 var server = new mosca.Server(settings);
 server.on('ready', setup);
@@ -26,8 +30,9 @@ server.on('clientConnected', function (client) {
 
 // fired when a message is received
 server.on('published', function (packet, client) {
-  console.log(Date.now(), packet.topic);
-  console.log('Published : ', packet);
+  //console.log('Published : ', packet, Date.now());
+  console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
+
 });
 
 // fired when a client subscribes to a topic
