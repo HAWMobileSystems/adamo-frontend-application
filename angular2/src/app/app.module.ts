@@ -43,12 +43,11 @@ import { SnackBarService } from "./services/snackbar.service";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
 
-//tutorial purposes
-import { MatExpansionModule } from '@angular/material/expansion';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TutorialComponent } from './components/tutorial/tutorial.component';
+import { TutorialModule } from './components/tutorial/tutorial.module';
 
 import { TokenInterceptor } from "./interceptor/token.interceptor";
+import { OverviewModule } from "./overview/overview.module";
+import { SharedModule } from "./shared.module";
 //check for correct branch!
 
 @NgModule({
@@ -65,10 +64,10 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
-    //tutorial purposes
-    BrowserAnimationsModule,
-    MatExpansionModule,
-    FrontPageModule
+    TutorialModule,
+    FrontPageModule, 
+    OverviewModule, 
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -83,7 +82,7 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
     PermissionComponent,
     OverviewComponent,
     ViewerComponent,
-    ModelerComponent,
+    // ModelerComponent,
     AlertComponent,
     TermModal,
     VariableModal,
@@ -97,9 +96,9 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
     FilterUnique,
     Timestamp2Date,
     Version,
-    TutorialComponent,
     
   ],
+  exports: [ModelerComponent],
   providers: [
     AuthGuard,
     AlertService,
