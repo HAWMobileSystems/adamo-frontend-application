@@ -33,10 +33,10 @@ server.on('published', function (packet, client) {
   //console.log('Published : ', packet, Date.now());
   // console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
 
-  console.log(`Packet.payload ${packet.payload} payload contains ID ${packet.payload.ID`  )
+  console.log(`Packet.payload ${packet.payload} payload contains ID ${packet.payload.ID}`)
   if (packet.payload.hasOwnProperty('TIMESTAMP') && packet.payload.hasOwnProperty('ID')) {
     console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${packet.payload.TIMESTAMP}, ID:, ${packet.payload.ID}`);
-}
+  }
 
 });
 
