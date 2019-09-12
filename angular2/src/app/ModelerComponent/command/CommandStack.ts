@@ -81,7 +81,7 @@ export class CommandStack {
         return;
       }
 //event was remote so cancel dragging if active an import new XML String
-      console.log('Test from remote:' + message.toString());
+      console.log('CM Test from remote:' + message.toString());
       try {
         // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
           console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${event.TIMESTAMP}, ID:, ${event.ID}`);
