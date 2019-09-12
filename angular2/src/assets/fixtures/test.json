@@ -1,0 +1,45 @@
+{
+    "levelID": 1,
+    "name": "Basic",
+    "PageDesc": [
+        {
+            "key": 1,
+            "value": "page______ 1 with content"
+        },
+        {
+            "key": 2,
+            "value": "page_________ 2 mit content"
+        },
+        {
+            "key": 3,
+            "value": "<p>page_________ 3 mit content</p>"
+        },
+        {
+            "key": 4,
+            "value": "page_________ 4"
+        },
+        {
+            "key": 5,
+            "value": "page_________ 5 ende Intro"
+        }
+    ],
+    "MCTest": [
+        {
+            "key": "1-Frage Basic 1",
+            "value": [
+                "1-Antwort Basic 1",
+                "1-Antwort Basic 2",
+                "1-Antwort Basic 3"
+            ]
+        },
+        {
+            "key": "2-Frage Basic 1",
+            "value": [
+                "2-Antwort Basic 1",
+                "2-Antwort Basic 2",
+                "2-Antwort Basic 3",
+                "2-Antwort Basic 4"
+            ]
+        }
+    ]
+}
