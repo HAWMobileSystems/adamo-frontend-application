@@ -35,9 +35,13 @@ server.on('published', function (packet, client) {
   try {
 
     const payloadObject = JSON.parse(packet.payload);
-    console.log(`payload contains ID ${payloadObject.ID}`)
+    // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
+    // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
 
     console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
+    // if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObje
+
+    // console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObject.hasOwnProperty('ID')) {
     //   console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // }

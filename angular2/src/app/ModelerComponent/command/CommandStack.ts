@@ -69,9 +69,14 @@ export class CommandStack {
 //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
 
-    if (message.hasOwnProperty('TIMESTAMP') && message.hasOwnProperty('ID') ) {
-      console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${message.TIMESTAMP}, ID:, ${message.ID}`);
-    }
+    try {
+      const messageJson = JSON.parse(message);
+    // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
+      console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${messageJson.TIMESTAMP}, ID:, ${messageJson.ID}`);
+    // }
+  } catch (error) {
+    console.log(error);
+  }
     // console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
     // console.log(topic);
     const event = JSON.parse(message);
