@@ -13,6 +13,7 @@ import { TutorialViewComponent } from './tutorialview/tutorialview.component';
 import { TestMCComponent } from './test-mc/test-mc.component';
 import { TestModComponent } from './test-mod/test-mod.component';
 import { SharedModule } from '../../shared.module';
+import { LevelService } from './services/level.service';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
 
 @NgModule({
@@ -32,6 +33,9 @@ import { SharedModule } from '../../shared.module';
     AngularSplitModule,
     TutorialRoutingModule, 
     SharedModule
+  ],
+  providers: [
+    LevelService
   ]
 })
 
