@@ -69,14 +69,6 @@ export class CommandStack {
 //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
 
-    try {
-      const messageJson = JSON.parse(message);
-    // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
-      console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${messageJson.TIMESTAMP}, ID:, ${messageJson.ID}`);
-    // }
-  } catch (error) {
-    console.log(error);
-  }
     // console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
     // console.log(topic);
     const event = JSON.parse(message);
@@ -90,7 +82,13 @@ export class CommandStack {
       }
 //event was remote so cancel dragging if active an import new XML String
       console.log('Test from remote:' + message.toString());
-
+      try {
+        // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
+          console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${event.TIMESTAMP}, ID:, ${event.ID}`);
+        // }
+      } catch (error) {
+        console.log(error);
+      }
       this.dragging.cancel();
 
       this.modeler.importXML(event.XMLDoc.toString(), (err: any) => {
