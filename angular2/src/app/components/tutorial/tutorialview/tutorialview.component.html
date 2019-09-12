@@ -11,8 +11,36 @@
     </p>
 </div>
 
-<!-- Tutorial content -->
 <div class="container">
+    <mat-accordion>
+        <div *ngFor="let lev of levels">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    {{ lev.name }} BPMN
+                </mat-expansion-panel-header>
+
+                <div class="submodule">
+                    <a [routerLink]="['/tutorial/introduction', lev.levelID]">Introduction</a><input type="checkbox" class="float-right" disabled>
+                </div>
+                <div class="submodule">
+                    <a [routerLink]="['/tutorial/testmc', lev.levelID]">Test your knowlege of the basics</a><input type="checkbox" class="float-right" disabled>
+                </div>
+
+                <!-- hier muss noch eine forschleife über die einzelnen aufgaben in dem modeller... -->
+                <div class="submodule">
+                    <a routerLink="/tutorial/testmod">Create a basic BMPN</a><input type="checkbox" class="float-right" disabled>
+                </div>
+                <div class="submodule">
+                    <a routerLink="/tutorial/testmod">Create BPMN for clean the floor</a><input type="checkbox" class="float-right" disabled>
+                </div>
+            </mat-expansion-panel>
+            <hr>
+        </div>
+    </mat-accordion>
+</div>
+
+<!-- Tutorial content -->
+<!-- <div class="container">
     <mat-accordion>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -20,7 +48,7 @@
             </mat-expansion-panel-header>
 
             <div class="submodule">
-                <a routerLink='/tutorial/introduction'>Introduction</a><input type="checkbox" class="float-right" disabled>
+                <a [routerLink]="['/tutorial/introduction', levels[0].levelID]">Introduction</a><input type="checkbox" class="float-right" disabled>
             </div>
             <div class="submodule">
                 <a routerLink="/tutorial/testmc">Test your knowlege of the basics</a><input type="checkbox" class="float-right" disabled>
@@ -81,5 +109,5 @@
         <hr>
 
     </mat-accordion>
-</div>
+</div> -->
 <!-- Tutorial content end-->

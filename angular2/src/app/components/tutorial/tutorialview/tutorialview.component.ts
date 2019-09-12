@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { Level } from '../models/Level';
+import { LevelService } from '../services/level.service';
 
 @Component({
   selector: 'app-tutorialview',
@@ -7,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TutorialViewComponent implements OnInit {
 
-  constructor() { }
+  levels: Level[];
+
+  constructor(LevServ: LevelService) {
+    this.levels = LevServ.getLevels();
+  }
 
   ngOnInit() {
   }
