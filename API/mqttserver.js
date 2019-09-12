@@ -32,10 +32,15 @@ server.on('clientConnected', function (client) {
 server.on('published', function (packet, client) {
   //console.log('Published : ', packet, Date.now());
   // console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
+  try {
 
-  console.log(`Packet.payload ${packet.payload} payload contains ID ${packet.payload.ID}`)
-  if (packet.payload.hasOwnProperty('TIMESTAMP') && packet.payload.hasOwnProperty('ID')) {
-    console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${packet.payload.TIMESTAMP}, ID:, ${packet.payload.ID}`);
+    const payloadObject = JSON.parse(packet.payload);
+    console.log(`payload contains ID ${payloadObject.ID}`)
+    if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObject.hasOwnProperty('ID')) {
+      console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
+    }
+  } catch (error) {
+    console.log(error)
   }
 
 });
