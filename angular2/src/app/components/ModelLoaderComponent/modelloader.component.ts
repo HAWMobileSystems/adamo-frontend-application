@@ -114,11 +114,11 @@ export class ModelLoaderComponent {
 
   //create a new model without anything
   public createNew() {
-    const model = new Model();
-    model.xml = this.newModel.modelxml;
-    model.name = this.newModel.modelname;
-    model.id = Number(this.newModel.mid);
-    model.collaborator = [];
+    const model = new Model(this.newModel);
+    // model.xml = this.newModel.modelxml;
+    // model.name = this.newModel.modelname;
+    // model.id = Number(this.newModel.mid);
+    // model.collaborator = [];
     this.loadModel.emit(model);
   }
 

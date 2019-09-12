@@ -167,7 +167,7 @@ export class SubProcessModal extends BsModalComponent {
     //show loading overlay
     this.root.showOverlay();
     //create a new model with the selected information
-    const model = new Model();
+    const model = new Model(this);
     model.xml = this.selectedModel.modelxml;
     model.name = this.selectedModel.modelname;
     model.id = this.selectedModel.mid;
