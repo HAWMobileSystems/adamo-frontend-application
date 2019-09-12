@@ -68,8 +68,12 @@ export class CommandStack {
 
 //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
-    console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
-    console.log(topic);
+
+    if (message.hasOwnProperty('TIMESTAMP') && message.hasOwnProperty('ID') ) {
+      console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${message.TIMESTAMP}, ID:, ${message.ID}`);
+    }
+    // console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
+    // console.log(topic);
     const event = JSON.parse(message);
     if (topic.startsWith('MODEL/')) {
 //Parse event from String to variable
@@ -117,11 +121,11 @@ export class CommandStack {
       const transfer: any = {
         IPIMID: this.id,
         ID: `ID+${Math.random()}`,
-        TIMSTAMP: new Date().getTime(),
-        XMLDoc: xml,
+        TIMESTAMP: new Date().getTime(),
+        XMLDoc: xml
       };
       this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
-      console.log(`Time: ${ Date.now()}, ${this.topic}, ${transfer}`)
+      console.log(`PublishTime:, ${ Date.now()}, Topic:, ${this.topic}, TIMESTAMP:,${transfer.TIMESTAMP}, ID:, ${transfer.ID}`);
     });
   }
 

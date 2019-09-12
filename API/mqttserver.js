@@ -31,7 +31,11 @@ server.on('clientConnected', function (client) {
 // fired when a message is received
 server.on('published', function (packet, client) {
   //console.log('Published : ', packet, Date.now());
-  console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
+  // console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
+
+  if (packet.hasOwnProperty('TIMESTAMP') && packet.hasOwnProperty('ID')) {
+    console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${packet.payload.TIMESTAMP}, ID:, ${packet.payload.ID}`);
+  }
 
 });
 
