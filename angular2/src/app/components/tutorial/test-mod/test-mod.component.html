@@ -1,7 +1,7 @@
 <div>
     <h1 class="text-center"> Welcome to BPMN Modelling</h1>
 </div>
-<div style="width:100vw; height: 100vw;">
+<div style="width:100vmax; height: 50vmax; overflow: hidden;">
     <as-split direction="horizontal">
         <as-split-area>
             <as-split direction="vertical">
@@ -15,12 +15,12 @@
         </as-split-area>
         <as-split-area>
             <as-split direction="vertical">
-                <as-split-area>
+                <as-split-area >
 
-                    <div>
+                    <div style="width: 50%; height:700px">
                         <!-- <br><br><br><br><br> <br><br><br>
                         <h1> Here would b the Modeller </h1> -->
-                        <div class="content" id="js-drop-zone">
+                        <div class="content" id="js-drop-zone" style="width: 100%; height: 100%; ">
 
                             <!-- <div class="message intro">
                                 <div class="note">
@@ -40,9 +40,9 @@
                                 </div>
                             </div> -->
 
-                            <div class="canvas" id="js-canvas"></div>
+                            <div class="canvas" id="js-canvas" style="width: 100%; height: 100%;"></div>
                         </div>
-
+                              
                     </div>
                     <button (click)=showSolution() class="right">Validate</button>
                 </as-split-area>
