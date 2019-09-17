@@ -3,19 +3,31 @@ import { Level, Helper } from '../models/Level';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs";
 
+
 @Injectable()
 export class LevelService {
 
-    data: string
+    public parsedLVL: Level;
 
     constructor(private http: HttpClient){
-        this.getJSON().subscribe(data => this.data);
+       this.getJSON().subscribe(data => this.createLevelFromJson(data));
     }
 
     public getJSON(): Observable<any> {
         return this.http.get("/assets/fixtures/test.json", { responseType: 'json'});
     }
-    
+
+    public createLevelFromJson(j_string){
+        //j_string is our parsed json 
+        console.log(j_string)
+        //Create Object from json
+        let lvl_obj = new Level(j_string.levelID,j_string.name, j_string.page, j_string.PageDesc, j_string.MCTest)
+        //Add lvl to LVLs array
+        this.parsedLVL = lvl_obj;
+        
+
+    }
+
 
     public getLevels() {
         let levels: Level[];
@@ -31,7 +43,7 @@ export class LevelService {
         mcobjarrProfessional.push(this.createMCObjectArray("1-Frage Professional 1", ["1-Antwort Professional 1", "1-Antwort Professional 2", "1-Antwort Professional 3"]));
         mcobjarrProfessional.push(this.createMCObjectArray("2-Frage Professional 1", ["2-Antwort Professional 1", "2-Antwort Professional 2", "2-Antwort Professional 3", "2-Antwort Professional 4"]));
 
-        console.log(JSON.parse(this.data));
+
         levels = [
             new Level(1, "Basic", [1, 2, 3, 4, 5],
                 ["page 1 with content", "page 2 mit content", "<p>page 3 mit content</p>", "page 4", "page 5 ende Intro"],
@@ -43,10 +55,8 @@ export class LevelService {
                 ["page 1 with content", "page 2 mit content", "page 3 mit content", "page 4", "page 5", "page 6", "page 7  ende Intro Pro"],
                 mcobjarrProfessional)
         ]
-    
-        
-        console.log(JSON.stringify(levels[0]));
-
+        //Push parsed LVL to Levels array
+        levels.push(this.parsedLVL)
         return levels;
     }
 

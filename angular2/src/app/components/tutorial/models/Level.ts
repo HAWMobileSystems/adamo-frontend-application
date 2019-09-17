@@ -23,6 +23,7 @@ export class Level {
     // Generell Setting
     levelID: number;
     name: string;
+    page: number[];
 
     // Introduction
     PageDesc: Helper<number,string>[];
@@ -36,6 +37,7 @@ export class Level {
     constructor(levid: number, name: string, page: number[], desc: string[], mctest: Helper<string, string[]>[]) {
         this.levelID = levid;
         this.name = name;
+        this.page = page;
         this.PageDesc = new Array;
         this.MCTest = new Array;
         this.MCTest = mctest;
@@ -43,9 +45,19 @@ export class Level {
         for (let n of page) {
             this.PageDesc.push(new Helper(n, desc[n-1]));
         }
-
-
         
     }
+
+   /**  public static fromJson = (json: string): Level =>{
+        const jsonObj = JSON.parse(json);
+        return new Level(
+            jsonObj.levelID,
+            jsonObj.name,
+            jsonObj.page,
+            jsonObj.PageDesc,
+            jsonObj.MCTest
+        )
+   }**/
+
 }
 
