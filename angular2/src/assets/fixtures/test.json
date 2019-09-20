@@ -1,45 +1,137 @@
-{
-    "levelID": 1,
-    "name": "Basic",
-    "PageDesc": [
-        {
-            "key": 1,
-            "value": "page______ 1 with content"
-        },
-        {
-            "key": 2,
-            "value": "page_________ 2 mit content"
-        },
-        {
-            "key": 3,
-            "value": "<p>page_________ 3 mit content</p>"
-        },
-        {
-            "key": 4,
-            "value": "page_________ 4"
-        },
-        {
-            "key": 5,
-            "value": "page_________ 5 ende Intro"
-        }
-    ],
-    "MCTest": [
-        {
-            "key": "1-Frage Basic 1",
-            "value": [
-                "1-Antwort Basic 1",
-                "1-Antwort Basic 2",
-                "1-Antwort Basic 3"
-            ]
-        },
-        {
-            "key": "2-Frage Basic 1",
-            "value": [
-                "2-Antwort Basic 1",
-                "2-Antwort Basic 2",
-                "2-Antwort Basic 3",
-                "2-Antwort Basic 4"
-            ]
-        }
-    ]
-}
+[
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "<p>page 3 mit content</p>"
+            },
+            {
+                "key": 4,
+                "value": "page 4"
+            },
+            {
+                "key": 5,
+                "value": "page 5 ende Intro"
+            }
+        ],
+        "levelID": 1,
+        "name": "Basic",
+        "MCTest": [
+            {
+                "key": "1-Frage Basic 1",
+                "value": [
+                    "1-Antwort Basic 1",
+                    "1-Antwort Basic 2",
+                    "1-Antwort Basic 3"
+                ]
+            },
+            {
+                "key": "2-Frage Basic 1",
+                "value": [
+                    "2-Antwort Basic 1",
+                    "2-Antwort Basic 2",
+                    "2-Antwort Basic 3",
+                    "2-Antwort Basic 4"
+                ]
+            }
+        ]
+    },
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "page 3 mit content<p>Ganz viel Text</p> <h1>ende Intro Advanced</h1>"
+            }
+        ],
+        "levelID": 2,
+        "name": "Advanced",
+        "MCTest": [
+            {
+                "key": "1-Frage Advanced 1",
+                "value": [
+                    "1-Antwort Advanced 1",
+                    "1-Antwort Advanced 2",
+                    "1-Antwort Advanced 3"
+                ]
+            },
+            {
+                "key": "2-Frage Advanced 1",
+                "value": [
+                    "2-Antwort Advanced 1",
+                    "2-Antwort Advanced 2",
+                    "2-Antwort Advanced 3",
+                    "2-Antwort Advanced 4"
+                ]
+            }
+        ]
+    },
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "page 3 mit content"
+            },
+            {
+                "key": 4,
+                "value": "page 4"
+            },
+            {
+                "key": 5,
+                "value": "page 5"
+            },
+            {
+                "key": 6,
+                "value": "page 6"
+            },
+            {
+                "key": 7,
+                "value": "page 7  ende Intro Pro"
+            }
+        ],
+        "levelID": 3,
+        "name": "Professional",
+        "MCTest": [
+            {
+                "key": "1-Frage Professional 1",
+                "value": [
+                    "1-Antwort Professional 1",
+                    "1-Antwort Professional 2",
+                    "1-Antwort Professional 3"
+                ]
+            },
+            {
+                "key": "2-Frage Professional 1",
+                "value": [
+                    "2-Antwort Professional 1",
+                    "2-Antwort Professional 2",
+                    "2-Antwort Professional 3",
+                    "2-Antwort Professional 4"
+                ]
+            }
+        ]
+    }
+]
