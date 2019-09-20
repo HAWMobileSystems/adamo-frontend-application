@@ -8,10 +8,10 @@ import { ResizableModule } from 'angular-resizable-element';
 import { AngularSplitModule } from 'angular-split';
 
 import { TutorialComponent } from './tutorial.component'
-import { IntroductionComponent } from './introduction/introduction.component';
-import { TutorialViewComponent } from './tutorialview/tutorialview.component';
-import { TestMCComponent } from './test-mc/test-mc.component';
-import { TestModComponent } from './test-mod/test-mod.component';
+import { IntroductionComponent } from './components/introduction/introduction.component';
+import { TutorialViewComponent } from './components/tutorialview/tutorialview.component';
+import { TestMCComponent } from './components/test-mc/test-mc.component';
+import { TestModComponent } from './components/test-mod/test-mod.component';
 import { SharedModule } from '../../shared.module';
 import { LevelService } from './services/level.service';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
