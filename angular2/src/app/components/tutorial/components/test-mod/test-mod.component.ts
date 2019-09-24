@@ -27,7 +27,10 @@ export class TestModComponent implements OnInit {
   
   showSolution() {
     //Send Request to DB, load standart Solution, currently not working
-    document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
+    this.modeler.saveXML({ format: true }, function (err, xml) {
+      console.log(xml)
+    });
+    //document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
   }
 
 }
