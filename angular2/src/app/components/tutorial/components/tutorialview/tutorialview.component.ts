@@ -1,6 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
-import { Level } from '../models/Level';
-import { LevelService } from '../services/level.service';
+import { Level } from '../../models/level.module';
+import { LevelService } from '../../services/level.service';
 
 @Component({
   selector: 'app-tutorialview',
@@ -9,13 +9,15 @@ import { LevelService } from '../services/level.service';
 })
 export class TutorialViewComponent implements OnInit {
 
-  levels: Level[];
+  public levels: Level[];
 
-  constructor(LevServ: LevelService) {
-    this.levels = LevServ.getLevels();
+  constructor(private LevServ: LevelService) {
+
   }
 
   ngOnInit() {
+    this.LevServ.getAllLevels().subscribe(levels => this.levels = levels);
   }
+
 
 }

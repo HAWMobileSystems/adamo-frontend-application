@@ -1,8 +1,8 @@
 import { TutorialComponent } from './tutorial.component';
-import { TutorialViewComponent } from './tutorialview/tutorialview.component';
-import { IntroductionComponent } from './introduction/introduction.component';
-import { TestMCComponent } from './test-mc/test-mc.component';
-import { TestModComponent } from './test-mod/test-mod.component';
+import { TutorialViewComponent } from './components/tutorialview/tutorialview.component';
+import { IntroductionComponent } from './components/introduction/introduction.component';
+import { TestMCComponent } from './components/test-mc/test-mc.component';
+import { TestModComponent } from './components/test-mod/test-mod.component';
 
 
 export const TutorialRoutes = [{

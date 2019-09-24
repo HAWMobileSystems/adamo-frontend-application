@@ -1,52 +1,137 @@
-{
-    "levelID": 4,
-    "name": "ULTRALEVEL",
-    "page": [
-        1,
-        2,
-        3,
-        4,
-        5
-    ],
-    "PageDesc": [
-        {
-            "key": 1,
-            "value": "Loaded page 1 with content"
-        },
-        {
-            "key": 2,
-            "value": "Loaded page 2 mit content"
-        },
-        {
-            "key": 3,
-            "value": "<p><b>LOADED</>page 3 mit content</p>"
-        },
-        {
-            "key": 4,
-            "value": "page 4"
-        },
-        {
-            "key": 5,
-            "value": "page 5 ende Intro"
-        }
-    ],
-    "MCTest": [
-        {
-            "key": "1-Frage Basic 1",
-            "value": [
-                "1-Antwort Basic 1",
-                "1-Antwort Basic 2",
-                "1-Antwort Basic 3"
-            ]
-        },
-        {
-            "key": "2-Frage Basic 1",
-            "value": [
-                "2-Antwort Basic 1",
-                "2-Antwort Basic 2",
-                "2-Antwort Basic 3",
-                "2-Antwort Basic 4"
-            ]
-        }
-    ]
-}
+[
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 mit content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "<p>page 3 mit content</p>"
+            },
+            {
+                "key": 4,
+                "value": "page 4"
+            },
+            {
+                "key": 5,
+                "value": "page 5 ende Intro"
+            }
+        ],
+        "levelID": 1,
+        "name": "Basic",
+        "MCTest": [
+            {
+                "key": "1. Which connector shows the order that activities will be performed in the process?",
+                "value": [
+                    "1. Message Flow",
+                    "2. Association",
+                    "3. Sequence Flow"
+                ]
+            },
+            {
+                "key": "2. Gateways are used to control the divergence and convergence of sequence flows.The term 'Gateway' implies that there is a gating mechanism that either allows or disallows the passage through the Gateway. Which Gateway is used to create alternative paths within the process, but only one is chosen?",
+                "value": [
+                    "1. Inclusive gateway",
+                    "2. Parallel gateway",
+                    "3. Event based gateway",
+                    "4. Exklusive gateway"
+                ]
+            }
+        ]
+    },
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "page 3 mit content<p>Ganz viel Text</p> <h1>ende Intro Advanced</h1>"
+            }
+        ],
+        "levelID": 2,
+        "name": "Advanced",
+        "MCTest": [
+            {
+                "key": "1. Intermediate Events: select the two correct descriptions for the 'Cancel event'!",
+                "value": [
+                    "1. It reactes to catches a named Error, or to any Error if a name is not specified.",
+                    "2. This Event is used within a Transaction Sub-Process and must be attached to the boundary of one.",
+                    "3. It always interrupts the Activity to which it is attached, i.e., there is not a non-interrupting version of this Event. Thus the boundary of the Event is always solid."
+                ]
+            },
+            {
+                "key": "2. Start Events: the start of a Process occurs on a specific date or cycle time (e.g., every monday). Which start event is correct?",
+                "value": [
+                    "1. Multiple Start Event",
+                    "2. Message Start Event",
+                    "3. Conditional Start Event",
+                    "4. Timer Start Event"
+                ]
+            }
+        ]
+    },
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "page 3 mit content"
+            },
+            {
+                "key": 4,
+                "value": "page 4"
+            },
+            {
+                "key": 5,
+                "value": "page 5"
+            },
+            {
+                "key": 6,
+                "value": "page 6"
+            },
+            {
+                "key": 7,
+                "value": "page 7  ende Intro Pro"
+            }
+        ],
+        "levelID": 3,
+        "name": "Professional",
+        "MCTest": [
+            {
+                "key": "1-Frage Professional 1",
+                "value": [
+                    "1-Antwort Professional 1",
+                    "1-Antwort Professional 2",
+                    "1-Antwort Professional 3"
+                ]
+            },
+            {
+                "key": "2-Frage Professional 1",
+                "value": [
+                    "2-Antwort Professional 1",
+                    "2-Antwort Professional 2",
+                    "2-Antwort Professional 3",
+                    "2-Antwort Professional 4"
+                ]
+            }
+        ]
+    }
+]
