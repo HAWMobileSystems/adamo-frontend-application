@@ -4,8 +4,20 @@ export class Helper<T1, T2> implements Serializable {
     public key: T1;
     public value: T2;
 
+
+    //HACKY 
+    //INSERTED TO ENABLE PUTTING HTML CODE INCLUDING '"' 
+    //AND PARSE IT FROM JSON
+    //IT WILL REPLACE §§ BY "
     deserialize(input: any): this {
+        var regexExpr = new RegExp("(§§)","gm");
+        var exchangeExpr = '"';
+        var realStr = input.value
+        if(regexExpr.test(input.value)){
+            input.value = realStr.replace(regexExpr, exchangeExpr)
+        }
         return Object.assign(this, input);
+              
     }
 }
 
