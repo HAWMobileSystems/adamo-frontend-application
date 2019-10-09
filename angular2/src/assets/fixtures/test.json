@@ -28,7 +28,7 @@
             }
         ],
         "levelID": 1,
-        "name": "Basic",
+        "name": "Business Management Use Cases",
         "MCTest": [
             {
                 "key": "Which of these order flow elements in a BPMN process?",
@@ -99,7 +99,7 @@
             }
         ],
         "levelID": 2,
-        "name": "Advanced",
+        "name": "Informatics Use Cases",
         "MCTest": [
             {
                 "key": "1. Intermediate Events: select the two correct descriptions for the 'Cancel event'!",
@@ -116,60 +116,6 @@
                     "2. Message Start Event",
                     "3. Conditional Start Event",
                     "4. Timer Start Event"
-                ]
-            }
-        ]
-    },
-    {
-        "PageDesc": [
-            {
-                "key": 1,
-                "value": "Json reupload"
-                
-            },
-            {
-                "key": 2,
-                "value": "page 2 mit content"
-            },
-            {
-                "key": 3,
-                "value": "page 3 mit content"
-            },
-            {
-                "key": 4,
-                "value": "page 4"
-            },
-            {
-                "key": 5,
-                "value": "page 5"
-            },
-            {
-                "key": 6,
-                "value": "page 6"
-            },
-            {
-                "key": 7,
-                "value": "page 7  ende Intro Pro"
-            }
-        ],
-        "levelID": 3,
-        "name": "Professional",
-        "MCTest": [
-            {
-                "key": "1-Frage Professional 1",
-                "value": [
-                    "1-Antwort Professional 1",
-                    "1-Antwort Professional 2",
-                    "1-Antwort Professional 3"
-                ]
-            },
-            {
-                "key": "2-Frage Professional 1",
-                "value": [
-                    "2-Antwort Professional 1",
-                    "2-Antwort Professional 2",
-                    "2-Antwort Professional 3",
-                    "2-Antwort Professional 4"
                 ]
             }
         ]
