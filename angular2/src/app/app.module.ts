@@ -4,16 +4,9 @@ import { AppComponent } from "./app.component";
 import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { Ng2SearchPipeModule } from "ng2-search-filter";
 import { AppRoutingModule } from "./app-routing.module";
 
 import { ViewerComponent } from "./viewer/viewer.component";
-import { ModelerComponent } from "./ModelerComponent/modeler.component";
-import { BsModalModule } from "ng2-bs3-modal";
-import { TermModal } from "./ModelerComponent/modals/TermModal/TermModal";
-import { VariableModal } from "./ModelerComponent/modals/VariableModal/VariableModal";
-import { InputModal } from "./ModelerComponent/modals/InputModal/InputModal";
-import { SubProcessModal } from "./ModelerComponent/modals/SubProcessModal/SubProcessModal";
 import { AlertComponent } from "./components/Alert/alert.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { JwtInterceptor } from "./helpers/jwt.interceptor";
@@ -22,28 +15,20 @@ import { AppFooterComponent } from "./components/AppFooterComponent/footer.compo
 import { AppHeaderComponent } from "./components/AppHeaderComponent/header.component";
 import { ApiService } from "./services/api.service";
 import { AdamoMqttService } from "./services/mqtt.service";
-import { OverviewComponent } from "./overview/overview.component"
-import { UserComponent } from "./components/UserComponent/user.component";
-import { ModelComponent } from "./components/ModelComponent/model.component";
-import { ModelLoaderComponent } from "./components/ModelLoaderComponent/modelloader.component";
-import { RoleComponent } from "./components/RoleComponent/role.component";
-import { ProfileComponent } from "./components/ProfileComponent/profile.component";
-import { PermissionComponent } from "./components/PermissionComponent/permission.component";
-import { VariableComponent } from "./ModelerComponent/modals//VariablesComponent/variables.component";
-import { InputVarComponent } from "./ModelerComponent/modals/InputComponent/input.component";
-import { EvalModal } from "./ModelerComponent/modals/evaluatorModal/evaluatorModal";
-import { SaveModal } from "./ModelerComponent/modals/SaveModal/SaveModal";
-import { UsageModal } from "./ModelerComponent/modals/UsageModal/UsageModal";
-import { FilterUnique } from "./pipes/filterUnique.pipe";
-import { Timestamp2Date } from "./pipes/timestamp.pipe";
-import { Version } from "./pipes/version.pipe";
 import { AuthenticatedHttpService } from "./services/authenticatedHttp.service";
 import { Http } from "@angular/http";
 import { SnackBarService } from "./services/snackbar.service";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
+import { SimpleModelerComponent} from "./ModelerComponent/simplemodeler.component"
 
 import { TokenInterceptor } from "./interceptor/token.interceptor";
+
+import { OverviewModule } from "./overview/overview.module";
+import { Router } from "@angular/router";
+import { AuthService } from "./services";
+import { EventEmitterService } from "./services/EventEmitter.service";
+import { TabbarService } from "./services/tabbar.service";
 //check for correct branch!
 
 @NgModule({
@@ -52,50 +37,34 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
     HttpModule,
     AppRoutingModule,
     FormsModule,
-    BsModalModule,
     HttpClientModule,
-    Ng2SearchPipeModule,
     LoggerModule.forRoot({
       serverLoggingUrl: "/api/logs",
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
-    FrontPageModule
+    FrontPageModule, OverviewModule
   ],
   declarations: [
     AppComponent,
     AppFooterComponent,
-    AppHeaderComponent,
+    // AppHeaderComponent,
     // DiagramComponent,
-    UserComponent,
-    ModelComponent,
-    ModelLoaderComponent,
-    RoleComponent,
-    ProfileComponent,
-    PermissionComponent,
-    OverviewComponent,
+   
     ViewerComponent,
-    ModelerComponent,
     AlertComponent,
-    TermModal,
-    VariableModal,
-    InputModal,
-    SubProcessModal,
-    EvalModal,
-    SaveModal,
-    UsageModal,
-    VariableComponent,
-    InputVarComponent,
-    FilterUnique,
-    Timestamp2Date,
-    Version
+    SimpleModelerComponent,
+    
   ],
   providers: [
     AuthGuard,
     AlertService,
     SnackBarService,
     ApiService,
+    AuthService,
+
     AdamoMqttService,
+    EventEmitterService,
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: JwtInterceptor,
@@ -113,4 +82,12 @@ import { TokenInterceptor } from "./interceptor/token.interceptor";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+    // Diagnostic only: inspect router configuration
+    constructor(router: Router) {
+      // Use a custom replacer to display function names in the route configs
+      // const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+  
+      // console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+    }
+}
