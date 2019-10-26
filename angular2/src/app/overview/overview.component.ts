@@ -8,11 +8,15 @@ import { SnackBarService } from "../services/snackbar.service";
 import { SnackBarMessage } from "../services/snackBarMessage";
 import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { RoleType } from "../../../../../adamo-nest-server/src/constants/role-type";
+import { EventEmitterService } from "../services/EventEmitter.service";
+import { TabbarService } from "../services/tabbar.service";
 
 //Include components for interface and styling
 @Component({
   templateUrl: "./overview.component.html",
-  styleUrls: ["./overview.component.css"]
+  styleUrls: ["./overview.component.css"],
+  // providers: [EventEmitterService]
 })
 export class OverviewComponent implements OnInit {
   public title: string = "Angular 2 with BPMN-JS";
@@ -22,19 +26,38 @@ export class OverviewComponent implements OnInit {
   public page2: string = "User";
   public permission: number;
   public xml: string = IPIM_OPTIONS.NEWMODEL;
-  public models: Model[] = [];
+  public models: Model[];
   public snackBarMessages: SnackBarMessage[] = [];
   public snackbarTextPage: string = "";
   public username: string = "";
+  public currentUser = null;
 
   constructor(
     // private apiService: ApiService,
+    private eventEmitterService: EventEmitterService,
     private authService: AuthService,
     private router: Router,
     private mqttService: AdamoMqttService,
+    private tabbarService: TabbarService,
     private snackbarService: SnackBarService
-  ) {}
+  ) {
+    eventEmitterService.emitModelSelected$.subscribe(
+      model => {
+          console.log(`model ${model}`);
+          this.tabbarService.addTab(model);
+          this.models = this.tabbarService.getModelTabs();
+          // this.models.push(model);
 
+          console.log(`models ${this.models}`);
+          this.onLoadModel(model);
+          this.router.navigate([`./model/${model.id}/${model.model_version}`]);
+      });
+  
+    this.currentUser = authService.getCurrentUser();
+    console.log(this.currentUser)
+  }
+
+  
   private initMqtt() {
     try {
       this.mqttService.getClient().subscribe("collaborator/update/+/+");
@@ -45,8 +68,8 @@ export class OverviewComponent implements OnInit {
           const event = JSON.parse(message);
           const idAndVersion = this.page.split("_");
           if (
-            idAndVersion[0] === event.mid.toString() &&
-            idAndVersion[1] === event.version
+            idAndVersion[0] === event.id.toString() &&
+            idAndVersion[1] === event.model_version
           ) {
             this.page = event.mid + "_" + event.newVersion;
             console.log(this.page);
@@ -82,7 +105,8 @@ export class OverviewComponent implements OnInit {
         this.snackBarMessages = data;
       }
     );
-      const currentUser = this.authService.getCurrentUser();
+      this.currentUser = this.authService.getCurrentUser();
+
     // this.authService.login_status().subscribe(
     //   (response: any) => {
 
@@ -106,6 +130,16 @@ export class OverviewComponent implements OnInit {
     //     this.router.navigate(["/front-page"]);
     //   }
     // );
+  }
+
+  public isAdmin() {
+    // console.log('isAdmin() : ',this.currentUser, RoleType.Admin, this.currentUser.role === RoleType.Admin )
+    if(!this.currentUser) {
+      this.router.navigate['/']
+      return false
+    }
+
+    return this.currentUser.role === RoleType.Admin;
   }
 
   public remove(index: number): void {
@@ -137,6 +171,8 @@ export class OverviewComponent implements OnInit {
 
   //Show previous versions of a model, if the last one was selected
   public onLoadModel(model: Model): void {
+    console.log("overview.models", this.models)
+    console.log("overview.component", model);
     model.collaborator = [];
     this.loading = true;
     let exists: boolean;
