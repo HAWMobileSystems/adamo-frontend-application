@@ -1,68 +1,56 @@
 .modeler {
-    width: 75%;
-    height: 100%;
-    outline: 1px solid grey;
-}
-
-#js-properties-panel {
-    position: absolute;
-    top: 5%;
-    bottom: 0;
-    right: 0;
-    width: 25%;
-    min-width: 250px;
-    z-index: 10;
-    border-left: 1px solid #ccc;
-    overflow: auto;
+  height: 100%;
+  outline: 1px solid grey;
 }
 
 #js-drop-zone {
-    height: 96vh;
+  height: 96vh;
+
+  display: flex;
 }
 
 .page-header {
-    display: inline;
+  display: inline;
 }
 
 .canvas {
+  height: 96vh;
+  .ipim-link {
+    position: fixed;
+    bottom: 10px;
+    right: 28%;
+    .ipim-logo {
+      height: 50px;
+      width: 50px;
+    }
+  }
+  .bjs-container {
     height: 96vh;
-    .ipim-link {
-            position: fixed;
-             bottom: 10px;
-            right: 28%;
-        .ipim-logo {
-            
-            height: 50px;
-            width: 50px;
-        }
-    }
-    .bjs-container {
-        height: 96vh;
-    }
+  }
 }
 
 .input-group .form-control {
-    height: 36px;
+  height: 36px;
 }
 
 .open {
-    .djs-palette-toggle {
-      width: 100%;
-    }
-  
-    .djs-palette-toggle {
-      height: 10px;
-    }
-  
-    .two-column {
-      width: 96px;
-  
-      .djs-palette-entries {
-        :first-child {
-          .entry {
-            content: "\xf0c8";
-          }
+  .djs-palette-toggle {
+    width: 100%;
+  }
+
+  .djs-palette-toggle {
+    height: 10px;
+  }
+
+  .two-column {
+    width: 96px;
+
+    .djs-palette-entries {
+      :first-child {
+        .entry {
+          content: "\xf0c8";
         }
       }
     }
   }
+}
