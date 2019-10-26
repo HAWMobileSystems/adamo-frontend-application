@@ -46,15 +46,15 @@ export class EvalModal extends BsModalComponent {
       this.writeInputModalValues();
   }
 
-  private opened() {
+  public opened() {
     console.log('EvaluatorModal opened');
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('EvaluatorModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('EvaluatorModal closed');
   }
 
@@ -62,7 +62,7 @@ export class EvalModal extends BsModalComponent {
     console.log('clear executed');
   }
 
-  private writeInputModalValues() {
+  public writeInputModalValues() {
     this.root.getEvaluator().evaluateProcesses(this.variables);
     this.root.showOverlay();
     this.modal.close();

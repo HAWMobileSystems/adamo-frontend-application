@@ -34,7 +34,7 @@ export class TermModal extends BsModalComponent {
     if (termList.length > 0) {this.firstTerm = termList[0]; } else {this.firstTerm = ' '; }
   }
 
-  private opened() {
+  public opened() {
     console.log('TermModal Opended');
     this.fillTermModal();
   }
@@ -43,11 +43,11 @@ export class TermModal extends BsModalComponent {
     console.log(this.constructor.name + ' fillModal');
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('TermModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('TermModal closed');
   }
 
@@ -64,7 +64,7 @@ export class TermModal extends BsModalComponent {
 
   }
 
-  private writeTermModalValues() {
+  public writeTermModalValues() {
     //get moddle Object
     const moddle = this.modeler.get('moddle');
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.

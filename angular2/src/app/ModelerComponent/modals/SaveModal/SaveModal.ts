@@ -90,11 +90,11 @@ export class SaveModal extends BsModalComponent {
     console.log('SaveModal opened');
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('SaveModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('SaveModal closed');
   }
 

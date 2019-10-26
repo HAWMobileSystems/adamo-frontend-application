@@ -68,7 +68,7 @@ export class SubProcessModal extends BsModalComponent {
         });
   }
 
-  private opened() {
+  public opened() {
     console.log('SubprocessModal Opended');
   }
 
@@ -76,11 +76,11 @@ export class SubProcessModal extends BsModalComponent {
     console.log(this.constructor.name + ' fillModal');
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('SubprocessModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('SubprocessModal closed');
   }
 
@@ -167,11 +167,11 @@ export class SubProcessModal extends BsModalComponent {
     //show loading overlay
     this.root.showOverlay();
     //create a new model with the selected information
-    const model = new Model();
-    model.xml = this.selectedModel.modelxml;
-    model.name = this.selectedModel.modelname;
-    model.id = this.selectedModel.mid;
-    model.version = this.selectedModel.version;
+    const model = new Model(this.selectedModel);
+    // model.xml = this.selectedModel.modelxml;
+    // model.name = this.selectedModel.modelname;
+    // model.id = this.selectedModel.mid;
+    // model.version = this.selectedModel.version;
     //if there is no data for the selected stop else get model from database
     if (this.selectedModel.mid !== '') {
       this.root.apiService.getModel(this.selectedModel.mid)

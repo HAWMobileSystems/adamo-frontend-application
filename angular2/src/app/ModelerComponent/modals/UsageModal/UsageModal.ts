@@ -55,7 +55,7 @@ export class UsageModal extends BsModalComponent {
     });
   }
 
-  private opened() {
+  public opened() {
     console.log('UsageModal Opended');
   }
 
@@ -63,11 +63,11 @@ export class UsageModal extends BsModalComponent {
     console.log(this.constructor.name + ' fillModal');
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('UsageModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('UsageModal closed');
   }
 
@@ -79,7 +79,7 @@ export class UsageModal extends BsModalComponent {
     console.log('UsageModal fill');
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal.close();
   }
 }

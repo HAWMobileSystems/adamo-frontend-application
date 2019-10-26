@@ -109,15 +109,15 @@ export class VariableModal extends BsModalComponent {
         this.writeVariableModalValues();
     }
 
-    private dismissed() {
+    public dismissed() {
         console.log('VariableModal dismissed');
     }
 
-    private closed() {
+    public closed() {
         console.log('VariableModal closed');
     }
 
-    private writeVariableModalValues() {
+    public writeVariableModalValues() {
         //get moddle Object
         const elementRegistry = this.modeler.get('elementRegistry');
         const moddle = this.modeler.get('moddle');

@@ -46,15 +46,15 @@ export class InputModal extends BsModalComponent {
       this.writeInputModalValues();
   }
 
-  private opened() {
+  public opened() {
     this.fillModal();
   }
 
-  private dismissed() {
+  public dismissed() {
     console.log('InputModal dismissed');
   }
 
-  private closed() {
+  public closed() {
     console.log('InputModal closed');
   }
 
@@ -68,7 +68,7 @@ export class InputModal extends BsModalComponent {
   }
 
 
-  private writeInputModalValues() {
+  public writeInputModalValues() {
 
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
 
