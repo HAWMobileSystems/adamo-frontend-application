@@ -10,12 +10,15 @@ const options = {
   withCredentials: true
 };
 // options.params.set('withCredentials', 'true');
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
   /**
    * @returns currentUser as DTO or null
    */
   public getCurrentUser() {
+    console.log('getCurrentUser', this.currentUser)
     return this.currentUser;
   }
   constructor(public http: HttpClient) {}
@@ -27,7 +30,7 @@ export class AuthService {
 
   //Session handling: Authentication when user is logging in
   public login(email: string, password: string) {
-    this.currentUser = this.http
+    return this.http
       .post<any>(
         this.BACKEND_URI + "/auth/login",
         {
@@ -39,11 +42,16 @@ export class AuthService {
         }
       )
       .pipe(
-        tap ( response => this.setSession(response))
+        tap ( response => {
+          console.log("tap, response", response)
+          this.setSession(response.token);
+          this.currentUser = response.user;      
+          console.log(this.currentUser)
+        })
       )
 
 
-    return this.currentUser;
+    // return this.currentUser;
   }
 
   register(email:string, password:string) {
@@ -73,11 +81,10 @@ export class AuthService {
     console.log(localStorage.getItem('accessToken'))
     return localStorage.getItem('accessToken');
   }
-  private setSession(authResult) {
-    console.log(authResult)
-    const expiresIn = moment().add(authResult.token.expiresIn, "second");
+  private setSession(token) {
+    const expiresIn = moment().add(token.expiresIn, "second");
 
-    localStorage.setItem("accessToken", authResult.token.accessToken);
+    localStorage.setItem("accessToken", token.accessToken);
     localStorage.setItem("expiresIn", JSON.stringify(expiresIn.valueOf()));
   }
 
@@ -291,149 +298,6 @@ export class AuthService {
     //.pipe(map((response: any) => response.json()));
   }
 
-  //Modeller: changes to model in last 7 days
-  public getModelsChangedLast7Days() {
-    return this.http.get(this.BACKEND_URI + "/model/changes", options);
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Modeller: Load model
-  public getModel(mid: string, version?: string) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/getModel",
-      { mid: mid, version: version },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Modeller: Evaluation needs asynchron loading of model
-  public async getModelAsync(mid: string): Promise<ModelElement> {
-    try {
-      const response: any = await this.http
-        .post(this.BACKEND_URI + "/model/getModel", { mid: mid }, options)
-        .toPromise();
-      const responseString = String.fromCharCode.apply(
-        null,
-        new Uint8Array(response)
-      );
-      return new ModelElement(
-        responseString.json().data.modelname,
-        responseString.json().data.mid.toString(),
-        responseString.json().data.modelxml
-      );
-    } catch {
-      return new ModelElement("", "", "");
-    }
-  }
-
-  //Administration page: Show all models
-  //modellerPage: Show all models
-  public getAllModels() {
-    return this.http.get(this.BACKEND_URI + "/model/all", options);
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Administration page: Delete model
-  public modelDelete(mid: number, version: string) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/delete",
-      { mid: mid, version: version },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
-  public modelUpsert(
-    mid: number,
-    modelname: string,
-    modelxml: string,
-    version: string
-  ) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/upsert",
-      {
-        mid: mid,
-        modelname: modelname,
-        modelxml: modelxml,
-        version: version
-      },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Administration page: Update model information
-  public modelUpdate(
-    mid: number,
-    modelname: string,
-    lastchange: string,
-    modelxml: string,
-    version: string
-  ) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/update",
-      {
-        mid: mid,
-        modelname: modelname,
-        lastchange: lastchange,
-        modelxml: modelxml,
-        version: version
-      },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-  public modelClose(mid: number, version: string) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/close",
-      {
-        mid: mid,
-        version: version
-      },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Administration page: Create a new model
-  //modellerPage: Create a new model
-  public modelCreate(modelname: string, modelxml: string) {
-    return this.http.post(
-      this.BACKEND_URI + "/model/create",
-      {
-        modelname: modelname,
-        modelxml: modelxml
-      },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Administration page: Get permission
-  //Modeller: Get permission
-  public getPermission(user: any, model: any) {
-    return this.http.get(
-      this.BACKEND_URI + "/permission/" + user + "/" + model,
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
-
-  //Administration page: Create permission
-  public permissionCreate(uid: any, mid: any, role: any) {
-    return this.http.post(
-      this.BACKEND_URI + "/permission/create",
-      {
-        uid: uid,
-        mid: mid,
-        role: role
-      },
-      options
-    );
-    //.pipe(map((response: any) => response.json()));
-  }
 
   //Administration page: Delete permission
   public permissionDelete(pid: any) {
