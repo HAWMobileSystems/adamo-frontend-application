@@ -3,6 +3,7 @@ import { ApiService } from '../../services/api.service';
 
 import { AdamoMqttService } from '../../services/mqtt.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'profile-management',
@@ -15,6 +16,7 @@ export class ProfileComponent {
 
   constructor(
     private apiService: ApiService,
+    private userService: UserService,
     private snackbarService: SnackBarService,
     private mqttService: AdamoMqttService
   ) {}
@@ -45,7 +47,7 @@ export class ProfileComponent {
   public getAllProfiles() {
     this.profiles = [];
 
-    this.apiService.getAllProfiles().subscribe(
+    this.userService.getAllProfiles().subscribe(
       (response: { success: any; data: any; _body: string }) => {
         if (response.success) {
           this.profiles = response.data;

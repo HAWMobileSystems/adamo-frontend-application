@@ -3,6 +3,7 @@ import { ApiService } from "../../services/api.service";
 
 import { AdamoMqttService } from "../../services/mqtt.service";
 import { SnackBarService } from "../../services/snackbar.service";
+import { UserService } from "../../services/user.service";
 
 @Component({
   selector: "permission-management",
@@ -19,6 +20,7 @@ export class PermissionComponent {
 
   constructor(
     private apiService: ApiService,
+    private userService: UserService,
     private snackbarService: SnackBarService,
     private mqttService: AdamoMqttService
   ) {}
@@ -35,7 +37,7 @@ export class PermissionComponent {
   private selectModel(model: any) {
     this.selectedModel = model;
     if (this.selectedUser) {
-      this.getPermission(this.selectedUser.uid, model.mid);
+      this.getPermission(this.selectedUser.id, model.id);
     }
   }
 
@@ -100,7 +102,7 @@ export class PermissionComponent {
   }
 
   public ngOnInit() {
-    this.getAllRoles();
+    this.roles = this.getAllRoles();
     this.getAllUsers();
     this.getAllModels();
     this.mqttService.getClient().subscribe("PERMISSION");
@@ -115,18 +117,17 @@ export class PermissionComponent {
   }
 
   //gets a list of all roles from DB
-  public getAllRoles() {
+  public getAllRoles() : any{
     this.roles = [];
-    this.apiService.getAllRoles().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.roles = response.data;
-        } else {
-          this.snackbarService.error(response._body);
-        }
+    return this.apiService.getAllRoles().subscribe(
+      (response: any) => {
+
+          this.roles = response;
+          return response;
+      
       },
-      (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+      (error: any) => {
+        this.snackbarService.error(JSON.parse(error).status);
         console.log(error);
       }
     );
@@ -135,17 +136,15 @@ export class PermissionComponent {
   //gets a list of all users from DB
   public getAllUsers() {
     this.users = [];
-    this.apiService.getAllUsers().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.users = response.data;
+    this.userService.getAllUsers().subscribe(
+      (response: any) => {
+
+          this.users = response;
           this.selectedUser = null;
-        } else {
-          this.snackbarService.error(response._body);
-        }
+       
       },
-      (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+      (error: any) => {
+        this.snackbarService.error(JSON.parse(error).status);
         console.log(error);
       }
     );
@@ -155,16 +154,13 @@ export class PermissionComponent {
   public getAllModels() {
     this.models = [];
     this.apiService.getAllModels().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.models = response.data;
+      (response: any) => {
+
+          this.models = response;
           this.selectedModel = null;
-        } else {
-          this.snackbarService.error(response._body);
-        }
       },
-      (error: { _body: string }) => {
-        this.snackbarService.error(JSON.parse(error._body).status);
+      (error: any) => {
+        this.snackbarService.error(JSON.parse(error).status);
         console.log(error);
       }
     );
@@ -173,12 +169,9 @@ export class PermissionComponent {
   //gets the permission of the selected user and model
   public getPermission(user: any, model: any) {
     this.apiService.getPermission(user, model).subscribe(
-      (response: { success: any; data: any; status: string }) => {
-        if (response.success) {
-          this.selectedPermission = response.data;
-        } else {
-          this.snackbarService.error(response.status);
-        }
+      (response: any) => {
+          this.selectedPermission = response[0].roleName;
+        
       },
       (error: any) => {
         this.snackbarService.error("Error receiving permissions");

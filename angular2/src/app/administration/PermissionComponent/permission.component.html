@@ -28,7 +28,7 @@
                 <tbody></tbody>
                 <tr *ngFor="let model of (models | filterUnique: ['mid']) | filter:search" (click)="selectModel(model)"
                     [ngClass]="{'info': selectedModel === model}">
-                    <td>{{model.modelname}}</td>
+                    <td>{{model.modelName}}</td>
                 </tr>
                 <tfoot></tfoot>
             </table>
@@ -38,7 +38,7 @@
 
 <div class="panel panel-default" *ngIf="selectedPermission">
     <div class="panel-heading">
-        <h3 class="panel-title">{{selectedUser.email}} - {{selectedModel.modelname}} {{selectedModel.version | version}}</h3>
+        <h3 class="panel-title">{{selectedUser.email}} - {{selectedModel.model_name}} {{selectedModel.model_version | version}}</h3>
     </div>
     <div class="panel-body">
         <!--<div class="panel-body">-->

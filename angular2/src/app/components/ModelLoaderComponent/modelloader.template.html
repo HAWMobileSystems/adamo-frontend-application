@@ -1,11 +1,11 @@
 <!-- <div class="panel panel-default"> -->
 <!-- <div class="panel-body"> -->
-
+<!-- <router-outlet></router-outlet> -->
 <div class="field">
-    <p class="control has-icons-right" >
+    <p class="control has-icons-right">
 
-    <input class="input" type="text" class="form-control" placeholder="Search" name="srch-termloader" id="srch-termloader"
-    [(ngModel)]="search">
+        <input class="input" type="text" class="form-control" placeholder="Search" name="srch-termloader"
+            id="srch-termloader" [(ngModel)]="search">
         <span class="icon is-small is-right">
             <i class="fas fa-search"></i>
         </span>
@@ -20,49 +20,49 @@
 </div> -->
 <div class="table-container">
 
-<table class="table is-striped is-bordered is-hoverable">
-    <thead>
-        <tr class="active">
-            <th class="centered">Model Name</th>
-            <th class="centered">Version</th>
-            <th class="centered">Permission</th>
+    <table class="table is-striped is-bordered is-hoverable">
+        <thead>
+            <tr class="active">
+                <th class="centered">Model Name</th>
+                <th class="centered">Version</th>
+                <th class="centered">Permission</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search"
+            (click)="selected = model" [ngClass]="{'info': selected === model}">
+            <td>{{model.model_name}}</td>
+            <td>{{model.model_version | version}}</td>
+            <td>
+                <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
+                <i *ngIf="model.can_write" class="fas fa-pencil-alt" title="write permission"></i>
+                <i *ngIf="!model.can_read && !model.can_write" class="fas fa-ban" title="no permission"></i>
+            </td>
         </tr>
-    </thead>
-    <tbody></tbody>
-    <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search"
-        (click)="selected = model" [ngClass]="{'info': selected === model}">
-        <td>{{model.modelname}}</td>
-        <td>{{model.version | version}}</td>
-        <td>
-            <i *ngIf="model.read" class="glyphicon  glyphicon-eye-open" title="read permission"></i>
-            <i *ngIf="model.write" class="glyphicon  glyphicon-pencil" title="write permission"></i>
-            <i *ngIf="!model.read && !model.write" class="glyphicon  glyphicon-eye-close" title="no permission"></i>
-        </td>
-    </tr>
-    <tfoot></tfoot>
-</table>
+        <tfoot></tfoot>
+    </table>
 </div>
 <div class="row">
     <button class="button is-info" type="button" (click)="fileSelectorInput.click()">
         <span class="icon is-small">
-                <i class="fas fa-upload"></i></span>
-                <span>Importieren</span>
+            <i class="fas fa-upload"></i></span>
+        <span>Importieren</span>
 
     </button>
     <button *ngIf="selected" class="button is-info" (click)="loadSelected()">
-            <span class="icon is-small">
-                    <i class="fas fa-download"></i></span>
-                    <span>Aus Datenbank laden</span>
+        <span class="icon is-small">
+            <i class="fas fa-download"></i></span>
+        <span>Aus Datenbank laden</span>
     </button>
     <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
     <div class="col-md-offset-7 col-md-4 input-group">
         <input type="text" class="form-control" [(ngModel)]="newModelName">
         <span class="input-group-btn">
             <button class="btn btn-success" type="button" (click)="createEmpty()">
-                 <span class="icon is-small">
-                <i class="fas fa-file"></i> 
-            </span>
-            <span>New</span>
+                <span class="icon is-small">
+                    <i class="fas fa-file"></i>
+                </span>
+                <span>New</span>
             </button>
         </span>
     </div>
@@ -72,7 +72,7 @@
 <br><br>
 
 <div>
-    <h3>Changes:</h3> 
+    <h3>Changes:</h3>
     <table class="table table-striped table-bordered">
         <thead>
             <tr class="active">

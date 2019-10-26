@@ -7,13 +7,15 @@ import { IPIM_OPTIONS } from '../../modelerConfig.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { EventEmitterService } from '../../services/EventEmitter.service';
 
 @Component({
   selector: 'modelloader',
-  templateUrl: './modelloader.template.html'
+  templateUrl: './modelloader.template.html',
+  // providers: [EventEmitterService]
 })
 export class ModelLoaderComponent {
-  @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
+  // @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
   @Output() public loadError: EventEmitter<object> = new EventEmitter<any>();
   private selected: any;
   //defines the structure for a new empty model
@@ -33,6 +35,7 @@ export class ModelLoaderComponent {
   private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 
   constructor(
+    private eventEmitterService: EventEmitterService,
     private apiService: ApiService,
     private authService: AuthService,
     private router: Router,
@@ -63,6 +66,9 @@ export class ModelLoaderComponent {
     //     if (response.success) {
     //       //Only start Working when login was successfull
     //       this.mqttService.getClient(response.email);
+    if(!this.authService.getCurrentUser()) {
+      this.router.navigate(['']);
+    }
           this.initMqtt();
           this.getAllModels();
           this.getLatestChanges();
@@ -114,12 +120,9 @@ export class ModelLoaderComponent {
 
   //create a new model without anything
   public createNew() {
-    const model = new Model();
-    model.xml = this.newModel.modelxml;
-    model.name = this.newModel.modelname;
-    model.id = Number(this.newModel.mid);
-    model.collaborator = [];
-    this.loadModel.emit(model);
+    const model = new Model(this.newModel);
+    this.eventEmitterService.emitOnModelSelected(model);
+    // this.loadModel.emit(model);
   }
 
   //gets the event when the select file dialog finishes
@@ -153,33 +156,37 @@ export class ModelLoaderComponent {
     // model.collaborator = [];
 
     //if model has empty data get the model first else directly emit the event
-    if (this.selected.mid !== '') {
-      this.apiService
-        .getModel(this.selected.mid, this.selected.version)
-        .subscribe( 
-          (response: any) => { // this will be a ModelResponseDTO
-            model.xml = response.modelXML;
-            console.info(model);
-            this.loadModel.emit(model);
-          },
-          (error: any) => {
-            this.snackbarService.error(JSON.parse(error).status);
-            this.loadError.emit(error);
-            console.log('Error Loading', error);
-          }
-        );
-    } else {
-      this.loadModel.emit(model);
-    }
+    // if (this.selected.mid !== '') {
+    //   console.log("modelloader.loadSelected", this.selected)
+    //   this.apiService
+    //     .getModel(this.selected.id, this.selected.model_version)
+    //     .subscribe( 
+    //       (response: any) => { // this will be a ModelResponseDTO
+    //         model.xml = response.modelXML;
+    //         console.info(model);
+    //         this.loadModel.emit(model);
+    //       },
+    //       (error: any) => {
+    //         this.snackbarService.error(JSON.parse(error).status);
+    //         this.loadError.emit(error);
+    //         console.log('Error Loading', error);
+    //       }
+    //     );
+    // } else {
+// maybe some conformance checks but better
+    this.eventEmitterService.emitOnModelSelected(this.selected);
+
+      // this.loadModel.emit(this.selected);
+    // }
   }
 
   //get a list of all models from DB
   public getAllModels() {
-    // this.models = [];
-    this.apiService.getAllModels().subscribe(
+    this.apiService.getAllModelsForUser(this.authService.getCurrentUser().id).subscribe(
       (response: Object) => {
           this.models = response;
           this.selected = null;
+          console.log("modelloader.getAllModelsForUser",response);
       },
       (error: any) => {
         this.snackbarService.error(error._body);

@@ -39,9 +39,7 @@ import { Model } from "../models/model";
 import { IPIM_OPTIONS } from "../modelerConfig.service";
 import { SnackBarService } from "../services/snackbar.service";
 import * as propertiesPanelModule from "bpmn-js-properties-panel";
-
 import * as propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
-
 import { NGXLogger } from "ngx-logger";
 import { tap } from "rxjs/operators";
 
@@ -59,9 +57,9 @@ export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
   @Input() public model: any;
-  @Output() public exportModel: EventEmitter<object> = new EventEmitter<
-    object
-  >();
+  // @Output() public exportModel: EventEmitter<object> = new EventEmitter<
+  //   object
+  // >();
   @Output() public loadSubProcess: EventEmitter<Model> = new EventEmitter<
     Model
   >();
@@ -88,7 +86,7 @@ export class ModelerComponent implements OnInit {
   private propsPanelRef: string = "#js-properties-panel";
   private defaultModel: string = "/diagrams/scrum.bpmn";
   private camundaModdleDescriptor: any = require("camunda-bpmn-moddle/resources/camunda.json");
-
+  private modelXML :string; 
   //viewchilds import the html part of the modals and links them
 
   @ViewChild("ref") private el: ElementRef;
@@ -132,7 +130,18 @@ export class ModelerComponent implements OnInit {
     private router: Router,
     private mqttService: AdamoMqttService,
     private logger: NGXLogger
-  ) {}
+  ) {
+    const splittedUrl = this.router.url.split('/')
+    const modelID = splittedUrl[splittedUrl.length - 2]
+    const modelVersion = splittedUrl[splittedUrl.length - 1]
+
+    //  this.modelXML = 
+      this.apiService.getModel(modelID, modelVersion).subscribe( (response: any )=> {
+        console.log(response)
+        this.modelXML = response.modelXML
+        this.loadBPMN(this.modelXML)
+      })
+  }
 
   ngOnDestroy(): void {
     this.modeler.destroy();
@@ -175,7 +184,7 @@ export class ModelerComponent implements OnInit {
       }
     });
     //export this to create a new tab
-    this.exportModel.emit(this);
+    // this.exportModel.emit(this);
   }
 
   public ngAfterViewInit(): void {
@@ -548,11 +557,11 @@ export class ModelerComponent implements OnInit {
         if (element !== "") {
           this.apiService.getModel(element).subscribe(
             (response: any) => {
-              const model = new Model();
-              model.xml = response.data.modelxml;
-              model.name = response.data.modelname;
-              model.id = response.data.mid;
-              model.version = response.data.version;
+              const model = new Model(response.data);
+              // model.xml = response.data.modelxml;
+              // model.name = response.data.modelname;
+              // model.id = response.data.mid;
+              // model.version = response.data.version;
               console.info(model);
               //emit event for new model
               this.loadSubProcess.emit(model);
@@ -654,7 +663,7 @@ export class ModelerComponent implements OnInit {
     // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
-    this.loadBPMN();
+    // this.loadBPMN();
   }
 
   //register the filedrop ... no longer working as we use tabbed modeling now
@@ -718,8 +727,10 @@ export class ModelerComponent implements OnInit {
   };
 
   //laods the bpmn and emit an event when the laoding is finished
-  private loadBPMN() {
-    this.modeler.importXML(this.newDiagramXML, this.handleError);
+  private loadBPMN(model : any) {
+    console.log(model)
+    this.modeler.importXML(model, this.handleError)
+    // this.modeler.importXML(IPIM_OPTIONS.NEWMODEL, this.handleError);
     this.loadedCompletely.emit();
     //show snackbar for successfull loading!
     this.snackbarService.newSnackBarMessage("loaded successfully", "limegreen");
@@ -740,7 +751,8 @@ export class ModelerComponent implements OnInit {
 
   private handleError(err: any) {
     if (err) {
-      this.logger.debug("error rendering", err);
+      console.log('error during rendering ',err )
+      // this.logger.debug("error rendering", err);
     }
   }
 
