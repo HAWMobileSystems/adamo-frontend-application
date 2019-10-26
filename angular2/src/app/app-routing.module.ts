@@ -7,18 +7,53 @@ import { OverviewComponent } from "./overview/overview.component";
 import { ModelerComponent } from "./ModelerComponent/modeler.component";
 
 const routes: Routes = [
-  { path: "front-page", component: FrontPageComponent },
-  { path: "viewer", component: ViewerComponent, canActivate: [AuthGuard] },
-  { path: "overview", component: OverviewComponent },
-  { path: "modeler", component: ModelerComponent },
+  // {
+  //   path: "compose",
+  //   component: ComposeMessageComponent,
+  //   outlet: "popup"
+  // },
+  // {
+  //   path: "admin",
+  //   loadChildren: () =>
+  //     import("./admin/admin.module").then(mod => mod.AdminModule)
+  //   // canLoad: [AuthGuard]
+  // },
+  {
+    path: "overview",
+    loadChildren: () =>
+      import("./overview/overview.module").then(
+                  mod => mod.OverviewModule
+      ),
+    // data: { preload: true }
+  },
+  // { path: "", redirectTo: "/", pathMatch: "full" }
+  { path: "", component: FrontPageComponent }
+  // { path: '**', component: PageNotFoundComponent }
+  //   path: "overview",
+  //   component: OverviewComponent,
+  //   children: [
+  //     {
+  //       path: "",
+  //       loadChildren: () =>
+  //         import("./components/ModelLoaderComponent/modelloader.module").then(
+  //           mod => mod.ModelloaderModule
+  //         )
+  //     }
+  //   ]
+  // },
+  // { path: "viewer", component: ViewerComponent, canActivate: [AuthGuard] },
+  // { path: "overview", component: OverviewComponent },
+  // { path: "modeler", loadChildren: () => import('./overview/overview.module').then(mod => mod.OverviewModule)},
+  // { path: "modeler", loadChildren: './overview/overview.module#OverviewModule'},
+  // { path: "modeler", component: ModelerComponent },
   // {
 
   //   path: "administration",
   //   component: AdministrationComponent,
   // },
 
-  { path: "", redirectTo: "/front-page", pathMatch: "full" },
-  { path: "**", redirectTo: "/front-page", pathMatch: "full" }
+  // { path: "", redirectTo: "", pathMatch: "full" },
+  // { path: "**", redirectTo: "", pathMatch: "full" }
 ];
 
 @NgModule({
