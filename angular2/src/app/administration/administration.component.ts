@@ -7,8 +7,8 @@ import { Router } from "@angular/router";
 
 //Include components for interface and styling
 @Component({
-  templateUrl: "./modellerPage.component.html",
-  styleUrls: ["./modellerPage.component.css"]
+  templateUrl: "./administration.component.html",
+  // styleUrls: ["./modellerPage.component.css"]
 })
 export class AdministrationComponent  {
     constructor(
@@ -17,4 +17,19 @@ export class AdministrationComponent  {
         // private mqttService: AdamoMqttService,
         // private snackbarService: SnackBarService
       ) {}
+
+      onButtonGroupClick($event: any){
+        let clickedElement = $event.target || $event.srcElement;
+        if( clickedElement.nodeName === "BUTTON" ) {
+    
+          let isCertainButtonAlreadyActive = clickedElement.parentElement.querySelector(".is-selected");
+          // if a Button already has Class: .active
+          // if( isCertainButtonAlreadyActive ) {
+          //   isCertainButtonAlreadyActive.classList.remove("active");
+          // }
+    
+          clickedElement.className += " is-info";
+        }
+    
+      }
 }

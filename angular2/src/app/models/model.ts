@@ -2,11 +2,11 @@ import { ModelerComponent } from "../ModelerComponent/modeler.component";
 
 export class Model {
   get version(): string {
-    return this._version;
+    return this.version;
   }
 
   set version(value: string) {
-    this._version = value;
+    this.version = value;
   }
 
   get modelerComponent(): ModelerComponent {
@@ -26,19 +26,19 @@ export class Model {
   }
 
   get name(): string {
-    return this._name;
+    return this.name;
   }
 
   set name(value: string) {
-    this._name = value;
+    this.name = value;
   }
 
   get xml(): string {
-    return this._xml;
+    return this.xml;
   }
 
   set xml(value: string) {
-    this._xml = value;
+    this.xml = value;
   }
 
   get collaborator(): string[] {
@@ -57,41 +57,41 @@ export class Model {
     this._showInfo = value;
   }
 
-  get read(): boolean {
-    return this._read;
+  get can_read(): boolean {
+    return this._can_read;
   }
 
-  set read(value: boolean) {
-    this._read = value;
+  set can_read(value: boolean) {
+    this._can_read = value;
   }
 
-  get write(): boolean {
-    return this._write;
+  get can_write(): boolean {
+    return this._can_write;
   }
 
-  set write(value: boolean) {
-    this._write = value;
+  set can_write(value: boolean) {
+    this._can_write = value;
   }
 
-  private _xml: string;
-  private _name: string;
+  private _model_xml: string;
+  private _model_name: string;
   private _id: number;
   private _modelerComponent: ModelerComponent;
-  private _version: string;
+  private _model_version: string;
   private _collaborator: string[];
   private _showInfo: boolean;
-  private _read: boolean;
-  private _write: boolean;
+  private _can_read: boolean;
+  private _can_write: boolean;
 
   // constructor() {}
 
   constructor(model: any) {
-    model.xml = model.modelxml;
-    model.name = model.modelname;
-    model.id = model.mid;
-    model.version = model.version || null;
-    model.read = model.read || null;
-    model.write = model.write|| null;
+    model.model_xml = model.model_xml;
+    model.model_name = model.model_name;
+    model.id = model.id;
+    model.model_version = model.model_version || null;
+    model.can_read = model.can_read || null;
+    model.can_write = model.can_write|| null;
     model.collaborator = [];
   }
 

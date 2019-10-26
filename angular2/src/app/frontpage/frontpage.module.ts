@@ -20,6 +20,6 @@ const authRoutes: Routes = [
     RouterModule.forChild(authRoutes),
     ReactiveFormsModule
   ],
-  providers: [AuthService]
+  // providers: [AuthService]
 })
 export class FrontPageModule { }
