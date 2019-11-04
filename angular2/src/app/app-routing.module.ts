@@ -5,6 +5,7 @@ import { FrontPageComponent } from "./frontpage/frontpage.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { OverviewComponent } from "./overview/overview.component";
 import { ModelerComponent } from "./ModelerComponent/modeler.component";
+import { SimpleModelerComponent } from "./ModelerComponent/simplemodeler.component";
 
 const routes: Routes = [
   // {
@@ -27,7 +28,9 @@ const routes: Routes = [
     // data: { preload: true }
   },
   // { path: "", redirectTo: "/", pathMatch: "full" }
-  { path: "", component: FrontPageComponent }
+  { path: "", component: FrontPageComponent },
+
+  { path: 'ausprobieren', component: SimpleModelerComponent },
   // { path: '**', component: PageNotFoundComponent }
   //   path: "overview",
   //   component: OverviewComponent,

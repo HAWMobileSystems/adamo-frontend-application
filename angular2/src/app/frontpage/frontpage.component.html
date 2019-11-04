@@ -1,54 +1,57 @@
-
-  <nav class="navbar bg-light is-fixed-top" role="navigation" aria-label="main navigation">
-    <a class="navbar-brand" href="#">
-      <img src="/assets/adamo-only-logo.svg" width="28" height="28" alt="adamo">DAMO</a>
-    <!-- 
+<nav class="navbar bg-light" role="navigation" aria-label="main navigation">
+  <a class="navbar-brand" href="#">
+    <img src="/assets/adamo-only-logo.svg" width="28" height="28" alt="adamo">
+    <span>DAMO</span></a>
+  <!-- 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
        -->
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarElements">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-    <!-- </div> -->
+  <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarElements">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <!-- </div> -->
 
-    <div id="navbarElements" class="navbar-menu">
-      <div class="navbar-end">
-          <a class="navbar-item" href="/ausprobieren">
-              <span>Ausprobieren</span>
-             <span class="icon">
-                 <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
-             </span>
-           </a>
-        <a class="navbar-item has-icon-right" href="/docs">
-          <span>Documentation</span>
-          <span class="icon"><i class="fa fa-book"></i></span>
+  <div id="navbarElements" class="navbar-menu">
+    <div class="navbar-end">
+      <a class="navbar-item" href="/ausprobieren">
+        <span>Ausprobieren</span>
+        <span class="icon">
+          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+        </span>
+      </a>
+      <a class="navbar-item has-icon-right" href="/docs">
+        <span>Documentation</span>
+        <span class="icon"><i class="fa fa-book"></i></span>
 
-        </a>
-        <a class="navbar-item" href="/tutorial">
-          <span>Tutorial</span>
-          <span class="icon"><i class="fa fa-graduation-cap"></i></span>
-        </a>
-        <a class="navbar-item" href="github.com/HAWMobileSystems/adamo">
-          <span>GitHub</span>
-          <span class="icon"><i class="fab fa-github"></i></span>
-        </a>
-        <a class="navbar-item" href="ipim.institute">
-           <span>IPIM</span>
-          <span class="icon">
-              <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
-          </span>
-        </a>
-      </div>
+      </a>
+      <a class="navbar-item" href="/tutorial">
+        <span>Tutorial</span>
+        <span class="icon"><i class="fa fa-graduation-cap"></i></span>
+      </a>
+      <a class="navbar-item" href="github.com/HAWMobileSystems/adamo">
+        <span>GitHub</span>
+        <span class="icon"><i class="fab fa-github"></i></span>
+      </a>
+      <a class="navbar-item" href="ipim.institute">
+        <span>IPIM</span>
+        <span class="icon">
+          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+        </span>
+      </a>
     </div>
-  </nav>
+  </div>
+</nav>
 
 
-<div class="frontpage-container login-form h-100 col-md-12">
+<div class="frontpage-container is-centered">
+  <div class="container ">
+
+    
   <!-- <div class="card card-container centered flex-column" [ngClass]="[project]"> -->
   <div class="card card-container centered flex-column">
     <img id="profile-img" class="profile-img-card card-img-top" src="/assets/adamo-only-logo.svg" />
@@ -56,24 +59,29 @@
 
     <div class="card-body">
       <form name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" formControlName="email" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-            <div *ngIf="f.email.errors.required">Username is required</div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input class="input form-control" formControlName="email" type="text" placeholder="your@email.address"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Username is required</div>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" formControlName="password" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
+        <div class="field form-group">
+          <label class="label" for="password">Password</label>
+          <div class="control">
+            <input type="password" formControlName="password" class="input form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <button [disabled]="loading" class="btn btn-primary btn-lg  btn-block btn-signin">Login</button>
+        <div class="field form-group is-centered">
+          <button [disabled]="loading" class="button is-primary is-large btn-block btn-signin">Login</button>
           <img *ngIf="loading" class="pl-2"
             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
@@ -81,6 +89,8 @@
       </form>
     </div>
   </div>
+
+</div>
 
 </div>
 <div class="frontpage-sections">

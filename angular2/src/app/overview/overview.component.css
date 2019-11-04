@@ -6,6 +6,12 @@
     cursor: pointer;
 }
 
+.hero .field {
+
+        padding: 5px 5px;
+ }
+
+
 .disabled {
     pointer-events: none;
     opacity: 0.6;
