@@ -58,30 +58,35 @@
     <!-- <p id="profile-name" class="profile-name-card"></p> -->
 
     <div class="card-body">
-      <form name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
+      <form class=" is-centered" name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="field">
           <label class="label">Email</label>
-          <div class="control">
-            <input class="input form-control" formControlName="email" type="text" placeholder="your@email.address"
+          <div class="control has-icons-left">
+            <input class="input form-control" formControlName="email" type="text" placeholder="vorname.nachname@haw-landshut.de"
               [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+              </span>
             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
               <div *ngIf="f.email.errors.required">Username is required</div>
             </div>
           </div>
         </div>
-        <div class="field form-group">
+        <div class="field">
           <label class="label" for="password">Password</label>
-          <div class="control">
-            <input type="password" formControlName="password" class="input form-control"
+          <div class="control has-icons-left">
+            <input type="password" formControlName="password" class="input form-control" placeholder="*********" required
               [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+              </span>
             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
               <div *ngIf="f.password.errors.required">Password is required</div>
             </div>
           </div>
         </div>
-        <div class="field form-group is-centered">
-          <button [disabled]="loading" class="button is-primary is-large btn-block btn-signin">Login</button>
+        <div class="field has-text-centered">
+          <button [disabled]="loading" class="button is-primary is-medium is-hovered">Login</button>
           <img *ngIf="loading" class="pl-2"
             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
