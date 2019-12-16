@@ -9,9 +9,10 @@ import { SnackBarService } from "../../services/snackbar.service";
   templateUrl: "./role.template.html"
 })
 export class RoleComponent {
-  private selected: any;
-  private newRole: any;
-  private roles: any;
+  public selected: any;
+  public newRole: any;
+  public roles: any;
+  public search: any;
 
   constructor(
     private apiService: ApiService,

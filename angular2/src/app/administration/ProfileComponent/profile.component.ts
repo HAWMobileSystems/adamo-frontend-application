@@ -10,9 +10,10 @@ import { UserService } from '../../services/user.service';
   templateUrl: './profile.template.html'
 })
 export class ProfileComponent {
-  private selected: any;
-  private newProfile: any;
-  private profiles: any;
+  public selected: any;
+  public newProfile: any;
+  public profiles: any;
+  public search: any;
 
   constructor(
     private apiService: ApiService,

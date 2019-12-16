@@ -11,12 +11,13 @@ import { UserService } from "../../services/user.service";
 })
 export class PermissionComponent {
   private selectedUser: any;
-  private selectedPermission: any;
+  public selectedPermission: any;
   private selectedModel: any;
   private selectedRole: any;
-  private users: any;
+  public users: any;
   private roles: any;
-  private models: any;
+  public models: any;
+  public search: any;
 
   constructor(
     private apiService: ApiService,

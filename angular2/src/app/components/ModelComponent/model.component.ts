@@ -8,9 +8,10 @@ import { SnackBarService } from "../../services/snackbar.service";
   templateUrl: "./model.template.html"
 })
 export class ModelComponent {
-  private selected: any;
+  public selected: any;
   private newModel: any;
-  private models: any;
+  public models: any;
+  public search: any;
 
   constructor(
     private apiService: ApiService,

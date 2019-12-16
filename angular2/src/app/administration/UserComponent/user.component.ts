@@ -12,11 +12,12 @@ import { UserService } from "../../services/user.service";
   styleUrls: ["./user.component.css"]
 })
 export class UserComponent {
-  private selected: any;
-  private newUser: any;
-  private users: any;
-  private profiles: any;
-  private mqtt: any;
+  public selected: any;
+  public newUser: any;
+  public users: any;
+  public profiles: any;
+  public mqtt: any;
+  public search: any;
 
 
   constructor(

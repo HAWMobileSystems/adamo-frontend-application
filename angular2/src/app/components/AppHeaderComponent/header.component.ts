@@ -11,8 +11,10 @@ import { RoleType } from '../../../../../../adamo-nest-server/src/constants/role
 })
 export class AppHeaderComponent {
 
-  private models; 
-  private currentUser;
+  public models; 
+  public currentUser;
+  public page;
+  public showMenu;
   constructor(
     private router: Router,
     private userService: UserService,
@@ -24,7 +26,7 @@ export class AppHeaderComponent {
     this.models = tabbarService.getModelTabs();
   }
 
-  protected isAdmin() {
+  public isAdmin() {
     // console.log('isAdmin() : ',this.currentUser, RoleType.Admin, this.currentUser.role === RoleType.Admin )
     if(!this.currentUser) {
       this.router.navigate['/']

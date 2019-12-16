@@ -22,9 +22,9 @@ export class FrontPageComponent implements OnInit {
 
   private project = environment.PROJECTNAME;
   public loading = false;
-  private submitted = false;
+  public submitted = false;
   private returnUrl: string;
-  private error = "";
+  public error = "";
 
   constructor(
     private formBuilder: FormBuilder,
