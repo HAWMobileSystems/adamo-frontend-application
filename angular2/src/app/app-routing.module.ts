@@ -29,7 +29,9 @@ const routes: Routes = [
   },
   // { path: "", redirectTo: "/", pathMatch: "full" }
   { path: "", component: FrontPageComponent },
-
+  { path: "de", component: FrontPageComponent },
+  { path: "en", component: FrontPageComponent },
+  
   { path: 'ausprobieren', component: SimpleModelerComponent },
   // { path: '**', component: PageNotFoundComponent }
   //   path: "overview",
