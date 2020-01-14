@@ -21,13 +21,13 @@ export class AuthGuard implements CanActivate {
           if (response.loggedIn) {
             subject.next(true);
           } else {
-            this.router.navigate(['/front-page']);
+            this.router.navigate(['/']);
             subject.next(false);
           }
         },
         error => {
           console.log(error);
-          this.router.navigate(['/front-page']);
+          this.router.navigate(['/']);
           subject.next(false);
         });
     return from(subject).pipe(first()); // subject.asObservable().first();
