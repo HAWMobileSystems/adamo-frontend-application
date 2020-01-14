@@ -29,7 +29,8 @@
     "create-installer-mac": "electron-installer-dmg ./release-builds/Electron\\ tutorial\\ app-darwin-x64/Electron\\ tutorial\\ app.app electron-tutorial-app --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
     "create-installer-win": "node installers/windows/createinstaller.js",
     "create-debian-installer": "electron-installer-debian --src release-builds/electron-tutorial-app-linux-x64/ --arch amd64 --config debian.json",
-    "compodoc": "npx compodoc -p src/tsconfig.app.json"
+    "compodoc": "npx compodoc -p src/tsconfig.app.json",
+    "cypress:open": "cypress open"
   },
   "license": "MIT",
   "dependencies": {
@@ -64,11 +65,11 @@
     "js-interpreter": "^1.4.6",
     "jszip": "^3.1.5",
     "moment": "^2.24.0",
-    "mqtt": "^2.16.0",
+    "mqtt": "^2.18.8",
     "ng2-bs3-modal": "0.15.0",
     "ng2-search-filter": "^0.4.7",
     "ngx-logger": "^3.3.11",
-    "ngx-mqtt": "^6.8.5",
+    "ngx-mqtt": "^6.13.2",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.1",
     "redux-observable": "^1.0.0",
@@ -95,7 +96,9 @@
     "@types/redux-logger": "^3.0.0",
     "@types/uuid": "^3.4.4",
     "@types/yargs": "12.0.9",
+    "@vizuaalog/bulmajs": "^0.10.2",
     "codelyzer": "~4.5.0",
+    "cypress": "^3.6.1",
     "electron": "^5.0.6",
     "electron-packager": "^14.0.1",
     "jasmine-core": "~3.3.0",
