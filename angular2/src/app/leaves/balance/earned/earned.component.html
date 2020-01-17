@@ -1,0 +1,67 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Profile</h3>
+    </div>
+    <div class="panel-body">
+        <div class="input-group">
+
+
+
+            <input type="text" class="form-control" placeholder="Search" name="srch-terminput" id="srch-terminput" [(ngModel)]="search">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr class="active">
+                <th>ProfileID</th>
+                <th>Profilename</th>
+            </tr>
+            </thead>
+            <tbody ></tbody>
+            <tr *ngFor="let profile of profiles | filter:search" (click)="selected = profile" [ngClass]="{'info': selected === profile}">
+                <td>{{profile.upid}}</td>
+                <td>{{profile.profile}}</td>
+            </tr>
+            <tfoot></tfoot>
+        </table>
+        <!-- Neue Rolle Button hinzugefuegt -->
+        <button type="submit" class="btn btn-success" (click)="selected = newProfile" [ngClass]="{'info': selected === newProfile}"><i
+                class="glyphicon glyphicon-plus"></i> New Profile</button>
+    </div>
+</div>
+
+<div class="panel panel-default" *ngIf="selected">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{(selected.profilename === '' ? 'NewProfile' : selected.profilename)}}</h3>
+    </div>
+    <div class="panel-body">
+
+
+        <form>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="profilename">Profilename</label>
+                <input required type="text" class="form-control" id="profilename" placeholder="Profilename" name="profile" [(ngModel)]="selected.profile">
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="read">Read</label>
+                <input required type="checkbox" class="form-control" id="read" name="read" [(ngModel)]="selected.read">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="write">Write</label>
+                <input required type="checkbox" class="form-control" id="write" name="write" [(ngModel)]="selected.write">
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-4" style="text-align: left" for="admin">Admin</label>
+                <input required type="checkbox" class="form-control" id="admin" name="admin" [(ngModel)]="selected.admin">
+            </div>
+            <button *ngIf="selected.rid === ''" type="submit" class="btn btn-success" (click)="profileCreate()">Create</button>
+            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-primary" (click)="profileUpdate()">Change</button>
+            <button *ngIf="selected.rid !== ''" type="submit" class="btn btn-danger" (click)="profileDelete()">Delete</button>
+        </form>
+    </div>
+</div>
+
