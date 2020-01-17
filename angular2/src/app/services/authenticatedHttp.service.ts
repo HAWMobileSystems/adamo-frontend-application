@@ -20,7 +20,7 @@ export class AuthenticatedHttpService extends Http {
         error.status === 496
       ) {
         console.log('The authentication session expires or the user is not authorised. Force to Login Page.');
-        this.router.navigate(['/front-page']);
+        this.router.navigate(['/']);
 
       }
       return Observable.throw(error);

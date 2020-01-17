@@ -8,16 +8,21 @@ import { IPIM_OPTIONS } from "../modelerConfig.service";
 export class TabbarService {
 
   private modelTabs: any[] = [];
+  private modelSubject = new Subject<any>();
 
   public addTab(model: any) {
-    this.modelTabs.push(model);
+    if(!this.modelTabs.includes(model)){
+      this.modelTabs.push(model);
+      this.modelSubject.next(this.modelTabs);
+    }
   }
 
   public removeTab(index: number) {
     this.modelTabs.splice(index, 1);
+    this.modelSubject.next(this.modelTabs);
   }
 
-  public getModelTabs() {
-      return this.modelTabs;
+  public getModelTabs(): Observable<any> {
+    return this.modelSubject.asObservable();
   }
 }

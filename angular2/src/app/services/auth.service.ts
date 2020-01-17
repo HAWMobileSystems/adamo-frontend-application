@@ -21,7 +21,9 @@ export class AuthService {
     console.log('getCurrentUser', this.currentUser)
     return this.currentUser;
   }
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) {
+    console.log('autservice constructor ')
+  }
   private BACKEND_URI: string =
     environment.SERVER_HOST + ":" + environment.SERVER_PORT;
   private CAMUNDA_ENGINE_URI: string = environment.CAMUNDA_ENGINE_HOST;
