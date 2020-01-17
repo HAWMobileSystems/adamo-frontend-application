@@ -628,9 +628,11 @@ export class ModelerComponent implements OnInit {
     this.modeler = new BpmnModeler({
       // container: '#' + this.modelId ,//+ ' > ' ,//+ this.containerRef,
       // container: "#canvas", //+ ' > ' ,//+ this.containerRef,
-      // propertiesPanel: {
-      //   parent: '#' + this.modelId + ' ' + this.propsPanelRef
-      // },
+      propertiesPanel: {
+        parent: this.propsPanelRef
+        
+        // parent: '#' + this.modelId + ' ' + this.propsPanelRef
+      },
       additionalModules: [
         { extraPaletteEntries: ["type", () => this.extraPaletteEntries] },
         { commandQueue: ["type", () => this.commandQueue] },

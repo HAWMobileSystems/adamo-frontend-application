@@ -74,7 +74,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'export-svg': {
             group: 'storage',
-            className: ['fas-download', 'fa'],
+            className: ['fa-download', 'fas'],
             title: 'Export to SVG',
             action: {
                 click: () => commandQueue.next({action: 'Export SVG'})
@@ -94,7 +94,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
         },
         'view.zoom-to-fit': {
             group: 'view',
-            className: ['fa-fullscreen', 'fas'],
+            className: ['fa-compress', 'fas'],
             title: 'Zoom-To-Fit',
             action: {
                 click: () => commandQueue.next({action: 'zoom2fit'})

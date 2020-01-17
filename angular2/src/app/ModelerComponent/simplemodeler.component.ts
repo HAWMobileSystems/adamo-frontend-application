@@ -48,7 +48,7 @@ const customPaletteModule = {
 
 @Component({
   selector: "simplemodeler",
-  templateUrl: "./modeler.component.html",
+  templateUrl: "./simplemodeler.component.html",
   styleUrls: ["./modeler.component.css"],
   providers: [BPMNStore]
 })
