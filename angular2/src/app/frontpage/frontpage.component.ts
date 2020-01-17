@@ -72,8 +72,7 @@ export class FrontPageComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.logger.debug(`data received ${this.returnUrl}`);
-
-          this.router.navigate(['overview']);
+          this.router.navigate(['/overview']);
           // this.router.navigate([this.returnUrl]);
         },
         (error: any) => {
