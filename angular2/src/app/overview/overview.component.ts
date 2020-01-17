@@ -15,11 +15,11 @@ import { TabbarService } from "../services/tabbar.service";
 //Include components for interface and styling
 @Component({
   templateUrl: "./overview.component.html",
-  styleUrls: ["./overview.component.css"],
+  styleUrls: ["./overview.component.less"],
   // providers: [EventEmitterService]
 })
 export class OverviewComponent implements OnInit {
-  public title: string = "Angular 2 with BPMN-JS";
+  public title: string = "ADAMO";
   public model: any = {};
   public loading: boolean = false;
   public page: string = "+";
@@ -45,12 +45,12 @@ export class OverviewComponent implements OnInit {
       model => {
           console.log(`model ${model}`);
           this.tabbarService.addTab(model);
-          this.models = this.tabbarService.getModelTabs();
+          // this.models = this.tabbarService.getModelTabs();
           // this.models.push(model);
 
-          console.log(`models ${this.models}`);
+          // console.log(`models ${this.models}`);
           this.onLoadModel(model);
-          this.router.navigate([`./model/${model.id}/${model.model_version}`]);
+          this.router.navigate([`overview/model/${model.id}/${model.model_version}`]);
       });
   
     this.currentUser = authService.getCurrentUser();
@@ -173,16 +173,16 @@ export class OverviewComponent implements OnInit {
   public onLoadModel(model: Model): void {
     console.log("overview.models", this.models)
     console.log("overview.component", model);
-    model.collaborator = [];
-    this.loading = true;
-    let exists: boolean;
-    this.models.forEach(element => {
-      if (element.id === model.id && element.version === model.version) {
-        exists = true;
-      }
-    });
-    !exists ? this.models.push(model) : (this.loading = false);
-    this.page = model.id + "_" + model.version;
+    // model.collaborator = [];
+    // this.loading = true;
+    // let exists: boolean;
+    // this.models.forEach(element => {
+    //   if (element.id === model.id && element.version === model.version) {
+    //     exists = true;
+    //   }
+    // });
+    // !exists ? this.models.push(model) : (this.loading = false);
+    // this.page = model.id + "_" + model.version;
   }
 
   public onExportModel(modelerComponent: ModelerComponent): void {

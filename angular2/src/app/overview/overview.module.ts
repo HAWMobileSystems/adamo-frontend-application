@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { OverviewComponent } from "./overview.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { AuthService } from "../services";
 import { ModelLoaderComponent } from "../components/ModelLoaderComponent/modelloader.component";
 import { ModelerComponent } from "../ModelerComponent/modeler.component";
 
@@ -18,12 +17,13 @@ import { VariableComponent } from "../ModelerComponent/modals/VariablesComponent
 import { InputVarComponent } from "../ModelerComponent/modals/InputComponent/input.component";
 import { BsModalModule } from "ng2-bs3-modal";
 import { RouterModule, ROUTES, Routes } from "@angular/router";
-import { AdministrationModule } from "../administration/administration.module";
+// import { AdministrationModule } from "./../administration/administration.module";
 import { SharedModule } from "../shared.module";
 import { OverviewRoutingModule } from "./overview-routing.module";
 import { ModelLoaderModule } from "../components/ModelLoaderComponent/modelloader.module";
 import { TabbarService } from "../services/tabbar.service";
 import { AppHeaderComponent } from "../components/AppHeaderComponent/header.component";
+
 // import { FrontPageComponent} from './FrontPageComponent.component';
 // import { HeaderComponent} from "../components/HeaderComponent/header.component"
 
@@ -41,20 +41,20 @@ import { AppHeaderComponent } from "../components/AppHeaderComponent/header.comp
     VariableComponent,
     // ModelLoaderComponent,
     InputVarComponent,
-    AppHeaderComponent
+    AppHeaderComponent,
+
   ],
   imports: [
     CommonModule,
     FormsModule,
-    AdministrationModule, 
+    // AdministrationModule, 
     ReactiveFormsModule,
     BsModalModule,
     Ng2SearchPipeModule,
     SharedModule,
+    ModelLoaderModule,
     OverviewRoutingModule,
-    ModelLoaderModule
   ],
-  providers: [TabbarService],
-  exports: [RouterModule]
+  providers: [TabbarService]
 })
 export class OverviewModule {}
