@@ -4,22 +4,38 @@ import { OverviewComponent } from "./overview.component";
 import { ModelerComponent } from "../ModelerComponent/modeler.component";
 import { ModelLoaderComponent } from "../components/ModelLoaderComponent/modelloader.component";
 
-import { AdministrationComponent } from "../administration/administration.component";
+import { Page404Component } from "../page404/page404.component";
 
-const overviewRoutes: Routes = [
+const routes: Routes = [
   {
     path: "",
     component: OverviewComponent,
-    // canActivate: [AuthGuard],
     children: [
-      { path: "", component: ModelLoaderComponent },
+      { path: "dashboard", component: ModelLoaderComponent },
       { path: "model/:id/:version", component: ModelerComponent },
-      // { path: "settings", component: AdministrationComponent }
+      {
+        path: "administration",
+        loadChildren: () =>
+          import(`./../leaves/leaves.module`).then(m => m.LeavesModule)
+      },
+      // {
+      //   path: "settings",
+      //   loadChildren: () =>
+      //     import(`./../administration/administration.module`).then(
+      //       m => m.AdministrationModule
+      //     )
+      // },
+      {
+        path: "",
+        redirectTo: "dashboard",
+        pathMatch: "full"
+      },
+      { path: "**", component: Page404Component }
     ]
   }
 ];
 @NgModule({
-  imports: [RouterModule.forChild(overviewRoutes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class OverviewRoutingModule {}
