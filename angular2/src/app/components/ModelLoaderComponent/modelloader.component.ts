@@ -46,19 +46,19 @@ export class ModelLoaderComponent {
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
   
 
-  private initMqtt() {
-    try {
-      const self = this;
-      this.mqttService.getClient().subscribe('administration/model/#');
-      this.mqttService.getClient().on('message', (topic: any, message: any) => {
-        if (topic.startsWith('administration/model')) {
-          self.getAllModels();
-        }
-      });
-    } catch(error) {
-      console.log(error)
-    }
-  }
+  // private initMqtt() {
+  //   try {
+  //     const self = this;
+  //     this.mqttService.getClient().subscribe('administration/model/#');
+  //     this.mqttService.getClient().on('message', (topic: any, message: any) => {
+  //       if (topic.startsWith('administration/model')) {
+  //         self.getAllModels();
+  //       }
+  //     });
+  //   } catch(error) {
+  //     console.warn("MQTT is not initialized or running")
+  //   }
+  // }
 
   public ngOnInit() {
     // this.authService.login_status().subscribe(
@@ -69,7 +69,7 @@ export class ModelLoaderComponent {
     if(!this.authService.getCurrentUser()) {
       this.router.navigate(['']);
     }
-          this.initMqtt();
+          // this.initMqtt();
           this.getAllModels();
           this.getLatestChanges();
     //     } else {
@@ -182,7 +182,9 @@ export class ModelLoaderComponent {
 
   //get a list of all models from DB
   public getAllModels() {
-    this.apiService.getAllModelsForUser(this.authService.getCurrentUser().id).subscribe(
+    let userID = this.authService.getCurrentUser().id
+    console.log(userID);
+    this.apiService.getAllModelsForUser(userID).subscribe(
       (response: Object) => {
           this.models = response;
           this.selected = null;

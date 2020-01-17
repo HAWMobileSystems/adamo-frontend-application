@@ -1,15 +1,18 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Model</h3>
-    </div>
     <div class="panel-body">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search" name="srch-termmoddel" id="srch-termmoddel" [(ngModel)]="search">
-            <div class="input-group-btn">
-                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-        </div>
-        <table class="table table-striped table-bordered table-hover">
+            <div class="field has-addons">
+                    <div class="control has-icons-left has-icons-right is-expanded">
+                            <input type="text" class="input is-info" placeholder="Search" name="srch-termmoddel" id="srch-termmoddel" [(ngModel)]="search">
+                            <span class="icon is-left">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <p class="control">
+                        <a class="button is-info">Suchen</a>
+                    </p>
+                </div>
+        
+                <table class="table is-striped is-bordered is-hoverable is-fullwidth">
             <thead>
             <tr class="active">
                 <th>ModelName</th>
@@ -17,9 +20,9 @@
             </tr>
             </thead>
             <tbody ></tbody>
-            <tr *ngFor="let model of (models | filterUnique: ['mid', search, selected]) | filter:search" (click)="selected = model" [ngClass]="{'info': selected === model}">
-                <td>{{model.modelname}}</td>
-                <td>{{model.version | version}}</td>
+            <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search" (click)="selected = model" [ngClass]="{'info': selected === model}">
+                <td>{{model.modelName}}</td>
+                <td>{{model.modelVersion | version}}</td>
             </tr>
             <tfoot></tfoot>
         </table>
@@ -30,28 +33,30 @@
 
 <div class="panel panel-default" *ngIf="selected">
     <div class="panel-heading">
-        <h3 class="panel-title">{{(selected.modelname === '' ? 'NewModel' : selected.modelname)}}</h3>
+        <h3 class="panel-title">{{(selected.modelname === '' ? 'NewModel' : selected.modelName)}}</h3>
     </div>
     <div class="panel-body">
 
 
 
         <form>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="modelname">Modelname</label>
-                <input required type="text" class="form-control" id="modelname" placeholder="Modelname" name="modelname" [(ngModel)]="selected.modelname">
+            <div class="control form-group form-inline">
+                <label class="label" for="modelname">Modelname</label>
+                <input required type="text" class="input form-control" id="modelname" placeholder="Modelname" name="modelname" [(ngModel)]="selected.modelName">
             </div>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="version">Version</label>
-                <textarea readonly required class="form-control" id="version" placeholder="Version"  name="version">{{selected.version | version}}</textarea>
+            <div class="control form-group form-inline">
+                <label class="label" for="version">Version</label>
+                <input readonly required class="input form-control" id="version" placeholder="Version"  name="version"[(ngModel)]="selected.modelVersion">
             </div>
-            <div class="form-group form-inline">
-                <label class="col-md-4" style="text-align: left" for="lastchange">LastChange</label>
-                <input readonly required type="text" class="form-control" id="lastchange" placeholder="LastChange" name="lastchange" [(ngModel)]="selected.lastchange">
+            <div class="control form-group form-inline">
+                <label class="label" for="lastchange">LastChange</label>
+                <input readonly required type="text" class="input form-control" id="lastchange" placeholder="LastChange" name="lastchange" [(ngModel)]="selected.updatedAt">
             </div>
-            <button *ngIf="selected.mid === ''" type="submit" class="btn btn-success" (click)="modelCreate()">Create</button>
-            <button *ngIf="selected.mid !== ''" type="submit" class="btn btn-primary" (click)="modelUpdate()">Change</button>
-            <button *ngIf="selected.mid !== ''" type="submit" class="btn btn-danger" (click)="modelDelete()">Delete</button>
+            <div class="buttons">
+                <button *ngIf="selected.mid === ''" type="submit" class="button is-success" (click)="modelCreate()">Create</button>
+                <button *ngIf="selected.mid !== ''" type="submit" class="button is-warning" (click)="modelUpdate()">Change</button>
+                <button *ngIf="selected.mid !== ''" type="submit" class="button is-danger" (click)="modelDelete()">Delete</button>
+            </div>
         </form>
     </div>
 </div>

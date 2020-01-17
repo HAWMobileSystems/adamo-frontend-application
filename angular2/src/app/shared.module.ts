@@ -5,14 +5,19 @@ import { CommonModule } from '@angular/common';
 import { FilterUnique } from './pipes/filterUnique.pipe';
 import { Timestamp2Date } from './pipes/timestamp.pipe';
 import { Version } from './pipes/version.pipe';
+import { Page404Component } from './page404/page404.component';
+// import { FrontpageHeaderComponent } from './components/FrontPageHeaderComponent/frontpage-header.component';
+
 
 @NgModule({
   imports: [
   ],
   declarations: [
     FilterUnique,
-    Version,
-    Timestamp2Date
+    Version, 
+    Timestamp2Date,
+    
+    Page404Component
   ],
   exports: [
     FilterUnique,

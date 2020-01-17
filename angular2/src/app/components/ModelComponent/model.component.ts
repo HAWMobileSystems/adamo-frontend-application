@@ -29,6 +29,7 @@ export class ModelComponent {
     this.getAllModels();
 
     this.mqttService.getClient().subscribe("administration/model/#");
+    this.mqttService.getClient().observe("administration/model/#").subscribe();
     const i = this;
     this.mqttService.getClient().on("message", (topic: any, message: any) => {
       if (topic.startsWith("administration/model")) {
@@ -43,17 +44,15 @@ export class ModelComponent {
     this.models = [];
 
     this.apiService.getAllModels().subscribe(
-      (response: { success: any; data: any; _body: string }) => {
-        if (response.success) {
-          this.models = response.data;
+      (response: any ) => {
+       
+          this.models = response;
           this.selected = null;
-        } else {
-          this.snackbarService.error(response._body);
-        }
+       
       },
-      (error: { _body: string }) => {
+      (error: any) => {
         console.log(error);
-        this.snackbarService.error(JSON.parse(error._body).status);
+        this.snackbarService.error(error);
       }
     );
   }

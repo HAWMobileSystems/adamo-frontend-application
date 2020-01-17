@@ -28,22 +28,34 @@ import { OverviewModule } from "./overview/overview.module";
 import { Router } from "@angular/router";
 import { AuthService } from "./services";
 import { EventEmitterService } from "./services/EventEmitter.service";
-import { TabbarService } from "./services/tabbar.service";
-//check for correct branch!
+import { SharedModule } from "./shared.module";
+import { FrontpageHeaderModule } from "./components/FrontPageHeaderComponent/frontpage-header.module";
+import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
+import { UserService } from "./services/user.service";
 
+import { Angular2BulmaModule } from 'angular2-bulma';
+//check for correct branch!
+const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: 'localhost',
+  port: 1883,
+  path: '/'
+};
 @NgModule({
   imports: [
+    Angular2BulmaModule,
     BrowserModule,
     HttpModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    FrontpageHeaderModule,
     LoggerModule.forRoot({
       serverLoggingUrl: "/api/logs",
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
-    FrontPageModule, OverviewModule
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    FrontPageModule, OverviewModule, SharedModule
   ],
   declarations: [
     AppComponent,
@@ -54,6 +66,7 @@ import { TabbarService } from "./services/tabbar.service";
     ViewerComponent,
     AlertComponent,
     SimpleModelerComponent,
+
     
   ],
   providers: [
@@ -62,7 +75,7 @@ import { TabbarService } from "./services/tabbar.service";
     SnackBarService,
     ApiService,
     AuthService,
-
+    UserService,
     AdamoMqttService,
     EventEmitterService,
     // {
