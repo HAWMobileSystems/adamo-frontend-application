@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="testing" datatype="html">
+        <source>Ausprobieren</source>
+        <target>Test</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/frontpage/frontpage.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <note priority="1" from="description">Button for Testing</note>
+        <note priority="1" from="meaning">Navbar Button</note>
+      </trans-unit>
+      <trans-unit id="idea" datatype="html">
+        <source>Die Idee</source>
+        <target>The Idea</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/frontpage/frontpage.component.html</context>
+          <context context-type="linenumber">99</context>
+        </context-group>
+        <note priority="1" from="description">Title for idea of website</note>
+        <note priority="1" from="meaning">idea header</note>
+      </trans-unit>
+      <trans-unit id="0ee7695e1eca5ed54bb6332956b8669a8c786a49" datatype="html">
+        <source>Variantenreiche Modellierung von <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Geschäftsprozessen<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> mithilfe von Konfigurationstermen.</source>
+        <target>Multi-variant modeling of <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>business processes<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> by means of Konfigurationstermen.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/frontpage/frontpage.component.html</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="backgrounds" datatype="html">
+        <source>Die Hintergründe</source>
+        <target>The Background</target> 
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/frontpage/frontpage.component.html</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+        <note priority="1" from="description">Title for backgrounds of website</note>
+        <note priority="1" from="meaning">backgrounds header</note>
+      </trans-unit>
+      <trans-unit id="team" datatype="html">
+        <source>Die Menschen dahinter</source>
+        <target>The people behind it</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/frontpage/frontpage.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+        <note priority="1" from="description">Title for description of team</note>
+        <note priority="1" from="meaning">team header</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

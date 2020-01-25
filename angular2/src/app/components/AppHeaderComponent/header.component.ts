@@ -17,12 +17,14 @@ import { RoleType } from "../../../../../../adamo-nest-server/src/constants/role
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppHeaderComponent {
-  private models;
-  private currentUser;
 
   @ViewChild("navBurger") navBurger: ElementRef;
   @ViewChild("navMenu") navMenu: ElementRef;
 
+  public models; 
+  public currentUser;
+  public page;
+  public showMenu;
   constructor(
     private router: Router,
     // private userService: UserService,
@@ -42,7 +44,7 @@ export class AppHeaderComponent {
     this.navMenu.nativeElement.classList.toggle("is-active");
   }
 
-  protected isAdmin() {
+  public isAdmin() {
     // console.log('isAdmin() : ',this.currentUser, RoleType.Admin, this.currentUser.role === RoleType.Admin )
     if (!this.currentUser) {
       this.router.navigate["/"];

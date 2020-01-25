@@ -5,6 +5,7 @@ import { SimpleModelerComponent } from "./ModelerComponent/simplemodeler.compone
 
 const routes: Routes = [
   { path: "", component: FrontPageComponent },
+
   { path: "overview", loadChildren: () =>import("./overview/overview.module").then(m => m.OverviewModule)},
   { path: "ausprobieren", component: SimpleModelerComponent },
   { path: "de", component: FrontPageComponent },

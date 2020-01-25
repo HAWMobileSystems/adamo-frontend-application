@@ -17,7 +17,8 @@ import { EventEmitterService } from '../../services/EventEmitter.service';
 export class ModelLoaderComponent {
   // @Output() public loadModel: EventEmitter<object> = new EventEmitter<Model>();
   @Output() public loadError: EventEmitter<object> = new EventEmitter<any>();
-  private selected: any;
+  public selected: any;
+  public search: any;
   //defines the structure for a new empty model
   private newModel = {
     mid: '',
@@ -26,11 +27,12 @@ export class ModelLoaderComponent {
     version: '',
     lastchange: ''
   };
-  private models: any = [];
+  public models: any = [];
   private modelDataChangedLast7Days: any;
   private diskModelName: string;
   private diskModelXml: string;
-  private newModelName: string;
+  public newModelName: string;
+  public changesLast7Day: any;
   //Simple Empty Model ... taken from Camunda
   private newModelXml: string = IPIM_OPTIONS.NEWMODEL;
 

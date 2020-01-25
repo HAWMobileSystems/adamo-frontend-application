@@ -32,7 +32,8 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": [{
+            "assets": [
+              {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
@@ -70,8 +71,7 @@
                 "src/app/styles"
               ]
             },
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -86,16 +86,20 @@
               "buildOptimizer": true,
               "serviceWorker": true,
               "baseHref": "/",
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.prod.ts"
-              }]
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "dev": {
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.dev.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": true,
@@ -106,6 +110,24 @@
               "vendorChunk": false,
               "buildOptimizer": false
             },
+            "de": {
+              "aot": true,
+              "outputPath": "dist/de/",
+              "i18nFile": "src/locale/messages.de.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "de",
+              "i18nMissingTranslation": "error",
+              "baseHref": "/de/"
+            },
+            "en": {
+              "aot": true,
+              "outputPath": "dist/en/",
+              "i18nFile": "src/locale/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "i18nMissingTranslation": "error",
+              "baseHref": "/en/"
+            }
           }
         },
         "serve": {
@@ -117,6 +139,12 @@
             "production": {
               "browserTarget": "angular-example-app:build:production",
               "aot": false
+            },
+            "de": {
+              "browserTarget": "angular-example-app:build:de"
+            },
+            "en": {
+              "browserTarget": "angular-example-app:build:en"
             }
           }
         },
@@ -136,14 +164,16 @@
             "scripts": [
               "src/assets/js/modernizr.js"
             ],
-            "styles": [{
+            "styles": [
+              {
                 "input": "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
               },
               "src/assets/css/reset.css",
               "src/assets/css/loading.css",
               "src/app/styles/global.scss"
             ],
-            "assets": [{
+            "assets": [
+              {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"

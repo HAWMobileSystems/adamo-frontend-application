@@ -56,7 +56,7 @@ export class SimpleModelerComponent implements OnInit {
   // @Input() public modelId: string;
   // @Input() public newDiagramXML: string;
   // @Input() public model: any;
-  
+  public modelId: any;
   private modeler: any;
   // private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   // private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
