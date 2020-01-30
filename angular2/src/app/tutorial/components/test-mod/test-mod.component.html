@@ -1,0 +1,59 @@
+<div>
+    <h1 class="text-center"> Welcome to BPMN Modelling</h1>
+</div>
+<div style="width:100vmax; height: 50vmax; overflow: hidden;">
+    <as-split direction="horizontal">
+        <as-split-area>
+            <as-split direction="vertical">
+                <as-split-area>
+                    <h3> Description of the Task :</h3>
+                    <p> Please Modell a BPMN Diagramm Satisfiying the following Requirements:
+                        After the start of the Process, the Process ends.
+                        Challenge : Use only 3 Objects to fullfill this task</p>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+        <as-split-area>
+            <as-split direction="vertical">
+                <as-split-area >
+
+                    <div style="width: 100%; height:700px">
+                        <!-- <br><br><br><br><br> <br><br><br>
+                        <h1> Here would b the Modeller </h1> -->
+                        <div class="content" id="js-drop-zone" style="width: 100%; height: 100%; ">
+
+                            <!-- <div class="message intro">
+                                <div class="note">
+                                    Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new
+                                        diagram</a> to get started.
+                                </div>
+                            </div>
+
+                            <div class="message error">
+                                <div class="note">
+                                    <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+                                    <div class="details">
+                                        <span>cause of the problem</span>
+                                        <pre></pre>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="canvas" id="js-canvas" style="width: 100%; height: 100%;"></div>
+                        </div>
+                              
+                    </div>
+                    <button (click)=showSolution() class="right">Validate</button>
+                </as-split-area>
+                <as-split-area>
+                    <h2>Solution</h2>
+                    Please note that this resembles one of possible many Solutions.
+                    If your Solution differs from the given one, compare the modules carefully.
+                    Please do not validate your Sultion until you are satisfied with your result.
+                    <div id="solution_container"></div>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+    </as-split>
+</div>

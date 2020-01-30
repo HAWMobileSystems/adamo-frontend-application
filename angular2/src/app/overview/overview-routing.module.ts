@@ -18,6 +18,11 @@ const routes: Routes = [
         loadChildren: () =>
           import(`./../leaves/leaves.module`).then(m => m.LeavesModule)
       },
+      {
+        path: "tutorial",
+        loadChildren: () =>
+          import(`./../tutorial/tutorial.module`).then(m => m.TutorialModule)
+      },
       // {
       //   path: "settings",
       //   loadChildren: () =>

@@ -1,0 +1,108 @@
+<!-- Some Text for the Tutorialspage -->
+<div class="container">
+    <h1 class="text-center">Welcome to the BPMN Tutorial</h1>
+    <p class="text-center">
+        A standard Business Process Model and Notation (BPMN) will provide businesses with the capability of understanding their internal business procedures in a graphical notation and will give organizations the ability to communicate these procedures in a standard manner. Furthermore, the graphical notation will facilitate the understanding of the performance collaborations and business transactions between the organizations. This will ensure that businesses will understand themselves and participants in their business and will enable organizations to adjust to new internal and B2B business circumstances quickly.
+    </p>
+</div>
+
+<div class="container">
+    <mat-accordion>
+        <div *ngFor="let lev of levels">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    BPMN for {{ lev.name }}
+                </mat-expansion-panel-header>
+
+                <div class="submodule">
+                    <a [routerLink]="['/tutorial/introduction', lev.levelID]">Introduction</a><input type="checkbox" class="float-right" disabled>
+                </div>
+                <div class="submodule">
+                    <a [routerLink]="['/tutorial/testmc', lev.levelID]">Test your knowlege of the basics</a><input type="checkbox" class="float-right" disabled>
+                </div>
+
+                <!-- hier muss noch eine forschleife über die einzelnen aufgaben in dem modeller... -->
+                <div class="submodule">
+                    <a routerLink="/tutorial/testmod">Create a basic BMPN</a><input type="checkbox" class="float-right" disabled>
+                </div>
+                <div class="submodule">
+                    <a routerLink="/tutorial/testmod">Create BPMN for clean the floor</a><input type="checkbox" class="float-right" disabled>
+                </div>
+            </mat-expansion-panel>
+            <hr>
+        </div>
+    </mat-accordion>
+</div> 
+
+<!-- Tutorial content -->
+<!-- <div class="container">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                Basic BPMN
+            </mat-expansion-panel-header>
+
+            <div class="submodule">
+                <a [routerLink]="['/tutorial/introduction', levels[0].levelID]">Introduction</a><input type="checkbox" class="float-right" disabled>
+            </div>
+            <div class="submodule">
+                <a routerLink="/tutorial/testmc">Test your knowlege of the basics</a><input type="checkbox" class="float-right" disabled>
+            </div>
+            <div class="submodule">
+                <a routerLink="/tutorial/testmod">Create a basic BMPN</a><input type="checkbox" class="float-right" disabled>
+            </div>
+            <div class="submodule">
+                <a routerLink="/tutorial/testmod">Create BPMN for clean the floor</a><input type="checkbox" class="float-right" disabled>
+            </div>
+
+        </mat-expansion-panel>
+
+        <hr>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                Advanced BPMN
+            </mat-expansion-panel-header>
+
+            <div class="submodule">
+                <a href="#">Introduction</a><input type="checkbox" class="float-right">
+            </div>
+            <div class="submodule">
+                <a href="#">submodule advanced 2</a><input type="checkbox" class="float-right">
+            </div>
+            <div class="submodule">
+                <a href="#">submodule advanced 3</a><input type="checkbox" class="float-right">
+            </div>
+            <div class="submodule">
+                <a href="#">submodule advanced 4</a><input type="checkbox" class="float-right">
+            </div>
+
+        </mat-expansion-panel>
+
+        <hr>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                Professional BPMN
+            </mat-expansion-panel-header>
+
+            <div class="submodule">
+                    <a routerLink='/tutorial/introduction'>Introduction to Modelling</a><input type="checkbox" class="float-right"
+                    disabled>
+            </div>
+            <div class="submodule">
+                <a href="/dashboard/testmod">First Modelling Steps</a><input type="checkbox" class="float-right">
+            </div>
+            <div class="submodule">
+                <a href="#">Create your first BPMN Model from Scratch</a><input type="checkbox" class="float-right">
+            </div>
+            <div class="submodule">
+                <a href="#">Master Modeller</a><input type="checkbox" class="float-right">
+            </div>
+        </mat-expansion-panel>
+
+        <hr>
+
+    </mat-accordion>
+</div> -->
+<!-- Tutorial content end-->
