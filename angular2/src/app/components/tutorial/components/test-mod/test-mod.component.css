@@ -1,0 +1,19 @@
+mwlResizable {
+    box-sizing: border-box;
+  }
+.resizebox{border-style: solid;}
+.resizebox_right{
+    border-style: solid;
+    float:left}
+.resizebox_left{
+    border-style: solid;
+    float:right
+}
+.btn_bottom_right{
+    position: absolute;
+    right:    0;
+    bottom:   0;
+}
+.right{
+    float: right;
+}

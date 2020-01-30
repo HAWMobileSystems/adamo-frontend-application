@@ -22,6 +22,8 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
 import { SimpleModelerComponent} from "./ModelerComponent/simplemodeler.component"
 
+import { TutorialModule } from './components/tutorial/tutorial.module';
+
 import { TokenInterceptor } from "./interceptor/token.interceptor";
 
 import { OverviewModule } from "./overview/overview.module";
@@ -54,8 +56,11 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
+    TutorialModule,
+    FrontPageModule, 
+    OverviewModule, 
+    SharedModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
-    FrontPageModule, OverviewModule, SharedModule
   ],
   declarations: [
     AppComponent,
@@ -69,6 +74,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 
     
   ],
+  // exports: [ModelerComponent],
   providers: [
     AuthGuard,
     AlertService,

@@ -1,7 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { FrontPageComponent } from "./frontpage/frontpage.component";
-import { SimpleModelerComponent } from "./ModelerComponent/simplemodeler.component";
+import { AuthGuard } from "./guards/auth.guard";
+import { OverviewComponent } from "./overview/overview.component";
+import { ModelerComponent } from "./ModelerComponent/modeler.component";
 
 const routes: Routes = [
   { path: "", component: FrontPageComponent },
@@ -11,6 +13,7 @@ const routes: Routes = [
   { path: "de", component: FrontPageComponent },
   { path: "en", component: FrontPageComponent },
   { path: "**", redirectTo: "", pathMatch: "full" }
+  { path: 'tutorial', children: TutorialRoutes },
 ];
 
 @NgModule({
