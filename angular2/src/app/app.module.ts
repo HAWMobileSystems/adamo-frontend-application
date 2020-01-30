@@ -35,7 +35,7 @@ import { FrontpageHeaderModule } from "./components/FrontPageHeaderComponent/fro
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
 import { UserService } from "./services/user.service";
 
-import { Angular2BulmaModule } from 'angular2-bulma';
+// import { Angular2BulmaModule } from 'angular2-bulma';
 //check for correct branch!
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
@@ -44,7 +44,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 };
 @NgModule({
   imports: [
-    Angular2BulmaModule,
+    // Angular2BulmaModule,
     BrowserModule,
     HttpModule,
     AppRoutingModule,

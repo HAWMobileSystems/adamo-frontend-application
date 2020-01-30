@@ -14,7 +14,7 @@ import { PermissionComponent } from './PermissionComponent/permission.component'
 import { RoleComponent } from './RoleComponent/role.component';
 import { ProfileComponent } from './ProfileComponent/profile.component';
 import { ModelComponent } from '../components/ModelComponent/model.component';
-import { BuTabsModule } from 'angular2-bulma';
+// import { BuTabsModule } from 'angular2-bulma';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { BuTabsModule } from 'angular2-bulma';
     Page404leavesComponent
   ],
   imports: [
-    BuTabsModule,
+    // BuTabsModule,
     CommonModule,
     SharedModule,
     FormsModule,
