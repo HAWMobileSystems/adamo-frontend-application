@@ -3,9 +3,11 @@ import { TutorialViewComponent } from './components/tutorialview/tutorialview.co
 import { IntroductionComponent } from './components/introduction/introduction.component';
 import { TestMCComponent } from './components/test-mc/test-mc.component';
 import { TestModComponent } from './components/test-mod/test-mod.component';
+import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 
 
-export const TutorialRoutes = [{
+const routes: Routes = [{
     path: '', component: TutorialComponent,
     children: [
         { path: '', redirectTo: 'start', pathMatch: 'full' },
@@ -17,4 +19,9 @@ export const TutorialRoutes = [{
     ]
 }]
 
-export const TutorialRoutingModule = []
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+  })
+  export class TutorialRoutingModule { }
+  

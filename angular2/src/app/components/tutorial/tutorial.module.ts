@@ -14,6 +14,7 @@ import { TestMCComponent } from './components/test-mc/test-mc.component';
 import { TestModComponent } from './components/test-mod/test-mod.component';
 import { SharedModule } from '../../shared.module';
 import { LevelService } from './services/level.service';
+import { CommonModule } from '@angular/common';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
 
 @NgModule({
@@ -26,9 +27,11 @@ import { LevelService } from './services/level.service';
     // ModelerComponent
   ],
   imports: [
+
+    CommonModule,
     RouterModule,
     MatExpansionModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     ResizableModule,
     AngularSplitModule,
     TutorialRoutingModule, 
