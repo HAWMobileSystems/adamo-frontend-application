@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import BpmnModeler from 'bpmn-js/lib/Modeler';
+import Modeler from 'bpmn-js/lib/Modeler';
+
+// import CustomRules from './CustomRules';
+import LintModule from 'bpmn-js-bpmnlint';
+import "bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css";
+
+// import bpmnlintConfig from './.bpmnlintrc';
 
 @Component({
   selector: 'app-test-mod',
@@ -16,8 +22,23 @@ export class TestModComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.modeler = new BpmnModeler({
-      container: '#js-canvas'
+    const bpmnLintConfig = {
+      "extends": "bpmnlint:recommended"
+      // "extends": [
+      //   "bpmnlint:recommended",
+      //   "plugin:playground/recommended"
+      // ],
+      // "rules": {
+      //   "playground/no-manual-task": "warn"
+      // }
+    }
+    
+    this.modeler = new Modeler({
+      container: '#js-canvas',
+      linting: {
+        bpmnlint: bpmnLintConfig
+      },
+      additionalModules: [LintModule]
     });
     
     this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
