@@ -39,7 +39,7 @@ import { UserService } from "./services/user.service";
 //check for correct branch!
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
-  port: 1883,
+  port: 4711,
   path: '/'
 };
 @NgModule({

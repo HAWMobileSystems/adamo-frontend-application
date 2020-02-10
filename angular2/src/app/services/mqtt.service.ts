@@ -54,6 +54,7 @@ export class AdamoMqttService {
   }
   //returns the client of the mqtt
   public getClient(email?: string): any {
+    console.log("MQTT getClient", this.mqttService)
     if (this.mqttService) {
       return this.mqttService;
     } else if (email) {

@@ -6,6 +6,7 @@ import { IPIM_OPTIONS } from "../../modelerConfig.service";
 import { AdamoMqttService } from "../../services/mqtt.service";
 const commandInterceptor = require("diagram-js/lib/command/CommandInterceptor");
 import { environment } from "./../../../environments/environment";
+import { IMqttMessage } from "ngx-mqtt";
 
 export class CommandStack {
   private modeler: any; //Modeler from Main Application
@@ -41,22 +42,31 @@ export class CommandStack {
     this.topic =
       "" +
       "model_" +
-      this.modelerComponenetRoot.model.id +
+      this.modelerComponenetRoot.modelID +
       "_" +
-      this.modelerComponenetRoot.model.version;
+      this.modelerComponenetRoot.modelVersion;
     this.stopEvaluationisRunning = false;
 
-    this.mqttService.getClient().subscribe("MODEL/" + this.topic); //subscribe Client to defaulttopic on MQTT Server
-    this.mqttService.getClient().subscribe("modelupsert");
-
-    //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
-    this.mqttService.getClient().on("message", (topic: any, message: any) => {
-      //call function to handle the new message
-      this.receiveMessage(topic, message);
+    this.mqttService.getClient().observe("MODEL/" + this.topic).subscribe((message: IMqttMessage) => {
+      const messagePayload = message.payload.toString();
+      this.receiveMessage("MODEL/" +this.topic, messagePayload);
+      console.log("Topic", "MODEL/" +this.topic)
+    }); //subscribe Client to defaulttopic on MQTT Server
+    this.mqttService.getClient().observe("modelupsert").subscribe((message: IMqttMessage) => {
+      const messagePayload = message.payload.toString();
+      console.log("Topic", this.topic)
+      this.receiveMessage(this.topic, messagePayload);
     });
 
+    //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
+    // this.mqttService.getClient().on("message", (topic: any, message: any) => {
+      //call function to handle the new message
+      // this.receiveMessage(topic, message);
+    // });
+
     //Call Publish function if something changes here we use the Eventbus Event element changed!
-    this.modeler.on("elements.changed", this.publishXML);
+    this.modeler.on("elements.changed", (event) => {this.publishXML(event)});
+    // this.modeler.on("elements.changed", this.publishXML());
   }
 
   //Starts Evaluation Mode ... Model will unsubscribe and no longer publish!
@@ -73,7 +83,7 @@ export class CommandStack {
 
   //Handle a new Message from MQTT-Server
   public receiveMessage = (topic: any, message: any) => {
-    console.log(topic);
+    console.log('receive Message', topic, 'with message',);
     const event = JSON.parse(message);
     if (topic.startsWith("MODEL/")) {
       //Parse event from String to variable
@@ -108,28 +118,32 @@ export class CommandStack {
   };
 
   //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
-  public publishXML = (): void => {
+  public publishXML = (event: any): void => {
     //If
-
+    console.log("publish xml", this.modeler, event )
     if (this.stopEvaluationisRunning) {
       return;
     }
     // user modeled something or
     // performed a undo/redo operation
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+    let xmlString = this.modelerComponenetRoot.saveXMLWrapper()
+    // { format: true }, (err: any, xml: any) => {
+      // if (err) {
+      //   console.log(err, xml);
+      //   return;
+      // }
       const transfer: any = {
         IPIMID: this.id,
-        XMLDoc: xml
+        XMLDoc: xmlString, 
+        delta: event
       };
+      console.log(this.topic, transfer)
       this.mqttService
-        .getClient()
+        // .getClient().client()
         .publish("MODEL/" + this.topic, JSON.stringify(transfer));
-    });
-  };
+    // });
+  
+}
 
   //Testfunction for evaluating the CommandStack
   public commandTest = () => {

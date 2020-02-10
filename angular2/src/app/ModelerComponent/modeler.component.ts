@@ -66,7 +66,7 @@ export class ModelerComponent implements OnInit {
   @Output() public loadedCompletely: EventEmitter<null> = new EventEmitter<
     null
   >();
-  private modeler: any = require("bpmn-js/lib/Modeler.js");
+  public modeler: any = require("bpmn-js/lib/Modeler.js");
   // private propertiesPanelModule: any = require('bpmn-js-properties-panel');
   // private propertiesProviderModule: any = require('bpmn-js-properties-panel/lib/provider/camunda');
   //private originModule: any = require('diagram-js-origin');  //not useable with webpack 1 as it contains inline functions
@@ -105,6 +105,9 @@ export class ModelerComponent implements OnInit {
   @ViewChild("usageModal")
   private usageModal: UsageModal;
 
+  public modelVersion;
+  public modelID;
+
   //definitions for IPIM background texts
   private ipimTags: any = {
     META: "IPIM_meta_",
@@ -132,11 +135,11 @@ export class ModelerComponent implements OnInit {
     private logger: NGXLogger
   ) {
     const splittedUrl = this.router.url.split('/')
-    const modelID = splittedUrl[splittedUrl.length - 2]
-    const modelVersion = splittedUrl[splittedUrl.length - 1]
+     this.modelID = splittedUrl[splittedUrl.length - 2]
+    this.modelVersion = splittedUrl[splittedUrl.length - 1]
 
     //  this.modelXML = 
-      this.apiService.getModel(modelID, modelVersion).subscribe( (response: any )=> {
+      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (response: any )=> {
         console.log(response)
         this.modelXML = response.modelXML
         this.loadBPMN(this.modelXML)
@@ -477,6 +480,19 @@ export class ModelerComponent implements OnInit {
   };
 
   //prepare diagram for file downlaod
+
+  public saveXMLWrapper = () => {
+    let xmlResponse = "";
+    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+      if (err) {
+        console.log(err, xml);
+        return;
+      }
+      xmlResponse =  xml
+    })
+    console.log(xmlResponse);
+    return xmlResponse
+  }
   private saveDiagram = () => {
     const downloadLink = $("#js-download-diagram");
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
@@ -663,8 +679,8 @@ export class ModelerComponent implements OnInit {
       this.logger.debug("error in commandstack init", error);
     }
     // Start with an empty diagram:
-    const linkToDiagram = new Link(this.defaultModel);
-    this.url = linkToDiagram.href; //this.urls[0].href;
+    // const linkToDiagram = new Link(this.defaultModel);
+    // this.url = linkToDiagram.href; //this.urls[0].href;
     // this.loadBPMN();
   }
 
