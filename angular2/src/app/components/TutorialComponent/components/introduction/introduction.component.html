@@ -1,14 +1,15 @@
-<h1>Introduction to {{ level.name }} BPMN</h1>
+<h1>Introduction to  BPMN</h1>
 
 <div class="container">
     <div class="text-center">
 
-        <div *ngFor="let lpd of level.PageDesc">
+        <div [innerHTML]="content | safeHtml"></div>
+        <!-- <p>This is the content of the introduction</p> -->
+        <!-- <div *ngFor="let lpd of level.PageDesc">
             <div *ngIf="lpd.key === currentpage">
                 <div [innerHTML]="lpd.value"></div>
             </div>
-        </div>
-
+        </div> -->
     </div>
 
     <div class="btn-toolbar justify-content-between" role="toolbar">
@@ -20,13 +21,12 @@
 
 <hr>
 <div class="container">
-    <a class="btn btn-primary btn-lg btn-block" routerLink="/tutorial/start">Cancel Introduction</a>
+    <a routerLink="/overview/tutorial">Cancel Introduction</a>
 </div>
 
 <!-- <div *ngIf="currentpage === level.PageDesc.length">
     <hr>
     <a [routerLink]="['/tutorial/testmc', levid]" class="btn btn-primary btn-lg btn-block">Test your knowlege</a>
     <a *ngIf="currentpage === level.PageDesc.length" class="btn btn-primary btn-lg btn-block"
-        routerLink="/tutorial/testmod">Go to first
-        lesson</a>
+        routerLink="/tutorial/testmod">Go to first lesson</a>
 </div> -->
