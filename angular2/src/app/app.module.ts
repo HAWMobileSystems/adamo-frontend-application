@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { AppComponent } from "./app.component";
 import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
@@ -22,7 +23,7 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
 import { SimpleModelerComponent} from "./ModelerComponent/simplemodeler.component"
 
-import { TutorialModule } from './components/tutorial/tutorial.module';
+import { TutorialModule } from './components/TutorialComponent/tutorial.module';
 
 import { TokenInterceptor } from "./interceptor/token.interceptor";
 
@@ -46,6 +47,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   imports: [
     // Angular2BulmaModule,
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     AppRoutingModule,
     FormsModule,
