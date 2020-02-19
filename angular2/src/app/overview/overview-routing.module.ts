@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: "tutorial",
         loadChildren: () =>
-          import(`./../components/tutorial/tutorial.module`).then(m => m.TutorialModule)
+          import(`./../components/TutorialComponent/tutorial.module`).then(m => m.TutorialModule)
       },
       // {
       //   path: "settings",
