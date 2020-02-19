@@ -24,8 +24,9 @@ export class LevelService {
     return this.httpService.get(this.BACKEND_URI + "/intro/startview/" + user_id, options)
   }
 
-  public contentOfIntro(cat: String, page:Number){
-    console.log("Cat: " + cat + ", Page: " + page)
+  public contentOfIntro(cat: String, page:number){
+    // console.log("Cat: " + cat + ", Page: " + page)
+    console.log(this.httpService.get(this.BACKEND_URI + "/intro/" +  cat + "/" + page))
     return this.httpService.get(this.BACKEND_URI + "/intro/" +  cat + "/" + page)
   }
 
