@@ -1,0 +1,73 @@
+<!-- Some Text for the Tutorialspage -->
+<div class="container">
+    <h1 class="text-center">Welcome to the BPMN Tutorial</h1>
+    <p class="text-center">
+        A standard Business Process Model and Notation (BPMN) will provide businesses with the capability of
+        understanding their internal business procedures in a graphical notation and will give organizations the ability
+        to communicate these procedures in a standard manner. Furthermore, the graphical notation will facilitate the
+        understanding of the performance collaborations and business transactions between the organizations. This will
+        ensure that businesses will understand themselves and participants in their business and will enable
+        organizations to adjust to new internal and B2B business circumstances quickly.
+    </p>
+
+    <mat-accordion>
+        <div *ngFor="let cat of startview">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    BPMN for {{ cat.catName }}
+                </mat-expansion-panel-header>
+
+                <div class="submodule">
+                    <div class="row">
+                        <div class="col">
+                            {{ cat.intro_status}}
+                            <div *ngIf="cat.intro_status==true; else elseBlock">
+                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
+                                <input type="checkbox" checked="true" style="float:right" disabled>
+                            </div>
+                            <ng-template #elseBlock>
+                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
+                                <input type="checkbox" checked="false" style="float:right" disabled>
+                            </ng-template>
+                            
+                            <!-- <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
+                            <input type="checkbox" style="float:right" disabled> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="submodule">
+                    <div class="row">
+                        <div class="col">
+                            <a [routerLink]="['./../testmc', cat.catName]">Test your knowlege of the basics</a>
+                            <!-- <div *ngIf="cat.intro; else elseBlock"><input type="checkbox" checked="true" style="float:right" disabled></div>
+                            <ng-template #elseBlock><input type="checkbox" checked="false" style="float:right" disabled></ng-template> -->
+                            <input type="checkbox" style="float:right" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngFor='let modellingtask of cat.tasks'>
+                    <ng-container *ngIf="modellingtask.score < 33; else elseif1">
+                            <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                            <!-- <div *ngIf="cat.mctest; else elseBlock"><input type="checkbox" checked="true" style="float:right" disabled></div>
+                            <ng-template #elseBlock><input type="checkbox" checked="false" style="float:right" disabled></ng-template> -->
+                            <input type="checkbox" style="float:right" disabled>
+                    </ng-container>
+                    <ng-template #elseif1>
+                        <ng-container *ngIf="modellingtask.score > 32 && modellingtask.score < 66; else elseif2">
+                            <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                            <input type="checkbox" checked="true" style="float:right" disabled>
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #elseif2>
+                        <ng-container *ngIf="modellingtask.score > 65">
+                                <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                                <input type="checkbox" checked="true" style="float:right" disabled>
+                        </ng-container>
+                    </ng-template>
+                </div>
+            </mat-expansion-panel>
+            <hr>
+        </div>
+    </mat-accordion>
+</div>
