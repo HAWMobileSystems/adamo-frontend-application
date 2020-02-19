@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { TutorialRoutingModule } from './tutorial-routing.module';
 
 import { MatExpansionModule } from '@angular/material/expansion';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResizableModule } from 'angular-resizable-element';
 import { AngularSplitModule } from 'angular-split';
 
@@ -15,6 +15,7 @@ import { TestModComponent } from './components/test-mod/test-mod.component';
 import { SharedModule } from '../../shared.module';
 import { LevelService } from './services/level.service';
 import { CommonModule } from '@angular/common';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CommonModule } from '@angular/common';
     TutorialViewComponent,
     TestMCComponent,
     TestModComponent,
-    TutorialComponent, 
+    TutorialComponent,
+    SafeHtmlPipe 
     // ModelerComponent
   ],
   imports: [
@@ -31,7 +33,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     RouterModule,
     MatExpansionModule,
-    // BrowserAnimationsModule,
+    //BrowserAnimationsModule,
     ResizableModule,
     AngularSplitModule,
     TutorialRoutingModule, 
