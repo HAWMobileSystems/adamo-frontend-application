@@ -20,28 +20,24 @@
                 <div class="submodule">
                     <div class="row">
                         <div class="col">
-                            {{ cat.intro_status}}
-                            <div *ngIf="cat.intro_status==true; else elseBlock">
-                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
+                            <div *ngIf="cat.intro_status; else elseBlock">
+                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction into {{ cat.catName }}</a>
                                 <input type="checkbox" checked="true" style="float:right" disabled>
                             </div>
                             <ng-template #elseBlock>
-                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
-                                <input type="checkbox" checked="false" style="float:right" disabled>
+                                <a [routerLink]="['./../intro', cat.catName, '1']">Introduction into {{ cat.catName }}</a>
+                                <input type="checkbox" style="float:right" disabled>
                             </ng-template>
-                            
-                            <!-- <a [routerLink]="['./../intro', cat.catName, '1']">Introduction</a>
-                            <input type="checkbox" style="float:right" disabled> -->
                         </div>
                     </div>
                 </div>
                 <div class="submodule">
                     <div class="row">
                         <div class="col">
-                            <a [routerLink]="['./../testmc', cat.catName]">Test your knowlege of the basics</a>
+                            <a [routerLink]="['./../testmc', cat.catName]">Test your knowlege of the {{ cat.catName }}</a>
                             <!-- <div *ngIf="cat.intro; else elseBlock"><input type="checkbox" checked="true" style="float:right" disabled></div>
                             <ng-template #elseBlock><input type="checkbox" checked="false" style="float:right" disabled></ng-template> -->
-                            <input type="checkbox" style="float:right" disabled>
+                            <span style="float:right" >{{ cat.mult_qs_res }}</span>
                         </div>
                     </div>
                 </div>
