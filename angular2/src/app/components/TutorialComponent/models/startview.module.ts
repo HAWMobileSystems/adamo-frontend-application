@@ -4,7 +4,7 @@ export class Startview {
         this.tasks = new Array
     }
     catName: String
-    intro_status: any
+    intro_status: boolean
     mult_qs_res: any
     tasks: ModellingTask[]
 }
