@@ -14,11 +14,15 @@ export class IntroductionComponent implements OnInit {
   private page: number
   private categorie: String
   private content: String
+  private url:any
 
   constructor(
     private route: ActivatedRoute,
     private LevServ: LevelService,
-    private router:Router) {}
+    private router:Router) {
+      this.url = this.router.url;
+      this.url = this.url.slice(0, this.url.lastIndexOf('/'));
+    }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -26,36 +30,30 @@ export class IntroductionComponent implements OnInit {
         this.page = params['id']
       }
     )
-    console.log(this.categorie + ", page: " + this.page)
     this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
-      console.log(sub)
       this.content = sub.intro_text
     })
-    console.log(this.content)
-    // console.log("page: " + this.page)
   }
 
   clickPrevious(){
     if(this.page > 1){
       this.page--
-      console.log(this.page)
+      this.router.navigate([this.url, this.page])
       this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
         this.content = sub.intro_text
-        console.log(this.content)
       })
     }
   }
 
   clickNext(){
     this.page++
-    console.log(this.page)
     this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
       if(sub == null){
         this.page--
         return
       } else {
+        this.router.navigate([this.url, this.page])
         this.content = sub.intro_text
-        console.log(this.content)
       }
     })
   }
