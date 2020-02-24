@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { LevelService } from '../../services/level.service'
+import { AuthService } from '../../../../services/auth.service'
 
 @Component({
   selector: 'app-introduction',
@@ -20,8 +21,9 @@ export class IntroductionComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private LevServ: LevelService,
-    private router:Router) {
+    private catService: LevelService,
+    private router:Router,
+    private authService: AuthService) {
       this.url = this.router.url;
       this.url = this.url.slice(0, this.url.lastIndexOf('/'));
     }
@@ -32,7 +34,7 @@ export class IntroductionComponent implements OnInit {
         this.page = params['id']
       }
     )
-    this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
+    this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
       this.content = sub.intro_text
       console.log(this.content)
     })
@@ -42,7 +44,7 @@ export class IntroductionComponent implements OnInit {
     if(this.page > 1){
       this.page--
       this.router.navigate([this.url, this.page])
-      this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
+      this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
         this.content = sub.intro_text
       })
     }
@@ -50,7 +52,7 @@ export class IntroductionComponent implements OnInit {
 
   clickNext(){
     this.page++
-    this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
+    this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
       if(sub == null){
         this.page--
         this.finish = true
@@ -63,6 +65,12 @@ export class IntroductionComponent implements OnInit {
   }
 
   cancelIntro(){
+    this.router.navigate(["/overview/tutorial/"])
+  }
+
+  finishIntro(){
+    var userid = this.authService.getCurrentUser().id
+    this.catService.postIntroFinish(userid, this.categorie)
     this.router.navigate(["/overview/tutorial/"])
   }
 

@@ -45,8 +45,6 @@
                 <div *ngFor='let modellingtask of cat.tasks'>
                     <ng-container *ngIf="modellingtask.score < 33; else elseif1">
                             <a routerLink="./../testmod">{{ modellingtask.name }}</a>
-                            <!-- <div *ngIf="cat.mctest; else elseBlock"><input type="checkbox" checked="true" style="float:right" disabled></div>
-                            <ng-template #elseBlock><input type="checkbox" checked="false" style="float:right" disabled></ng-template> -->
                             <input type="checkbox" style="float:right" disabled>
                     </ng-container>
                     <ng-template #elseif1>

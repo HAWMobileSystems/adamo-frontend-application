@@ -1,27 +1,14 @@
-<h1>Introduction to  BPMN</h1>
-
 <div class="container">
-    <div class="text-center">
 
-        <div [innerHTML]="content | safeHtml"></div>
-
-    </div>
-
-    <div class="btn-toolbar justify-content-between" role="toolbar">
+    <div class="btn-toolbar justify-content-between" role="toolbar" style="background-color: #375BFA;margin:10px">
         <button type="button" class="btn btn-secondary" (click)="clickPrevious()">Previous</button>
         <button type="button" class="btn btn-secondary" id="btnNext" (click)="clickNext()">Next</button>
+        <button type="button" class="btn btn-secondary" id="btnCancel" (click)="cancelIntro()">Abort Introduction</button>
+        <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Finish the Introduction</button>
     </div>
+    <!-- <div class="text-center" style="border:1px solid #000;"> -->
 
+    <div [innerHTML]="content | safeHtml"></div>
+
+    <!-- </div> -->
 </div>
-
-<hr>
-<div class="container">
-    <a routerLink="/overview/tutorial">Cancel Introduction</a>
-</div>
-
-<!-- <div *ngIf="currentpage === level.PageDesc.length">
-    <hr>
-    <a [routerLink]="['/tutorial/testmc', levid]" class="btn btn-primary btn-lg btn-block">Test your knowlege</a>
-    <a *ngIf="currentpage === level.PageDesc.length" class="btn btn-primary btn-lg btn-block"
-        routerLink="/tutorial/testmod">Go to first lesson</a>
-</div> -->

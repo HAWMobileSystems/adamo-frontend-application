@@ -17,17 +17,26 @@ export class LevelService {
    }
 
   private BACKEND_URI: string = environment.SERVER_HOST + ":" + environment.SERVER_PORT;
-  private CAMUNDA_ENGINE_URI: string = environment.CAMUNDA_ENGINE_HOST;
-
-  public startview(user_id) {
-    console.log(this.BACKEND_URI + "/intro/startview/" + user_id)
+  
+  public getStartview(user_id) {
+    // console.log(this.BACKEND_URI + "/intro/startview/" + user_id)
     return this.httpService.get(this.BACKEND_URI + "/intro/startview/" + user_id, options)
   }
 
-  public contentOfIntro(cat: String, page:number){
+  public getContentOfIntro(cat: String, page:number){
     // console.log("Cat: " + cat + ", Page: " + page)
-    console.log(this.httpService.get(this.BACKEND_URI + "/intro/" +  cat + "/" + page))
+    // console.log(this.httpService.get(this.BACKEND_URI + "/intro/" +  cat + "/" + page))
     return this.httpService.get(this.BACKEND_URI + "/intro/" +  cat + "/" + page)
+  }
+
+  public getMultipleChoice(userid, categorie){
+    console.log(userid + "- " + categorie)
+    // http://localhost:3330/tg_multiplechoice/getMultiplechoice/{user_id}/{cat}
+    return this.httpService.get(this.BACKEND_URI + "/tg_multiplechoice/getMultiplechoice/" + userid + "/" + categorie)
+  }
+
+  public postIntroFinish(userid, categorie){
+    this.httpService.put(this.BACKEND_URI + "/tg_intro/" +  userid + "/" + categorie, options)
   }
 
 }

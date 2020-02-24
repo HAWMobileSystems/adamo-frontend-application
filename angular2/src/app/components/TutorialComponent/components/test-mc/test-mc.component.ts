@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 //import { Level, Helper } from '../../models/level.module';
 import { ActivatedRoute } from '@angular/router';
 import { LevelService } from '../../services/level.service';
+import { AuthService } from '../../../../services/auth.service';
+import { MultipleChoiceQuest, KeyValuePair } from '../../models/multiplechoice.module';
 
 @Component({
   selector: 'app-test-mc',
@@ -10,47 +12,47 @@ import { LevelService } from '../../services/level.service';
 })
 export class TestMCComponent implements OnInit {
 
-  levid: number;
-  //level: Level;
-  questionid: number;
-  questions: number;
+  private user_id: String
+  private categorie: String
+  private question: MultipleChoiceQuest
 
-  constructor(private route: ActivatedRoute, private LevServ: LevelService) { 
-    // this.level = new Level();
-    // this.level.PageDesc = new Array;
-    // this.level.MCTest = new Array;
-    // this.level.MCTest.push(new Helper<string,string[]>())
-    this.questionid = 0;
+  constructor(private route: ActivatedRoute, private catService: LevelService, private authService: AuthService) {
+    this.user_id = authService.getCurrentUser().id
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => this.levid = params['id']);
-    // this.LevServ.getAllLevels().subscribe(
-    //   res => {
+    this.route.params.subscribe(params => {
+      this.categorie = params['cat']
+    })
+    this.catService.getMultipleChoice(this.user_id, this.categorie).subscribe((view: any) => {
+      this.transform(view)
+    })
+  }
 
-    //     this.level = res[this.levid - 1];
+  transform(json) {
+    this.question = new MultipleChoiceQuest(json[0].id, json[0].question)
 
-
-    //     this.questions = this.level.MCTest.length - 1;
-    //     console.log("Arraylength: " + this.level.MCTest.length);
-    //     console.log("currentQuestID: " + this.questionid);
-
-    //   }
-    // )
+    json.forEach(entry => {
+      this.question.answers.push({key: entry.answerID,value: entry.answer})
+    })
   }
 
   CheckCorrectness() {
-    if (this.questionid < this.questions) {
-      // send http request to check the right answer
-      // if correct
-      this.questionid += 1;
-      // else error wrong answer and tries++
-
-    } else {
-      // change button to finish and go back
-      // alert with gratulations
+    var userChoice: KeyValuePair[] = new Array
+    var ansid:number = 1
+    userChoice.push({key:"userid",value:this.user_id})
+    userChoice.push({key:"questionid", value:this.question.id})
+    var elements = (<HTMLInputElement[]><any>document.getElementsByName("user_answers"))
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].type == "checkbox") {
+        if (elements[i].checked) {
+          // console.log(this.question.answers[i].key)
+          userChoice.push({key:ansid+"",value:this.question.answers[i].key})
+          ansid++
+        }
+      }
     }
-    console.log("currentQuestID: " + this.questionid);
+    console.log(userChoice)
   }
 
 }

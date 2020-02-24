@@ -19,7 +19,8 @@ export class TutorialViewComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.catService.startview(this.userID).subscribe((view:any) => {
+    this.catService.getStartview(this.userID).subscribe((view:any) => {
+      console.log(view)
       this.parseIncomingJSON(view)
     })
     console.log(this.startview)
