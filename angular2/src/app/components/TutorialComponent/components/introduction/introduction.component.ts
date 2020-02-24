@@ -1,11 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, ViewEncapsulation } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { LevelService } from '../../services/level.service'
 
 @Component({
   selector: 'app-introduction',
   templateUrl: './introduction.component.html',
-  styleUrls: ['./introduction.component.css']
+  styleUrls: ['./introduction.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 
 
@@ -14,6 +15,7 @@ export class IntroductionComponent implements OnInit {
   private page: number
   private categorie: String
   private content: String
+  private finish: boolean = false
   private url:any
 
   constructor(
@@ -32,6 +34,7 @@ export class IntroductionComponent implements OnInit {
     )
     this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
       this.content = sub.intro_text
+      console.log(this.content)
     })
   }
 
@@ -50,12 +53,17 @@ export class IntroductionComponent implements OnInit {
     this.LevServ.contentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
       if(sub == null){
         this.page--
+        this.finish = true
         return
       } else {
         this.router.navigate([this.url, this.page])
         this.content = sub.intro_text
       }
     })
+  }
+
+  cancelIntro(){
+    this.router.navigate(["/overview/tutorial/"])
   }
 
 }
