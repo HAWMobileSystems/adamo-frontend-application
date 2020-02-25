@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TutorialRoutingModule } from './tutorial-routing.module';
+import { FormsModule } from '@angular/forms'
 
 import { MatExpansionModule } from '@angular/material/expansion';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,10 +13,12 @@ import { IntroductionComponent } from './components/introduction/introduction.co
 import { TutorialViewComponent } from './components/tutorialview/tutorialview.component';
 import { TestMCComponent } from './components/test-mc/test-mc.component';
 import { TestModComponent } from './components/test-mod/test-mod.component';
+import { LanguageComponent } from './components/language/language.component'
 import { SharedModule } from '../../shared.module';
 import { LevelService } from './services/level.service';
 import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { LanguageService } from './services/language.service';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
 
 @NgModule({
@@ -25,7 +28,8 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     TestMCComponent,
     TestModComponent,
     TutorialComponent,
-    SafeHtmlPipe 
+    SafeHtmlPipe,
+    LanguageComponent
     // ModelerComponent
   ],
   imports: [
@@ -33,6 +37,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     CommonModule,
     RouterModule,
     MatExpansionModule,
+    FormsModule,
     //BrowserAnimationsModule,
     ResizableModule,
     AngularSplitModule,
@@ -40,7 +45,8 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     SharedModule
   ],
   providers: [
-    LevelService
+    LevelService,
+    LanguageService
   ]
 })
 

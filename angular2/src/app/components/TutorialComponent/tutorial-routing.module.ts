@@ -10,12 +10,14 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [{
     path: '', component: TutorialComponent,
     children: [
-        { path: 'start', component: TutorialViewComponent },
-        { path: 'intro/:cat/:id', component: IntroductionComponent },
+        { path: 'start/', redirectTo: 'start/:lang' },
+        { path: 'start/:lang', component: TutorialViewComponent },
+        // intro/en/Beginner/1
+        { path: 'intro/:lang/:cat/:id', component: IntroductionComponent },
         { path: 'testmc/:cat', component: TestMCComponent },
         { path: 'testmod/:cat/:id', component: TestModComponent },
 
-        { path: '', redirectTo: 'start', pathMatch: 'full' },
+        { path: '', redirectTo: 'start/', pathMatch: 'full' },
     ]
 }]
 
