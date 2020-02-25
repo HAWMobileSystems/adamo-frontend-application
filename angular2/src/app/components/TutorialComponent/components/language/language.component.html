@@ -1,0 +1,7 @@
+<div>
+    <select (change)="onChange($event.target.value)" style="float: right">
+        <option *ngFor="let lang of Language.values();" [value]="lang">
+            {{ lang }}
+        </option>
+    </select>
+</div>
