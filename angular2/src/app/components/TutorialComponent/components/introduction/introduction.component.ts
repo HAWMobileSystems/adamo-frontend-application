@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { LevelService } from '../../services/level.service'
 import { AuthService } from '../../../../services/auth.service'
 
+import { Language } from '../../models/language.enum';
+import { LanguageService } from '../../services/language.service';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-introduction',
   templateUrl: './introduction.component.html',
@@ -17,58 +21,71 @@ export class IntroductionComponent implements OnInit {
   private categorie: String
   private content: String
   private finish: boolean = false
-  private url:any
+  private url: any
+  
+  lang: Language
+  subscription:Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private catService: LevelService,
-    private router:Router,
-    private authService: AuthService) {
-      this.url = this.router.url;
-      this.url = this.url.slice(0, this.url.lastIndexOf('/'));
-    }
+    private router: Router,
+    private authService: AuthService,
+    private langService: LanguageService) {
+      this.url = this.router.url
+      this.url = this.url.slice(0, this.url.lastIndexOf('/'))
+      
+  }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.subscription = this.langService.lang$.subscribe(lang => {
+      this.lang = lang
+      this.route.params.subscribe(params => {
         this.categorie = params['cat']
         this.page = params['id']
-      }
-    )
-    this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
-      this.content = sub.intro_text
-      console.log(this.content)
+      })
+      this.router.navigate(["/overview/tutorial/intro/",this.lang, this.categorie, this.page])
+      this.catService.getContentOfIntro(this.lang, this.categorie, this.page).subscribe((sub: any) => {
+        this.content = sub.intro_text
+      })
     })
   }
 
-  clickPrevious(){
-    if(this.page > 1){
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  clickPrevious() {
+    console.log(this.lang)
+    if (this.page > 1) {
       this.page--
-      this.router.navigate([this.url, this.page])
-      this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
+      this.router.navigate(["/overview/tutorial/intro/",this.lang, this.categorie, this.page])
+      this.catService.getContentOfIntro(this.lang, this.categorie, this.page).subscribe((sub: any) => {
         this.content = sub.intro_text
       })
     }
   }
 
-  clickNext(){
+  clickNext() {
+    console.log(this.lang)
     this.page++
-    this.catService.getContentOfIntro(this.categorie, this.page).subscribe((sub:any) => {
-      if(sub == null){
+    this.catService.getContentOfIntro(this.lang, this.categorie, this.page).subscribe((sub: any) => {
+      if (sub == null) {
         this.page--
         this.finish = true
         return
       } else {
-        this.router.navigate([this.url, this.page])
+        this.router.navigate(["/overview/tutorial/intro/",this.lang, this.categorie, this.page])
         this.content = sub.intro_text
       }
     })
   }
 
-  cancelIntro(){
+  cancelIntro() {
     this.router.navigate(["/overview/tutorial/"])
   }
 
-  finishIntro(){
+  finishIntro() {
     var userid = this.authService.getCurrentUser().id
     this.catService.postIntroFinish(userid, this.categorie)
     this.router.navigate(["/overview/tutorial/"])

@@ -1,10 +1,17 @@
+<div style="float: right">
+    <select (change)="parseValue($event.target.value)">
+        <option *ngFor="let name of options" [value]="name">{{name}}</option>
+    </select>
+</div>
 <div class="container">
 
     <div class="btn-toolbar justify-content-between" role="toolbar" style="background-color: #375BFA;margin:10px">
         <button type="button" class="btn btn-secondary" (click)="clickPrevious()">Previous</button>
         <button type="button" class="btn btn-secondary" id="btnNext" (click)="clickNext()">Next</button>
-        <button type="button" class="btn btn-secondary" id="btnCancel" (click)="cancelIntro()">Abort Introduction</button>
-        <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Finish the Introduction</button>
+        <button type="button" class="btn btn-secondary" id="btnCancel" (click)="cancelIntro()">Abort
+            Introduction</button>
+        <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Finish the
+            Introduction</button>
     </div>
     <!-- <div class="text-center" style="border:1px solid #000;"> -->
 
