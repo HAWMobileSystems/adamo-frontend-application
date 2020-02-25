@@ -3,7 +3,9 @@ import { Component, OnInit, Output } from '@angular/core';
 import { LevelService } from '../../services/level.service';
 import { Startview, ModellingTask } from '../../models/startview.module';
 import { AuthService } from '../../../../services';
-import { User } from '../../../../models/user';
+import { Language } from '../../models/language.enum';
+import { LanguageService } from '../../services/language.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tutorialview',
@@ -12,21 +14,33 @@ import { User } from '../../../../models/user';
 })
 export class TutorialViewComponent implements OnInit {
   private userID: String
+  private lang: Language
   private startview: Startview[] = new Array()
 
-  constructor(private catService: LevelService, private authService: AuthService) {
-    this.userID = this.authService.getCurrentUser().id
+  constructor(
+    private catService: LevelService, 
+    private authService: AuthService, 
+    private langService:LanguageService,
+    private router: Router) {
+      this.userID = this.authService.getCurrentUser().id
   }
   
   ngOnInit() {
-    this.catService.getStartview(this.userID).subscribe((view:any) => {
-      console.log(view)
-      this.parseIncomingJSON(view)
+    this.langService.lang$.subscribe(lang => {
+      this.lang = lang
+      console.log(this.lang)
+
+      this.router.navigate(["/overview/tutorial/start/", this.lang])
+      this.catService.getStartview(this.userID, this.lang).subscribe((view:any) => {
+        this.parseIncomingJSON(view)
+        console.log(view)
+      })
     })
-    console.log(this.startview)
   }
 
   parseIncomingJSON(json){
+
+    this.startview = []
 
     let keys_catName = new Set()
     json.forEach(entry => {
@@ -44,5 +58,6 @@ export class TutorialViewComponent implements OnInit {
       })
       this.startview.push(help)
     })
+    console.log(this.startview)
   }
 }
