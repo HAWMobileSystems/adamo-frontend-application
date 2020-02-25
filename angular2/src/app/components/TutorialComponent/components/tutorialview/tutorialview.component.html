@@ -21,12 +21,12 @@
                     <div class="row">
                         <div class="col">
                             <div *ngIf="cat.intro_status; else elseBlock">
-                                <a [routerLink]="['./../intro', lang, cat.catName, '1']">Introduction into
+                                <a [routerLink]="['./../../intro', lang, cat.catName, '1']">Introduction into
                                     {{ cat.catName }}</a>
                                 <input type="checkbox" checked="true" style="float:right" disabled>
                             </div>
                             <ng-template #elseBlock>
-                                <a [routerLink]="['./../intro', lang, cat.catName, '1']">Introduction into
+                                <a [routerLink]="['./../../intro', lang, cat.catName, '1']">Introduction into
                                     {{ cat.catName }}</a>
                                 <input type="checkbox" style="float:right" disabled>
                             </ng-template>
