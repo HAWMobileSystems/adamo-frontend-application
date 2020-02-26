@@ -6,8 +6,8 @@
         <as-split-area>
             <as-split direction="vertical">
                 <as-split-area>
-                    <h3> {{ task.question_description }} :</h3>
-                    <p> {{ task.question_text }}</p>
+                    <div [innerHtml]="task.question_description"></div>
+                    <div [innerHtml]="task.question_text"></div>
                 </as-split-area>
             </as-split>
         </as-split-area>
