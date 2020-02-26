@@ -6,8 +6,17 @@ import Modeler from 'bpmn-js/lib/Modeler';
 // import CustomRules from './CustomRules';
 import LintModule from 'bpmn-js-bpmnlint';
 import "bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css";
+import { LanguageService } from '../../services/language.service';
+import { LevelService } from '../../services/level.service';
+import { Language } from '../../models/language.enum';
+import { Route, ActivatedRoute, Router } from '@angular/router';
 
 // import bpmnlintConfig from './.bpmnlintrc';
+
+interface Task {
+  question_description: string;
+  question_text: string;
+}
 
 @Component({
   selector: 'app-test-mod',
@@ -16,12 +25,36 @@ import "bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css";
 })
 
 export class TestModComponent implements OnInit {
-  modeler: any;
+  modeler: any
+  lang: Language
+  taskid: string
+  categorie: string
 
-  constructor(private http: HttpClient) {
+  private task: Task
+
+  //todo remove httpclient
+  constructor(private http: HttpClient,
+    private langService: LanguageService,
+    private catService: LevelService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
   
   ngOnInit() {
+    this.langService.lang$.subscribe(lang => {
+      this.lang = lang
+      
+      this.route.params.subscribe(params => {
+        this.taskid = params['id']
+        this.categorie = params['cat']
+      })
+      this.router.navigate(['overview/tutorial/modelling/', this.lang, this.categorie, this.taskid])
+      this.catService.getModellingTask(this.taskid, this.lang).subscribe((sub: any) => {
+        this.task = JSON.parse(JSON.stringify(sub))
+        console.log(this.task.question_description)
+      })
+    })
+
     const bpmnLintConfig = {
       "extends": "bpmnlint:recommended"
       // "extends": [
@@ -41,8 +74,8 @@ export class TestModComponent implements OnInit {
       additionalModules: [LintModule]
     });
     
-    this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
-      .subscribe(response => this.modeler.importXML(response));
+    // this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
+    //   .subscribe(response => this.modeler.importXML(response));
   
   }
   

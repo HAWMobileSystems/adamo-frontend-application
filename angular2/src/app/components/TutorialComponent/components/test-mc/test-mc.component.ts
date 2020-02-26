@@ -1,31 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 //import { Level, Helper } from '../../models/level.module';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from '../../services/level.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MultipleChoiceQuest, KeyValuePair } from '../../models/multiplechoice.module';
+import { LanguageService } from './../../services/language.service'
+import { Language } from '../../models/language.enum';
 
 @Component({
   selector: 'app-test-mc',
   templateUrl: './test-mc.component.html',
-  styleUrls: ['./test-mc.component.css']
+  styleUrls: ['./test-mc.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TestMCComponent implements OnInit {
 
   private user_id: String
   private categorie: String
   private question: MultipleChoiceQuest
+  private lang: Language
 
-  constructor(private route: ActivatedRoute, private catService: LevelService, private authService: AuthService) {
+  constructor(private route: ActivatedRoute, 
+    private catService: LevelService, 
+    private authService: AuthService,
+    private langService: LanguageService,
+    private router: Router) {
     this.user_id = authService.getCurrentUser().id
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.categorie = params['cat']
-    })
-    this.catService.getMultipleChoice(this.user_id, this.categorie).subscribe((view: any) => {
-      this.transform(view)
+    this.langService.lang$.subscribe(lang => {
+      this.lang = lang
+      
+      this.route.params.subscribe(params => {
+        this.categorie = params['cat']
+      })
+      this.router.navigate(['overview/tutorial/multiplechoice/', this.lang, this.categorie])
+      this.catService.getMultipleChoice(this.user_id, this.categorie,this.lang).subscribe((view: any) => {
+        this.transform(view)
+      })
     })
   }
 
@@ -53,6 +66,15 @@ export class TestMCComponent implements OnInit {
       }
     }
     console.log(userChoice)
+    this.catService.postMultipleChoice(userChoice)
+    this.question = null
+
+  }
+
+  NextQuestion(){
+    this.catService.getMultipleChoice(this.user_id, this.categorie,this.lang).subscribe((view: any) => {
+      this.transform(view)
+    })
   }
 
 }

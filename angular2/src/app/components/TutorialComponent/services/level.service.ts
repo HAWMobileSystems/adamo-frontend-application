@@ -64,7 +64,7 @@ export class LevelService {
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
 
-    this.httpService
+    return this.httpService
       .post<any>(
         this.BACKEND_URI + "/tg_multiplechoice/solve/",
         {

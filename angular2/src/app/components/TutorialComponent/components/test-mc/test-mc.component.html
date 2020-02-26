@@ -1,7 +1,11 @@
 <div class="container">
 
+    <button type="submit" class="btn btn-secondary" (click)="CheckCorrectness()">Submit</button>
+    <button type="submit" class="btn btn-secondary" (click)="NextQuestion()">Next</button>
+    
     <!-- Question part -->
-    <h1>{{ question.question }}</h1>
+    <div [innerHTML]="question.question | safeHtml"></div>
+    <!-- <h1>{{ question.question }}</h1> -->
 
     <!-- Answers part -->
     <div class="container">
@@ -11,7 +15,6 @@
             </div>
         </div>
     </div>
-    <div class="btn_submit">
-        <button type="submit" class="btn btn-secondary" (click)="CheckCorrectness()">Submit</button>
-    </div>
+    
+    
 </div>
