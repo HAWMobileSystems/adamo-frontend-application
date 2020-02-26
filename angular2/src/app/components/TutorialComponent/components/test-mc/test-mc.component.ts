@@ -25,7 +25,8 @@ export class TestMCComponent implements OnInit {
     private authService: AuthService,
     private langService: LanguageService,
     private router: Router) {
-    this.user_id = authService.getCurrentUser().id
+      this.question = new MultipleChoiceQuest()
+      this.user_id = authService.getCurrentUser().id
   }
 
   ngOnInit() {
@@ -43,7 +44,7 @@ export class TestMCComponent implements OnInit {
   }
 
   transform(json) {
-    this.question = new MultipleChoiceQuest(json[0].id, json[0].question)
+    this.question.setIDandQuest(json[0].id, json[0].question)
 
     json.forEach(entry => {
       this.question.answers.push({key: entry.answerID,value: entry.answer})
@@ -52,7 +53,6 @@ export class TestMCComponent implements OnInit {
 
   CheckCorrectness() {
     var userChoice: KeyValuePair[] = new Array
-    var ansid:number = 1
     userChoice.push({key:"userid",value:this.user_id})
     userChoice.push({key:"questionid", value:this.question.id})
     var elements = (<HTMLInputElement[]><any>document.getElementsByName("user_answers"))
@@ -60,14 +60,17 @@ export class TestMCComponent implements OnInit {
       if (elements[i].type == "checkbox") {
         if (elements[i].checked) {
           // console.log(this.question.answers[i].key)
-          userChoice.push({key:ansid+"",value:this.question.answers[i].key})
-          ansid++
+          userChoice.push({key:this.question.answers[i].key, value:'true'})
+        }else {
+          userChoice.push({key:this.question.answers[i].key, value:'false'})
         }
       }
     }
     console.log(userChoice)
-    this.catService.postMultipleChoice(userChoice)
-    this.question = null
+    this.catService.postMultipleChoice(userChoice).subscribe(resp => {
+      console.log(resp)
+    })
+    // this.question = null
 
   }
 

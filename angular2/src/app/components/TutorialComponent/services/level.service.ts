@@ -64,11 +64,16 @@ export class LevelService {
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
 
+    // user_choice.foreach(entry => {
+    //   console.log(entry)
+    // })
+
     return this.httpService
       .post<any>(
         this.BACKEND_URI + "/tg_multiplechoice/solve/",
         {
-          user_choice: user_choice
+          'userid': user_choice.userid,
+          'questionid': user_choice.questionid
         },
         {
           headers: header,

@@ -8,10 +8,13 @@ export class MultipleChoiceQuest {
     question: any
     answers: KeyValuePair[]
 
-    constructor(id,quest){
+    constructor(){
+        this.answers = new Array
+    }
+
+    setIDandQuest(id,quest){
         this.id = id
         this.question = quest
-        this.answers = new Array
     }
 }
 
