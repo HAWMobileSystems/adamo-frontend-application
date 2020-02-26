@@ -67,9 +67,7 @@ export class TestMCComponent implements OnInit {
       }
     }
     console.log(userChoice)
-    this.catService.postMultipleChoice(userChoice).subscribe(resp => {
-      console.log(resp)
-    })
+    this.catService.postMultipleChoice(userChoice)
     // this.question = null
 
   }

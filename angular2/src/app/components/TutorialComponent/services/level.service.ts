@@ -41,9 +41,10 @@ export class LevelService {
   }
 
   public postIntroFinish(userid, categorie) {
+    console.log("hier ist start post intro finish")
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
-
+    console.log(header)
     this.httpService
       .post<any>(
         this.BACKEND_URI + "/tg_intro/",
@@ -56,7 +57,10 @@ export class LevelService {
           headers: header,
           withCredentials: true
         }
-      )
+      ).subscribe(resp => {
+        // console.log(resp)
+        //todo errorcheck
+      })
 
   }
 
@@ -64,22 +68,19 @@ export class LevelService {
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
 
-    // user_choice.foreach(entry => {
-    //   console.log(entry)
-    // })
-
     return this.httpService
       .post<any>(
         this.BACKEND_URI + "/tg_multiplechoice/solve/",
         {
-          'userid': user_choice.userid,
-          'questionid': user_choice.questionid
+          user_choice: user_choice
         },
         {
           headers: header,
           withCredentials: true
         }
-      )
-
+      ).subscribe(resp => {
+        // console.log(resp)
+        //todo errorcheck
+      })
   }
 }
