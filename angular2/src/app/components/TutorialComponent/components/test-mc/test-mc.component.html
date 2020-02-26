@@ -1,20 +1,23 @@
 <div class="container">
+    <div class="btn-group center-alignment " role="toolbar" style="text-align:center">
+        <button type="submit" class="btn btn-secondary" (click)="CheckCorrectness()">Submit</button>
+        <button type="submit" class="btn btn-secondary" (click)="NextQuestion()">Next</button>
+    </div>
 
-    <button type="submit" class="btn btn-secondary" (click)="CheckCorrectness()">Submit</button>
-    <button type="submit" class="btn btn-secondary" (click)="NextQuestion()">Next</button>
-    
     <!-- Question part -->
-    <div [innerHTML]="question.question | safeHtml"></div>
-    <!-- <h1>{{ question.question }}</h1> -->
+    <div class="questionPadding">
+        <h1 [innerHTML]="question.question | safeHtml"></h1>
+    </div>
 
     <!-- Answers part -->
-    <div class="container">
-        <div *ngFor="let answers of question.answers">
-            <div>
-                <input type="checkbox" name="user_answers"> {{ answers.value }}
-            </div>
+    <div class="container center-alignment" *ngFor="let answers of question.answers">
+        <div class="answer-padding">
+            <input type="checkbox" name="user_answers"> {{ answers.value }}
         </div>
     </div>
-    
-    
+
+    <!-- Hidden part for solution -->
+    <!-- <div *ngFor="let cor of ">
+        
+    </div> -->
 </div>

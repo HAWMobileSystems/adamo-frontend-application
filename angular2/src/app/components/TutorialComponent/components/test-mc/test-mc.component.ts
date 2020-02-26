@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-//import { Level, Helper } from '../../models/level.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from '../../services/level.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -19,6 +18,7 @@ export class TestMCComponent implements OnInit {
   private categorie: String
   private question: MultipleChoiceQuest
   private lang: Language
+  private correct: any
 
   constructor(private route: ActivatedRoute, 
     private catService: LevelService, 
@@ -53,7 +53,8 @@ export class TestMCComponent implements OnInit {
     })
   }
 
-  CheckCorrectness() {
+  async CheckCorrectness() {
+
     var userChoice: KeyValuePair[] = new Array
     userChoice.push({key:"userid",value:this.user_id})
     userChoice.push({key:"questionid", value:this.question.id})
@@ -61,20 +62,22 @@ export class TestMCComponent implements OnInit {
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "checkbox") {
         if (elements[i].checked) {
-          // console.log(this.question.answers[i].key)
           userChoice.push({key:this.question.answers[i].key, value:'true'})
         }else {
           userChoice.push({key:this.question.answers[i].key, value:'false'})
         }
       }
     }
-    console.log(userChoice)
-    this.catService.postMultipleChoice(userChoice).subscribe(resp => {
-      console.log(resp)
-      //todo errorcheck
-    })
-    // this.question = null
+    // console.log(userChoice)
 
+    
+    this.correct = await this.getData(userChoice)
+    
+    console.log(this.correct)
+
+  }
+  getData(userChoice): Promise<any> {
+    return this.catService.postMultipleChoice(userChoice).toPromise();
   }
 
   NextQuestion(){

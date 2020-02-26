@@ -1,0 +1,20 @@
+.custCenter {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.center-alignment {
+  align-content: center;
+}
+
+.questionPadding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center
+}
+
+.answer-padding {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
