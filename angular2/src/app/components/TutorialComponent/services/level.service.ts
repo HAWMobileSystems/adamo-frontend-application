@@ -58,10 +58,9 @@ export class LevelService {
           withCredentials: true
         }
       ).subscribe(resp => {
-        // console.log(resp)
+        console.log("response of intro post: " + resp)
         //todo errorcheck
       })
-
   }
 
   postMultipleChoice(user_choice: any) {
@@ -78,9 +77,6 @@ export class LevelService {
           headers: header,
           withCredentials: true
         }
-      ).subscribe(resp => {
-        // console.log(resp)
-        //todo errorcheck
-      })
+      )
   }
 }

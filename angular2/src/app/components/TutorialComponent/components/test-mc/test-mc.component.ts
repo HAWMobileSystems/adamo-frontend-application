@@ -33,6 +33,8 @@ export class TestMCComponent implements OnInit {
     this.langService.lang$.subscribe(lang => {
       this.lang = lang
       
+      this.question.answers = []
+      
       this.route.params.subscribe(params => {
         this.categorie = params['cat']
       })
@@ -67,15 +69,17 @@ export class TestMCComponent implements OnInit {
       }
     }
     console.log(userChoice)
-    this.catService.postMultipleChoice(userChoice)
+    this.catService.postMultipleChoice(userChoice).subscribe(resp => {
+      console.log(resp)
+      //todo errorcheck
+    })
     // this.question = null
 
   }
 
   NextQuestion(){
-    this.catService.getMultipleChoice(this.user_id, this.categorie,this.lang).subscribe((view: any) => {
-      this.transform(view)
-    })
+    this.question.answers = []
+    this.ngOnInit()
   }
 
 }
