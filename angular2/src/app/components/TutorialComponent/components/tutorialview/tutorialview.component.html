@@ -36,7 +36,7 @@
                 <div class="submodule">
                     <div class="row">
                         <div class="col">
-                            <a [routerLink]="['./../testmc', cat.catName]">Test your knowlege of the
+                            <a [routerLink]="['./../../multiplechoice', lang, cat.catName]">Test your knowlege of the
                                 {{ cat.catName }}</a>
                             <!-- <div *ngIf="cat.intro; else elseBlock"><input type="checkbox" checked="true" style="float:right" disabled></div>
                             <ng-template #elseBlock><input type="checkbox" checked="false" style="float:right" disabled></ng-template> -->
@@ -47,18 +47,18 @@
 
                 <div *ngFor='let modellingtask of cat.tasks'>
                     <ng-container *ngIf="modellingtask.score < 33; else elseif1">
-                        <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                        <a [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
                         <input type="checkbox" style="float:right" disabled>
                     </ng-container>
                     <ng-template #elseif1>
                         <ng-container *ngIf="modellingtask.score > 32 && modellingtask.score < 66; else elseif2">
-                            <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                            <a [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
                             <input type="checkbox" checked="true" style="float:right" disabled>
                         </ng-container>
                     </ng-template>
                     <ng-template #elseif2>
                         <ng-container *ngIf="modellingtask.score > 65">
-                            <a routerLink="./../testmod">{{ modellingtask.name }}</a>
+                            <a [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
                             <input type="checkbox" checked="true" style="float:right" disabled>
                         </ng-container>
                     </ng-template>

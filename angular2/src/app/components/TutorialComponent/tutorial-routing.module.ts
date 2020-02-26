@@ -14,8 +14,8 @@ const routes: Routes = [{
         { path: 'start/:lang', component: TutorialViewComponent },
         // intro/en/Beginner/1
         { path: 'intro/:lang/:cat/:id', component: IntroductionComponent },
-        { path: 'testmc/:cat', component: TestMCComponent },
-        { path: 'testmod/:cat/:id', component: TestModComponent },
+        { path: 'multiplechoice/:lang/:cat', component: TestMCComponent },
+        { path: 'modelling/:lang/:cat/:id', component: TestModComponent },
 
         { path: '', redirectTo: 'start/', pathMatch: 'full' },
     ]
