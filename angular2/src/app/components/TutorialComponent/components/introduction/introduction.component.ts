@@ -88,7 +88,7 @@ export class IntroductionComponent implements OnInit {
   finishIntro() {
     var userid = this.authService.getCurrentUser().id
     this.catService.postIntroFinish(userid, this.categorie)
-    this.router.navigate(["/overview/tutorial/"])
+    this.router.navigate(["/overview/tutorial/start", this.lang])
   }
 
 }
