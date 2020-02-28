@@ -12,7 +12,6 @@ const options = {
 
 @Injectable()
 export class LevelService {
-
   private BACKEND_URI: string = environment.SERVER_HOST + ":" + environment.SERVER_PORT;
   private lang: Language
 
@@ -58,7 +57,7 @@ export class LevelService {
           withCredentials: true
         }
       ).subscribe(resp => {
-        console.log("response of intro post: " + resp)
+        // console.log("response of intro post: " + resp)
         //todo errorcheck
       })
   }
