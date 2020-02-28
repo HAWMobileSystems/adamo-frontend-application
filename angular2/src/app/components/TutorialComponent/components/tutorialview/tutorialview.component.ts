@@ -28,12 +28,12 @@ export class TutorialViewComponent implements OnInit {
   ngOnInit() {
     this.langService.lang$.subscribe(lang => {
       this.lang = lang
-      console.log(this.lang)
+      // console.log(this.lang)
 
       this.router.navigate(["/overview/tutorial/start/", this.lang])
       this.catService.getStartview(this.userID, this.lang).subscribe((view:any) => {
         this.parseIncomingJSON(view)
-        console.log(view)
+        // console.log(view)
       })
     })
   }
@@ -58,6 +58,6 @@ export class TutorialViewComponent implements OnInit {
       })
       this.startview.push(help)
     })
-    console.log(this.startview)
+    // console.log(this.startview)
   }
 }

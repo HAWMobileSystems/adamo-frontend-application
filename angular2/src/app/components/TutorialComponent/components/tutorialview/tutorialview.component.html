@@ -1,6 +1,6 @@
 <!-- Some Text for the Tutorialspage -->
 <div class="container">
-    <h1 class="text-center">Welcome to the BPMN Tutorial</h1>
+    <!-- <h1 class="text-center">Welcome to the BPMN Tutorial</h1>
     <p class="text-center">
         A standard Business Process Model and Notation (BPMN) will provide businesses with the capability of
         understanding their internal business procedures in a graphical notation and will give organizations the ability
@@ -8,7 +8,7 @@
         understanding of the performance collaborations and business transactions between the organizations. This will
         ensure that businesses will understand themselves and participants in their business and will enable
         organizations to adjust to new internal and B2B business circumstances quickly.
-    </p>
+    </p> -->
 
     <mat-accordion>
         <div *ngFor="let cat of startview">
@@ -17,7 +17,7 @@
                     BPMN for {{ cat.catName }}
                 </mat-expansion-panel-header>
 
-                <div class="submodule">
+                <div class="submodule" style="margin-left: 25px">
                     <div class="row">
                         <div class="col">
                             <div *ngIf="cat.intro_status; else elseBlock">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="submodule">
+                <div class="submodule" style="margin-left: 25px">
                     <div class="row">
                         <div class="col">
                             <a [routerLink]="['./../../multiplechoice', lang, cat.catName]">Test your knowlege of the
@@ -45,7 +45,41 @@
                     </div>
                 </div>
 
-                <div *ngFor='let modellingtask of cat.tasks'>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            BPMN Modelling
+                        </mat-expansion-panel-header>
+                        <div class="submodule" *ngFor='let modellingtask of cat.tasks'>
+                            <div class="row">
+                                <div class="col">
+                                    <ng-container *ngIf="modellingtask.score < 33; else elseif1">
+                                        <a
+                                            [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
+                                        <input type="checkbox" style="float:right" disabled>
+                                    </ng-container>
+                                    <ng-template #elseif1>
+                                        <ng-container
+                                            *ngIf="modellingtask.score > 32 && modellingtask.score < 66; else elseif2">
+                                            <a
+                                                [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
+                                            <input type="checkbox" checked="true" style="float:right" disabled>
+                                        </ng-container>
+                                    </ng-template>
+                                    <ng-template #elseif2>
+                                        <ng-container *ngIf="modellingtask.score > 65">
+                                            <a
+                                                [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
+                                            <input type="checkbox" checked="true" style="float:right" disabled>
+                                        </ng-container>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+                <!-- <div *ngFor='let modellingtask of cat.tasks'>
                     <ng-container *ngIf="modellingtask.score < 33; else elseif1">
                         <a [routerLink]="['./../../modelling', lang, cat.catName, modellingtask.id]">{{ modellingtask.name }}</a>
                         <input type="checkbox" style="float:right" disabled>
@@ -62,7 +96,7 @@
                             <input type="checkbox" checked="true" style="float:right" disabled>
                         </ng-container>
                     </ng-template>
-                </div>
+                </div> -->
             </mat-expansion-panel>
             <hr>
         </div>
