@@ -5,6 +5,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { MultipleChoiceQuest, KeyValuePair } from '../../models/multiplechoice.module';
 import { LanguageService } from './../../services/language.service'
 import { Language } from '../../models/language.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-test-mc',
@@ -18,6 +19,8 @@ export class TestMCComponent implements OnInit {
   private categorie: String
   private question: MultipleChoiceQuest
   private lang: Language
+  private subLang: Subscription
+  private subQuestion: Subscription
 
   constructor(private route: ActivatedRoute,
     private catService: LevelService,
@@ -29,23 +32,31 @@ export class TestMCComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.langService.lang$.subscribe(lang => {
+    console.log("ngOnInit()")
+    this.subLang = this.langService.lang$.subscribe(lang => {
       this.lang = lang
 
       this.question.answers = []
 
       this.route.params.subscribe(params => {
         this.categorie = params['cat']
-      })
+      }).unsubscribe()
       this.router.navigate(['overview/tutorial/multiplechoice/', this.lang, this.categorie])
-      this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
+      this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
+        console.log(view)
         this.transform(view)
       })
     })
   }
 
-  transform(json) {
+  ngOnDestroy() {
+    console.log("ngOnDestroy()")
+    this.subQuestion.unsubscribe()
+    this.subLang.unsubscribe()
+  }
 
+  transform(json) {
+    console.log(json)
     this.question.setIDandQuest(json[0].id, json[0].question)
 
     json.forEach(entry => {
@@ -54,7 +65,6 @@ export class TestMCComponent implements OnInit {
   }
 
   async CheckCorrectness() {
-    this.removeSolutionDiv()
 
     var userChoice: KeyValuePair[] = new Array
     userChoice.push({ key: "userid", value: this.user_id })
@@ -69,72 +79,45 @@ export class TestMCComponent implements OnInit {
         }
       }
     }
-    let correct
-    correct = await this.getData(userChoice)
 
-    //first in correct
-    //Object { key: "9c49de1b-55ac-4d90-b5e1-0e1ea74466bb", value: true }
+    let correct = await this.getData(userChoice)
 
-    // console.log(correct)
-    let element = document.getElementById("solution")
-    let counter = 0
     correct.forEach(response => {
-      // console.log(response)
       userChoice.forEach(userresp => {
-        // console.log(userresp)
-        // console.log(userresp.key)
         if (response.value == true) {
           if (userresp.key == response.key) {
-            // var node = document.createElement("div")
-            // node.setAttribute("style", "width: fit-content;background-color: #00CB28;");
-            // let text = this.question.answers.find(x => x.key == response.key).value
-            // node.appendChild(document.createTextNode(String(text)))
-            // element.appendChild(node)
-            // counter++
-
-
-            // console.log(response.key)
             var test = document.getElementById(response.key)
-            // console.log(test)
             test.setAttribute("style", "background-color:#00CB28;")
           }
         } else {
           if (userresp.key == response.key) {
-            // var node = document.createElement("div")
-            // node.setAttribute("style", "width: fit-content;background-color: #FE0000;");
-            // let text = this.question.answers.find(x => x.key == response.key).value
-            // node.appendChild(document.createTextNode(String(text)))
-            // element.appendChild(node)
-
-
             var test = document.getElementById(response.key)
             test.setAttribute("style", "background-color:#FE0000;")
           }
         }
       })
     })
-    // if(counter == correct.length){
-    //   alert("Sie haben diese Frage richtig beantwortet. Sie können zur nächsten Frage weiter")
-    //   console.log(document.getElementById("nextButton").getAttribute("disabled").valueOf())
-    //   document.getElementById("nextButton").setAttribute("disabled", "false")
-    //   console.log(document.getElementById("nextButton").getAttribute("disabled").valueOf())
-    // } else {
-    //   alert("Sie haben diese Frage false beantwortet. Probieren sie es erneut")
-    // }
   }
   getData(userChoice): Promise<any> {
     return this.catService.postMultipleChoice(userChoice).toPromise();
   }
 
-  removeSolutionDiv(){
-    const myNode = document.getElementById("solution");
-    myNode.innerHTML = '';
-  }
-
   NextQuestion() {
     this.question.answers = []
-    this.removeSolutionDiv()
-    this.ngOnInit()
+    this.question.question = ""
+    this.question.id = ""
+
+    this.subQuestion.unsubscribe()
+    this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
+      this.transform(view)
+    })
+
+    if (this.question.answers.length == 0 && this.question.question == "" && this.question.id == "") {
+      alert("Finished all Multiplechoice Questions")
+      this.router.navigate(['overview/tutorial/start', this.lang])
+      this.subQuestion.unsubscribe()
+      return
+    }
   }
 
 }
