@@ -1,23 +1,27 @@
 <div class="container">
-    <div class="btn-group center-alignment " role="toolbar" style="text-align:center">
-        <button type="submit" class="btn btn-secondary" (click)="CheckCorrectness()">Submit</button>
-        <button type="submit" class="btn btn-secondary" (click)="NextQuestion()">Next</button>
+    <div class="btn-group center-alignment" role="toolbar">
+        <!-- <button type="submit" class="btn btn-secondary" (click)="backToOverview()">Back</button> -->
+        <button type="submit" class="btn btn-secondary" style="float: left"
+            (click)="CheckCorrectness()">Validate</button>
+        <button id="nextButton" type="submit" class="btn btn-secondary" style="float: right"
+            (click)="NextQuestion()">Next</button>
     </div>
 
     <!-- Question part -->
-    <div class="questionPadding">
-        <h1 [innerHTML]="question.question | safeHtml"></h1>
+    <div class="question-padding">
+        <div [innerHTML]="question.question | safeHtml"></div>
     </div>
 
     <!-- Answers part -->
-    <div class="container center-alignment" *ngFor="let answers of question.answers">
-        <div class="answer-padding">
-            <input type="checkbox" name="user_answers"> {{ answers.value }}
+    <div class="answerblock">
+        <div *ngFor="let answers of question.answers">
+            <div id="{{ answers.key }}" class="answer-padding">
+                <input type="checkbox" name="user_answers"> {{ answers.value }}
+            </div>
         </div>
     </div>
 
-    <!-- Hidden part for solution -->
-    <!-- <div *ngFor="let cor of ">
-        
-    </div> -->
+    <!-- runtime generated solution part -->
+    <div id="solution">
+    </div>
 </div>
