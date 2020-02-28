@@ -52,7 +52,9 @@ export class TutorialViewComponent implements OnInit {
       json.forEach(entry => {
         if(key === entry.catName){
           help.intro_status = entry.intro
-          help.mult_qs_res = entry.mctest
+          let test = entry.mctest.split("/")
+          help.mult_qs_cor = test[0]
+          help.mult_qs_all = test[1]
           help.tasks.push(new ModellingTask(entry.id, entry.name, entry.score))
         }
       })

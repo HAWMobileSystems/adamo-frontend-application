@@ -5,7 +5,8 @@ export class Startview {
     }
     catName: String
     intro_status: boolean
-    mult_qs_res: any
+    mult_qs_cor: number
+    mult_qs_all: number
     tasks: ModellingTask[]
 }
 
