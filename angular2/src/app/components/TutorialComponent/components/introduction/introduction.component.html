@@ -1,7 +1,7 @@
-<div class="container">
+<!-- <div class="container"> -->
 
     <div class="btn-toolbar justify-content-between btn-alignment" role="toolbar" style="margin:10px">
-        <button type="button" class="btn btn-secondary" (click)="clickPrevious()">Previous</button>
+        <button type="button" class="btn btn-secondary" id="btnPrevious" (click)="clickPrevious()">Previous</button>
         <button type="button" class="btn btn-secondary" id="btnNext" (click)="clickNext()">Next</button>
         <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Finish the
             Introduction</button>
@@ -13,4 +13,4 @@
     <div [innerHTML]="content | safeHtml"></div>
 
     <!-- </div> -->
-</div>
+<!-- </div> -->
