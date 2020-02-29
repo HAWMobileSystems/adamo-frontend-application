@@ -36,6 +36,8 @@ export class TestMCComponent implements OnInit {
     this.subLang = this.langService.lang$.subscribe(lang => {
       this.lang = lang
 
+      this.question.question = ""
+      this.question.id = ""
       this.question.answers = []
 
       this.route.params.subscribe(params => {
@@ -55,13 +57,16 @@ export class TestMCComponent implements OnInit {
     this.subLang.unsubscribe()
   }
 
-  transform(json) {
+  transform(json: any[]) {
     console.log(json)
-    this.question.setIDandQuest(json[0].id, json[0].question)
+    if (json.length != 0) {
+      // this.question.setIDandQuest(json[0].id, json[0].question)
 
-    json.forEach(entry => {
-      this.question.answers.push({ key: entry.answerID, value: entry.answer })
-    })
+      json.forEach(entry => {
+        this.question.setIDandQuest(entry.id, entry.question)
+        this.question.answers.push({ key: entry.answerID, value: entry.answer })
+      })
+    }
   }
 
   async CheckCorrectness() {
@@ -80,7 +85,7 @@ export class TestMCComponent implements OnInit {
       }
     }
 
-    let correct = await this.getData(userChoice)
+    let correct = await this.promisePostMultChoice(userChoice)
 
     correct.forEach(response => {
       userChoice.forEach(userresp => {
@@ -98,26 +103,39 @@ export class TestMCComponent implements OnInit {
       })
     })
   }
-  getData(userChoice): Promise<any> {
-    return this.catService.postMultipleChoice(userChoice).toPromise();
+
+  promisePostMultChoice(userChoice): Promise<any> {
+    return this.catService.postMultipleChoice(userChoice).toPromise()
   }
 
-  NextQuestion() {
+  async NextQuestion() {
     this.question.answers = []
-    this.question.question = ""
-    this.question.id = ""
+    console.log("answers cleared")
+    // this.subLang.unsubscribe()
+    // this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
+    //   console.log(view)
+    //   this.transform(view)
+    // })
+    console.log("before promise get mult choice")
+    var newJson: any = await this.promiseGetMultChoice()
+    console.log("after promise get mult choice")
+    this.transform(newJson)
+    
+    // this.ngOnInit()
+    console.log("next question - " + this.question.question)
+    // document.getElementById("")
 
-    this.subQuestion.unsubscribe()
-    this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
-      this.transform(view)
-    })
-
-    if (this.question.answers.length == 0 && this.question.question == "" && this.question.id == "") {
+    console.log(this.question.answers.length)
+    if (this.question.answers.length == 0) {
       alert("Finished all Multiplechoice Questions")
       this.router.navigate(['overview/tutorial/start', this.lang])
-      this.subQuestion.unsubscribe()
+      // this.subQuestion.unsubscribe()
       return
     }
   }
+
+  promiseGetMultChoice() : Promise<any> {
+    return this.catService.getMultipleChoice(this.user_id,this.categorie, this.lang).toPromise()
+  } 
 
 }
