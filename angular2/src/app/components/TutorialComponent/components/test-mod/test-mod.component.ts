@@ -42,7 +42,9 @@ export class TestModComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router) {
-    this.user_id = authService.getCurrentUser().id
+      // this.task.question_description=""
+      // this.task.question_text=""
+      this.user_id = authService.getCurrentUser().id
   }
   
   ngOnInit() {
@@ -84,14 +86,20 @@ export class TestModComponent implements OnInit {
     
   }
   
-  showSolution() {
+  async showSolution() {
+    let safedXML
     //Send Request to DB, load standart Solution, currently not working
     this.modeler.saveXML({ format: true }, function (err, xml) {
+      safedXML = xml
       console.log("Validate")
       console.log(xml)
-      this.catService.postModellingQuestion(xml,this.user_id,this.taskid);
     });
+    let test: any = await this.getAnswerOfPostModQuest(safedXML)
     //document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
+  }
+
+  getAnswerOfPostModQuest(xml) : Promise<any>{
+    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid).toPromise()
   }
 
 }
