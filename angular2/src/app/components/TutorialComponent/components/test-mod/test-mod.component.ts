@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import Modeler from 'bpmn-js/lib/Modeler';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 // import CustomRules from './CustomRules';
 import LintModule from 'bpmn-js-bpmnlint';
@@ -10,6 +11,7 @@ import { LanguageService } from '../../services/language.service';
 import { LevelService } from '../../services/level.service';
 import { Language } from '../../models/language.enum';
 import { Route, ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
 
 // import bpmnlintConfig from './.bpmnlintrc';
 
@@ -28,6 +30,7 @@ export class TestModComponent implements OnInit {
   modeler: any
   lang: Language
   taskid: string
+  private user_id: String
   categorie: string
 
   private task: Task
@@ -36,8 +39,12 @@ export class TestModComponent implements OnInit {
   constructor(private http: HttpClient,
     private langService: LanguageService,
     private catService: LevelService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router) {
+      // this.task.question_description=""
+      // this.task.question_text=""
+      this.user_id = authService.getCurrentUser().id
   }
   
   ngOnInit() {
@@ -66,7 +73,7 @@ export class TestModComponent implements OnInit {
       // }
     }
     
-    this.modeler = new Modeler({
+    this.modeler = new BpmnModeler({
       container: '#js-canvas',
       linting: {
         bpmnlint: bpmnLintConfig
@@ -74,17 +81,25 @@ export class TestModComponent implements OnInit {
       additionalModules: [LintModule]
     });
     
-    // this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
-    //   .subscribe(response => this.modeler.importXML(response));
-  
+    this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
+      .subscribe(response => this.modeler.importXML(response));
+    
   }
   
-  showSolution() {
+  async showSolution() {
+    let safedXML
     //Send Request to DB, load standart Solution, currently not working
     this.modeler.saveXML({ format: true }, function (err, xml) {
+      safedXML = xml
+      console.log("Validate")
       console.log(xml)
     });
+    let test: any = await this.getAnswerOfPostModQuest(safedXML)
     //document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
+  }
+
+  getAnswerOfPostModQuest(xml) : Promise<any>{
+    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid).toPromise()
   }
 
 }
