@@ -70,7 +70,28 @@ export class LevelService {
       .post<any>(
         this.BACKEND_URI + "/tg_multiplechoice/solve/",
         {
+
           user_choice: user_choice
+        },
+        {
+          headers: header,
+          withCredentials: true
+        }
+      )
+  }
+  
+  postModellingQuestion(xml: any,user_id,qs_id) {
+    console.log("PostModellingQUestion")
+    let header = new HttpHeaders()
+    header.set('Content-Type','application/x-www-form-urlencoded')
+
+    return this.httpService
+      .post<any>(
+        this.BACKEND_URI + "/tg_modelling/solve/",
+        {
+          'userid': user_id,
+          'qs_id': qs_id,
+          'xml': xml
         },
         {
           headers: header,
