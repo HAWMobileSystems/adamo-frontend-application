@@ -95,11 +95,12 @@ export class TestModComponent implements OnInit {
       console.log(xml)
     });
     let test: any = await this.getAnswerOfPostModQuest(safedXML)
+    console.log(test)
     //document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
   }
 
   getAnswerOfPostModQuest(xml) : Promise<any>{
-    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid).toPromise()
+    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid,this.lang).toPromise()
   }
 
 }

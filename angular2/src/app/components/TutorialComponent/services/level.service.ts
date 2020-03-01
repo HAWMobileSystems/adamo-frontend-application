@@ -80,14 +80,14 @@ export class LevelService {
       )
   }
   
-  postModellingQuestion(xml: any,user_id,qs_id) {
+  postModellingQuestion(xml: any,user_id,qs_id,lang) {
     console.log("PostModellingQUestion")
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
 
     return this.httpService
       .post<any>(
-        this.BACKEND_URI + "/tg_modelling/solve/",
+        this.BACKEND_URI + "/tg_modelling/solve/" + lang,
         {
           'userid': user_id,
           'qs_id': qs_id,
