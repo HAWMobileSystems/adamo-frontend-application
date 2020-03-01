@@ -16,7 +16,11 @@ import { AuthService } from '../../../../services/auth.service';
 
 // import bpmnlintConfig from './.bpmnlintrc';
 
-interface Task {
+class Task {
+  constructor(){
+    this.question_description = ""
+    this.question_text = ""
+  }
   question_description: string;
   question_text: string;
 }
@@ -35,6 +39,9 @@ export class TestModComponent implements OnInit {
   private categorie: string
   private duration: number
   private task: Task
+  private welcome:string
+  private btn_menu:string
+  private reached_score:string
 
   //todo remove httpclient
   constructor(private http: HttpClient,
@@ -43,9 +50,9 @@ export class TestModComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router) {
-      // this.task.question_description=""
-      // this.task.question_text=""
+      this.task = new Task()
       this.user_id = authService.getCurrentUser().id
+
   }
   
   ngOnInit() {
@@ -53,6 +60,16 @@ export class TestModComponent implements OnInit {
     this.langService.lang$.subscribe(lang => {
       this.lang = lang
       
+      if(lang=== Language.de){
+        this.welcome = "Willkommen zur BPMN Modellierung"
+        this.btn_menu ="Zurück zum Menü"
+        this.reached_score="Ihre erreichte Punkteanzahl beträgt: "
+      }else{
+        this.welcome = "Welcome to BPMN Modelling"
+        this.btn_menu = "Return to menu"
+        this.reached_score="Your reached Score is:"
+      }
+
       this.route.params.subscribe(params => {
         this.taskid = params['id']
         this.categorie = params['cat']
@@ -87,9 +104,16 @@ export class TestModComponent implements OnInit {
       .subscribe(response => this.modeler.importXML(response));
     
   }
-  
+
+  backToMenu() {
+    this.router.navigate(["/overview/tutorial/start", this.lang])
+  }
+
+  // pressedAlready:boolean = false;
   async showSolution() {
-    this.duration = Date.now() - this.duration
+    // if(!this.pressedAlready){
+      this.duration = Date.now() - this.duration
+    // }
     let safedXML
     //Send Request to DB, load standart Solution, currently not working
     this.modeler.saveXML({ format: true }, function (err, xml) {
@@ -103,6 +127,8 @@ export class TestModComponent implements OnInit {
     // console.log(test.score)
     document.getElementById("reached_score").textContent="You reached a score of " + test.score
     document.getElementById("solution_svg").innerHTML=test.svg;
+    // this.pressedAlready = true
+    this.duration = Date.now()
   }
 
   getAnswerOfPostModQuest(xml) : Promise<any>{
