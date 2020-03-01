@@ -33,13 +33,11 @@ export class TutorialViewComponent implements OnInit {
       this.router.navigate(["/overview/tutorial/start/", this.lang])
       this.catService.getStartview(this.userID, this.lang).subscribe((view:any) => {
         this.parseIncomingJSON(view)
-        // console.log(view)
       })
     })
   }
 
   parseIncomingJSON(json){
-
     this.startview = []
 
     let keys_catName = new Set()
@@ -51,15 +49,19 @@ export class TutorialViewComponent implements OnInit {
       let help = new Startview(key)
       json.forEach(entry => {
         if(key === entry.catName){
+          help.catIdentifier = entry.catIdentifier
           help.intro_status = entry.intro
           let test = entry.mctest.split("/")
           help.mult_qs_cor = test[0]
           help.mult_qs_all = test[1]
-          help.tasks.push(new ModellingTask(entry.id, entry.name, entry.score))
+          help.tasks.push(new ModellingTask(entry.id, entry.name, entry.score,entry.identifier))
         }
       })
+      help.tasks = help.tasks.sort((a,b) => a.identifier-b.identifier)
+
       this.startview.push(help)
     })
-    // console.log(this.startview)
+    this.startview.sort((a,b) => a.catIdentifier-b.catIdentifier)
+    console.log(this.startview)
   }
 }

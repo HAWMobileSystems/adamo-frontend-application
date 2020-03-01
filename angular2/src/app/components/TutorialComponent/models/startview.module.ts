@@ -4,6 +4,7 @@ export class Startview {
         this.tasks = new Array
     }
     catName: String
+    catIdentifier: number
     intro_status: boolean
     mult_qs_cor: number
     mult_qs_all: number
@@ -12,12 +13,14 @@ export class Startview {
 
 export class ModellingTask {
 
-    constructor(id, name, score){
+    constructor(id, name, score, identifier){
         this.id = id
         this.name = name
         this.score = score
+        this.identifier = identifier
     }
     id: String
+    identifier: number
     name: String
-    score: Number
+    score: number
 }
