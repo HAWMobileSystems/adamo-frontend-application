@@ -95,8 +95,11 @@ export class TestModComponent implements OnInit {
       console.log(xml)
     });
     let test: any = await this.getAnswerOfPostModQuest(safedXML)
-    console.log(test)
-    //document.getElementById("solution_container").innerHTML='<object type ="img" data=""></object>';
+    // console.log(test)
+    // console.log(test.svg)
+    // console.log(test.score)
+    document.getElementById("reached_score").textContent="You reached a score of " + test.score
+    document.getElementById("solution_svg").innerHTML=test.svg;
   }
 
   getAnswerOfPostModQuest(xml) : Promise<any>{

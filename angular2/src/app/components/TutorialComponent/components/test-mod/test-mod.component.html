@@ -1,6 +1,6 @@
 <h1>Welcome to BPMN Modelling</h1>
 <hr>
-<div class="split-example" style="height: 600px;">
+<div class="split-example" style="height: 800px;">
     <as-split direction="horizontal" restrictMove="true" [useTransition]="true">
         <as-split-area unit="percent" size="30" minSize="20" maxSize="40">
             <!--unit="percent" [restrictMove]="restrictMove" gutterSize="30"-->
@@ -18,10 +18,12 @@
                 </as-split-area>
                 <as-split-area unit="percent" size="30">
                     <button (click)=showSolution()>Solution</button>
-                    Please note that this resembles one of possible many Solutions.
-                    If your Solution differs from the given one, compare the modules carefully.
-                    Please do not validate your Sultion until you are satisfied with your result.
-                    <div id="solution_container"></div>
+                    <div id="reached_score">
+
+                    </div>
+                    <div id="solution_svg">
+
+                    </div>
                 </as-split-area>
             </as-split>
         </as-split-area>
