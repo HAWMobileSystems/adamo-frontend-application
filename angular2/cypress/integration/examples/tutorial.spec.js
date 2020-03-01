@@ -20,8 +20,15 @@ describe('Firestarter', () => {
     const waitingTimeMiddle = 500;
     const waitingTimeShort = 250;
 
+    var pageCounter = 2;
+
     Cypress.Commands.add('validateIntroductionPages', () => {
         cy.wait(500);
+
+        cy.log('Validate URL');
+        cy.url().should('contain', pageCounter);
+        pageCounter++;
+
         // Validate buttons
         cy.log('Validate Buttons')
         cy.get('#btnPrevious').contains('Previous');
@@ -43,7 +50,6 @@ describe('Firestarter', () => {
         cy.get('tbody > :nth-child(2) > :nth-child(4)').should('not.be.empty');
 
         // Switch language from en to de
-        cy.get('select').select('en').should('have.value', 'en');
         cy.log('Language EN -> DE')
         cy.get('select').select('de').should('have.value', 'de');
         cy.wait(waitingTimeUltra);
@@ -93,7 +99,7 @@ describe('Firestarter', () => {
     });
 
     // Logging in again after clicking on "DAMO" Icon
-    it.skip('Click "DAMO-Icon', () => {
+    it.skip('Navigate to Tutorial', () => {
         cy.contains('DAMO').click();
 
         // Login again'
@@ -105,18 +111,6 @@ describe('Firestarter', () => {
         // click "Tutorial" Menubar-Option again'
         cy.get('.navbar-burger').click()
         cy.get('.navbar-menu').contains('Tutorial').click();
-    });
-
-    // CAUTION: DO NOT SKIP!!!
-    //--- Testing order of expansion-panel items BPMN for Beginner, BPMN for Advanced and BPMN for Professional
-    // RETURN: FALSE --- Because order is incorrect
-    it.skip('Getting the first element in mat-expension-panel: Should be "Professional"', () => {
-        cy.wait(500);
-        cy.get('.container > .mat-accordion > .ng-star-inserted').eq(2).should('contain','BPMN for Beginner');
-        // Getting the first element in mat-expension-panel: Should be "Advanced
-        cy.get('.container > .mat-accordion > .ng-star-inserted').eq(1).should('contain','BPMN for Advanced');
-        //Getting the first element in mat-expension-panel: Should be "Beginner
-        cy.get('.container > .mat-accordion > .ng-star-inserted').eq(0).should('contain','BPMN for Professional');
     });
 
     // --- Clicking on Element "BPMN for Beginner and checking order of elements"
@@ -142,19 +136,14 @@ describe('Firestarter', () => {
 
 
     // --- BPMN BEGINNER - INTRODUCTION INTO BEGINNER ---
-    it('Validating BPMN BEGINNER - INTRODUCTION INTO BEGINNER', () => {
+    it.skip('Validating BPMN BEGINNER - INTRODUCTION INTO BEGINNER', () => {
         // Clicking anker 'Introduction into Beginner'
         cy.wait(waitingTimeLong);
         // Button "BPMN for Beginner" --- click
         cy.contains('BPMN for Beginner').click();
 
-        cy.log('Validate checkbox');
-        cy.get('.row > .col > input.ng-star-inserted');
-        //cy.get('.ng-star-inserted > input')//.should('be.enabled');
-
-        //cy.get('.ng-star-inserted > a').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Beginner').click();
-        
+        cy.log('Click Introduction into Beginner');
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Beginner').click();
 
         // Cancel Introduction
         cy.log('Cancel Introduction')
@@ -162,8 +151,11 @@ describe('Firestarter', () => {
         cy.wait(2000)
         cy.log('Reselect Introduction')
         cy.contains('BPMN for Beginner').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Beginner').click();
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Beginner').click();
         
+        cy.log('Validate URL');
+        cy.url().should('contain', '/1')
+
         // Validate buttons
         cy.log('Validate Buttons')
         cy.get('#btnPrevious').contains('Previous');
@@ -254,6 +246,10 @@ describe('Firestarter', () => {
         cy.wait(waitingTimeLong);
         //Validating Button Finish
         cy.get('#btnFinish').click();
+
+        cy.log('Check for checkbox checked')
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').parent().find('input').should('have.attr','checked');
+
         
     });
 
@@ -265,10 +261,13 @@ describe('Firestarter', () => {
         // Button "BPMN for Beginner" --- click
         cy.contains('BPMN for Advanced').click();
 
+        // Alternatives to Click into Advanced
         //cy.contains('BPMN for Advanced').find('.row > .col > a.ng-star-inserted').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Advanced').click();
-        //cy.get('.mat-accordion').find('');
-        //cy.get('#cdk-accordion-child-4 > :nth-child(1) > :nth-child(1) > .row > .col > a.ng-star-inserted').click();
+        //cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').click();
+
+        cy.log('Click Introduction into Advanced');
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').click();
+
 
         // Cancel Introduction
         cy.log('Cancel Introduction')
@@ -277,7 +276,10 @@ describe('Firestarter', () => {
         cy.log('Reselect Introduction')
         cy.contains('BPMN for Advanced').click();
         //cy.get('.ng-star-inserted > a').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Advanced').click();
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').click();
+        
+        cy.log('Validate URL');
+        cy.url().should('contain', '/1')
 
         // Validate buttons
         cy.log('Validate Buttons')
@@ -322,7 +324,7 @@ describe('Firestarter', () => {
         // Back to language EN
         cy.log('Language DE -> EN');
         cy.get('select').select('en').should('have.value', 'en');
-        cy.wait(waitingTimeLong);
+        cy.wait(waitingTimeUltra);
 
         // Go to page 2
         cy.get('#btnNext').click();
@@ -370,20 +372,23 @@ describe('Firestarter', () => {
         //Validating Button Finish
         cy.get('#btnFinish').click();
 
+        cy.log('Check for checkbox checked')
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').parent().find('input').should('have.attr','checked');
+
+
         
         
     });
 
     // --- BPMN PROFESSIONAL - INTRODUCTION INTO PROFESSIONAL --- 
-    it.skip('Validating BPMN PROFESSIONAL - INTRODUCTION INTO PROFESSIONAL', () => {
+    it('Validating BPMN PROFESSIONAL - INTRODUCTION INTO PROFESSIONAL', () => {
         // Clicking anker 'Introduction into PROFESSIONAL'
         cy.wait(waitingTimeLong);
         // Button "BPMN for PROFESSIONAL" --- click
         cy.contains('BPMN for Professional').click();
-        //cy.contains('BPMN for Advanced').find('.row > .col > a.ng-star-inserted').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Professional').click();
-        //cy.get('.mat-accordion').find('');
-        //cy.get('#cdk-accordion-child-4 > :nth-child(1) > :nth-child(1) > .row > .col > a.ng-star-inserted').click();
+        
+        cy.log('Click Introduction into Professional');
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Professional').click();
 
         // Cancel Introduction
         cy.log('Cancel Introduction')
@@ -391,8 +396,13 @@ describe('Firestarter', () => {
         cy.wait(2000)
         cy.log('Reselect Introduction')
         cy.contains('BPMN for Professional').click();
-        //cy.get('.ng-star-inserted > a').click();
-        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Professional').click();
+        cy.log('Click Introduction into Professional');
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Professional').click();
+        // Alternative to Click
+        //cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Professional').click();
+
+        cy.log('Validate URL');
+        cy.url().should('contain', '/1')
 
         // Validate buttons
         cy.log('Validate Buttons')
@@ -469,7 +479,10 @@ describe('Firestarter', () => {
         cy.wait(waitingTimeLong);
         //Validating Button Finish
         cy.get('#btnFinish').click();
-        
+
+        cy.log('Check for checkbox checked')
+        cy.get('.row > .col > .ng-star-inserted > a').contains('Introduction into Advanced').parent().find('input').should('have.attr','checked');
+
     });
 
 
