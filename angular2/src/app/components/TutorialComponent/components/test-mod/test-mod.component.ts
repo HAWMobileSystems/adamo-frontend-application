@@ -13,6 +13,7 @@ import { Language } from '../../models/language.enum';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 
+
 // import bpmnlintConfig from './.bpmnlintrc';
 
 interface Task {
@@ -28,11 +29,11 @@ interface Task {
 
 export class TestModComponent implements OnInit {
   modeler: any
-  lang: Language
-  taskid: string
+  private lang: Language
+  private taskid: string
   private user_id: String
-  categorie: string
-
+  private categorie: string
+  private duration: number
   private task: Task
 
   //todo remove httpclient
@@ -48,6 +49,7 @@ export class TestModComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.duration = Date.now()
     this.langService.lang$.subscribe(lang => {
       this.lang = lang
       
@@ -87,6 +89,7 @@ export class TestModComponent implements OnInit {
   }
   
   async showSolution() {
+    this.duration = Date.now() - this.duration
     let safedXML
     //Send Request to DB, load standart Solution, currently not working
     this.modeler.saveXML({ format: true }, function (err, xml) {
@@ -103,7 +106,7 @@ export class TestModComponent implements OnInit {
   }
 
   getAnswerOfPostModQuest(xml) : Promise<any>{
-    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid,this.lang).toPromise()
+    return this.catService.postModellingQuestion(xml,this.user_id,this.taskid,this.lang,this.duration).toPromise()
   }
 
 }

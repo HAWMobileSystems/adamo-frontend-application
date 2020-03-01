@@ -31,6 +31,7 @@ export class LevelService {
   }
 
   public getMultipleChoice(userid, categorie, lang) {
+    console.log(this.BACKEND_URI + "/tg_multiplechoice/getMultiplechoice/" + userid + "/" + categorie + "/" + lang)
     return this.httpService.get(this.BACKEND_URI + "/tg_multiplechoice/getMultiplechoice/" + userid + "/" + categorie + "/" + lang, options)
   }
 
@@ -80,7 +81,7 @@ export class LevelService {
       )
   }
   
-  postModellingQuestion(xml: any,user_id,qs_id,lang) {
+  postModellingQuestion(xml: any,user_id,qs_id,lang,duration) {
     console.log("PostModellingQUestion")
     let header = new HttpHeaders()
     header.set('Content-Type','application/x-www-form-urlencoded')
@@ -91,7 +92,8 @@ export class LevelService {
         {
           'userid': user_id,
           'qs_id': qs_id,
-          'xml': xml
+          'xml': xml,
+          'duration': duration
         },
         {
           headers: header,
