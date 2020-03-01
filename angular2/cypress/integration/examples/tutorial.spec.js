@@ -15,7 +15,7 @@ describe('Firestarter', () => {
     const passWrong = '123123123'
 
     // Start front end
-    const waitingTimeUltra = 2000;
+    const waitingTimeUltra = 1500;
     const waitingTimeLong = 1000;
     const waitingTimeMiddle = 500;
     const waitingTimeShort = 250;
@@ -46,7 +46,7 @@ describe('Firestarter', () => {
         cy.get('select').select('en').should('have.value', 'en');
         cy.log('Language EN -> DE')
         cy.get('select').select('de').should('have.value', 'de');
-        cy.wait(waitingTimeLong);
+        cy.wait(waitingTimeUltra);
 
         // Validate Table header for content - DE
         cy.log('Validate Table Header')
@@ -142,12 +142,19 @@ describe('Firestarter', () => {
 
 
     // --- BPMN BEGINNER - INTRODUCTION INTO BEGINNER ---
-    it.skip('Validating BPMN BEGINNER - INTRODUCTION INTO BEGINNER', () => {
+    it('Validating BPMN BEGINNER - INTRODUCTION INTO BEGINNER', () => {
         // Clicking anker 'Introduction into Beginner'
         cy.wait(waitingTimeLong);
         // Button "BPMN for Beginner" --- click
         cy.contains('BPMN for Beginner').click();
-        cy.get('.ng-star-inserted > a').click();
+
+        cy.log('Validate checkbox');
+        cy.get('.row > .col > input.ng-star-inserted');
+        //cy.get('.ng-star-inserted > input')//.should('be.enabled');
+
+        //cy.get('.ng-star-inserted > a').click();
+        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Beginner').click();
+        
 
         // Cancel Introduction
         cy.log('Cancel Introduction')
@@ -155,8 +162,8 @@ describe('Firestarter', () => {
         cy.wait(2000)
         cy.log('Reselect Introduction')
         cy.contains('BPMN for Beginner').click();
-        cy.get('.ng-star-inserted > a').click();
-
+        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Beginner').click();
+        
         // Validate buttons
         cy.log('Validate Buttons')
         cy.get('#btnPrevious').contains('Previous');
@@ -252,11 +259,12 @@ describe('Firestarter', () => {
 
 
     // --- BPMN ADVANCED - INTRODUCTION INTO ADVANCED --- 
-    it('Validating BPMN ADVANCED - INTRODUCTION INTO ADVANCED', () => {
+    it.skip('Validating BPMN ADVANCED - INTRODUCTION INTO ADVANCED', () => {
         // Clicking anker 'Introduction into Advanced'
         cy.wait(waitingTimeLong);
         // Button "BPMN for Beginner" --- click
         cy.contains('BPMN for Advanced').click();
+
         //cy.contains('BPMN for Advanced').find('.row > .col > a.ng-star-inserted').click();
         cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Advanced').click();
         //cy.get('.mat-accordion').find('');
@@ -351,6 +359,106 @@ describe('Firestarter', () => {
         cy.validateIntroductionPages();
         //Go to page 13
         cy.log('Go to page 12')
+        cy.validateIntroductionPages();
+
+        //Validationg Back-Button
+        cy.get('#btnPrevious').click();
+        cy.wait(waitingTimeLong);
+        //Validating Next-Button
+        cy.get('#btnNext').click
+        cy.wait(waitingTimeLong);
+        //Validating Button Finish
+        cy.get('#btnFinish').click();
+
+        
+        
+    });
+
+    // --- BPMN PROFESSIONAL - INTRODUCTION INTO PROFESSIONAL --- 
+    it.skip('Validating BPMN PROFESSIONAL - INTRODUCTION INTO PROFESSIONAL', () => {
+        // Clicking anker 'Introduction into PROFESSIONAL'
+        cy.wait(waitingTimeLong);
+        // Button "BPMN for PROFESSIONAL" --- click
+        cy.contains('BPMN for Professional').click();
+        //cy.contains('BPMN for Advanced').find('.row > .col > a.ng-star-inserted').click();
+        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Professional').click();
+        //cy.get('.mat-accordion').find('');
+        //cy.get('#cdk-accordion-child-4 > :nth-child(1) > :nth-child(1) > .row > .col > a.ng-star-inserted').click();
+
+        // Cancel Introduction
+        cy.log('Cancel Introduction')
+        cy.get('#btnCancel').click()
+        cy.wait(2000)
+        cy.log('Reselect Introduction')
+        cy.contains('BPMN for Professional').click();
+        //cy.get('.ng-star-inserted > a').click();
+        cy.get('.ng-star-inserted').children().find('.row > .col > a.ng-star-inserted').contains('Introduction into Professional').click();
+
+        // Validate buttons
+        cy.log('Validate Buttons')
+        cy.get('#btnPrevious').contains('Previous');
+        cy.get('#btnNext').contains('Next');
+        cy.get('#btnCancel').contains('Abort Introduction');
+
+        // Validate Table header for content - EN 
+        cy.log('Validate Table Header')
+        cy.get(':nth-child(1) > p > strong').contains('NOTATION');
+        cy.get(':nth-child(2) > p > strong').contains('ELEMENT NAME');
+        cy.get(':nth-child(3) > p > strong').contains('DESCRIPTION');
+        cy.get(':nth-child(4) > p > strong').contains('BEST PRACTICE');
+
+        // Validate Table second row for content - EN
+        cy.log('Validate Table Content')
+        cy.get('tbody > :nth-child(2) > :nth-child(1)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(2)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(3)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(4)').should('not.be.empty');
+
+        // Switch language from en to de
+        cy.get('select').select('en').should('have.value', 'en');
+        cy.log('Language EN -> DE')
+        cy.get('select').select('de').should('have.value', 'de');
+        cy.wait(waitingTimeLong);
+
+        // Validate Table header for content - DE
+        cy.log('Validate Table Header')
+        cy.get(':nth-child(1) > p > strong').contains('NOTATION');
+        cy.get(':nth-child(2) > p > strong').contains('ELEMENT NAME');
+        cy.get(':nth-child(3) > p > strong').contains('BESCHREIBUNG');
+        cy.get(':nth-child(4) > p > strong').contains('BEST PRACTICE');
+
+        // Validate Table second row for content - DE
+        cy.log('Validate Table Content')
+        cy.get('tbody > :nth-child(2) > :nth-child(1)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(2)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(3)').should('not.be.empty');
+        cy.get('tbody > :nth-child(2) > :nth-child(4)').should('not.be.empty');
+
+        // Back to language EN
+        cy.log('Language DE -> EN');
+        cy.get('select').select('en').should('have.value', 'en');
+        cy.wait(waitingTimeLong);
+
+        // Go to page 2
+        cy.get('#btnNext').click();
+
+        //Go to page 3
+        cy.log('Go to page 2')
+        cy.validateIntroductionPages();
+        //Go to page 4
+        cy.log('Go to page 3')
+        cy.validateIntroductionPages();
+        //Go to page 5
+        cy.log('Go to page 4')
+        cy.validateIntroductionPages();
+        //Go to page 6
+        cy.log('Go to page 5')
+        cy.validateIntroductionPages();
+        //Go to page 7
+        cy.log('Go to page 6')
+        cy.validateIntroductionPages();
+        //Go to page 8
+        cy.log('Go to page 7')
         cy.validateIntroductionPages();
 
         //Validationg Back-Button
