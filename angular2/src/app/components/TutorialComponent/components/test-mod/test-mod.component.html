@@ -10,14 +10,22 @@
         <as-split-area unit="percent" size="70">
             <as-split direction="vertical" restrictMove="true">
                 <as-split-area unit="percent" size="70">
-                    <div class="content" id="js-drop-zone" style="height: 90%">
+                    <div class="content" id="js-drop-zone" style="height: 100%; border: black 1px solid">
                         <span class="border">
-                            <div class="canvas" id="js-canvas" style="height: 90%"></div>
+                            <div class="canvas" id="js-canvas" style="height: 100%"></div>
                         </span>
                     </div>
                 </as-split-area>
                 <as-split-area unit="percent" size="30">
-                    <button (click)=showSolution()>Solution</button>
+
+                        <ng-container> 
+                                <div *ngIf ="lang == 'de'; else langEN">
+                                    <button (click)=showSolution()>Lösung</button>
+                                </div>
+                                <ng-template #langEN>
+                                    <button (click)=showSolution()>Solution</button>
+                                </ng-template>
+                        </ng-container>
                     <div id="reached_score">
 
                     </div>

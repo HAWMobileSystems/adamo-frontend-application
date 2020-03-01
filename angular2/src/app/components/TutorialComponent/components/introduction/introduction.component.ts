@@ -23,7 +23,7 @@ export class IntroductionComponent implements OnInit {
   private finish: boolean = false
   private url: any
   
-  lang: Language
+  private lang: Language
   subscription:Subscription;
 
   constructor(
