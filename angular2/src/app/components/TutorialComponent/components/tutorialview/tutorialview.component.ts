@@ -16,7 +16,16 @@ export class TutorialViewComponent implements OnInit {
   private userID: String
   private lang: Language
   private startview: Startview[] = new Array()
+  
+  //Strings for accordion 
+  private BPMN: string 
+  private Intro: string
+  private Test: string
+  private Model: string
 
+
+
+  
   constructor(
     private catService: LevelService, 
     private authService: AuthService, 
@@ -29,6 +38,17 @@ export class TutorialViewComponent implements OnInit {
     this.langService.lang$.subscribe(lang => {
       this.lang = lang
       // console.log(this.lang)
+      if(lang === Language.de){
+        this.BPMN = "BPMN für"
+        this.Intro ="Einführung für"
+        this.Test = "Teste dein Wissen für"
+        this.Model ="Modellierung"
+      }else{
+        this.BPMN ="BPMN for"
+        this.Intro ="Introduction into"
+        this.Test ="Test your knowledge of the"
+        this.Model ="Modelling"
+      }
 
       this.router.navigate(["/overview/tutorial/start/", this.lang])
       this.catService.getStartview(this.userID, this.lang).subscribe((view:any) => {
@@ -38,6 +58,7 @@ export class TutorialViewComponent implements OnInit {
   }
 
   parseIncomingJSON(json){
+    console.log(json)
     this.startview = []
 
     let keys_catName = new Set()
@@ -62,6 +83,10 @@ export class TutorialViewComponent implements OnInit {
       this.startview.push(help)
     })
     this.startview.sort((a,b) => a.catIdentifier-b.catIdentifier)
+
+    this.startview.forEach(entry => {
+      console.log(entry.catName + " mit id: " +entry.catIdentifier)
+    })
     console.log(this.startview)
   }
 }

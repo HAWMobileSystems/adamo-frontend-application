@@ -29,7 +29,7 @@ export class LevelService {
     console.log(this.BACKEND_URI + "/intro/" + cat + "/" + page + "/" + lang)
     return this.httpService.get(this.BACKEND_URI + "/intro/" + cat + "/" + page + "/" + lang, options)
   }
-
+  
   public getMultipleChoice(userid, categorie, lang) {
     console.log(this.BACKEND_URI + "/tg_multiplechoice/getMultiplechoice/" + userid + "/" + categorie + "/" + lang)
     return this.httpService.get(this.BACKEND_URI + "/tg_multiplechoice/getMultiplechoice/" + userid + "/" + categorie + "/" + lang, options)
@@ -62,6 +62,8 @@ export class LevelService {
         //todo errorcheck
       })
   }
+
+
 
   postMultipleChoice(user_choice: any) {
     let header = new HttpHeaders()
