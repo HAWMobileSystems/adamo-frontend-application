@@ -3,8 +3,10 @@ import { Http, Headers } from '@angular/http';
 import { Observable, of } from 'rxjs';
 import { COMMANDS } from './commandstore.service';
 
-import {faChevronLeft, faChevronRight} from '@fortawesome/fontawesome-free-solid';
+import {faChevronLeft, faChevronRight, faSignOutAlt} from '@fortawesome/fontawesome-free-solid';
+import { faTools } from '@fortawesome/free-solid-svg-icons'
 import fontawesome from '@fortawesome/fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core'
 
 export class Link {
     constructor(public readonly href: string, public readonly text?: string, public readonly rel?: string) {
@@ -17,7 +19,8 @@ export class Link {
 export class BPMNStore {
 
     constructor(private http: Http) {
-        fontawesome.library.add(faChevronLeft, faChevronRight);
+        library.add(faTools)
+        fontawesome.library.add(faChevronLeft, faChevronRight, faSignOutAlt);
     }
 
     // public listDiagrams(): Observable<Link[]> {

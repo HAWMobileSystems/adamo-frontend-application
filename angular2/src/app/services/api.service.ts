@@ -354,8 +354,8 @@ export class ApiService {
     return this.http.post(
       this.BACKEND_URI + "/model/create",
       {
-        model_name: modelname,
-        model_xml: modelxml
+        modelName: modelname,
+        modelXML: modelxml
       },
       options
     );
