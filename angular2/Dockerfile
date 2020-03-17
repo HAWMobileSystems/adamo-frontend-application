@@ -1,14 +1,16 @@
 
-FROM node:10-alpine as builder
-RUN apk add --no-cache git
-COPY package.json package-lock.json ./
-RUN yarn && mkdir /ng-app && mv ./node_modules ./ng-app
+FROM node:10 as builder
 WORKDIR /ng-app
+COPY package.json package-lock.json ./
+RUN npm ci
+# RUN mkdir /ng-app
+# RUN mv ./node_modules ./ng-app
 COPY . .
-RUN yarn docker:build:dev
+RUN npm run docker:build:dev
 
 ### STAGE 2: Setup ###
 FROM nginx:alpine
+USER node
 COPY nginx/default.conf /etc/nginx/conf.d/
 
 RUN rm -rf /usr/share/nginx/html/*

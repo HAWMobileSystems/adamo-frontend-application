@@ -1,0 +1,7 @@
+angular2/.node_modules
+postgres
+postgres-data
+mqtt
+
+.vscode
+.git
