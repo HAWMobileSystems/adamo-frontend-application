@@ -1,0 +1,1 @@
+docker run adamo-application/latest

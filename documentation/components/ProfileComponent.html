@@ -1,0 +1,865 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular2-webpack documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">angular2-webpack documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>ProfileComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/ProfileComponent/profile.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>profile-management</code></td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./profile.template.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#newProfile">newProfile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#profiles">profiles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#selected">selected</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAllProfiles">getAllProfiles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#profileCreate">profileCreate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#profileDelete">profileDelete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#profileUpdate">profileUpdate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(apiService: <a href="../injectables/ApiService.html">ApiService</a>, snackbarService: <a href="../injectables/SnackBarService.html">SnackBarService</a>, mqttService: <a href="../injectables/AdamoMqttService.html">AdamoMqttService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:14</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>apiService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackbarService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SnackBarService.html" target="_self" >SnackBarService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mqttService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AdamoMqttService.html" target="_self" >AdamoMqttService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllProfiles"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getAllProfiles
+                        </b>
+                        <a href="#getAllProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllProfiles()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="22"
+                            class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:22</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileCreate"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            profileCreate
+                        </b>
+                        <a href="#profileCreate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>profileCreate()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileDelete"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            profileDelete
+                        </b>
+                        <a href="#profileDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>profileDelete()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:120</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileUpdate"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            profileUpdate
+                        </b>
+                        <a href="#profileUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>profileUpdate()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:65</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="newProfile"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            newProfile</b>
+                            <a href="#newProfile"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="profiles"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            profiles</b>
+                            <a href="#profiles"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:14</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selected"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            selected</b>
+                            <a href="#selected"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/ProfileComponent/profile.component.ts:12</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { ApiService } from &#x27;../../services/api.service&#x27;;
+
+import { AdamoMqttService } from &#x27;../../services/mqtt.service&#x27;;
+import { SnackBarService } from &#x27;../../services/snackbar.service&#x27;;
+
+@Component({
+  selector: &#x27;profile-management&#x27;,
+  templateUrl: &#x27;./profile.template.html&#x27;
+})
+export class ProfileComponent {
+  private selected: any;
+  private newProfile: any;
+  private profiles: any;
+
+  constructor(
+    private apiService: ApiService,
+    private snackbarService: SnackBarService,
+    private mqttService: AdamoMqttService
+  ) {}
+
+  public ngOnInit() {
+    //defines the structure for a new empty profile
+    this.newProfile &#x3D; {
+      rid: &#x27;&#x27;,
+      profile: &#x27;&#x27;,
+      read: &#x27;&#x27;,
+      write: &#x27;&#x27;,
+      admin: &#x27;&#x27;
+    };
+
+    this.getAllProfiles();
+
+    this.mqttService.getClient().subscribe(&#x27;administrations/Profile&#x27;);
+    const i &#x3D; this;
+    this.mqttService.getClient().on(&#x27;message&#x27;, (topic: any, message: any) &#x3D;&gt; {
+      if (topic.startsWith(&#x27;administrations/Profile&#x27;)) {
+        console.log(&#x27;Test from remote:&#x27; + message.toString());
+        i.getAllProfiles();
+      }
+    });
+  }
+
+  //gets a list of all profiles from DB
+  public getAllProfiles() {
+    this.profiles &#x3D; [];
+
+    this.apiService.getAllProfiles().subscribe(
+      (response: { success: any; data: any; _body: string }) &#x3D;&gt; {
+        if (response.success) {
+          this.profiles &#x3D; response.data;
+          this.selected &#x3D; null;
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) &#x3D;&gt; {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
+  }
+
+  //updates the selected profile
+  public profileUpdate() {
+    this.apiService
+      .profileUpdate(
+        this.selected.rid,
+        this.selected.profile,
+        this.selected.read,
+        this.selected.write,
+        this.selected.admin
+      )
+      .subscribe(
+        (response: { success: any; status: string; _body: string }) &#x3D;&gt; {
+          if (response.success) {
+            this.mqttService
+              .getClient()
+              .publish(&#x27;administrations/Profile&#x27;, JSON.stringify({}));
+            this.snackbarService.success(response.status);
+          } else {
+            this.snackbarService.error(response._body);
+          }
+        },
+        (error: { _body: string }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        }
+      );
+  }
+
+  //creates a new profile
+  public profileCreate() {
+    this.apiService
+      .profileCreate(
+        this.selected.profile,
+        this.selected.read,
+        this.selected.write,
+        this.selected.admin
+      )
+      .subscribe(
+        (response: { success: any; status: string; _body: string }) &#x3D;&gt; {
+          if (response.success) {
+            this.mqttService
+              .getClient()
+              .publish(&#x27;administrations/Profile&#x27;, JSON.stringify({}));
+            this.snackbarService.success(response.status);
+          } else {
+            this.snackbarService.error(response._body);
+          }
+        },
+        (error: { _body: string }) &#x3D;&gt; {
+          this.snackbarService.error(JSON.parse(error._body).status);
+          console.log(error);
+        }
+      );
+  }
+
+  //deletes the selected profile
+  public profileDelete() {
+    this.apiService.profileDelete(this.selected.rid).subscribe(
+      (response: { success: any; status: string; _body: string }) &#x3D;&gt; {
+        if (response.success) {
+          this.mqttService
+            .getClient()
+            .publish(&#x27;administrations/Profile&#x27;, JSON.stringify({}));
+          this.snackbarService.success(response.status);
+        } else {
+          this.snackbarService.error(response._body);
+        }
+      },
+      (error: { _body: string }) &#x3D;&gt; {
+        this.snackbarService.error(JSON.parse(error._body).status);
+        console.log(error);
+      }
+    );
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;panel panel-default&quot;&gt;
+    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;
+        &lt;h3 class&#x3D;&quot;panel-title&quot;&gt;Profile&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;panel-body&quot;&gt;
+        &lt;div class&#x3D;&quot;input-group&quot;&gt;
+
+
+
+            &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; placeholder&#x3D;&quot;Search&quot; name&#x3D;&quot;srch-terminput&quot; id&#x3D;&quot;srch-terminput&quot; [(ngModel)]&#x3D;&quot;search&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group-btn&quot;&gt;
+                &lt;button class&#x3D;&quot;btn btn-default&quot; type&#x3D;&quot;submit&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-search&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;table class&#x3D;&quot;table table-striped table-bordered table-hover&quot;&gt;
+            &lt;thead&gt;
+            &lt;tr class&#x3D;&quot;active&quot;&gt;
+                &lt;th&gt;ProfileID&lt;/th&gt;
+                &lt;th&gt;Profilename&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody &gt;&lt;/tbody&gt;
+            &lt;tr *ngFor&#x3D;&quot;let profile of profiles | filter:search&quot; (click)&#x3D;&quot;selected &#x3D; profile&quot; [ngClass]&#x3D;&quot;{&#x27;info&#x27;: selected &#x3D;&#x3D;&#x3D; profile}&quot;&gt;
+                &lt;td&gt;{{profile.upid}}&lt;/td&gt;
+                &lt;td&gt;{{profile.profile}}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tfoot&gt;&lt;/tfoot&gt;
+        &lt;/table&gt;
+        &lt;!-- Neue Rolle Button hinzugefuegt --&gt;
+        &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-success&quot; (click)&#x3D;&quot;selected &#x3D; newProfile&quot; [ngClass]&#x3D;&quot;{&#x27;info&#x27;: selected &#x3D;&#x3D;&#x3D; newProfile}&quot;&gt;&lt;i
+                class&#x3D;&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/i&gt; New Profile&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;panel panel-default&quot; *ngIf&#x3D;&quot;selected&quot;&gt;
+    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;
+        &lt;h3 class&#x3D;&quot;panel-title&quot;&gt;{{(selected.profilename &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? &#x27;NewProfile&#x27; : selected.profilename)}}&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;panel-body&quot;&gt;
+
+
+        &lt;form&gt;
+            &lt;div class&#x3D;&quot;form-group form-inline&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot; for&#x3D;&quot;profilename&quot;&gt;Profilename&lt;/label&gt;
+                &lt;input required type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;profilename&quot; placeholder&#x3D;&quot;Profilename&quot; name&#x3D;&quot;profile&quot; [(ngModel)]&#x3D;&quot;selected.profile&quot;&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;form-group form-inline&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot; for&#x3D;&quot;read&quot;&gt;Read&lt;/label&gt;
+                &lt;input required type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;read&quot; name&#x3D;&quot;read&quot; [(ngModel)]&#x3D;&quot;selected.read&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;form-group form-inline&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot; for&#x3D;&quot;write&quot;&gt;Write&lt;/label&gt;
+                &lt;input required type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;write&quot; name&#x3D;&quot;write&quot; [(ngModel)]&#x3D;&quot;selected.write&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;form-group form-inline&quot;&gt;
+                &lt;label class&#x3D;&quot;col-md-4&quot; style&#x3D;&quot;text-align: left&quot; for&#x3D;&quot;admin&quot;&gt;Admin&lt;/label&gt;
+                &lt;input required type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;admin&quot; name&#x3D;&quot;admin&quot; [(ngModel)]&#x3D;&quot;selected.admin&quot;&gt;
+            &lt;/div&gt;
+            &lt;button *ngIf&#x3D;&quot;selected.rid &#x3D;&#x3D;&#x3D; &#x27;&#x27;&quot; type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-success&quot; (click)&#x3D;&quot;profileCreate()&quot;&gt;Create&lt;/button&gt;
+            &lt;button *ngIf&#x3D;&quot;selected.rid !&#x3D;&#x3D; &#x27;&#x27;&quot; type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;profileUpdate()&quot;&gt;Change&lt;/button&gt;
+            &lt;button *ngIf&#x3D;&quot;selected.rid !&#x3D;&#x3D; &#x27;&#x27;&quot; type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-danger&quot; (click)&#x3D;&quot;profileDelete()&quot;&gt;Delete&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="panel panel-default">    <div class="panel-heading">        <h3 class="panel-title">Profile</h3>    </div>    <div class="panel-body">        <div class="input-group">            <input type="text" class="form-control" placeholder="Search" name="srch-terminput" id="srch-terminput" [(ngModel)]="search">            <div class="input-group-btn">                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>            </div>        </div>        <table class="table table-striped table-bordered table-hover">            <thead>            <tr class="active">                <th>ProfileID</th>                <th>Profilename</th>            </tr>            </thead>            <tbody ></tbody>            <tr *ngFor="let profile of profiles | filter:search" (click)="selected = profile" [ngClass]="{\'info\': selected === profile}">                <td>{{profile.upid}}</td>                <td>{{profile.profile}}</td>            </tr>            <tfoot></tfoot>        </table>        <!-- Neue Rolle Button hinzugefuegt -->        <button type="submit" class="btn btn-success" (click)="selected = newProfile" [ngClass]="{\'info\': selected === newProfile}"><i                class="glyphicon glyphicon-plus"></i> New Profile</button>    </div></div><div class="panel panel-default" *ngIf="selected">    <div class="panel-heading">        <h3 class="panel-title">{{(selected.profilename === \'\' ? \'NewProfile\' : selected.profilename)}}</h3>    </div>    <div class="panel-body">        <form>            <div class="form-group form-inline">                <label class="col-md-4" style="text-align: left" for="profilename">Profilename</label>                <input required type="text" class="form-control" id="profilename" placeholder="Profilename" name="profile" [(ngModel)]="selected.profile">            </div>            <div class="form-group form-inline">                <label class="col-md-4" style="text-align: left" for="read">Read</label>                <input required type="checkbox" class="form-control" id="read" name="read" [(ngModel)]="selected.read">            </div>            <div class="form-group form-inline">                <label class="col-md-4" style="text-align: left" for="write">Write</label>                <input required type="checkbox" class="form-control" id="write" name="write" [(ngModel)]="selected.write">            </div>            <div class="form-group form-inline">                <label class="col-md-4" style="text-align: left" for="admin">Admin</label>                <input required type="checkbox" class="form-control" id="admin" name="admin" [(ngModel)]="selected.admin">            </div>            <button *ngIf="selected.rid === \'\'" type="submit" class="btn btn-success" (click)="profileCreate()">Create</button>            <button *ngIf="selected.rid !== \'\'" type="submit" class="btn btn-primary" (click)="profileUpdate()">Change</button>            <button *ngIf="selected.rid !== \'\'" type="submit" class="btn btn-danger" (click)="profileDelete()">Delete</button>        </form>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AdministrationComponent', 'selector': 'administration'},{'name': 'AlertComponent', 'selector': 'alert'},{'name': 'AppComponent', 'selector': 'my-app'},{'name': 'AppFooterComponent', 'selector': 'app-footer'},{'name': 'AppHeaderComponent', 'selector': 'app-header'},{'name': 'EvalModal', 'selector': 'eval-modal'},{'name': 'FrontPageComponent', 'selector': 'front-page'},{'name': 'InputModal', 'selector': 'input-modal'},{'name': 'InputVarComponent', 'selector': 'inputvar-comp'},{'name': 'ModelComponent', 'selector': 'model-management'},{'name': 'ModelerComponent', 'selector': 'modeler'},{'name': 'ModellerPageComponent', 'selector': ''},{'name': 'ModelLoaderComponent', 'selector': 'modelloader'},{'name': 'PermissionComponent', 'selector': 'permission-management'},{'name': 'ProfileComponent', 'selector': 'profile-management'},{'name': 'RoleComponent', 'selector': 'role-management'},{'name': 'SaveModal', 'selector': 'save-modal'},{'name': 'SubProcessModal', 'selector': 'subprocess-modal'},{'name': 'TermModal', 'selector': 'term-modal'},{'name': 'UsageModal', 'selector': 'usage-modal'},{'name': 'UserComponent', 'selector': 'user-management'},{'name': 'VariableComponent', 'selector': 'variable-comp'},{'name': 'VariableModal', 'selector': 'variable-modal'},{'name': 'ViewerComponent', 'selector': 'viewer'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ProfileComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProfileComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

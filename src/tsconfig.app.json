@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+   
+    "lib": ["es2015", "dom"],
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [ "../node_modules/@types", "../index.d.ts" ],
+    "baseUrl": "./..",
+    "paths": {
+      "jszip": [
+        "node_modules/jszip/dist/jszip.min.js"
+      ]
+    }
+  },
+  // "include": [
+  // //   // "build/*",
+  // //   // "src/app/tutorial/components/test-mod/.bpmnlintrc",
+  // //   // ".bpmnlintrc",
+  // //   // "../.bpmnlintrc",
+  //   "src/bpmnlintrc",
+  // ],
+  "exclude": [
+    // "build/*",
+    // "src/app/tutorial/components/test-mod/.bpmnlintrc",
+    // ".bpmnlintrc",
+    // "../.bpmnlintrc",
+    "node_modules",
+  ],
+}

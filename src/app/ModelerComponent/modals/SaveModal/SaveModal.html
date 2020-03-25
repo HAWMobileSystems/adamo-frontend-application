@@ -1,0 +1,30 @@
+<bs-modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()"
+       (onDismiss)="dismissed()"
+       (onOpen)="opened()" [cssClass]="cssClass" #modal>
+    <bs-modal-header [showDismiss]="true">
+        <h2>Save Model</h2>
+    </bs-modal-header>
+    <bs-modal-body>
+        <p>
+            Next Version would already exist
+            Save it with newest version
+            or save it with given version
+        </p>
+        <input style="width:40px" type="number" [(ngModel)]="version1">.
+        <input style="width:40px" type="number" [(ngModel)]="version2">.
+        <input style="width:40px" type="number" [(ngModel)]="version3">.
+        <input style="width:40px" type="number" [(ngModel)]="version4">
+
+        <p *ngIf="alsoExists">
+            given version also exists
+        </p>
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="saveWithVersion()">
+            Save with given version
+        </button>
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="saveSuperVersion()">
+            Save as newest version
+        </button>
+    </bs-modal-footer>
+</bs-modal>

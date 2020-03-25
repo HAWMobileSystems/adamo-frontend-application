@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="965px" height="736px" viewBox="0 0 965 736" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>adamo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="124.880201%" gradientTransform="translate(0.500000,0.000000),scale(0.889473,1.000000),rotate(90.000000),translate(-0.500000,-0.000000)" id="radialGradient-1">
+            <stop stop-color="#30BDC1" offset="0%"></stop>
+            <stop stop-color="#166491" offset="100%"></stop>
+            <stop stop-color="#2E06FF" offset="100%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Polygon" stroke="#979797" fill="url(#radialGradient-1)" points="319.364665 442.273325 388.06847 442.273325 339.797155 526.117374 175 526.117374 468.892185 2 764.24471 526.117374 598.612979 526.117374 549.752253 442.273325 618.370228 442.273325 468.892185 177.723797"></polygon>
+        <text id="ADAMO" font-family="Regular, RR Beaver" font-size="156" font-weight="normal" fill="#1C789C">
+            <tspan x="244.444" y="697">ADAMO</tspan>
+        </text>
+    </g>
+</svg>

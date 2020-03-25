@@ -1,0 +1,123 @@
+[
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "In the modeling language BPMN there are five categories of elements to distinguish from each other.<br><br>1.Flow objects <br>2. Data Objects<br>3. Connecting Objects<br>4. Swimlanes<br>5. Artifacts<br>"
+            },
+            {
+                "key": 2,
+                "value": "<b>Flow Objects</b> <br><br>Flow Objects are the main graphical elements to define the behavior of a Business Process.<br><br>1. <img src=§§https://training-course-material.com/images/thumb/0/08/Element_start_event.png/35px-Element_start_event.png§§>Events<br>2. <img src=§§https://training-course-material.com/images/thumb/7/7a/Element_activity.png/35px-Element_activity.png§§> Activity<br>3. <img src=§§https://training-course-material.com/images/thumb/d/d2/Element_gateway.png/35px-Element_gateway.png§§> Gateways"
+            },
+            {
+                "key": 3,
+                "value": "<b>Data</b> <br><br> 1. <img src=§§https://training-course-material.com/images/thumb/7/71/Element_data_object.png/35px-Element_data_object.png§§> Data Objects <br> 2. <img src=§§https://training-course-material.com/images/thumb/2/20/Element_data_input.png/35px-Element_data_input.png§§> Data Inputs <br> 3. <img src=§§https://training-course-material.com/images/thumb/3/32/Element_data_output_%282%29.png/35px-Element_data_output_%282%29.png§§> Data Outputs <br> 4. <img src=§§https://training-course-material.com/images/thumb/e/ee/Element_data_store.png/35px-Element_data_store.png§§> Data Stores <br>"
+            },
+            {
+                "key": 4,
+                "value": "<b>Connecting Objects</b> <br><br> There are four ways of connecting the Flow Objects to each other or other information <br><br> 1. <img src=§§https://training-course-material.com/images/thumb/8/8a/Element_sequence_flow.png/70px-Element_sequence_flow.png§§> Sequence Flows <br> 2. <img src=§§https://training-course-material.com/images/thumb/4/43/Element_message_flow.png/70px-Element_message_flow.png§§> Message Flows <br> 3. <img src=§§https://training-course-material.com/images/thumb/d/dd/Element_association.png/70px-Element_association.png§§> Associations <br> 4. <img src=§§https://training-course-material.com/images/thumb/d/dd/Element_association.png/70px-Element_association.png§§> Data Associations <br>"
+            },
+            {
+                "key": 5,
+                "value": "<b>Swimlanes</b> <br><br> 1. <img src=§§https://training-course-material.com/images/thumb/2/28/Element_pool.png/80px-Element_pool.png§§> Pools <br>2. <img src=§§https://training-course-material.com/images/thumb/2/23/Element_lane.png/80px-Element_lane.png§§> Lanes <br> "
+            }
+            ,
+            {
+                "key": 6,
+                "value": "<b>Artifacts</b> <br><br>Artifacts are used to provide additional information about the Process<br><br> 1. <img src=§§https://training-course-material.com/images/thumb/2/23/Element_group.png/70px-Element_group.png§§> Group <br>2. <img src=§§https://training-course-material.com/images/thumb/1/1f/Text_annotations.png/70px-Text_annotations.png§§> Text Annotation <br> "
+            }
+        ],
+        "levelID": 1,
+        "name": "Business Management Use Cases",
+        "MCTest": [
+            {
+                "key": "Which of these order flow elements in a BPMN process?",
+                "value": [
+                    "1. Lane",
+                    "2. Event",
+                    "3. Sequence Flow",
+                    "Gateway"
+                ]
+            },
+            {
+                "key": "What connects a BPMN shape to a BPMN shape and a BPMN pool to a BPMN pool?",
+                "value": [
+                    "1. An event and a message flow",
+                    "2. A data object and a message flow",
+                    "3. Message flow and a sequence flow",
+                    "Sequence flow and a message flow"
+                ]
+            },
+            {
+                "key": "There are many flow elements in BPMN. What are three types of BPMN flow elements?",
+                "value": [
+                    "1. Private lanes, Abstract events and Collaboration messages",
+                    "2. Events, Activities and Gateways",
+                    "3. Process, Collaboration message, and Data Models"
+                ]
+            },
+            {
+                "key": "A data object is most frequently used for which of the following?",
+                "value": [
+                    "1. Data objects can be associated with activities, sequence flow and message flow.",
+                    "2. The input and output of a process",
+                    "3. A data object is regarded as a flow object and connects data elements among activities"
+                ]
+            },
+            {
+                "key": "Which connector shows the order that activities will be performed in the process?",
+                "value": [
+                    "1. Message Flow",
+                    "2. Association",
+                    "3. Sequence Flow"
+                ]
+            },
+            {
+                "key": "Gateways are used to control the divergence and convergence of sequence flows.The term 'Gateway' implies that there is a gating mechanism that either allows or disallows the passage through the Gateway. Which Gateway is used to create alternative paths within the process, but only one is chosen?",
+                "value": [
+                    "1. Inclusive gateway",
+                    "2. Parallel gateway",
+                    "3. Event based gateway",
+                    "4. Exklusive gateway"
+                ]
+            }
+        ]
+    },
+    {
+        "PageDesc": [
+            {
+                "key": 1,
+                "value": "page 1 with content"
+            },
+            {
+                "key": 2,
+                "value": "page 2 mit content"
+            },
+            {
+                "key": 3,
+                "value": "page 3 mit content<p>Ganz viel Text</p> <h1>ende Intro Advanced</h1>"
+            }
+        ],
+        "levelID": 2,
+        "name": "Informatics Use Cases",
+        "MCTest": [
+            {
+                "key": "1. Intermediate Events: select the two correct descriptions for the 'Cancel event'!",
+                "value": [
+                    "1. It reactes to catches a named Error, or to any Error if a name is not specified.",
+                    "2. This Event is used within a Transaction Sub-Process and must be attached to the boundary of one.",
+                    "3. It always interrupts the Activity to which it is attached, i.e., there is not a non-interrupting version of this Event. Thus the boundary of the Event is always solid."
+                ]
+            },
+            {
+                "key": "2. Start Events: the start of a Process occurs on a specific date or cycle time (e.g., every monday). Which start event is correct?",
+                "value": [
+                    "1. Multiple Start Event",
+                    "2. Message Start Event",
+                    "3. Conditional Start Event",
+                    "4. Timer Start Event"
+                ]
+            }
+        ]
+    }
+]

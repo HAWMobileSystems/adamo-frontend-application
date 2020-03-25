@@ -1,0 +1,18 @@
+<bs-modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+  (onOpen)="opened()" [cssClass]="cssClass" #modal  >
+    <bs-modal-header [showDismiss]="true">
+      <h2>IPIM Evaluation</h2>
+    </bs-modal-header>
+    <bs-modal-body>
+      <p>Please specify the values used:</p>
+      <form class="modal-body-scroll">
+        <!-- Fieldset, later on the inputs are dynamicaly created see script part-->
+        <fieldset id="evalfset">
+          <inputvar-comp *ngFor="let variable of variables" [hidden]="variable.meta" [varName]="variable"> </inputvar-comp>
+        </fieldset>
+      </form>
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false">
+        <button type="button" class="btn btn-large btn-block btn-default" (click)="writeInputModalValues()">Evaluate</button>
+    </bs-modal-footer>
+  </bs-modal>

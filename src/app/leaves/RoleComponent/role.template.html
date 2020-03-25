@@ -1,0 +1,85 @@
+<div class="panel panel-default">
+
+    <div class="panel-body">
+
+        <div class="field has-addons">
+            <div class="control has-icons-left has-icons-right is-expanded">
+                <input type="text" class="input is-info" placeholder="Search" name="srch-termrole" id="srch-termrole"
+                    [(ngModel)]="search">
+                <span class="icon is-left">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
+            <p class="control">
+                <a class="button is-info">Suchen</a>
+            </p>
+        </div>
+
+
+
+        <table class="table is-striped is-bordered is-hoverable is-fullwidth">
+            <thead>
+                <tr class="active">
+                    <th>RoleID</th>
+                    <th>Rolename</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tr *ngFor="let role of roles | filter:search" (click)="selected = role"
+                [ngClass]="{'info': selected === role}">
+                <td>{{role.id}}</td>
+                <td>{{role.roleName}}</td>
+            </tr>
+            <tfoot></tfoot>
+        </table>
+        <!-- Neue Rolle Button hinzugefuegt -->
+
+        <button type="submit" class="button is-info" (click)="selected = newRole"
+        [ngClass]="{'info': selected === newRole}">
+        <span class="icon is-small">
+            <i class="fas fa-plus"></i></span>
+        <span>New Role</span>
+    </button>
+     
+    </div>
+</div>
+
+<div class="panel panel-default" *ngIf="selected">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{(selected.rolename === '' ? 'NewRole' : selected.rolename)}}</h3>
+    </div>
+    <div class="panel-body">
+
+
+        <form>
+
+            <div class="control">
+                <label class="label">Rolename</label>
+                <input required type="text" class="input" id="rolename" placeholder="Rolename" name="role"
+                    [(ngModel)]="selected.roleName">
+            </div>
+
+            <div class="control">
+                <label class="checkbox">Read</label>
+                <input required type="checkbox" name="read" [(ngModel)]="selected.canRead">
+            </div>
+            <div class="control">
+                <label class="checkbox">Write</label>
+                <input required type="checkbox" name="write" [(ngModel)]="selected.canWrite">
+            </div>
+            <div class="control">
+                <label class="checkbox">Admin</label>
+                <input required type="checkbox" name="admin" [(ngModel)]="selected.isAdmin">
+            </div>
+
+            <div class="buttons">
+                <button *ngIf="selected.rid === ''" type="submit" class="button is-success"
+                    (click)="roleCreate()">Create</button>
+                <button *ngIf="selected.rid !== ''" type="submit" class="button is-warning"
+                    (click)="roleUpdate()">Change</button>
+                <button *ngIf="selected.rid !== ''" type="submit" class="button is-danger"
+                    (click)="roleDelete()">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>

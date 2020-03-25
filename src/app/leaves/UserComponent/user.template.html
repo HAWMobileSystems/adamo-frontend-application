@@ -1,0 +1,119 @@
+<div class="field has-addons">
+    <div class="control has-icons-left has-icons-right is-expanded">
+        <input type="text" class="input is-info" placeholder="Search" name="srch-termuser" id="srch-termuser"
+            [(ngModel)]="search">
+        <span class="icon is-left">
+            <i class="fa fa-search"></i>
+        </span>
+    </div>
+    <p class="control">
+        <a class="button is-info">Suchen</a>
+    </p>
+</div>
+<!-- <input type="text" class="form-control input is-primary" placeholder="Search" name="srch-termuser"id="srch-termuser" [(ngModel)]="search">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button> -->
+
+
+
+<!-- <table class="table table-striped table-bordered table-hover"> -->
+<table class="table is-striped is-bordered is-hoverable is-fullwidth">
+    <thead>
+        <tr class="active">
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tr *ngFor="let user of users | filter:search" (click)="selected = user" [ngClass]="{'info': selected === user}">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname}}</td>
+        <td>{{user.email}}</td>
+    </tr>
+    <tfoot></tfoot>
+</table>
+<!-- Neuer User Button hinzugefuegt -->
+
+<div class="control">
+    <button type="submit" class="button is-info" (click)="selected = newUser"
+        [ngClass]="{'info': selected === newUser}">
+        <span class="icon is-small">
+            <i class="fas fa-plus"></i></span>
+        <span>New User</span>
+    </button>
+</div>
+
+<!-- </div> -->
+
+
+<div class="panel panel-default" *ngIf="selected">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{(selected.username === '' ? 'NewUser' : selected.username)}}</h3>
+    </div>
+    <div class="panel-body">
+
+
+        <form>
+            <div class="field">
+                <label class="label">Lastlogin</label>
+                <div class="control">
+                    <input readonly type="input text" class="input" id="lastlogin" placeholder="Lastlogin"
+                        name="lastlogin" [(ngModel)]="selected.lastlogin">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input required type="email" class="input" id="email" placeholder="Email" name="email"
+                        [(ngModel)]="selected.email">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Firstname</label>
+                <div class="control">
+                    <input required type="text" class="input" id="firstname" placeholder="Firstname" name="firstname"
+                        [(ngModel)]="selected.firstname">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Lastname</label>
+                <div class="control">
+                    <input required type="text" class="input" id="lastname" placeholder="Lastname" name="lastname"
+                        [(ngModel)]="selected.lastname">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <input required type="password" class="input" id="pwd" placeholder="Password" name="pwd"
+                        [(ngModel)]="selected.password">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Profile</label>
+                <div class="control">
+                    <select required class="select" id="profile" name="profile" [(ngModel)]="selected.profile">
+                        <option *ngFor="let profile of profiles">{{profile.profile}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="buttons">
+                <button *ngIf="selected.uid === ''" type=" submit" class="button is-info" id="newUser"
+                    (click)="userCreate()">Create
+                </button>
+                <button *ngIf="selected.uid !== ''" type="submit" class="button is-warning"
+                    (click)="userUpdate()">Update User</button>
+
+                <button *ngIf="selected.uid !== ''" type="submit" class="button is-warning"
+                    (click)="userPassword()">Change
+                    Password</button>
+                <button *ngIf="selected.uid !== ''" type="submit" class="button is-danger"
+                    (click)="userDelete()">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>

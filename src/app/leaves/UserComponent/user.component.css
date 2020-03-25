@@ -1,0 +1,25 @@
+/*
+
+.btn {
+    background-color: darkgrey;
+}
+
+
+*/
+
+.panel-body>.ng-untouched>.form-group>.form-control{
+    width:250px;
+}
+
+.panel-body>.ng-untouched>.form-group>.labelContainer>.col-md-4{
+    margin-top:10px;
+}
+
+.labelContainer{
+    width:80px;
+}
+
+/*
+.panel-body._deineKlasse{
+    color:red;
+}*/

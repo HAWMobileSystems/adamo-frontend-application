@@ -6,7 +6,7 @@ angular2/package-lock.json
 API/package-lock.json
 API/Doc
 .idea
-
+dist
 .vsc
 ode
 .env

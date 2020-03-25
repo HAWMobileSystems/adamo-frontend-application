@@ -1,0 +1,50 @@
+
+<!-- <div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Leaves</h5>
+        <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'apply'" routerLinkActive="active"> Apply Leave </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'balance'" routerLinkActive="active"> Check Leave Balance </a>
+            </li>
+          </ul> 
+        <p class="card-text">
+          <router-outlet></router-outlet>
+        </p>
+    </div>
+  </div> -->
+
+  <div class="tabs has-addons is-centered">
+
+      <ul>
+          <li class="tab" [ngClass]="{'is-active': activeTab=='user'}" onclick="openTab('user')">
+            <a routerLink="user">
+              <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
+              <span>User</span>
+            </a>
+          </li>
+          <li class="tab" [ngClass]="{'is-active': activeTab=='model'}" >
+              <a routerLink="model">
+              <span class="icon is-small"><i class="fas fa-object-group" aria-hidden="true"></i></span>
+              <span>Model</span>
+            </a>
+          </li>
+          <li class="tab" [ngClass]="{'is-active': activeTab=='role'}" >
+              <a routerLink="role">
+              <span class="icon is-small"><i class="fas fa-user-tag" aria-hidden="true"></i></span>
+              <span>Role</span>
+            </a>
+          </li>
+          <li class="tab" [ngClass]="{'is-active': activeTab=='permission'}" >
+              <a routerLink="permission">
+              <span class="icon is-small"><i class="fas fa-users-cog" aria-hidden="true"></i></span>
+              <span>Permission</span>
+            </a>
+          </li>
+        </ul>
+  </div>
+
+  
+  <router-outlet></router-outlet>
