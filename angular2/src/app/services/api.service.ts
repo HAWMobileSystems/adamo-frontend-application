@@ -297,18 +297,18 @@ export class ApiService {
 
   //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
   public modelUpsert(
-    mid: number,
-    modelname: string,
-    modelxml: string,
-    version: string
+    id: number,
+    modelName: string,
+    modelXml: string,
+    modelVersion: string
   ) {
     return this.http.post(
       this.BACKEND_URI + "/model/upsert",
       {
-        mid: mid,
-        modelname: modelname,
-        modelxml: modelxml,
-        version: version
+        id: id,
+        modelName: modelName,
+        modelXml: modelXml,
+        modelVersion: modelVersion
       },
       options
     );

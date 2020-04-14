@@ -104,8 +104,8 @@ export class CommandStack {
       }
     } else if (topic === "modelupsert") {
       const model = this.modelerComponenetRoot.model;
-      if (model.id === event.mid && model.version === event.version) {
-        model.version = event.newVersion;
+      if (model.id === event.mid && model.modelVersion === event.version) {
+        model.modelVersion = event.newVersion;
         this.mqttService
           .getClient()
           .unsubscribe("MODEL/model_" + event.mid + "_" + event.version);
