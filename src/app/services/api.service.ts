@@ -240,7 +240,7 @@ export class ApiService {
   }
 
   //Modeller: Load model
-  public getModel(mid: string, version?: string) {
+  public getModel(mid: string, version?: string | number) {
     return (
       this.http
         // .post(
@@ -297,18 +297,18 @@ export class ApiService {
 
   //Modeller: Update model triggers insert of a new database entry with new version number (upsert)
   public modelUpsert(
-    mid: number,
+    mid: string,
     modelname: string,
-    modelxml: string,
-    version: string
+    modelXml: string,
+    modelVersion: number | string 
   ) {
     return this.http.post(
       this.BACKEND_URI + "/model/upsert",
       {
-        mid: mid,
-        modelname: modelname,
-        modelxml: modelxml,
-        version: version
+        id: mid,
+        modelName: modelname,
+        modelXML: modelXml,
+        modelVersion: modelVersion
       },
       options
     );
@@ -317,30 +317,30 @@ export class ApiService {
 
   //Administration page: Update model information
   public modelUpdate(
-    mid: number,
-    modelname: string,
+    id: string,
+    modelName: string,
     lastchange: string,
     modelxml: string,
-    version: string
+    version: number
   ) {
     return this.http.post(
       this.BACKEND_URI + "/model/update",
       {
-        mid: mid,
-        modelname: modelname,
+        id: id,
+        modelName: modelName,
         lastchange: lastchange,
-        modelxml: modelxml,
+        modelXML: modelxml,
         version: version
       },
       options
     );
     //.pipe(map((response: any) => response.json()));
   }
-  public modelClose(mid: number, version: string) {
+  public modelClose(id: string, version: number) {
     return this.http.post(
       this.BACKEND_URI + "/model/close",
       {
-        mid: mid,
+        id: id,
         version: version
       },
       options

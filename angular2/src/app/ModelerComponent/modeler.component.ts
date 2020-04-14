@@ -139,10 +139,11 @@ export class ModelerComponent implements OnInit {
     this.modelVersion = splittedUrl[splittedUrl.length - 1]
 
     //  this.modelXML = 
-      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (response: any )=> {
-        console.log(response)
-        this.modelXML = response.modelXML
-        this.loadBPMN(this.modelXML)
+      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (modelResponse: any )=> {
+        console.log(modelResponse);
+        this.model = modelResponse;
+        this.modelXML = modelResponse.modelXML;
+        this.loadBPMN(this.modelXML);
       })
   }
 
@@ -415,17 +416,16 @@ export class ModelerComponent implements OnInit {
 
   //saves the current model to DB
   private saveToDb = () => {
-    this.logger.debug("saving to db");
+    this.logger.debug("saving to db and model", this.model);
     //extract xml from modeler
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
       if (err) {
         console.error(err);
         return;
       }
-      this.logger.debug(this.model);
       //upsert the current model
       this.apiService
-        .modelUpsert(this.model.id, this.model.name, xml, this.model.version)
+        .modelUpsert(this.model.id, this.model.modelName, xml, this.model.modelVersion)
         .subscribe(
           (response: { status: string }) => {
             this.logger.debug(response);
@@ -512,7 +512,7 @@ export class ModelerComponent implements OnInit {
 
   private exportToEngine = () => {
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-      this.apiService.uploadToEngine(this.model.name + ".bpmn", xml);
+      this.apiService.uploadToEngine(this.model.modelName + ".bpmn", xml);
       // .subscribe(response => {
       //   this.logger.debug(response);
       // });
@@ -745,9 +745,9 @@ export class ModelerComponent implements OnInit {
   };
 
   //laods the bpmn and emit an event when the laoding is finished
-  private loadBPMN(model : any) {
-    console.log(model)
-    this.modeler.importXML(model, this.handleError)
+  private loadBPMN(modelXML : any) {
+    console.log(modelXML)
+    this.modeler.importXML(modelXML, this.handleError)
     // this.modeler.importXML(IPIM_OPTIONS.NEWMODEL, this.handleError);
     this.loadedCompletely.emit();
     //show snackbar for successfull loading!

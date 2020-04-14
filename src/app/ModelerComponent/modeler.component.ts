@@ -42,6 +42,7 @@ import * as propertiesPanelModule from "bpmn-js-properties-panel";
 import * as propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import { NGXLogger } from "ngx-logger";
 import { tap } from "rxjs/operators";
+import { ModelDto } from "../entities/interfaces/ModelDto";
 
 const customPaletteModule = {
   paletteProvider: ["type", PaletteProvider]
@@ -56,7 +57,7 @@ const customPaletteModule = {
 export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
   @Input() public newDiagramXML: string;
-  @Input() public model: any;
+  @Input() public model: ModelDto;
   // @Output() public exportModel: EventEmitter<object> = new EventEmitter<
   //   object
   // >();
@@ -139,9 +140,10 @@ export class ModelerComponent implements OnInit {
     this.modelVersion = splittedUrl[splittedUrl.length - 1]
 
     //  this.modelXML = 
-      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (response: any )=> {
-        console.log(response)
-        this.modelXML = response.modelXML
+      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (modelResponse: any )=> {
+        console.log(modelResponse)
+        this.model = modelResponse
+        this.modelXML = modelResponse.modelXML
         this.loadBPMN(this.modelXML)
       })
   }
@@ -393,7 +395,7 @@ export class ModelerComponent implements OnInit {
     this.showOverlay();
     this.logger.debug(this.model);
     //get latest version from expressjs (can be database or collaborativ)
-    this.apiService.getModel(this.model.id, this.model.version).subscribe(
+    this.apiService.getModel(this.model.id, this.model.modelVersion).subscribe(
       (response: { data: { modelxml: any } }) => {
         const xml = response.data.modelxml;
         console.info("Reset-Model", xml);
@@ -425,13 +427,13 @@ export class ModelerComponent implements OnInit {
       this.logger.debug(this.model);
       //upsert the current model
       this.apiService
-        .modelUpsert(this.model.id, this.model.name, xml, this.model.version)
+        .modelUpsert(this.model.id, this.model.modelName, xml, this.model.modelVersion)
         .subscribe(
           (response: { status: string }) => {
             this.logger.debug(response);
             //if version exists, show save modal else save it with new version+1
             if (response.status === "Next Version already exists") {
-              this.saveModal.setModel(this.model, xml, this.apiService, this);
+             // this.saveModal.setModel(this.model, xml, this.apiService, this);
               this.saveModal.modal.open();
             } else if (response.status === "Model upserted successfully") {
               //show snackbar for success
@@ -512,7 +514,7 @@ export class ModelerComponent implements OnInit {
 
   private exportToEngine = () => {
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-      this.apiService.uploadToEngine(this.model.name + ".bpmn", xml);
+      this.apiService.uploadToEngine(this.model.modelName + ".bpmn", xml);
       // .subscribe(response => {
       //   this.logger.debug(response);
       // });
