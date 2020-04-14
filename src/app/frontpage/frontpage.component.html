@@ -68,12 +68,12 @@
                   <i class="fa fa-envelope"></i>
               </span>
             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Username is required</div>
+              <div *ngIf="f.email.errors.required">{{'ERROR.USERNAME_REQUIRED' | translate }}</div>
             </div>
           </div>
         </div>
         <div class="field">
-          <label class="label" for="password">Password</label>
+          <label class="label" for="password">{{'LOGIN.PASSWORD' | translate }}</label>
           <div class="control has-icons-left">
             <input type="password" formControlName="password" class="input form-control" placeholder="*********" required
               [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />

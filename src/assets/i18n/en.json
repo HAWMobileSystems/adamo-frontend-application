@@ -1,0 +1,23 @@
+{
+  "HOME": {
+    "TITLE": "Hello Angular with ngx-translate!",
+    "SELECT": "Change language"
+  },
+  "ERROR": {
+    "USERNAME_REQUIRED": "Username is required"
+  },
+  "HEADER": {
+    "TRYOUT": "Try Out!",
+    "DOCUMENTATION": "Documentation"
+  },
+  "LOGIN": {
+    "PASSWORD": "Password"
+  },
+  "APPHEADER": {
+    "LOGOUT": "Logout"
+  },
+  "MODELLOADER": {
+    "MODELNAME": "Name",
+    "PERMISSION": "Permission"
+  }
+}

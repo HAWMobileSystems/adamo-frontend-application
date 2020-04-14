@@ -15,8 +15,8 @@
 <div id="navbarElements" #navMenu class="navbar-menu">
 
     <div class="navbar-start">
-        <div *ngFor="let model of models; let i = index" class="navbar-item"
-            routerLink="/model/{{model.id}}/{{model.model_version}}">
+        <div *ngFor="let model of models; let i = index" class="navbar-item" >
+           <a routerLink="/model/{{model.id}}/{{model.model_version}}">
             <div (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false">
                 {{model.model_name + ' v' +(model.model_version | version) || 'unsaved model'}}
                 <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
@@ -24,8 +24,7 @@
                 <span *ngIf="model.collaborator.length > 1" class="badge badge-light">
                     {{model.collaborator.length}}
                 </span>
-                <button type="button" class="close" aria-label="Close" (click)="remove(i)" routerLink="/overview"><span
-                        aria-hidden="true">&times;</span></button>
+                <a class="delete" aria-label="Close" (click)="remove(i)" routerLink="/overview"> </a>
             </div>
             <!-- <button class="badge badge-light" style="position: absolute; top: 0; right: 0;" (click)="remove(i)">X</button> -->
             <div *ngIf="model.collaborator.length > 1 && model.showInfo" class="panel-heading">
@@ -39,6 +38,7 @@
                 </ul>
             </div>
             <!-- </div> -->
+            </a>
         </div>
         
         <div class="navbar-item" *ngIf="models.length > 0"><a routerLink="/overview"> <span class="icon"><i class="fa fa-plus"></i></span></a></div>
@@ -46,7 +46,7 @@
 
     <ul class="navbar-end" [ngClass]="{'loading': true}">
         <li class="navbar-item" *ngIf="isAdmin()" routerLink="administration"><a><span class="icon"><i
-                        class="fa fa-tools"></i></span><span>Administration</span></a></li>
+                        class="fa fa-cog"></i></span><span>Administration</span></a></li>
         <li class="navbar-item" routerLink="tutorial"><a>
                 <span class="icon"><i class="fa fa-graduation-cap"></i></span>
                 <span>Tutorial</span>
@@ -61,8 +61,18 @@
         <li class="navbar-item">
             <a>
                 <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                <span>Log Out</span>
+                <span>{{'APPHEADER.LOGOUT' | translate }}</span>
             </a>
+        </li>
+
+ <li class="navbar-item">
+            <a>
+          <span class="select">
+                    <select class="" #langSelect (change)="translate.use(langSelect.value)">
+          <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+        </select>
+        </span>
+          </a>
         </li>
     </ul>
 </div>

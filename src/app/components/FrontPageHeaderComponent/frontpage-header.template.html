@@ -25,13 +25,13 @@
         <div id="navbarElements" #navMenu class="navbar-menu">
             <div class="navbar-end">
                 <a class="navbar-item has-icon-right" href="/ausprobieren">
-                    <span>Ausprobieren</span>
+                    <span>{{ 'HEADER.TRYOUT' | translate }} </span>
                     <span class="icon is-right">
                         <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
                     </span>
                 </a>
                 <a class="navbar-item has-icon-right" href="/docs">
-                    <span>Documentation</span>
+                    <span>{{ 'HEADER.DOCUMENTATION' | translate }}</span>
                     <span class="icon"><i class="fa fa-book is-right"></i></span>
 
                 </a>
@@ -49,6 +49,17 @@
                         <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
                     </span>
                 </a>
+                <a class="navbar-item" >
+                    <span class="select">
+                    <select class="" #langSelect (change)="translate.use(langSelect.value)">
+          <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+        </select>
+        </span>
+                    <!-- <span class="icon">
+                        <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+                    </span> -->
+                </a>
+                
             </div>
         </div>
     </nav>

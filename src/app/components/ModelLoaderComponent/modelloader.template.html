@@ -22,9 +22,10 @@
         <table class="table is-striped is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr class="active">
-                    <th class="centered">Model Name</th>
+                    <th class="centered">{{'MODELLOADER.MODELNAME' | translate }}</th>
                     <th class="centered">Version</th>
-                    <th class="centered">Permission</th>
+                    <th class="centered">{{'MODELLOADER.PERMISSION' | translate }}</th>
+                    <th class="centered">Action</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -36,6 +37,9 @@
                     <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
                     <i *ngIf="model.can_write" class="fas fa-pencil-alt" title="write permission"></i>
                     <i *ngIf="!model.can_read && !model.can_write" class="fas fa-ban" title="no permission"></i>
+                </td>
+                <td>
+                    
                 </td>
             </tr>
             <tfoot></tfoot>

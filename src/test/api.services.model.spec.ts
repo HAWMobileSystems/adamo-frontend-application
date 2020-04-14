@@ -32,7 +32,7 @@ describe('ApiService', () => {
           data: {
             modelxml: 'modelString!',
             modelname: 'testModel',
-            mid: 13,
+            mid: '13',
             version: '1'
             },
           success: true
@@ -55,7 +55,7 @@ describe('ApiService', () => {
           data: {
             modelxml: 'modelString!',
             modelname: 'testModel',
-            mid: 13,
+            mid: '13',
             version: '1'
             },
           success: true
@@ -85,7 +85,7 @@ describe('ApiService', () => {
           data: {
             modelxml: 'modelString!',
             modelname: 'testModel',
-            mid: 13,
+            mid: '13',
             version: '1'
             },
           success: true
@@ -115,7 +115,7 @@ describe('ApiService', () => {
                   data: {
                       modelxml: 'modelString!',
                       modelname: 'testModel',
-                      mid: 13,
+                      mid: '13',
                       version: '1'
                   },
                   success: false
