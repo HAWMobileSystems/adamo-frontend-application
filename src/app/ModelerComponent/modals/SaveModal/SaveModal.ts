@@ -4,6 +4,7 @@ import {BsModalComponent} from 'ng2-bs3-modal';
 import {Model} from '../../../models/model';
 import {ApiService} from '../../../services/api.service';
 import {Http} from '@angular/http';
+import { ModelDto } from '../../../entities/interfaces/ModelDto';
 
 const bigInt = require('big-integer');
 
@@ -18,7 +19,7 @@ export class SaveModal extends BsModalComponent {
   public apiService: ApiService;
   public root: any;
   public xml: string;
-  public model: Model;
+  public model: ModelDto;
   public version1: number;
   public version2: number;
   public version3: number;
@@ -28,18 +29,18 @@ export class SaveModal extends BsModalComponent {
   @ViewChild('modal')
   public modal: BsModalComponent;
 
-  public setModel(model: Model, xml: string, apiService: ApiService, root: any) {
+  public setModel(model: ModelDto, xml: string, apiService: ApiService, root: any) {
     this.root = root;
     this.xml = xml;
     this.model = model;
     this.apiService = apiService;
-    this.version1 = bigInt(model.version).shiftRight(48);
-    this.version2 = bigInt(model.version).and(bigInt('0000FFFF00000000', 16)).shiftRight(32);
-    this.version3 = bigInt(model.version).and(bigInt('00000000FFFF0000', 16)).shiftRight(16);
-    this.version4 = bigInt(model.version).and(bigInt('000000000000FFFF', 16));
+    // this.version1 = bigInt(model.version).shiftRight(48);
+    // this.version2 = bigInt(model.version).and(bigInt('0000FFFF00000000', 16)).shiftRight(32);
+    // this.version3 = bigInt(model.version).and(bigInt('00000000FFFF0000', 16)).shiftRight(16);
+    // this.version4 = bigInt(model.version).and(bigInt('000000000000FFFF', 16));
   }
   public saveSuperVersion() {
-    this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
+    this.apiService.modelUpsert(this.model.id, this.model.modelName, this.model.modelXML, this.model.modelVersion)
     .subscribe((response: { status: string; }) => {
       if (response.status === 'Next Version already exists') {
         this.alsoExists = true;
@@ -55,12 +56,12 @@ export class SaveModal extends BsModalComponent {
       });
   }
   public saveWithVersion() {
-    this.model.version =
-      bigInt(this.version1).shiftLeft(48) +
-      bigInt(this.version2).shiftLeft(32) +
-      bigInt(this.version3).shiftLeft(16) +
-      bigInt(this.version4);
-    this.apiService.modelUpsert(this.model.id, this.model.name, this.xml, this.model.version)
+    // this.model.version =
+    //   bigInt(this.version1).shiftLeft(48) +
+    //   bigInt(this.version2).shiftLeft(32) +
+    //   bigInt(this.version3).shiftLeft(16) +
+    //   bigInt(this.version4);
+    this.apiService.modelUpsert(this.model.id, this.model.modelName, this.model.modelXML, this.model.modelVersion)
     .subscribe((response: { status: string; }) => {
       if (response.status === 'Next Version already exists') {
         this.alsoExists = true;
