@@ -8,6 +8,8 @@ import {
 import { TabbarService } from "../../services/tabbar.service";
 import { AuthService, AdamoMqttService } from "../../services";
 import { Router } from "@angular/router";
+
+import {TranslateService} from '@ngx-translate/core';
 // import { RoleType } from "../../../../../adamo-nest-server/src/constants/role-type";
 
 @Component({
@@ -21,7 +23,7 @@ export class AppHeaderComponent {
   @ViewChild("navBurger") navBurger: ElementRef;
   @ViewChild("navMenu") navMenu: ElementRef;
 
-  public models; 
+  public models = []; 
   public currentUser;
   public page;
   public showMenu;
@@ -30,7 +32,8 @@ export class AppHeaderComponent {
     // private userService: UserService,
     private authService: AuthService,
     private tabbarService: TabbarService,
-    private mqttService: AdamoMqttService
+    private mqttService: AdamoMqttService,
+    private translate: TranslateService,
   ) {
     this.currentUser = this.authService.getCurrentUser();
     this.tabbarService.getModelTabs().subscribe(data => {

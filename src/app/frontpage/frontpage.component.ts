@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { AuthService } from "../services";
 
-// import {version} from "./../../../package.json"; TODO
+// import {TranslateService} from '@ngx-translate/core';// import {version} from "./../../../package.json"; TODO
 //Include components for interface and styling
 @Component({
   selector: "front-page",
@@ -31,12 +31,13 @@ export class FrontPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private logger: NGXLogger,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     // redirect to home if already logged in
     // if (this.authService.currentUserValue) {
     //   this.router.navigate(["/"]);
     // }
+  
   }
 
   ngOnInit() {

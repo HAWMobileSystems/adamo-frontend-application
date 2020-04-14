@@ -11,6 +11,7 @@ import { AuthService } from "../services/auth.service";
 // import { RoleType } from "../../../../../adamo-nest-server/src/constants/role-type";
 import { EventEmitterService } from "../services/EventEmitter.service";
 import { TabbarService } from "../services/tabbar.service";
+import { TranslateService } from "@ngx-translate/core";
 
 //Include components for interface and styling
 @Component({
@@ -39,7 +40,8 @@ export class OverviewComponent implements OnInit {
     private router: Router,
     private mqttService: AdamoMqttService,
     private tabbarService: TabbarService,
-    private snackbarService: SnackBarService
+    private snackbarService: SnackBarService,
+    private translate: TranslateService
   ) {
     eventEmitterService.emitModelSelected$.subscribe(
       model => {

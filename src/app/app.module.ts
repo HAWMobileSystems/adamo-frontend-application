@@ -4,9 +4,10 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { AppComponent } from "./app.component";
 import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
-
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ViewerComponent } from "./viewer/viewer.component";
 import { AlertComponent } from "./components/Alert/alert.component";
 import { AuthGuard } from "./guards/auth.guard";
@@ -35,7 +36,10 @@ import { SharedModule } from "./shared.module";
 import { FrontpageHeaderModule } from "./components/FrontPageHeaderComponent/frontpage-header.module";
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
 import { UserService } from "./services/user.service";
-
+// AoT requires an exported function for factories
+// export function HttpLoaderFactory(httpClient: HttpClient) {
+//   return new TranslateHttpLoader(httpClient);
+// }
 // import { Angular2BulmaModule } from 'angular2-bulma';
 //check for correct branch!
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -43,6 +47,9 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   port: 4711,
   path: '/'
 };
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   imports: [
     // Angular2BulmaModule,
@@ -58,6 +65,15 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }),
+    TranslateModule
+    .forRoot({
+     loader: {
+       provide: TranslateLoader,
+       useFactory: HttpLoaderFactory,
+       deps: [HttpClient]
+     }
+   }),
+   
     TutorialModule,
     FrontPageModule, 
     OverviewModule, 
@@ -76,7 +92,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 
     
   ],
-  // exports: [ModelerComponent],
+  // exports: [TranslateModule],
   providers: [
     AuthGuard,
     AlertService,

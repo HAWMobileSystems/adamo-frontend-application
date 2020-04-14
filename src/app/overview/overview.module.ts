@@ -22,7 +22,8 @@ import { SharedModule } from "../shared.module";
 import { OverviewRoutingModule } from "./overview-routing.module";
 import { ModelLoaderModule } from "../components/ModelLoaderComponent/modelloader.module";
 import { TabbarService } from "../services/tabbar.service";
-import { AppHeaderComponent } from "../components/AppHeaderComponent/header.component";
+import { AppHeaderModule } from "../components/AppHeaderComponent/header.module";
+import { SharedLazyModule } from "../shared/shared-lazy.module";
 
 // import { FrontPageComponent} from './FrontPageComponent.component';
 // import { HeaderComponent} from "../components/HeaderComponent/header.component"
@@ -41,7 +42,7 @@ import { AppHeaderComponent } from "../components/AppHeaderComponent/header.comp
     VariableComponent,
     // ModelLoaderComponent,
     InputVarComponent,
-    AppHeaderComponent,
+    // AppHeaderComponent,
 
   ],
   imports: [
@@ -52,8 +53,10 @@ import { AppHeaderComponent } from "../components/AppHeaderComponent/header.comp
     BsModalModule,
     Ng2SearchPipeModule,
     SharedModule,
+    SharedLazyModule,
     ModelLoaderModule,
     OverviewRoutingModule,
+    AppHeaderModule
   ],
   providers: [TabbarService]
 })

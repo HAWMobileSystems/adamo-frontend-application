@@ -8,6 +8,7 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { EventEmitterService } from '../../services/EventEmitter.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'modelloader',
@@ -42,8 +43,11 @@ export class ModelLoaderComponent {
     private authService: AuthService,
     private router: Router,
     private snackbarService: SnackBarService,
-    private mqttService: AdamoMqttService
-  ) {}
+    private mqttService: AdamoMqttService,
+    private translate: TranslateService,
+  ) {
+    translate.get('MODELLOADER.PERMISSION').subscribe(console.log)
+  }
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
   
