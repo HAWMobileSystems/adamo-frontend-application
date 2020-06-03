@@ -1,47 +1,49 @@
 // import { AbstractCustomModal } from '../AbstractCustomModal';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Host, Inject } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { VariableComponent } from '../VariablesComponent/variables.component';
 import { Variable } from '../variable';
+import { ModelerComponent } from '../../modeler.component';
 
+import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 @Component({
     selector: 'variable-modal',
     templateUrl: './VariableModal.html'
   })
 
-export class VariableModal extends BsModalComponent {
+export class VariableModal {
     private IPIM_VAL : string = 'IPIM_Val';
     private IPIM_META : string = 'IPIM_Meta';
 
-    //private variables: Variable[];
+    private variables: Variable[];
 
-    public variables: Variable[] = [
-        // new Variable('prepacked', 'yes', true),
-        // new Variable('bookonwithdrawal', 'yes', true),
-        // new Variable('noOperation', 'no', false)
-      ];
 
-    private modeler : any;
+    private data: any;
     public termList: any;
-    public root: any;
-  /*   constructor() {
-        super();
-        console.log('VariableModal constructor');
+
+    constructor(
+        // @Host() parent: ModelerComponent,
+        private fb: FormBuilder,
+        @Inject(MAT_DIALOG_DATA) data: any,
+      private dialogRef: MatDialogRef<VariableModal>) {
+        this.variables = [];
+        this.data = data
         this.fillModal();
+    } 
 
-    } */
-
-    @ViewChild('modal')
-    public modal: BsModalComponent;
+    // @ViewChild('modal')
+    // public modal: BsModalComponent;
     public selected: string;
     public output: string;
     public index: number = 0;
-    public cssClass: string = '';
+    // public cssClass: string = '';
 
-    public  animation: boolean = true;
-    public  keyboard: boolean = true;
-    public backdrop: string | boolean = true;
-    public css: boolean = false;
+    // public  animation: boolean = true;
+    // public  keyboard: boolean = true;
+    // public backdrop: string | boolean = true;
+    // public css: boolean = false;
 
     public opened() {
         console.log('opened Variable Modal');
@@ -49,11 +51,11 @@ export class VariableModal extends BsModalComponent {
         this.fillModal();
     }
 
-    public setProps(modeler: any, root: any) {
-        console.log('Variable Modal Set Props');
-        this.root = root;
-        this.modeler = modeler;
-    }
+    // public setProps(modeler: any, root: any) {
+    //     console.log('Variable Modal Set Props');
+    //     this.root = root;
+    //     this.modeler = modeler;
+    // }
 
     public addNewVar(): void {
         this.addVar('newVariable', 'newValue', false);
@@ -66,8 +68,8 @@ export class VariableModal extends BsModalComponent {
     public fillModal(): void {
         console.log('VariableModal fillModal');
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-        const elementRegistry = this.modeler.get('elementRegistry');
-        const modeling = this.modeler.get('modeling');
+        const elementRegistry = this.data.modeler.get('elementRegistry');
+        const modeling = this.data.modeler.get('modeling');
         //Alle Elemente der ElementRegistry holen
         const elements = elementRegistry.getAll();
         const element = elements[0];
@@ -109,18 +111,18 @@ export class VariableModal extends BsModalComponent {
         this.writeVariableModalValues();
     }
 
-    public dismissed() {
+    public dismiss() {
         console.log('VariableModal dismissed');
     }
 
-    public closed() {
+    public close() {
         console.log('VariableModal closed');
     }
 
     public writeVariableModalValues() {
         //get moddle Object
-        const elementRegistry = this.modeler.get('elementRegistry');
-        const moddle = this.modeler.get('moddle');
+        const elementRegistry = this.data.modeler.get('elementRegistry');
+        const moddle = this.data.modeler.get('moddle');
 
         //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
         const elements = elementRegistry.getAll();
@@ -146,8 +148,9 @@ export class VariableModal extends BsModalComponent {
             }
         }
         //Publish Changes to other subscribers!
-        this.root.getCommandStack().publishXML();
+        // this.root.getCommandStack().publishXML();
         //finished so close this modal!
-        this.modal.close();
+        // this.modal.close();
+        this.dialogRef.close(true);
     }
 }

@@ -1,10 +1,13 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject} from '@angular/core';
 import {Component, ViewChild} from '@angular/core';
 import {BsModalComponent} from 'ng2-bs3-modal';
 import {Model} from '../../../models/model';
 import {ApiService} from '../../../services/api.service';
 import {Http} from '@angular/http';
 import { ModelDto } from '../../../entities/interfaces/ModelDto';
+import { FormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { TermModal } from '../TermModal/TermModal';
 
 const bigInt = require('big-integer');
 
@@ -14,11 +17,12 @@ const bigInt = require('big-integer');
 })
 
 @Injectable()
-export class SaveModal extends BsModalComponent {
+export class SaveModal {
 
   public apiService: ApiService;
   public root: any;
   public xml: string;
+  public version;
   public model: ModelDto;
   public version1: number;
   public version2: number;
@@ -26,9 +30,17 @@ export class SaveModal extends BsModalComponent {
   public version4: number;
   public alsoExists: boolean = false;
 
-  @ViewChild('modal')
-  public modal: BsModalComponent;
+  // @ViewChild('modal')
+  // public modal: BsModalComponent;
 
+   constructor(
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  private dialogRef: MatDialogRef<TermModal>) { 
+
+    this.version = data.version;
+
+  }
   public setModel(model: ModelDto, xml: string, apiService: ApiService, root: any) {
     this.root = root;
     this.xml = xml;
@@ -49,7 +61,7 @@ export class SaveModal extends BsModalComponent {
         this.alsoExists = false;
         console.log(response);
         this.saveSubProcesses();
-        this.modal.close();
+        // this.modal.close();
       },
       (      error: any) => {
         console.log(error);
@@ -70,7 +82,7 @@ export class SaveModal extends BsModalComponent {
         this.alsoExists = false;
         console.log(response);
         this.saveSubProcesses();
-        this.modal.close();
+        // this.modal.close();
       },
       (      error: any) => {
         console.log(error);
@@ -87,21 +99,11 @@ export class SaveModal extends BsModalComponent {
     });
   }
 
-  public opened() {
-    console.log('SaveModal opened');
-  }
 
-  public dismissed() {
-    console.log('SaveModal dismissed');
-  }
-
-  public closed() {
+  public close() {
     console.log('SaveModal closed');
   }
 
-  public cancel(): void {
-    this.dismiss();
-  }
 
   public accept(): void {
     console.log('VariableModal accept');

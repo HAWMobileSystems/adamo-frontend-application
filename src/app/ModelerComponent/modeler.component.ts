@@ -6,7 +6,7 @@ import {
   ElementRef,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Http, Jsonp } from "@angular/http";
@@ -22,7 +22,9 @@ import { ChangeDetectorRef } from "@angular/core";
 import * as $ from "jquery";
 import { FileReaderEvent } from "./interfaces";
 
-import BpmnModeler from "bpmn-js/lib/Modeler";
+import LintModule from 'bpmn-js-bpmnlint';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
+import bpmnlintrc from './../../assets/packedLintrc';
 import { TermModal } from "./modals/TermModal/TermModal";
 import { InputModal } from "./modals/InputModal/InputModal";
 import { VariableModal } from "./modals/VariableModal/VariableModal";
@@ -43,16 +45,17 @@ import * as propertiesProviderModule from "bpmn-js-properties-panel/lib/provider
 import { NGXLogger } from "ngx-logger";
 import { tap } from "rxjs/operators";
 import { ModelDto } from "../entities/interfaces/ModelDto";
+import { MatDialog, MatDialogConfig } from "@angular/material";
 
 const customPaletteModule = {
-  paletteProvider: ["type", PaletteProvider]
+  paletteProvider: ["type", PaletteProvider],
 };
 
 @Component({
   selector: "modeler",
   templateUrl: "./modeler.component.html",
   styleUrls: ["./modeler.component.css"],
-  providers: [BPMNStore]
+  providers: [BPMNStore],
 })
 export class ModelerComponent implements OnInit {
   @Input() public modelId: string;
@@ -87,7 +90,7 @@ export class ModelerComponent implements OnInit {
   private propsPanelRef: string = "#js-properties-panel";
   private defaultModel: string = "/diagrams/scrum.bpmn";
   private camundaModdleDescriptor: any = require("camunda-bpmn-moddle/resources/camunda.json");
-  private modelXML :string; 
+  private modelXML: string;
   //viewchilds import the html part of the modals and links them
 
   @ViewChild("ref") private el: ElementRef;
@@ -95,8 +98,8 @@ export class ModelerComponent implements OnInit {
   private variableModal: VariableModal;
   @ViewChild("inputModal")
   private inputModal: InputModal;
-  @ViewChild("termModal")
-  private termModal: TermModal;
+  // @ViewChild("termModal")
+  // private termModal: TermModal;
   @ViewChild("subProcessModal")
   private subProcessModal: SubProcessModal;
   @ViewChild("evalModal")
@@ -114,7 +117,7 @@ export class ModelerComponent implements OnInit {
     META: "IPIM_meta_",
     VAL: "IPIM_Val_",
     CALC: "ipim_calc",
-    SUBPROCESS: "ipim_subprocess"
+    SUBPROCESS: "ipim_subprocess",
   };
 
   //definitions for modeler parts
@@ -122,11 +125,12 @@ export class ModelerComponent implements OnInit {
     MODELING: "modeling",
     ELEMENTREGISTRY: "elementRegistry",
     SELECTION: "selection",
-    VALUES: "values"
+    VALUES: "values",
   };
 
   constructor(
     private apiService: ApiService,
+    private dialog: MatDialog,
     private http: Http,
     private store: BPMNStore,
     private ref: ChangeDetectorRef,
@@ -135,17 +139,19 @@ export class ModelerComponent implements OnInit {
     private mqttService: AdamoMqttService,
     private logger: NGXLogger
   ) {
-    const splittedUrl = this.router.url.split('/')
-     this.modelID = splittedUrl[splittedUrl.length - 2]
-    this.modelVersion = splittedUrl[splittedUrl.length - 1]
+    const splittedUrl = this.router.url.split("/");
+    this.modelID = splittedUrl[splittedUrl.length - 2];
+    this.modelVersion = splittedUrl[splittedUrl.length - 1];
 
-    //  this.modelXML = 
-      this.apiService.getModel(this.modelID, this.modelVersion).subscribe( (modelResponse: any )=> {
-        console.log(modelResponse)
-        this.model = modelResponse
-        this.modelXML = modelResponse.modelXML
-        this.loadBPMN(this.modelXML)
-      })
+    //  this.modelXML =
+    this.apiService
+      .getModel(this.modelID, this.modelVersion)
+      .subscribe((modelResponse: any) => {
+        console.log(modelResponse);
+        this.model = modelResponse;
+        this.modelXML = modelResponse.modelXML;
+        this.loadBPMN(this.modelXML);
+      });
   }
 
   ngOnDestroy(): void {
@@ -153,7 +159,7 @@ export class ModelerComponent implements OnInit {
   }
   importError?: Error;
 
-  diagramUrl = this.newDiagramXML;
+  // diagramUrl = this.newDiagramXML;
   handleImported(event) {
     const { type, error, warnings } = event;
 
@@ -221,23 +227,100 @@ export class ModelerComponent implements OnInit {
   }
 
   // Prepare Modals and open them
+    public openVariableModal = () => {
+      const dialogConfig = new MatDialogConfig();
+  
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+  
+      dialogConfig.data = { modeler: this.modeler };
+      let variableModalRef = this.dialog.open(VariableModal, dialogConfig);
+      // this.termModal.modal.open();
+  
+      variableModalRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          console.log("termmodal confirmed");
+          this.getCommandStack().publishXML(null);
+          // snack.dismiss();
+          // const a = document.createElement('a');
+          // a.click();
+          // a.remove();
+          // snack.dismiss();
+          // this.snackBar.open('Closing snack bar in a few seconds', 'Fechar', {
+          //   duration: 2000,
+          // });
+        }
+      });
+      // this.variableModal.setProps(this.modeler, this);
+      // this.variableModal.modal.open();
+    };
+    
   public openTermModal = () => {
-    this.termModal.setProps(
-      this.modeler,
-      this.getTermList(this.lookup.SELECTION),
-      this
-    );
-    this.termModal.modal.open();
+    // this.termModal = new TermModal(this)
+    // this.termModal.setProps(
+    //   this.modeler,
+    //   this.getTermList(this.lookup.SELECTION),
+    //   this
+    // );
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      terms: this.getTermList("elementRegistry"),
+      modeler: this.modeler,
+    };
+    let termModalRef = this.dialog.open(TermModal, dialogConfig);
+    // this.termModal.modal.open();
+
+    termModalRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        console.log("termmodal confirmed");
+        // this.openDiagram();
+        this.getCommandStack().publishXML(null);
+        // snack.dismiss();
+        // const a = document.createElement('a');
+        // a.click();
+        // a.remove();
+        // snack.dismiss();
+        // this.snackBar.open('Closing snack bar in a few seconds', 'Fechar', {
+        //   duration: 2000,
+        // });
+      }
+    });
   };
 
   public openInputModal = () => {
-    this.inputModal.setProps(this.modeler, this);
-    this.inputModal.modal.open();
-  };
-  public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler, this);
-    this.variableModal.modal.open();
-  };
+    // this.inputModal.setProps(this.modeler, this);
+    // this.inputModal.modal.open();
+    const dialogConfig = new MatDialogConfig();
+  
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+  
+      dialogConfig.data = { modeler: this.modeler };
+      let evaluateProcessModalRef = this.dialog.open(InputModal, dialogConfig);
+      // this.termModal.modal.open();
+  
+      evaluateProcessModalRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          console.log("evaluateProcessModalRef confirmed");
+          // this.getCommandStack().publishXML();
+          // snack.dismiss();
+          // const a = document.createElement('a');
+          // a.click();
+          // a.remove();
+          // snack.dismiss();
+          // this.snackBar.open('Closing snack bar in a few seconds', 'Fechar', {
+          //   duration: 2000,
+          // });
+        }
+      });
+      // this.variableModal.setProps(this.modeler, this);
+      // this.variableModal.modal.open();
+    };
+    
 
   public openUsageModal = () => {
     this.usageModal.setProps(this.modeler, this, this.apiService);
@@ -252,7 +335,8 @@ export class ModelerComponent implements OnInit {
     //before we can open the modal we have a lot of work to do so start with the current xml!
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
       this.evaluator = new Evaluator(
-        this.modelId.split("_")[1],
+        this.modelID,
+        // this.modelId.split("_")[1],
         xml,
         this.apiService,
         this
@@ -378,16 +462,7 @@ export class ModelerComponent implements OnInit {
   };
 
   //highlights all elements with a term .. or turns them back to black
-  private highlightTerms = () => {
-    //get modeler objects
-    const elementRegistry = this.modeler.get("elementRegistry");
-    const modeling = this.modeler.get("modeling");
-    //if colored return to black else color
-    this.termsColored
-      ? this.toggleTermsNormal(elementRegistry, modeling)
-      : this.toggleTermsColored(elementRegistry, modeling);
-    this.termsColored = !this.termsColored;
-  };
+  private highlightTerms = () => {};
 
   //resets the diagram back to before it was evaluated
   private resetDiagram = () => {
@@ -427,14 +502,19 @@ export class ModelerComponent implements OnInit {
       this.logger.debug(this.model);
       //upsert the current model
       this.apiService
-        .modelUpsert(this.model.id, this.model.modelName, xml, this.model.modelVersion)
+        .modelUpsert(
+          this.model.id,
+          this.model.modelName,
+          xml,
+          this.model.modelVersion
+        )
         .subscribe(
-          (response: { status: string }) => {
+          (response: any) => {
             this.logger.debug(response);
             //if version exists, show save modal else save it with new version+1
             if (response.status === "Next Version already exists") {
-             // this.saveModal.setModel(this.model, xml, this.apiService, this);
-              this.saveModal.modal.open();
+              // this.saveModal.setModel(this.model, xml, this.apiService, this);
+              // this.saveModal.modal.open();
             } else if (response.status === "Model upserted successfully") {
               //show snackbar for success
               this.snackbarService.newSnackBarMessage(
@@ -445,7 +525,7 @@ export class ModelerComponent implements OnInit {
               const partmodels = this.returnSubProcessList(
                 this.lookup.ELEMENTREGISTRY
               );
-              partmodels.forEach(pmid => {
+              partmodels.forEach((pmid) => {
                 this.apiService
                   .partModelCreate(
                     this.modelId.split("_")[1],
@@ -490,11 +570,11 @@ export class ModelerComponent implements OnInit {
         console.log(err, xml);
         return;
       }
-      xmlResponse =  xml
-    })
+      xmlResponse = xml;
+    });
     console.log(xmlResponse);
-    return xmlResponse
-  }
+    return xmlResponse;
+  };
   private saveDiagram = () => {
     const downloadLink = $("#js-download-diagram");
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
@@ -570,7 +650,7 @@ export class ModelerComponent implements OnInit {
       this.snackbarService.newSnackBarMessage("No Subprocess selected!", "red");
     } else {
       //get through each element and open it in new tab
-      terms.forEach(element => {
+      terms.forEach((element) => {
         this.showOverlay();
         if (element !== "") {
           this.apiService.getModel(element).subscribe(
@@ -630,7 +710,7 @@ export class ModelerComponent implements OnInit {
     [COMMANDS.ZOOM_TO_FIT]: this.zoomToFit,
     [COMMANDS.EXPORT_SVG]: this.saveSVG,
     [COMMANDS.EXPORT_ENGINE]: this.exportToEngine,
-    [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel
+    [COMMANDS.OPEN_SUBPROCESS_MODEL]: this.openSubProcessModel,
   };
 
   //initializes a new moderler with custom props and palette
@@ -646,9 +726,17 @@ export class ModelerComponent implements OnInit {
     this.modeler = new BpmnModeler({
       // container: '#' + this.modelId ,//+ ' > ' ,//+ this.containerRef,
       // container: "#canvas", //+ ' > ' ,//+ this.containerRef,
+   
+      linting: {
+        bpmnlint: bpmnlintrc, 
+        active: true
+      },
+      keyboard: {
+        bindTo: document
+      },
       propertiesPanel: {
-        parent: this.propsPanelRef
-        
+        parent: this.propsPanelRef,
+
         // parent: '#' + this.modelId + ' ' + this.propsPanelRef
       },
       additionalModules: [
@@ -656,11 +744,12 @@ export class ModelerComponent implements OnInit {
         { commandQueue: ["type", () => this.commandQueue] },
         propertiesPanelModule,
         propertiesProviderModule,
-        customPaletteModule
+        customPaletteModule,
+        LintModule
       ],
       moddleExtensions: {
-        camunda: this.camundaModdleDescriptor
-      }
+        camunda: this.camundaModdleDescriptor,
+      },
     });
   }
 
@@ -729,9 +818,15 @@ export class ModelerComponent implements OnInit {
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     modeling.setColor(elements, {
-      stroke: "black"
+      stroke: "black",
     });
   };
+  
+  private normalizeAll() {
+    const registry = this.modeler.get("elementRegistry");
+    const modelling = this.modeler.get("modeling");
+    modelling.setColor(registry.getAll(), { stroke: "black" });
+  }
 
   //create a new digagramm .. no longer used as we tab now
   private createNewDiagram() {
@@ -747,9 +842,9 @@ export class ModelerComponent implements OnInit {
   };
 
   //laods the bpmn and emit an event when the laoding is finished
-  private loadBPMN(model : any) {
-    console.log(model)
-    this.modeler.importXML(model, this.handleError)
+  private loadBPMN(model: any) {
+    console.log(model);
+    this.modeler.importXML(model, this.handleError);
     // this.modeler.importXML(IPIM_OPTIONS.NEWMODEL, this.handleError);
     this.loadedCompletely.emit();
     //show snackbar for successfull loading!
@@ -771,13 +866,13 @@ export class ModelerComponent implements OnInit {
 
   private handleError(err: any) {
     if (err) {
-      console.log('error during rendering ',err )
+      console.log("error during rendering ", err);
       // this.logger.debug("error rendering", err);
     }
   }
 
   //returns a list of all terms of selected elements
-  private getTermList = (scope: string): string[] => {
+  public getTermList = (scope: string): string[] => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
     scope === this.lookup.SELECTION
@@ -904,7 +999,6 @@ export class ModelerComponent implements OnInit {
   //colors elements of the modeler based on their terms colors are received from palette
   private toggleTermsColored(elementRegistry: any, modeling: any) {
     this.logger.debug("toggleTermscolored");
-
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     const terms = this.getTermList("elementRegistry");
     //Alle Elemente der ElementRegistry holen
@@ -940,11 +1034,6 @@ export class ModelerComponent implements OnInit {
     });
   }
 
-  private normalizeAll() {
-    const registry = this.modeler.get("elementRegistry");
-    const modelling = this.modeler.get("modeling");
-    modelling.setColor(registry.getAll(), { stroke: "black" });
-  }
 
   private highlightElement(element: any, index: number) {
     const registry = this.modeler.get("elementRegistry");

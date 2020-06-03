@@ -211,25 +211,26 @@ export class BaseModelerComponent implements OnInit {
 
   // Prepare Modals and open them
   public openTermModal = () => {
-    this.termModal.setProps(
-      this.modeler,
-      this.getTermList(this.lookup.SELECTION),
-      this
-    );
-    this.termModal.modal.open();
+    // this.termModal = new TermModal(this);
+    // this.termModal.setProps(
+    //   this.modeler,
+    //   this.getTermList(this.lookup.SELECTION),
+    //   this
+    // );
+    // this.termModal.modal.open();
   };
 
   public openInputModal = () => {
-    this.inputModal.setProps(this.modeler, this);
-    this.inputModal.modal.open();
+    // this.inputModal.setProps(this.modeler, this);
+    // this.inputModal.modal.open();
   };
   public openVariableModal = () => {
-    this.variableModal.setProps(this.modeler, this);
-    this.variableModal.modal.open();
+    // this.variableModal.setProps(this.modeler, this);
+    // this.variableModal.modal.open();
   };
 
   public openUsageModal = () => {
-    this.usageModal.modal.open();
+    // this.usageModal.modal.open();
   };
 
   public openEvaluatorModal = () => {
