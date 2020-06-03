@@ -7,7 +7,7 @@ import {
   XHRBackend
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import {ApiService} from '../app/services/api.service';
+import {ApiService} from './api.service';
 import { Observable } from 'rxjs';
 
 describe('ApiService', () => {
@@ -119,7 +119,7 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.permissionUpdate(1, 2))).toEqual('object');
+                expect(typeof(apiService.permissionUpdate('1', '2'))).toEqual('object');
             }));
         it('it should work in case of a failure',
             inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
@@ -134,8 +134,8 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.permissionUpdate(1, 2))).toEqual('object');
-                apiService.permissionUpdate(1, 2).subscribe((response: any) => {
+                expect(typeof(apiService.permissionUpdate('1', '2'))).toEqual('object');
+                apiService.permissionUpdate('1', '2').subscribe((response: any) => {
                     expect(response).toBeDefined();
                     expect(response.success).toBeUndefined();
                     expect(response.status).toBeDefined();
@@ -175,7 +175,7 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.permissionDelete(1))).toEqual('object');
+                expect(typeof(apiService.permissionDelete('1'))).toEqual('object');
                 apiService.permissionDelete(1).subscribe((response: any) => {
                     expect(response).toBeDefined();
                     expect(response.success).toBeUndefined();

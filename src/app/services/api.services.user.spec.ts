@@ -7,7 +7,7 @@ import {
   XHRBackend
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import {ApiService} from '../app/services/api.service';
+import {ApiService} from './api.service';
 import { Observable } from 'rxjs';
 
 describe('ApiService', () => {

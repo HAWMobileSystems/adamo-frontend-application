@@ -7,7 +7,7 @@ import {
   XHRBackend
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import {ApiService} from '../app/services/api.service';
+import {ApiService} from './api.service';
 import { Observable } from 'rxjs';
 
 describe('ApiService', () => {
@@ -39,7 +39,7 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.roleCreate('Admin', true, true, true))).toEqual('object');
+                expect(typeof(apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}))).toEqual('object');
 
             }));
         it('it should work in case of a failure',
@@ -55,8 +55,8 @@ describe('ApiService', () => {
                     })));
                 });
 
-                expect(typeof(apiService.roleCreate('Admin', true, true, true))).toEqual('object');
-                apiService.roleCreate('Admin', true, true, true).subscribe((response: any) => {
+                expect(typeof(apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}))).toEqual('object');
+                apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}).subscribe((response: any) => {
                     expect(response).toBeDefined();
                     expect(response.success).toBeUndefined();
                     expect(response.status).toBeDefined();
