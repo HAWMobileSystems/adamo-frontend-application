@@ -19,5 +19,19 @@
   "MODELLOADER": {
     "MODELNAME": "Name",
     "PERMISSION": "Permission"
+  },
+
+
+  "TUTORIAL": {
+    "START": {
+        "WELCOME": "A tutorial to learn the modeling language BPMN 2.0"
+    },
+    "INTRODUCTION": {
+        "BACK": "Back",
+        "NEXT": "Next",
+        "FINISH": "Finish the Introduction",
+        "ABORT": "Abort Introduction"
+    }
+
   }
 }

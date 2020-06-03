@@ -21,5 +21,19 @@
     "PERMISSION": "Berechtigung", 
     "IMPORT": "Importieren", 
     "NEW": "Neu"
+  },
+
+
+  "TUTORIAL": {
+    "START": {
+        "WELCOME": "Hier finden sich Tutorials zum Erlernen der Modellierungssprache BPMN 2.0"
+    },
+    "INTRODUCTION": {
+        "BACK": "Zurück",
+        "NEXT": "Weiter",
+        "FINISH": "Einführung abschließen",
+        "ABORT": "Einführung abbrechen"
+    }
+
   }
 }
