@@ -1,0 +1,106 @@
+<!-- <div class="panel panel-default"> -->
+<!-- <div class="panel-body"> -->
+<!-- <router-outlet></router-outlet> -->
+<div class="container is-fluid">
+    <div class="field">
+        <div class="control has-icons-right">
+            <input class="input is-primary form-control" type="text" placeholder="Search" name="srch-termloader"
+                id="srch-termloader" [(ngModel)]="search">
+            <span class="icon is-small is-right">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
+    </div>
+    <!-- <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search" name="srch-termloader" id="srch-termloader"
+        [(ngModel)]="search">
+    <div class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    </div>
+</div> -->
+    <div class="table-container">
+        <table class="table is-striped is-bordered is-hoverable is-fullwidth">
+            <thead>
+                <tr class="active">
+                    <th class="centered">{{'MODELLOADER.MODELNAME' | translate }}</th>
+                    <th class="centered">Version</th>
+                    <th class="centered">{{'MODELLOADER.PERMISSION' | translate }}</th>
+                    <th class="centered">Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search"
+                (click)="selected = model" [ngClass]="{'info': selected === model}">
+                <td>{{model.model_name}}</td>
+                <td>{{model.model_version | version}}</td>
+                <td>
+                    <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
+                    <i *ngIf="model.can_write" class="fas fa-pencil-alt" title="write permission"></i>
+                    <i *ngIf="!model.can_read && !model.can_write" class="fas fa-ban" title="no permission"></i>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tfoot></tfoot>
+        </table>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-info" type="button" (click)="fileSelectorInput.click()">
+                <span class="icon is-small">
+                    <i class="fas fa-upload"></i></span>
+                <span>Importieren</span>
+            </button>
+        </div>
+        <div class="control">
+            <button *ngIf="selected" class="button is-info" (click)="loadSelected()">
+                <span class="icon is-small">
+                    <i class="fas fa-download"></i></span>
+                <span>Aus Datenbank laden</span>
+            </button>
+        </div>
+        <div class="control">
+            <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
+        </div>
+
+        <div class="field has-addons">
+            <div class="control has-icons-left has-icons-right is-expanded">
+                <input type="text" class="input is-info" placeholder="Enter words to search" [(ngModel)]="newModelName">
+                <span class="icon is-left">
+                    <i class="fa fa-pencil"></i>
+                </span>
+            </div>
+            <p class="control">
+
+                <a class="button is-info" (click)="createEmpty(newModelName)">NEW</a>
+
+            </p>
+        </div>
+    </div>
+
+
+    <br><br>
+
+    <div>
+        <h3>Changes:</h3>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr class="active">
+                    <th class="centered">Model Name</th>
+                    <th class="centered">Version</th>
+                    <th class="centered">Last Change</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tr *ngFor="let changedModel of changesLast7Day">
+                <td>{{changedModel.modelname}}</td>
+                <td>{{changedModel.version | version}}</td>
+                <td>{{changedModel.lastchange | timestamp2date}}</td>
+            </tr>
+            <tfoot></tfoot>
+        </table>
+    </div>
+</div>
+<!-- </div> -->
+<!-- </div> -->

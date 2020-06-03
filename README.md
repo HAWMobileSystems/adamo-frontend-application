@@ -1,7 +1,7 @@
-# IPIM Modeler
-
-![Docker](https://github.com/HAWMobileSystems/adamo-frontend-application/workflows/Docker/badge.svg)
+ # ADAMO
  
+![Docker](https://github.com/HAWMobileSystems/adamo-frontend-application/workflows/Docker/badge.svg)
+
 Der Modeler wird im Rahmen des Teilprojekts "Intelligent kooperative Materialflussysteme" (IntSys) entwickelt. Das Teilprojekt stellt dabei einen Teil des EFRE (Europäischen Fonds für regionale Entwicklung) geförderten Projekt "Intelligente Produktionssysteme" dar. 
 
 Ziel ist es durch Zugriff auf digitalisiertes Expertenwissen und einer (Teil-) Automatisierung von Routineaufgaben 
@@ -15,7 +15,6 @@ git muss vorhanden sein
 node wäre ganz schön
 docker installieren 
 ```
-
 ```
 
 ## Einfacher Start
@@ -31,7 +30,6 @@ mv .env.exampe .env
 vi .env // nach belieben anpassen
 # Die Webanwendung bauen damit Docker Container gebaut werden könnnen 
 setup-project.sh
-
 # BTW node-gyp is a messy shit
 npm install -g node-gyp
 # and yes.. this takes like forever
@@ -47,7 +45,6 @@ Achtung:
 ```
 User: user@demo.com
 Passwort: 12341234
-
 ```
 
 Als bisherige Entwicklungsumgebung diente Visual-Studio-Code, allerdings kann auch problemlos Webstorm genutzt werden. 

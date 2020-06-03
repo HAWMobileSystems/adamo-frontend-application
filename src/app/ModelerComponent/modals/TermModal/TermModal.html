@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Terms</h2>
+<mat-dialog-content [formGroup]="form">
+  <p>Please define a new term for all elements:</p>
+  <mat-form-field>
+    <textarea matInput
+      value=""
+      [(ngModel)]="firstTerm"
+      id="inputFieldTerm"
+      class="modal-textarea"
+      name="inputFieldTerm"
+      placeholder="Description"
+      formControlName="longDescription"
+    >
+    </textarea>
+    <br />
+  </mat-form-field>
+  <br />
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-raised-button color="primary" tabindex="1"
+    type="button" 
+    (click)="writeTermModalValues()"
+  >
+    Set Term
+  </button>
+
+  <button mat-raised-button mat-dialog-close tabindex="-1" class="mat-raised-button" (click)="close()">Close</button>
+</mat-dialog-actions>

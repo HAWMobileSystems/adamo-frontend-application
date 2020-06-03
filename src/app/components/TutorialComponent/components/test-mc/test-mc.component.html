@@ -1,0 +1,32 @@
+<div style="padding-top: 10px"></div>
+        <!-- <button type="submit" class="btn btn-secondary" (click)="backToOverview()">Back</button> -->
+    <ng-container> 
+            <div *ngIf ="lang == 'de'; else langEN">
+                <div class="btn-group center-alignment" role="toolbar">
+                    <button type="submit" class="btn btn-lg btn-secondary" style="float: left" (click)="CheckCorrectness()">Validieren</button>
+                    <button id="nextButton" type="submit" class="btn btn-lg btn-secondary" style="float: right"
+                        (click)="NextQuestion()">Nächste</button>
+
+                </div>
+            </div>
+            <ng-template #langEN>
+                <div class="btn-group center-alignment" role="toolbar">
+                    <button type="submit" class="btn btn-lg btn-secondary" style="float: left" (click)="CheckCorrectness()">Validate</button>
+                    <button id="nextButton" type="submit" class="btn btn-lg btn-secondary" style="float: right" (click)="NextQuestion()">Next</button>
+                </div>
+            </ng-template>
+    </ng-container>
+<!-- Question part -->
+<div class="question-padding">
+    <div [innerHTML]="question.question | safeHtml"></div>
+</div>
+
+<!-- Answers part -->
+<div class="answerblock">
+    <div *ngFor="let answers of question.answers">
+        <div id="{{ answers.key }}" class="answer-padding">
+            <input type="checkbox" name="user_answers"> {{ answers.value }}
+        </div>
+    </div>
+</div>
+<div style="padding-bottom: 10px"></div>

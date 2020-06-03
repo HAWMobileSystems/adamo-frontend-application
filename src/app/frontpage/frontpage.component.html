@@ -1,0 +1,161 @@
+<!-- 
+<nav class="navbar bg-light" role="navigation" aria-label="main navigation">
+  <a class="navbar-brand" href="#">
+    <img src="/assets/adamo-only-logo.svg" width="28" height="28" alt="adamo">
+    <span>DAMO</span></a>
+  
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+  <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarElements">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+</div> 
+
+  <div id="navbarElements" class="navbar-menu">
+    <div class="navbar-end">
+      <a class="navbar-item" href="/ausprobieren">
+        <span i18n="Navbar Button|Button for Testing@@testing">Ausprobieren</span>
+        <span class="icon">
+          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+        </span>
+      </a>
+      <a class="navbar-item has-icon-right" href="/docs">
+        <span >Documentation</span>
+        <span class="icon"><i class="fa fa-book"></i></span>
+
+      </a>
+      <a class="navbar-item" href="/tutorial">
+        <span>Tutorial</span>
+        <span class="icon"><i class="fa fa-graduation-cap"></i></span>
+      </a>
+      <a class="navbar-item" href="github.com/HAWMobileSystems/adamo">
+        <span>GitHub</span>
+        <span class="icon"><i class="fab fa-github"></i></span>
+      </a>
+      <a class="navbar-item" href="ipim.institute">
+        <span>IPIM</span>
+        <span class="icon">
+          <img src="/assets/logo_ipim.svg" width="32" height="32" alt="ipim">
+        </span>
+      </a>
+    </div>
+  </div>
+</nav> -->
+<!-- Could be duplicated - should be double checked TODO -->
+<frontpage-header></frontpage-header>
+<div class="frontpage-container is-centered">
+  <div class="container login-hero-container ">
+
+    
+  <!-- <div class="card card-container centered flex-column" [ngClass]="[project]"> -->
+  <div class="card card-container centered flex-column">
+    <img id="profile-img" class="profile-img-card card-img-top" src="/assets/adamo-only-logo.svg" />
+    <!-- <p id="profile-name" class="profile-name-card"></p> -->
+
+    <div class="card-body">
+      <form class=" is-centered" name="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control has-icons-left">
+            <input class="input form-control" formControlName="email" type="text" placeholder="vorname.nachname@haw-landshut.de"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+              </span>
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">{{'ERROR.USERNAME_REQUIRED' | translate }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="password">{{'LOGIN.PASSWORD' | translate }}</label>
+          <div class="control has-icons-left">
+            <input type="password" formControlName="password" class="input form-control" placeholder="*********" required
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+              </span>
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="field has-text-centered">
+          <button [disabled]="loading" class="button is-primary is-medium is-hovered">Login</button>
+          <img *ngIf="loading" class="pl-2"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+</div>
+<div class="frontpage-sections">
+  <section class="section">
+    <div class="container">
+      <h1 class="title" i18n="idea header|Title for idea of website@@idea">Die Idee</h1>
+      <ng-container i18n>Variantenreiche Modellierung von <strong>Geschäftsprozessen</strong> mithilfe von Konfigurationstermen.</ng-container>
+    </div>
+
+  </section>
+  <section class="section">
+    <div class="container">
+      <h1 class="title" i18n="backgrounds header|Title for backgrounds of website@@backgrounds">Die Hintergründe</h1>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h1 class="title" i18n="team header|Title for description of team@@team">Die Menschen dahinter</h1>
+    </div>
+  </section>
+</div>
+
+<!-- footer -->
+<footer class="frontpage-footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        Made with <3 by <a href="https://twitter.com/HilpoltsteinerD">Daniel and Friends from IPIM</a>
+      </p>
+    </div>
+  </div>
+</footer>
+<!-- </main> -->
+
+
+<!-- 
+
+<div class="alert alert-info">
+    <strong>Normal User</strong> - U: user P: user<br />
+    <strong>Administrator</strong> - U: admin P: admin
+</div>
+<h2>Login</h2>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Login</button>
+        <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+</form> -->

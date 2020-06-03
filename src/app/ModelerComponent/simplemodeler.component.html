@@ -1,0 +1,50 @@
+<frontpage-header></frontpage-header>
+<div class="with-diagram modeler" [attr.id]="modelId">
+<!--<div class="with-diagram modeler height-90" id="debug">-->
+    <div id="js-drop-zone">
+        <div id="js-canvas" class="canvas .section-to-print">
+                <div class="diagram-parent">
+                        <div #ref class="diagram-container"></div>
+                        <!-- <app-diagram [url]="diagramUrl" (importDone)="handleImported($event)"></app-diagram> -->
+                      
+                        <div class="import-error" *ngIf="importError">
+                          <strong>Failed to render diagram: </strong>
+                          {{ importError.message }}
+                        </div>
+                      </div>
+            <a id="{{ 'ipimlogo-' + modelId }}" href="https://www.haw-landshut.de/kooperationen/institute/ipim.html" target="_blank" alt="IPIM Logo">
+            </a>
+        </div>
+        <div id="js-properties-panel" class="properties"></div>
+    </div>
+</div>
+
+
+<!-- <term-modal #termModal> -->
+<!-- </term-modal> -->
+<!-- <input-modal #inputModal>
+</input-modal>
+<variable-modal #variableModal>
+</variable-modal>
+<subprocess-modal #subProcessModal>
+</subprocess-modal>
+<eval-modal #evalModal>
+</eval-modal>
+<save-modal #saveModal>
+</save-modal>
+<usage-modal #usageModal>
+</usage-modal> -->
+
+<div id="{{ 'overlayLoading-' + modelId }}" class="overlayLoading" >
+    <div class="overlayLoadingText">
+        Please wait loading...
+        <div class="app-loading">
+            <svg class="spinner" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div id="evaluatorCanvas" hidden>The evaluator should stay hidden!</div>
+

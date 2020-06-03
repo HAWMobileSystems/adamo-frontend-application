@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Save Modal</h2>
+
+<mat-dialog-content>
+  <!-- [formGroup]="form"> -->
+  <p>
+    Next Version would already exist Save it with newest version or save it with
+    given version
+  </p>
+  <input style="width: 40px;" type="number" [(ngModel)]="version1" />.
+  <input style="width: 40px;" type="number" [(ngModel)]="version2" />.
+  <input style="width: 40px;" type="number" [(ngModel)]="version3" />.
+  <input style="width: 40px;" type="number" [(ngModel)]="version4" />
+
+  <p *ngIf="alsoExists">
+    given version also exists
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    color="primary"
+    tabindex="1"
+    class="mat-raised-button"
+    (click)="saveWithVersion()"
+  >
+    Save with given version
+  </button>
+  <button
+    mat-raised-button
+    tabindex="-1"
+    class="mat-raised-button"
+    (click)="saveSuperVersion()"
+  >
+    Save as newest version
+  </button>
+  <button
+    mat-raised-button
+    mat-dialog-close
+    tabindex="-2"
+    class="mat-raised-button"
+    (click)="close()"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

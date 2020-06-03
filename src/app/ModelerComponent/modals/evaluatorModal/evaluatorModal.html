@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Evaluation</h2>
+<mat-dialog-content>
+  <p>Please specify the values used:</p>
+  <!-- <mat-form-field> -->
+    <fieldset id="evalfset">
+      <inputvar-comp *ngFor="let variable of variables" [hidden]="variable.meta" [varName]="variable"> </inputvar-comp>
+    </fieldset>
+  <!-- </mat-form-field> -->
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    color="primary"
+    tabindex="1"
+    type="button"
+    (click)="writeInputModalValues()"
+  >
+    Evaluate
+  </button>
+
+  <button
+    mat-raised-button
+    mat-dialog-close
+    tabindex="-1"
+    class="mat-raised-button"
+    (click)="close()"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,36 @@
+
+
+<!-- Fieldset, later on the inputs are dynamicaly created see script part-->
+
+<h2 mat-dialog-title>Evaluation</h2>
+<mat-dialog-content>
+  <p>Please specify the values used:</p>
+  <!-- <mat-form-field> -->
+    <fieldset id="inputfset">
+      <inputvar-comp *ngFor="let variable of variables" [varName]="variable"> </inputvar-comp>
+    </fieldset>
+  <!-- </mat-form-field> -->
+</mat-dialog-content>
+<mat-dialog-actions>
+
+  <button
+  
+    color="primary"
+    mat-raised-button
+    mat-dialog-close
+    tabindex="-1"
+    class="mat-raised-button"
+    (click)="writeVariableModalValues()"
+  >
+    Evaluate
+  </button>
+  <button
+    mat-raised-button
+    mat-dialog-close
+    tabindex="-1"
+    class="mat-raised-button"
+    (click)="close()"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

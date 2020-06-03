@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="591px" height="525px" viewBox="0 0 591 525" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>Polygon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="124.880201%" gradientTransform="translate(0.500000,0.000000),scale(0.889473,1.000000),rotate(90.000000),translate(-0.500000,-0.000000)" id="radialGradient-1">
+            <stop stop-color="#30BDC1" offset="0%"></stop>
+            <stop stop-color="#166491" offset="100%"></stop>
+            <stop stop-color="#2E06FF" offset="100%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Polygon" stroke="#979797" fill="url(#radialGradient-1)" points="145.364665 440.273325 214.06847 440.273325 165.797155 524.117374 1 524.117374 294.892185 0 590.24471 524.117374 424.612979 524.117374 375.752253 440.273325 444.370228 440.273325 294.892185 175.723797"></polygon>
+    </g>
+</svg>

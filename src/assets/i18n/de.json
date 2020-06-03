@@ -1,0 +1,39 @@
+{
+  "HOME": {
+    "TITLE": "Hello Angular with ngx-translate!",
+    "SELECT": "Change language"
+  },
+  "ERROR": {
+    "USERNAME_REQUIRED": "Bitte E-Mail-Adresse eingeben"
+  },
+  "HEADER": {
+    "TRYOUT": "Ausprobieren!",
+    "DOCUMENTATION": "Dokumentation"
+  },
+  "LOGIN": {
+    "PASSWORD": "Passwort"
+  },
+  "APPHEADER": {
+    "LOGOUT": "Ausloggen"
+  },
+  "MODELLOADER": {
+    "MODELNAME": "Bezeichnung",
+    "PERMISSION": "Berechtigung", 
+    "IMPORT": "Importieren", 
+    "NEW": "Neu"
+  },
+
+
+  "TUTORIAL": {
+    "START": {
+        "WELCOME": "Hier finden sich Tutorials zum Erlernen der Modellierungssprache BPMN 2.0"
+    },
+    "INTRODUCTION": {
+        "BACK": "Zurück",
+        "NEXT": "Weiter",
+        "FINISH": "Einführung abschließen",
+        "ABORT": "Einführung abbrechen"
+    }
+
+  }
+}
