@@ -1,13 +1,17 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppComponent } from "./app.component";
 import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+} from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { ViewerComponent } from "./viewer/viewer.component";
 import { AlertComponent } from "./components/Alert/alert.component";
 import { AuthGuard } from "./guards/auth.guard";
@@ -22,9 +26,9 @@ import { Http } from "@angular/http";
 import { SnackBarService } from "./services/snackbar.service";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { FrontPageModule } from "./frontpage/frontpage.module";
-import { SimpleModelerComponent} from "./ModelerComponent/simplemodeler.component"
+import { SimpleModelerComponent } from "./ModelerComponent/simplemodeler.component";
 
-import { TutorialModule } from './components/TutorialComponent/tutorial.module';
+import { TutorialModule } from "./components/TutorialComponent/tutorial.module";
 
 import { TokenInterceptor } from "./interceptor/token.interceptor";
 
@@ -36,6 +40,10 @@ import { SharedModule } from "./shared.module";
 import { FrontpageHeaderModule } from "./components/FrontPageHeaderComponent/frontpage-header.module";
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
 import { UserService } from "./services/user.service";
+import { BsModalModule, BsModalService } from "ng2-bs3-modal";
+import { MatDialogModule } from "@angular/material";
+import { ModelService } from "./services/model.service";
+import { SharedMaterialModule } from "./shared/material.module";
 // AoT requires an exported function for factories
 // export function HttpLoaderFactory(httpClient: HttpClient) {
 //   return new TranslateHttpLoader(httpClient);
@@ -43,16 +51,15 @@ import { UserService } from "./services/user.service";
 // import { Angular2BulmaModule } from 'angular2-bulma';
 //check for correct branch!
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: 'localhost',
+  hostname: "localhost",
   port: 4711,
-  path: '/'
+  path: "/",
 };
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 @NgModule({
   imports: [
-    // Angular2BulmaModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
@@ -63,34 +70,32 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoggerModule.forRoot({
       serverLoggingUrl: "/api/logs",
       level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR
+      serverLogLevel: NgxLoggerLevel.ERROR,
     }),
-    TranslateModule
-    .forRoot({
-     loader: {
-       provide: TranslateLoader,
-       useFactory: HttpLoaderFactory,
-       deps: [HttpClient]
-     }
-   }),
-   
+    MatDialogModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
+
     TutorialModule,
-    FrontPageModule, 
-    OverviewModule, 
+    FrontPageModule,
+    OverviewModule,
     SharedModule,
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
   declarations: [
     AppComponent,
     AppFooterComponent,
     // AppHeaderComponent,
     // DiagramComponent,
-   
+
     ViewerComponent,
     AlertComponent,
     SimpleModelerComponent,
-
-    
   ],
   // exports: [TranslateModule],
   providers: [
@@ -98,10 +103,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     AlertService,
     SnackBarService,
     ApiService,
+    ModelService,
     AuthService,
     UserService,
     AdamoMqttService,
     EventEmitterService,
+    // BsModalService,
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: JwtInterceptor,
@@ -110,21 +117,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: Http,
-      useClass: AuthenticatedHttpService
-    }
+      useClass: AuthenticatedHttpService,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-    // Diagnostic only: inspect router configuration
-    constructor(router: Router) {
-      // Use a custom replacer to display function names in the route configs
-      // const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
-  
-      // console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
-    }
+  // Diagnostic only: inspect router configuration
+  constructor(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    // const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+    // console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+  }
 }

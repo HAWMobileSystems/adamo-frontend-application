@@ -11,11 +11,12 @@ import { Page404Component } from './page404/page404.component';
 // import { FrontpageHeaderComponent } from './components/FrontPageHeaderComponent/frontpage-header.component';
 
 import {TranslateService} from '@ngx-translate/core';
+import { SharedMaterialModule } from './shared/material.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    
+    SharedMaterialModule
   ],
   declarations: [
     FilterUnique,

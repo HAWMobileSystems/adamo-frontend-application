@@ -2,6 +2,8 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { OverviewComponent } from "./overview.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ModelLoaderComponent } from "../components/ModelLoaderComponent/modelloader.component";
 import { ModelerComponent } from "../ModelerComponent/modeler.component";
 
@@ -24,14 +26,21 @@ import { ModelLoaderModule } from "../components/ModelLoaderComponent/modelloade
 import { TabbarService } from "../services/tabbar.service";
 import { AppHeaderModule } from "../components/AppHeaderComponent/header.module";
 import { SharedLazyModule } from "../shared/shared-lazy.module";
+import { SharedMaterialModule } from "../shared/material.module";
 
 // import { FrontPageComponent} from './FrontPageComponent.component';
 // import { HeaderComponent} from "../components/HeaderComponent/header.component"
+
+/**
+ * NgModule that includes all Material modules that are required to serve 
+ * the Plunker.
+ */
 
 @NgModule({
   declarations: [
     OverviewComponent,
     ModelerComponent,
+
     TermModal,
     VariableModal,
     InputModal,
@@ -40,8 +49,8 @@ import { SharedLazyModule } from "../shared/shared-lazy.module";
     SaveModal,
     UsageModal,
     VariableComponent,
-    // ModelLoaderComponent,
     InputVarComponent,
+    // ModelLoaderComponent,
     // AppHeaderComponent,
 
   ],
@@ -49,15 +58,31 @@ import { SharedLazyModule } from "../shared/shared-lazy.module";
     CommonModule,
     FormsModule,
     // AdministrationModule, 
+    
+    // BrowserAnimationsModule,
     ReactiveFormsModule,
     BsModalModule,
     Ng2SearchPipeModule,
+    
+    // MaterialModule,
     SharedModule,
     SharedLazyModule,
     ModelLoaderModule,
     OverviewRoutingModule,
+
+    SharedMaterialModule,
     AppHeaderModule
   ],
-  providers: [TabbarService]
+  providers: [TabbarService], 
+  
+  entryComponents: [ TermModal,
+    VariableModal,
+    InputModal,
+    SubProcessModal,
+    EvalModal,
+    SaveModal,
+    UsageModal,
+    VariableComponent,
+    InputVarComponent],
 })
 export class OverviewModule {}
