@@ -6,6 +6,7 @@ import { AuthService } from '../../../../services/auth.service'
 import { Language } from '../../models/language.enum';
 import { LanguageService } from '../../services/language.service';
 import { Subscription } from 'rxjs';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-introduction',
@@ -23,7 +24,7 @@ export class IntroductionComponent implements OnInit {
   private finish: boolean = false
   private url: any
   
-  private lang: Language
+  private lang: string
   subscription:Subscription;
 
   constructor(
@@ -31,28 +32,32 @@ export class IntroductionComponent implements OnInit {
     private catService: LevelService,
     private router: Router,
     private authService: AuthService,
-    private langService: LanguageService) {
+    private translateService: TranslateService, 
+    // private langService: LanguageService
+    ) {
       this.url = this.router.url
       this.url = this.url.slice(0, this.url.lastIndexOf('/'))
       
   }
 
   ngOnInit() {
-    this.subscription = this.langService.lang$.subscribe(lang => {
-      this.lang = lang
+    // this.subscription = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.lang = this.translateService.currentLang;
+    //   this.lang = lang
       this.route.params.subscribe(params => {
         this.categorie = params['cat']
         this.page = params['id']
       })
+      console.log(this.lang, this.categorie, this.page)
       this.router.navigate(["/overview/tutorial/intro/",this.lang, this.categorie, this.page])
       this.catService.getContentOfIntro(this.lang, this.categorie, this.page).subscribe((sub: any) => {
         this.content = sub.intro_text
       })
-    })
+    // })
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   clickPrevious() {

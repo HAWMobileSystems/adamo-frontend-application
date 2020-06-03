@@ -47,6 +47,9 @@ export class AppHeaderComponent {
     this.navMenu.nativeElement.classList.toggle("is-active");
   }
 
+  onLanguageChanged(language) : void {
+    this.translate.use(language);
+  }
   public isAdmin() {
     // console.log('isAdmin() : ',this.currentUser, RoleType.Admin, this.currentUser.role === RoleType.Admin )
     if (!this.currentUser) {

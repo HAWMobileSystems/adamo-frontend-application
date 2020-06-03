@@ -6,6 +6,7 @@ import { MultipleChoiceQuest, KeyValuePair } from '../../models/multiplechoice.m
 import { LanguageService } from './../../services/language.service'
 import { Language } from '../../models/language.enum';
 import { Subscription } from 'rxjs';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-test-mc',
@@ -18,7 +19,7 @@ export class TestMCComponent implements OnInit {
   private user_id: String
   private categorie: String
   private question: MultipleChoiceQuest
-  private lang: Language
+  private lang: string
   private subLang: Subscription
   private subQuestion: Subscription
 
@@ -26,6 +27,8 @@ export class TestMCComponent implements OnInit {
     private catService: LevelService,
     private authService: AuthService,
     private langService: LanguageService,
+    
+    private translateService: TranslateService,
     private router: Router) {
     this.question = new MultipleChoiceQuest()
     this.user_id = authService.getCurrentUser().id
@@ -33,21 +36,35 @@ export class TestMCComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit()")
-    this.subLang = this.langService.lang$.subscribe(lang => {
-      this.lang = lang
+    this.lang = this.translateService.currentLang;
+    
+    this.onLanguageChange();
+    // console.log(this.lang)
+          //   ngOnInit() {
+  this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    // this.subLang = this.langService.lang$.subscribe(lang => {
+    //   this.lang = event.lang;
 
-      this.question.question = ""
-      this.question.id = ""
-      this.question.answers = []
+        this.onLanguageChange(event);
+    })
+  }
 
-      this.route.params.subscribe(params => {
-        this.categorie = params['cat']
-      }).unsubscribe()
-      this.router.navigate(['overview/tutorial/multiplechoice/', this.lang, this.categorie])
-      this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
-        console.log(view)
-        this.transform(view)
-      })
+  private onLanguageChange(event?: LangChangeEvent) : void {
+    if(event){
+        this.lang = event.lang
+    }
+    this.lang = event.lang
+    this.question.question = ""
+    this.question.id = ""
+    this.question.answers = []
+
+    this.route.params.subscribe(params => {
+      this.categorie = params['cat']
+    }).unsubscribe()
+    this.router.navigate(['overview/tutorial/multiplechoice/', this.lang, this.categorie])
+    this.subQuestion = this.catService.getMultipleChoice(this.user_id, this.categorie, this.lang).subscribe((view: any) => {
+      console.log(view)
+      this.transform(view)
     })
   }
 

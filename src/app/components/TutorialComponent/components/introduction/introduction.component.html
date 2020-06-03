@@ -1,24 +1,24 @@
 <!--<div id = "button"--><!-- <div class="container"> -->
     <ng-container> 
-        <div *ngIf ="lang == 'de'; else langEN">
-            <div class="btn-toolbar justify-content-between btn-alignment" role="toolbar" style="margin:10px">
-                <button type="button" class="btn btn-secondary" id="btnPrevious" (click)="clickPrevious()">Zurück</button>
-                <button type="button" class="btn btn-secondary" id="btnNext" (click)="clickNext()">Nächste</button>
-                <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Einführung abschließen</button>
-                <button type="button" class="btn btn-secondary" style="margin-left: auto" id="btnCancel" (click)="cancelIntro()">Einführung abbrechen</button>
+        <!-- <div *ngIf ="lang == 'de'; else langEN"> -->
+            <div mat-button-toggle-group class="btn-toolbar justify-content-between btn-alignment" role="toolbar" align="center" style="margin:10px">
+                <button mat-button type="button" class="mat-button " id="btnPrevious" (click)="clickPrevious()">{{'TUTORIAL.INTRODUCTION.BACK' | translate }}</button>
+                <button mat-button type="button" class="mat-button " id="btnNext" (click)="clickNext()">{{'TUTORIAL.INTRODUCTION.NEXT' | translate }}</button>
+                <button mat-button *ngIf="finish" type="button" class="mat-button " id="btnFinish" (click)="finishIntro()">{{'TUTORIAL.INTRODUCTION.FINISH' | translate }}</button>
+                <button mat-button type="button" class="mat-button btn-secondary" style="margin-left: auto" id="btnCancel" (click)="cancelIntro()">{{'TUTORIAL.INTRODUCTION.ABORT' | translate }}</button>
             </div>
-        </div>
+        <!-- </div> -->
 
-        <ng-template #langEN>
-            <div class="btn-toolbar justify-content-between btn-alignment" role="toolbar" style="margin:10px">
-                    <button type="button" class="btn btn-secondary" id="btnPrevious" (click)="clickPrevious()">Previous</button>
+        <!-- <ng-template #langEN>
+            <div class="btn-toolbar justify-content-between btn-alignment" role="toolbar" tyle="margin:10px">
+                    <button type="button" class="mat-button btn-secondary" id="btnPrevious" (click)="clickPrevious()">Previous</button>
                     <button type="button" class="btn btn-secondary" id="btnNext" (click)="clickNext()">Next</button>
                     <button *ngIf="finish" type="button" class="btn btn-secondary" id="btnFinish" (click)="finishIntro()">Finish the
                         Introduction</button>
                     <button type="button" class="btn btn-secondary" style="margin-left: auto" id="btnCancel" (click)="cancelIntro()">Abort
                         Introduction</button>
                 </div>
-        </ng-template>
+        </ng-template> -->
     </ng-container>
 <!----/div -->
 <!-- <div class="text-center" style="border:1px solid #000;"> -->

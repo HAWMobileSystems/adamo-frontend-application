@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import Modeler from 'bpmn-js/lib/Modeler';
+import LintModule from 'bpmn-js-bpmnlint';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import bpmnlintrc from './../../../../../assets/packedLintrc';
 
 // import CustomRules from './CustomRules';
-import LintModule from 'bpmn-js-bpmnlint';
 import "bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css";
 import { LanguageService } from '../../services/language.service';
 import { LevelService } from '../../services/level.service';
 import { Language } from '../../models/language.enum';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 
-// import bpmnlintConfig from './.bpmnlintrc';
 
 class Task {
   constructor(){
@@ -33,7 +33,7 @@ class Task {
 
 export class TestModComponent implements OnInit {
   modeler: any
-  private lang: Language
+  private lang: string
   private taskid: string
   private user_id: String
   private categorie: string
@@ -46,6 +46,7 @@ export class TestModComponent implements OnInit {
   //todo remove httpclient
   constructor(private http: HttpClient,
     private langService: LanguageService,
+    private translateService: TranslateService, 
     private catService: LevelService,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -57,52 +58,68 @@ export class TestModComponent implements OnInit {
   
   ngOnInit() {
     this.duration = Date.now()
-    this.langService.lang$.subscribe(lang => {
-      this.lang = lang
+    
+    this.lang = this.translateService.currentLang;
+    this.onLanguageChanged();
+    // this.langService.lang$.subscribe(lang => {
+        
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.onLanguageChanged(event);
       
-      if(lang=== Language.de){
-        this.welcome = "Willkommen zur BPMN Modellierung"
-        this.btn_menu ="Zurück zum Menü"
-        this.reached_score="Ihre erreichte Punkteanzahl beträgt: "
-      }else{
-        this.welcome = "Welcome to BPMN Modelling"
-        this.btn_menu = "Return to menu"
-        this.reached_score="Your reached Score is:"
-      }
-
-      this.route.params.subscribe(params => {
-        this.taskid = params['id']
-        this.categorie = params['cat']
-      })
-      this.router.navigate(['overview/tutorial/modelling/', this.lang, this.categorie, this.taskid])
-      this.catService.getModellingTask(this.taskid, this.lang).subscribe((sub: any) => {
-        this.task = JSON.parse(JSON.stringify(sub))
-        console.log(this.task.question_description)
-      })
     })
+   
 
     const bpmnLintConfig = {
-      "extends": "bpmnlint:recommended"
-      // "extends": [
-      //   "bpmnlint:recommended",
-      //   "plugin:playground/recommended"
-      // ],
-      // "rules": {
-      //   "playground/no-manual-task": "warn"
-      // }
-    }
+        extends: [
+          "bpmnlint:recommended",
+        ],
+        rules: {
+        }
+      }
     
     this.modeler = new BpmnModeler({
+        additionalModules: [LintModule],
+        linting: {
+          bpmnlint: bpmnlintrc, 
+          active: true
+        },
+        keyboard: {
+          bindTo: document
+        },
       container: '#js-canvas',
-      linting: {
-        bpmnlint: bpmnLintConfig
-      },
-      additionalModules: [LintModule]
     });
+    let linting = this.modeler.get('linting')
+    console.log(linting)
+    linting.setLinterConfig(bpmnlintrc);
     
     this.http.get("/assets/fixtures/emptyBPMNAsXML.xml", { responseType: 'text'})
       .subscribe(response => this.modeler.importXML(response));
     
+  }
+
+  private onLanguageChanged(event?: LangChangeEvent) : void {
+    if(event){
+        this.lang = event.lang
+    }
+    if(this.lang=== Language.de){
+      this.welcome = "Willkommen zur BPMN Modellierung"
+      this.btn_menu ="Zurück zum Menü"
+      this.reached_score="Ihre erreichte Punkteanzahl beträgt: "
+    }else{
+      this.welcome = "Welcome to BPMN Modelling"
+      this.btn_menu = "Return to menu"
+      this.reached_score="Your reached Score is:"
+    }
+
+    this.route.params.subscribe(params => {
+      this.taskid = params['id']
+      this.categorie = params['cat']
+    })
+    this.router.navigate(['overview/tutorial/modelling/', this.lang, this.categorie, this.taskid])
+    this.catService.getModellingTask(this.taskid, this.lang).subscribe((sub: any) => {
+      this.task = JSON.parse(JSON.stringify(sub))
+      console.log(this.task.question_description)
+    })
   }
 
   backToMenu() {

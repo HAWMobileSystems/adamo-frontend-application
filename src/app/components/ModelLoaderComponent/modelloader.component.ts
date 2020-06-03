@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ModelService } from '../../services/model.service';
 import { Model } from '../../models/model';
 
 import { AdamoMqttService } from '../../services/mqtt.service';
@@ -39,7 +39,7 @@ export class ModelLoaderComponent {
 
   constructor(
     private eventEmitterService: EventEmitterService,
-    private apiService: ApiService,
+    private modelService: ModelService,
     private authService: AuthService,
     private router: Router,
     private snackbarService: SnackBarService,
@@ -97,7 +97,7 @@ export class ModelLoaderComponent {
 
   //Create an empty model in the database
   public createEmpty() {
-    this.apiService.modelCreate(this.newModelName, this.newModelXml).subscribe(
+    this.modelService.modelCreate(this.newModelName, this.newModelXml).subscribe(
       (response: any) => {
         this.snackbarService.success(response);
         console.log(response);
@@ -110,7 +110,7 @@ export class ModelLoaderComponent {
   }
   //import a model from harddisk to database
   public createLoaded() {
-    this.apiService
+    this.modelService
       .modelCreate(this.diskModelName, this.diskModelXml)
       .subscribe(
         (response: any) => {
@@ -190,7 +190,7 @@ export class ModelLoaderComponent {
   public getAllModels() {
     let userID = this.authService.getCurrentUser().id
     console.log(userID);
-    this.apiService.getAllModelsForUser(userID).subscribe(
+    this.modelService.getAllModelsForUser(userID).subscribe(
       (response: Object) => {
           this.models = response;
           this.selected = null;
@@ -205,7 +205,7 @@ export class ModelLoaderComponent {
 
   //Get latest changes to models from database
   public getLatestChanges() {
-    this.apiService.getModelsChangedLast7Days().subscribe(
+    this.modelService.getModelsChangedLast7Days().subscribe(
       (response: any) => { // Change to ModelResponseDTO[]
           this.modelDataChangedLast7Days = response;
       },
