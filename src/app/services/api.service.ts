@@ -121,9 +121,9 @@ export class ApiService {
     //.pipe(map((response: any) => response.json()));
   }
 
-  //Administration page: Show all roles
+  //Administration page: Show all role
   public getAllRoles() {
-    return this.http.get(this.BACKEND_URI + "/roles", options);
+    return this.http.get(this.BACKEND_URI + "/role", options);
     //.pipe(map((response: any) => response.json()));
   }
 
@@ -160,20 +160,10 @@ export class ApiService {
   }
 
   //Administration page: Create role
-  public roleCreate(
-    role: string,
-    read: boolean,
-    write: boolean,
-    admin: boolean
+  public roleCreate( roleDto: any
   ) {
     return this.http.post(
-      this.BACKEND_URI + "/role/create",
-      {
-        role: role,
-        read: read,
-        write: write,
-        admin: admin
-      },
+      this.BACKEND_URI + "/role/create", roleDto,
       options
     );
     //.pipe(map((response: any) => response.json()));
@@ -397,10 +387,10 @@ export class ApiService {
   }
 
   //Administration page: Update permission
-  public permissionUpdate(role: any, pid: any) {
-    return this.http.post(
-      this.BACKEND_URI + "/permission/update",
-      { role: role, pid: pid },
+  public permissionUpdate(role: string, pid: string) {
+    return this.http.put(
+      this.BACKEND_URI + `/permission/update/${pid}`,
+      { role_id: role},
       options
     );
     //.pipe(map((response: any) => response.json()));

@@ -73,9 +73,9 @@
             </div>
 
             <div class="buttons">
-                <button *ngIf="selected.rid === ''" type="submit" class="button is-success"
+                <button *ngIf="selected == newRole" type="submit" class="button is-success"
                     (click)="roleCreate()">Create</button>
-                <button *ngIf="selected.rid !== ''" type="submit" class="button is-warning"
+                <button *ngIf="selected.rid != newRole" type="submit" class="button is-warning"
                     (click)="roleUpdate()">Change</button>
                 <button *ngIf="selected.rid !== ''" type="submit" class="button is-danger"
                     (click)="roleDelete()">Delete</button>

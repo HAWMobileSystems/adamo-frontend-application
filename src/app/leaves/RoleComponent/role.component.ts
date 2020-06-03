@@ -24,11 +24,10 @@ export class RoleComponent {
   public ngOnInit() {
     //defines the structure for a new empty role
     this.newRole = {
-      rid: "",
-      role: "",
-      read: "",
-      write: "",
-      admin: ""
+      roleName: "",
+      canRead: "",
+      canWrite: "",
+      isAdmin: ""
     };
 
     this.getAllRoles();
@@ -90,12 +89,7 @@ export class RoleComponent {
   //creates a new role
   public roleCreate() {
     this.apiService
-      .roleCreate(
-        this.selected.role,
-        this.selected.read,
-        this.selected.write,
-        this.selected.admin
-      )
+      .roleCreate(this.selected)
       .subscribe(
         (response: { success: any; status: string; _body: string }) => {
           if (response.success) {

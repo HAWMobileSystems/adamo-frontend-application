@@ -24,7 +24,7 @@
                 </tr>
                 </thead>
                 <tbody></tbody>
-                <tr *ngFor="let model of (models | filterUnique: ['mid']) | filter:search" (click)="selectModel(model)"
+                <tr *ngFor="let model of (models | filterUnique: ['id']) | filter:search" (click)="selectModel(model)"
                     [ngClass]="{'info': selectedModel === model}">
                     <td>{{model.modelName}}</td>
                 </tr>
@@ -48,21 +48,21 @@
                 </select>
             </div>
             <button class="button is-success"
-                    (click)="permissionCreate(selectedUser.user_id, selectedModel.model_id, selectedPermission.role_name)">
+                    (click)="permissionCreate(selectedUser.user_id, selectedModel.model_id, selectedPermission.role.roleName)">
                 create relation
             </button>
         </div>
         <div *ngIf="selectedPermission?.length !== 0">
             <div class="form-group form-inline" *ngIf="selectedPermission?.length !== 0">
                 <label class="col-md-4" style="text-align: left">Role</label>
-                <select required class="form-control" name="role" [(ngModel)]="selectedPermission[0].role_name">
-                    <option *ngFor="let role of roles">{{role.roleName}}</option>
+                <select required class="form-control" name="role" [(ngModel)]="selectedRole">
+                    <option *ngFor="let role of roles" [ngValue]="role" >{{role.roleName}}</option>
                 </select>
             </div>
             <div class="buttons">
 
                 <button class="button is-warning"
-                (click)="permissionUpdate(selectedPermission[0].role, selectedPermission[0].permission_id)">
+                (click)="permissionUpdate(selectedRole.id, selectedPermission.id)">
                 change relation
             </button>
             

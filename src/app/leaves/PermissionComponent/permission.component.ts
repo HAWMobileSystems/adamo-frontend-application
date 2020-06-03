@@ -25,7 +25,20 @@ export class PermissionComponent {
     private userService: UserService,
     private snackbarService: SnackBarService,
     private mqttService: AdamoMqttService
-  ) {}
+  ) {
+ this.apiService.getAllRoles().subscribe(
+      (response: any) => {
+
+          this.snackbarService.success("Permission successfully created");
+          this.roles = response;
+      },
+      (error:any) => {
+        this.snackbarService.error(error);
+        console.log(error);
+      }
+    );
+  }
+  
 
   //selects a user that is maintained in a permission
   private selectUser(user: any) {
@@ -82,9 +95,10 @@ export class PermissionComponent {
   }
 
   //updates the selected permission
-  private permissionUpdate(role: any, pid: any) {
-    this.apiService.permissionUpdate(role, pid).subscribe(
-      (response: { success: any; error: string }) => {
+  public permissionUpdate(roleId: string, pid: string) {
+    console.log('update permissoin:', roleId, pid, this.selectedPermission)
+    this.apiService.permissionUpdate(roleId, pid).subscribe(
+      (response: any) => {
         if (response.success) {
           this.snackbarService.success("Permission updated");
           this.selectedPermission = null;
@@ -94,7 +108,7 @@ export class PermissionComponent {
           this.snackbarService.error(response.error);
         }
       },
-      (error: { _body: string }) => {
+      (error: any) => {
         this.snackbarService.error(JSON.parse(error._body).status);
         console.log(error);
       }
@@ -105,15 +119,15 @@ export class PermissionComponent {
     this.roles = this.getAllRoles();
     this.getAllUsers();
     this.getAllModels();
-    this.mqttService.getClient().subscribe("PERMISSION");
-    const self = this;
-    this.mqttService.getClient().on("message", (topic: any, message: any) => {
-      if (topic === "PERMISSION") {
-        console.log("PermissonMQTT");
-        self.getAllModels();
-        self.getAllUsers();
-      }
-    });
+    // this.mqttService.getClient().subscribe("PERMISSION");
+    // const self = this;
+    // this.mqttService.getClient().on("message", (topic: any, message: any) => {
+    //   if (topic === "PERMISSION") {
+    //     console.log("PermissonMQTT");
+    //     self.getAllModels();
+    //     self.getAllUsers();
+    //   }
+    // });
   }
 
   //gets a list of all roles from DB
@@ -170,7 +184,8 @@ export class PermissionComponent {
   public getPermission(user: any, model: any) {
     this.apiService.getPermission(user, model).subscribe(
       (response: any) => {
-          this.selectedPermission = response[0].role_name;
+        console.log(response)
+          this.selectedPermission = response;
         
       },
       (error: any) => {
