@@ -1,11 +1,11 @@
 const pgp = require('pg-promise')(/*options*/)
 
 const cn = {
-  host: 'ipim-intsys.lab.if.haw-landshut.de',
+  host: 'localhost',
   port: 5432,
   database: 'ipim',
   user: 'postgres',
-  password: '12341234'
+  password: 'postgres'
 };
 
 const db = pgp(cn);
