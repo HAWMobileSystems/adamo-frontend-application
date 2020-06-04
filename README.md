@@ -9,54 +9,63 @@ Dazu wurde die BPMN 2.0, zur Darstellung verschiedener Prozessvarianten erweiter
 
 ## Vorbedingungen 
 
-git muss vorhanden sein
-node wäre ganz schön
-docker installieren 
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+nvm install 10
+nvm use 10
+
+# Darauf achten, dass die Daten mit /API/database.js übereinstimmen
+docker run --name generic-postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres
+docker exec -it generic-postgres bash.
+psql -U postgres
+CREATE DATABASE ipim;
+
+
 ```
 
+Konfiguration zum Starten der Dienste
 ```
+git clone https://github.com/HAWMobileSystems/adamo-frontend-application
+git checkout modellierung2020
 
-## Einfacher Start
+npm install
 
-Fürs einfache loslegen kann derzeit docker-compose genutzt werden. 
-Dazu muss jedoch vorher eine Version des Frontends gebaut werden. Da der /dist Ordner direkt in das Image geschoben wird um Speicherplatz zu sparen
-```
-# Projekt herunterladen und in Verzeichnis wechseln
-git clone <project url>
-cd IntSys
-# eigenes Environment erstellen und Benutzer + Passwörter setzen
-mv .env.exampe .env
-vi .env // nach belieben anpassen
-# Die Webanwendung bauen damit Docker Container gebaut werden könnnen 
-setup-project.sh
+# unter angular2/src/app modelerconfig.service.ts
+<enter url here> tauschen gegen die URL des Servers auf dem ADAMO laufen soll
 
-# BTW node-gyp is a messy shit
-npm install -g node-gyp
-# and yes.. this takes like forever
-npm install --global windows-build-tools
-# Build things
+npm run build
+
+cd API
+npm install
+
+# unter API/express.js
+<enter url here> tauschen gegen die URL des Servers auf dem ADAMO laufen soll
+
 cd ..
-docker-compose build
-docker-compose up
+
+touch /etc/nginx/sites-enabled/adamo
+# copy content from adamo.nginx.conf
+
+
+cp -r angular/dist/* /var/www/adamo
+service nginx restart
+# oder  sudo systemctl restart nginx
+
+npm install -g pm2 
+
+pm2 start API/mqttserver.js
+pm2 start API/express.js
+
 ```
-Derzeit wird dabei noch eine leere Datenbank erzeugt (diese kann über pgadmin initialisiert werden - username und passwort sind in der .env zu finden)
+
 
 Achtung: 
 ```
-User: user@demo.com
+User: admin@demo.com
 Passwort: 12341234
 
 ```
-
-Als bisherige Entwicklungsumgebung diente Visual-Studio-Code, allerdings kann auch problemlos Webstorm genutzt werden. 
-
-## TODO
-
-Nachdem inzwischen Varianten modelliert und extrahiert werden können: 
-
-    - Variante auf Workflow-Engine deployen
-    - Beispiel-Implementierung eines Prozesses auf Basis des konfigurierbaren Prozessmodells ausführen
-
 ## Abhängigkeiten:
 
 https://github.com/bpmn-io/bpmn-js (https://bpmn.io/)
@@ -69,4 +78,3 @@ Die derzeitige Version im Ordner jQuery nutzt das bpmn-js Tool der Firma Camunda
 Dieses wird mit jQuery erweitert.
 
 Die weitere Entwicklung wird unter Einsatz aktuellerer Tools geschehen. 
-Eine Idee ist die Nutzung von TypeScript in Kombination mit React, um typsicheren Javascript Code zu schreiben und diesen in Komponenten zu gliedern.
