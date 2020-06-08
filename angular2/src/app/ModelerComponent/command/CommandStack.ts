@@ -4,6 +4,7 @@ import {ModelerComponent} from '../modeler.component';
 import {IPIM_OPTIONS} from '../../modelerConfig.service';
 
 import {MqttService} from '../../services/mqtt.service';
+import { ApiService } from '../../services/api.service';
 const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
 // import { environment } from './../../../environments/environment';
 
@@ -23,10 +24,12 @@ export class CommandStack {
   private modelerComponenetRoot: ModelerComponent;
   private stopEvaluationisRunning: boolean;
 
+
 //Commandstack Class
 
-  constructor(modeler: any, modelerComponenetRoot: ModelerComponent, private mqttService: MqttService) {
+  constructor(modeler: any, modelerComponenetRoot: ModelerComponent, private mqttService: MqttService, private apiService: ApiService) {
     this.modeler = modeler;    //take modeler from super function
+    this.apiService = apiService;
     this.commandStack = this.modeler.get(this.COMMANDSTACK);  //get commandStack from Modeler
     this.eleReg = this.modeler.get(this.ELEMENTREGISTRY);  //get ElementRegistry from Modeler
     this.dragging = this.modeler.get(this.DRAGGING);   //get Dragging State from Modeler
@@ -83,8 +86,10 @@ export class CommandStack {
 //event was remote so cancel dragging if active an import new XML String
       console.log('CM Test from remote:' + message.toString());
       try {
-        // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
-          console.log(`ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${event.TIMESTAMP}, ID:, ${event.ID}`);
+        this.apiService.login_status().subscribe( (response:any) => {
+          console.log(`User: ${response.email}, ReceiveTime:, ${ Date.now()}, Topic:, ${topic}, TIMESTAMP:,${event.TIMESTAMP}, ID:, ${event.ID}`);
+        });
+          // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
         // }
       } catch (error) {
         console.log(error);
@@ -128,7 +133,9 @@ export class CommandStack {
         XMLDoc: xml
       };
       this.mqttService.getClient().publish('MODEL/' + this.topic, JSON.stringify(transfer), {qos: 1});
-      console.log(`PublishTime:, ${ Date.now()}, Topic:, ${this.topic}, TIMESTAMP:,${transfer.TIMESTAMP}, ID:, ${transfer.ID}`);
+      this.apiService.login_status().subscribe( (response:any) => {
+           console.log(`User: ${response.email}, PublishTime:, ${ Date.now()}, Topic:, ${this.topic}, TIMESTAMP:,${transfer.TIMESTAMP}, ID:, ${transfer.ID}`);
+        });
     });
   }
 

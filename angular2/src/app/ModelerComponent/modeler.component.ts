@@ -502,7 +502,7 @@ export class ModelerComponent implements OnInit {
    */
   private createModeler() {
     this.initializeModeler();
-    this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
+    this.commandStack = new CommandStack(this.modeler, this, this.mqttService, this.apiService);
     // Start with an empty diagram:
     const linkToDiagram = new Link(this.defaultModel);
     this.url = linkToDiagram.href; //this.urls[0].href;
