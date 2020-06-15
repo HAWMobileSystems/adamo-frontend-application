@@ -38,7 +38,7 @@ server.on('published', function (packet, client) {
     // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
     // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
 
-    console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
+    console.log(`ServerTime:, ${ Date.now()}, User: ${payloadObject.email} Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObje
 
     // console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
