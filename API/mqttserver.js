@@ -25,26 +25,31 @@ function setup() {
 
 // fired when a  client is connected
 server.on('clientConnected', function (client) {
-  console.log('client connected', client.id);
+  // console.log('client connected', client.id);
 });
-
 // fired when a message is received
 server.on('published', function (packet, client) {
   //console.log('Published : ', packet, Date.now());
   // console.log(`Published: ${packet.topic} ${packet.qos}  ${packet.payload.TIMESTAMP} ${new Date().getTime()}`);
   try {
-
-    const payloadObject = JSON.parse(packet.payload);
+    if( typeof packet.payload === 'object' ) {
+      const payloadObject = JSON.parse(packet.payload);
+     if( packet.topic.indexOf('model') !== -1) {
+       console.log(`ServerTime: ${ Date.now()}, User: ${payloadObject.email} Topic: ${packet.topic}, 
+       TIMESTAMP: ${payloadObject.TIMESTAMP}, ID: ${payloadObject.ID}, XML: ${payloadObject.XMLDoc},
+       deltaEvent: ${JSON.stringify(payloadObject.deltaEvent)}`);
+     }
+    // console.log('packet.payload', packet, packet.payload, client);
     // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
     // console.log(`payload contains ID ${payloadObject.ID} ${payloadObject.TIMESTAMP}`)
-
-    console.log(`ServerTime:, ${ Date.now()}, User: ${payloadObject.email} Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObje
 
     // console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // if (payloadObject.hasOwnProperty('TIMESTAMP') && payloadObject.hasOwnProperty('ID')) {
     //   console.log(`ServerTime:, ${ Date.now()}, Topic:, ${packet.topic}, TIMESTAMP:,${payloadObject.TIMESTAMP}, ID:, ${payloadObject.ID}`);
     // }
+     
+  }
   } catch (error) {
     console.log(error)
   }
@@ -53,7 +58,7 @@ server.on('published', function (packet, client) {
 
 // fired when a client subscribes to a topic
 server.on('subscribed', function (topic, client) {
-  console.log('subscribed : ', topic);
+  // console.log('subscribed : ', topic);
   if (topic.startsWith('MODEL/model')) {
     server.publish({
       //topic syntax: 'MODEL/model_ID_VERSION'
@@ -66,7 +71,7 @@ server.on('subscribed', function (topic, client) {
 
 // fired when a client subscribes to a topic
 server.on('unsubscribed', function (topic, client) {
-  console.log('unsubscribed : ', topic);
+  // console.log('unsubscribed : ', topic);
   if (topic.startsWith('MODEL/model')) {
     server.publish({
       //topic syntax: 'MODEL/model_ID_VERSION'
@@ -79,10 +84,10 @@ server.on('unsubscribed', function (topic, client) {
 
 // fired when a client is disconnecting
 server.on('clientDisconnecting', function (client) {
-  console.log('clientDisconnecting : ', client.id);
+  // console.log('clientDisconnecting : ', client.id);
 });
 
 // fired when a client is disconnected
 server.on('clientDisconnected', function (client) {
-  console.log('clientDisconnected : ', client.id);
+  // console.log('clientDisconnected : ', client.id);
 });

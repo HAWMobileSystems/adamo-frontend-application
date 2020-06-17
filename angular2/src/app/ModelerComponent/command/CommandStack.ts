@@ -77,12 +77,12 @@ export class CommandStack {
   public receiveMessage = (topic: any, message: any) => {
     // console.log(`Time: ${Date.now()}, ${topic}, ${message}`)
     // console.log(topic);
-    const event = JSON.parse(message);
+    const response = JSON.parse(message);
     if (topic.startsWith("MODEL/")) {
       //Parse event from String to variable
 
       //check if the Event was issued from remote or self
-      if (event.IPIMID !== this.id && "MODEL/" + this.topic === topic) {
+      if (response.IPIMID !== this.id && "MODEL/" + this.topic === topic) {
         if (this.stopEvaluationisRunning) {
           return;
         }
@@ -94,8 +94,8 @@ export class CommandStack {
               `User: ${
                 response.email
               }, ReceiveTime:, ${Date.now()}, Topic:, ${topic}, TIMESTAMP:,${
-                event.TIMESTAMP
-              }, ID:, ${event.ID}`
+                response.TIMESTAMP
+              }, ID:, ${response.ID}`
             );
           });
           // if (messageJson.hasOwnProperty('TIMESTAMP') && messageJson.hasOwnProperty('ID') ) {
@@ -105,29 +105,29 @@ export class CommandStack {
         }
         this.dragging.cancel();
 
-        this.modeler.importXML(event.XMLDoc.toString(), (err: any) => {
+        this.modeler.importXML(response.XMLDoc.toString(), (err: any) => {
           console.log(err);
         });
       }
     } else if (topic === "modelupsert") {
       const model = this.modelerComponenetRoot.model;
-      if (model.id === event.mid && model.version === event.version) {
-        model.version = event.newVersion;
+      if (model.id === response.mid && model.version === response.version) {
+        model.version = response.newVersion;
         this.mqttService
           .getClient()
-          .unsubscribe("MODEL/model_" + event.mid + "_" + event.version);
+          .unsubscribe("MODEL/model_" + response.mid + "_" + response.version);
         this.mqttService
           .getClient()
-          .subscribe("MODEL/model_" + event.mid + "_" + event.newVersion);
-        this.topic = "model_" + event.mid + "_" + event.newVersion;
+          .subscribe("MODEL/model_" + response.mid + "_" + response.newVersion);
+        this.topic = "model_" + response.mid + "_" + response.newVersion;
       }
     }
   };
 
   //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
-  public publishXML = (): void => {
+  public publishXML = (event: any ): void => {
     //If
-
+ console.log(event)
     if (this.stopEvaluationisRunning) {
       return;
     }
@@ -145,15 +145,16 @@ export class CommandStack {
           ID: `ID+${Math.random()}`,
           TIMESTAMP: new Date().getTime(),
           XMLDoc: xml,
+          deltaEvent: event
         };
         this.mqttService
           .getClient()
           .publish("MODEL/" + this.topic, JSON.stringify(transfer), { qos: 1 });
       
           console.log(
-          `PublishTime:, ${Date.now()}, User: ${transfer.email}, Topic:, ${
+          `PublishTime: ${Date.now()}, User: ${transfer.email}, Topic: ${
               this.topic
-            }, TIMESTAMP:,${transfer.TIMESTAMP}, ID:, ${transfer.ID}`);
+            }, TIMESTAMP: ${transfer.TIMESTAMP}, ID: ${transfer.ID}, deltaEvent: ${JSON.stringify(transfer.deltaEvent)}`);
           
       });
     });
