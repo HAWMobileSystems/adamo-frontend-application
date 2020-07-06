@@ -10,3 +10,6 @@ dist
 .vsc
 ode
 .env
+
+documentation
+.vscode

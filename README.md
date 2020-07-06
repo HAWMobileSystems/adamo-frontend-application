@@ -69,3 +69,11 @@ Dieses wird mit jQuery erweitert.
 
 Die weitere Entwicklung wird unter Einsatz aktuellerer Tools geschehen. 
 Eine Idee ist die Nutzung von TypeScript in Kombination mit React, um typsicheren Javascript Code zu schreiben und diesen in Komponenten zu gliedern.
+
+## Docker
+
+Auf Github wird ein Docker Image vorgehalten. Um dieses zu Nutzen muss man sich mit pkg.github.com verbinden (exemplarisch wie folgt)
+
+```
+cat ~/TOKEN.txt | docker login https://docker.pkg.github.com -u USERNAME --password-stdin
+```

@@ -1,9 +1,6 @@
 {
-  "extends": [
-    "bpmnlint:recommended",
-    "plugin:playground/recommended"
-  ],
+  "extends": "bpmnlint:recommended",
+  
   "rules": {
-    "playground/no-manual-task": "warn"
   }
 }

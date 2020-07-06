@@ -6,10 +6,11 @@ version: '3.6'
   # postgres-data: {}
 
 services:
-  adamo-application:
-    build:
-      context: ./angular2
-    image: adamo-application/latest
+  adamo-frontend-application:
+    # build:
+    #   context: ./angular2
+    # image: adamo-application/latest
+    image: registry.gitlab.com/ipim/adamo-frontend-application
     ports:
       - '${APP_PORT}:80'
   adamo-mosquitto:
