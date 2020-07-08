@@ -33,6 +33,9 @@ export class TutorialViewComponent implements OnInit {
     private router: Router
   ) {
     this.user = this.authService.getCurrentUser();
+    if(!this.user) {
+      router.navigate(['/']);
+    }
   }
 
   // this.langService.lang$.subscribe(lang => {
