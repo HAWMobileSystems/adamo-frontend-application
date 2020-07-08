@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { AdamoMqttService } from "../../services/mqtt.service";
 import { SnackBarService } from "../../services/snackbar.service";
 import { AuthService, ApiService } from "../../services";
-import { User } from "../../models/user";
+// import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -31,7 +31,7 @@ export class UserComponent {
   public ngOnInit() {
     //defines the structure for a new empty user
 
-    this.newUser = new User(); // TODO change this to DTO?!
+    this.newUser = {}; // TODO change this to DTO?!
     // this.newUser = {
     //   uid: "",
     //   email: "",

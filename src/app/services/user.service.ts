@@ -4,7 +4,8 @@ import { IPIM_OPTIONS } from "../modelerConfig.service";
 import { ModelElement } from "../ModelerComponent/evaluator/modelElement";
 import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
-import { User } from "../models/user";
+
+import { UserDto } from "../models/dto/UserDTO";
 const options = {
   withCredentials: true
 };
@@ -37,7 +38,7 @@ export class UserService {
   }
 
   //Administration page: Update user
-  public userUpdate(userDTO: User) {
+  public userUpdate(userDTO: UserDto) {
   // public userUpdate(
   //   uid: number,
   //   email: string,
@@ -61,12 +62,12 @@ export class UserService {
   }
 
   //Administration page: Change password
-  public changePassword(userDTO: User, password: string) {
+  public changePassword(userDTO: UserDto, password: string) {
   // public changePassword(uid: number, password: string) {
     return this.http.post(
       this.BACKEND_URI + "/user/password",
       {
-        uid: userDTO.getUid(),
+        uid: userDTO.id,
         password: password
       },
       options
@@ -76,7 +77,7 @@ export class UserService {
 
   //Administration page: Create user
   // this should definitly get an DTO TODO
-  public userCreate( userDTO: User) {
+  public userCreate( userDTO: UserDto) {
     return this.http.post(
       this.BACKEND_URI + "/user/create",
       userDTO,
