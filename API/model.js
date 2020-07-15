@@ -622,17 +622,17 @@ router.post('/upsert', function (req, res) {
   const version = req.body.version;
   const superversion = req.body.supeversion;
 
-  if (openModels.hasOwnProperty(mid)) {
-    if (openModels[mid].hasOwnProperty(version)) {
-      if (!openModels[mid][version].changed) {
-        res.send({
-          status: 'Model has no changes to save',
-          success: true
-        });
-        return;
-      }
-    }
-  }
+  // if (openModels.hasOwnProperty(mid)) {
+  //   if (openModels[mid].hasOwnProperty(version)) {
+  //     if (!openModels[mid][version].changed) {
+  //       res.send({
+  //         status: 'Model has no changes to save',
+  //         success: true
+  //       });
+  //       return;
+  //     }
+  //   }
+  // }
 
   db.oneOrNone('' +
     'SELECT write ' +
