@@ -12,14 +12,6 @@ npm install -g pm2
 #sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./API/database.js
 
 # hier neue URL setzen!
-
-sed 's/localhost/ipim.lab.if.haw-landshut.de/g' ./API/database.js
-sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./API/express.js
-sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/src/modelerConfig.service.ts
-sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/config/webpack.dev.js
-
-
-# hier neue URL setzen!
 # Bitte <enter URL here> stehen lassen, weil Suchterm!
 
 sed 's/localhost/<!!!enter new URL!!!>/g' ./API/database.js
@@ -45,5 +37,5 @@ npm install --silent
 echo Kopiere Artefakte an die richtigen Orte
 cd ..
 sudo cp adamo.nginx.conf /etc/nginx/sites-enabled/adamo
-sudo cp -r angular/dist/* /var/www/adamo 
+sudo cp -r angular2/dist/* /var/www/adamo 
 sudo service nginx restart
