@@ -36,6 +36,16 @@ npm install --silent
  
 echo Kopiere Artefakte an die richtigen Orte
 cd ..
-sudo cp adamo.nginx.conf /etc/nginx/sites-enabled/adamo
-sudo cp -r angular2/dist/* /var/www/adamo 
+sudo mkdir /etc/nginx/sites-enabled/angular
+sudo cp adamo.nginx.conf /etc/nginx/sites-enabled/angular.nginx.conf
+sudo mkdir /var/www/angular
+sudo cp -r angular2/dist/* /var/www/angular 
+
 sudo service nginx restart
+
+
+
+sed 's/localhost/ipim.lab.if.haw-landshut.de/g' ./API/database.js
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./API/express.js
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/src/modelerConfig.service.ts
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/config/webpack.dev.js
