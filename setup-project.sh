@@ -1,13 +1,14 @@
 #! /bin/
+sudo apt-get install build-essentials python
 echo Installiere PM2 Global
 npm install -g pm2
 
-cp .env.example .env
-cp .env.example .env.dev
+#cp .env.example .env
+#cp .env.example .env.dev
 
 echo Installiere Frontend
 cd angular2
-npm install
+npm install --silent
 
 echo Baue Frontend
 npm run build
@@ -16,7 +17,7 @@ cd ..
 
 echo Installiere Backend
 cd API
-npm install 
+npm install --silent
  
 echo Kopiere Artefakte an die richtigen Orte
 cd ..
