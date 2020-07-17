@@ -8,6 +8,25 @@ npm install -g node-gyp
 npm install -g pm2
 
 #cp .env.example .env
+#sed 's/localhost/ipim.lab.if.haw-landshut.de/g' ./API/database.js
+#sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./API/database.js
+
+# hier neue URL setzen!
+
+sed 's/localhost/ipim.lab.if.haw-landshut.de/g' ./API/database.js
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./API/express.js
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/src/modelerConfig.service.ts
+sed 's/<enter URL here>/ipim.lab.if.haw-landshut.de/g' ./angular2/config/webpack.dev.js
+
+
+# hier neue URL setzen!
+# Bitte <enter URL here> stehen lassen, weil Suchterm!
+
+sed 's/localhost/<!!!enter new URL!!!>/g' ./API/database.js
+sed 's/<enter URL here>/<!!!enter new URL!!!>/g' ./API/express.js
+sed 's/<enter URL here>/<!!!enter new URL!!!>/g' ./angular2/src/modelerConfig.service.ts
+sed 's/<enter URL here>/<!!!enter new URL!!!>/g' ./angular2/config/webpack.dev.js
+
 #cp .env.example .env.dev
 
 echo Installiere Frontend
