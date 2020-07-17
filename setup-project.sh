@@ -1,6 +1,10 @@
 #! /bin/
-sudo apt-get install build-essential python nginx
-echo Installiere PM2 Global
+sudo apt-get install python nginx
+sudo apt-get install libtool pkg-config build-essential autoconf automake
+sudo apt-get install libzmq-dev
+
+echo Installiere globale npm dependencies
+npm install -g node-gyp
 npm install -g pm2
 
 #cp .env.example .env
@@ -21,6 +25,6 @@ npm install --silent
  
 echo Kopiere Artefakte an die richtigen Orte
 cd ..
-mv adamo.nginx.conf /etc/nginx/sites-enabled/adamo
-cp -r angular/dist/* /var/www/adamo 
-service nginx restart
+sudo cp adamo.nginx.conf /etc/nginx/sites-enabled/adamo
+sudo cp -r angular/dist/* /var/www/adamo 
+sudo service nginx restart
