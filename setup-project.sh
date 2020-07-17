@@ -1,5 +1,5 @@
 #! /bin/
-sudo apt-get install build-essentials python
+sudo apt-get install build-essential python nginx
 echo Installiere PM2 Global
 npm install -g pm2
 
