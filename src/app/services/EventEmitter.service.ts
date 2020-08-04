@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Model } from '../models/model';
+import { CollaborationModelEntity } from '../models/CollaborationModelEntity';
 @Injectable()
 export class EventEmitterService {
     // Observable string sources

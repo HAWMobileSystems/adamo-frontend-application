@@ -1,6 +1,6 @@
 <!-- <nav class="navbar bg-light is-fixed-top" role="navigation" aria-label="main navigation"> -->
 <div class="navbar-brand">
-    <a class="navbar-item" href="#">
+    <a class="navbar-item"routerLink="/overview">
         <img src="/assets/adamo-only-logo.svg" width="28" height="28" alt="adamo">
         <span>DAMO</span>
     </a>
@@ -18,7 +18,7 @@
         <div *ngFor="let model of models; let i = index" class="navbar-item" >
            <a routerLink="/model/{{model.id}}/{{model.model_version}}">
             <div (mouseenter)="model.showInfo = true" (mouseleave)="model.showInfo = false">
-                {{model.model_name + ' v' +(model.model_version | version) || 'unsaved model'}}
+                {{ model.model_name + ' v' +(model.model_version) || 'unsaved model'}}
                 <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
                 <i *ngIf="model.can_write" class="fas fa-pencil-alt" title="write permission"></i>
                 <span *ngIf="model.collaborator.length > 1" class="badge badge-light">
@@ -59,7 +59,7 @@
                 <span>{{currentUser?.email || 'Menü'}}</span></a>
         </li>
         <li class="navbar-item">
-            <a>
+            <a (click)="logout()" routerLink="">
                 <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                 <span>{{'APPHEADER.LOGOUT' | translate }}</span>
             </a>
