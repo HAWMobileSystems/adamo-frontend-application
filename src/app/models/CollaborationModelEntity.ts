@@ -1,12 +1,14 @@
 import { ModelerComponent } from '../ModelerComponent/modeler.component';
+import { IModelDto } from './interface/components/i-model-dto';
+import { IModelPermissionDto } from './interface/components/i-model-permission-dto';
 
-export class Model {
-  get version(): string {
-    return this.version;
+export class CollaborationModelEntity {
+  get model_version(): number {
+    return this._model_version;
   }
 
-  set version(value: string) {
-    this.version = value;
+  set model_version(value: number) {
+    this._model_version = value;
   }
 
   get modelerComponent(): ModelerComponent {
@@ -17,28 +19,28 @@ export class Model {
     this._modelerComponent = value;
   }
 
-  get id(): number {
+  get id(): string {
     return this._id;
   }
 
-  set id(value: number) {
+  set id(value: string) {
     this._id = value;
   }
 
-  get name(): string {
-    return this.name;
+  public get model_name(): string {
+    return this._model_name;
   }
 
-  set name(value: string) {
-    this.name = value;
+  public set model_name(value: string) {
+    this._model_name = value;
   }
 
-  get xml(): string {
-    return this.xml;
+  public get model_xml(): string {
+    return this._model_xml;
   }
 
-  set xml(value: string) {
-    this.xml = value;
+  public set model_xml(value: string) {
+    this._model_xml = value;
   }
 
   get collaborator(): string[] {
@@ -75,9 +77,9 @@ export class Model {
 
   private _model_xml: string;
   private _model_name: string;
-  private _id: number;
+  private _id: string;
   private _modelerComponent: ModelerComponent;
-  private _model_version: string;
+  private _model_version: number;
   private _collaborator: string[];
   private _showInfo: boolean;
   private _can_read: boolean;
@@ -85,7 +87,7 @@ export class Model {
 
   // constructor() {}
 
-  constructor(model: any) {
+  constructor(model: IModelPermissionDto) {
     this._model_xml = model.model_xml;
     this._model_name = model.model_name;
     this._id = model.id;
