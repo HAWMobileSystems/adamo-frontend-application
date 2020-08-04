@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
-
 import { environment } from "../../environments/environment";
 import { Injectable } from "@angular/core";
 import { ModelDto } from "../entities/interfaces/ModelDto";
+import { Observable } from 'rxjs';
 
 const options = {
   withCredentials: true,
@@ -14,47 +14,52 @@ export class ModelService {
   private BACKEND_URI: string =
     environment.SERVER_HOST + ":" + environment.SERVER_PORT;
 
-  //Modeller: changes to model in last 7 days
-  public getModelsChangedLast7Days() {
-    return this.http.get(this.BACKEND_URI + "/model/changes", options);
-    //.pipe(map((response: any) => response.json()));
+  /**
+   * Called on Overview
+   * @returns ModelDto which were changed in the last 7 days
+   */
+  public getModelsChangedLast7Days() : Observable<ModelDto[]> {
+    return this.http.get<ModelDto[]>(this.BACKEND_URI + "/model/changes", options);
   }
 
   //Modeller: Load model
-  public getModel(mid: string, version?: string) {
+  /**
+   *
+   * @param mid
+   * @param version
+   * @returns an Observable of type ModelDto
+   */
+  public getModel(mid: string, version?: string): Observable<ModelDto>{
     return (
       this.http
-        // .post(
-        .get(
+        .get<ModelDto>(
           this.BACKEND_URI + `/model/${mid}/${version}`,
-          // { mid: mid, version: version },
           options
         )
     );
-    //.pipe(map((response: any) => response.json()));
   }
-
-  //Modeller: Evaluation needs asynchron loading of model
-  public async getModelAsync(mid: string): Promise<ModelDto> {
-    try {
-      const response: any = await this.http
-        .get(this.BACKEND_URI + `/model/${mid}`, options)
-        .toPromise();
-      const responseString = String.fromCharCode.apply(
-        null,
-        new Uint8Array(response)
-      );
-      return <ModelDto>
-        {}
-        // (
-        //   responseString.json().data.modelname,
-        //   responseString.json().data.mid.toString(),
-        //   responseString.json().data.modelxml
-        // )
-    } catch {
-      return <ModelDto> {id: "", modelName: "", modelXML: "", modelVersion: 1};
-    }
-  }
+  //
+  // //Modeller: Evaluation needs asynchron loading of model
+  // public async getModelAsync(mid: string): Promise<ModelDto> {
+  //   try {
+  //     const response: any = await this.http
+  //       .get(this.BACKEND_URI + `/model/${mid}`, options)
+  //       .toPromise();
+  //     const responseString = String.fromCharCode.apply(
+  //       null,
+  //       new Uint8Array(response)
+  //     );
+  //     return <ModelDto>
+  //       {}
+  //       // (
+  //       //   responseString.json().data.modelname,
+  //       //   responseString.json().data.mid.toString(),
+  //       //   responseString.json().data.modelxml
+  //       // )
+  //   } catch {
+  //     return <ModelDto> {id: "", modelName: "", modelXML: "", modelVersion: 1};
+  //   }
+  // }
 
   //Administration page: Show all models
   //modellerPage: Show all models
@@ -133,7 +138,13 @@ export class ModelService {
 
   //Administration page: Create a new model
   //modellerPage: Create a new model
-  public modelCreate(modelname: string, modelxml: string) {
+  /**
+   * Create a Model Entity
+   * @param modelname
+   * @param modelxml
+   * @returns Observable of ..
+   */
+  public modelCreate(modelname: string, modelxml: string) : Observable<any> {
     return this.http.post(
       this.BACKEND_URI + "/model/create",
       {

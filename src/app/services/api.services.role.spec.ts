@@ -1,181 +1,164 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import {
-  HttpModule,
-  Http,
-  Response,
-  ResponseOptions,
-  XHRBackend
-} from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import {ApiService} from './api.service';
-import { Observable } from 'rxjs';
+import { HttpClientModule, HttpClient, HttpResponse, HttpXhrBackend, HttpHeaders } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+// import { MockBackend } from '@angular/ht/testing';
+import { ApiService } from './api.service';
+import { environment } from '../../environments/environment';
 
 describe('ApiService', () => {
-
+  let service: ApiService;
+  let httpMock: HttpTestingController;
   beforeEach(() => {
-
     TestBed.configureTestingModule({
-      imports: [HttpModule],
+      imports: [HttpClientTestingModule],
       providers: [
         ApiService,
-        { provide: XHRBackend, useClass: MockBackend }
-      ]
+        //{ provide: XHRBackend, useClass: MockBackend }
+      ],
+    });
+    service = TestBed.get(ApiService);
+    httpMock = TestBed.get(HttpTestingController);
+  });
+  it('should have a service instance', () => {
+    expect(service).toBeDefined();
+  });
+
+  describe('roleCreate()', () => {
+    it('should return Object when created', () => {
+      service
+        .roleCreate({
+          roleName: 'Admin',
+          canRead: true,
+          canWrite: true,
+          isAdmin: true,
+        })
+        .subscribe((data: any) => {
+          expect(data.success).toBe(true);
+        });
+
+      const req = httpMock.expectOne(`${environment.SERVER_HOST}:${environment.SERVER_PORT}/role/create`);
+      expect(req.request.method).toBe('POST');
+
+      req.flush({
+        status: 'role created successfully',
+        success: true,
+      });
     });
   });
 
-    describe('roleCreate()', () => {
+  it('it should return, if a role already exists', () => {
+    service
+      .roleCreate({
+        roleName: 'Admin',
+        canRead: true,
+        canWrite: true,
+        isAdmin: true,
+      })
+      .subscribe((data: any) => {
+        expect(data).toBeDefined();
+        expect(data.success).toBeUndefined();
+        expect(data.status).toBeDefined();
+      });
 
-        it('should return a role object',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+    const req = httpMock.expectOne(`${environment.SERVER_HOST}:${environment.SERVER_PORT}/role/create`);
+    expect(req.request.method).toBe('POST');
 
-                const mockResponse = {
-                    status: 'role created successfully',
-                    success: true
-                };
+    req.flush({
+      status: 'Role name already exists',
+    });
+  });
 
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
+  describe('roleUpdate()', () => {
+    it('it should return if role was succesfully updated', () => {
+      service.roleUpdate(1, 'Admin', true, true, true).subscribe((data: any) => {
+        expect(data).toBeDefined();
+        expect(data.success).toBeDefined();
+        expect(data.status).toBeUndefined();
+      });
 
-                expect(typeof(apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}))).toEqual('object');
+      const req = httpMock.expectOne(`${environment.SERVER_HOST}:${environment.SERVER_PORT}/role/create`);
+      expect(req.request.method).toBe('POST');
 
-            }));
-        it('it should work in case of a failure',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Database not available'
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}))).toEqual('object');
-                apiService.roleCreate({roleName: 'Admin', canRead: true, canWrite: true, isAdmin: true}).subscribe((response: any) => {
-                    expect(response).toBeDefined();
-                    expect(response.success).toBeUndefined();
-                    expect(response.status).toBeDefined();
-                });
-            }));
-        it('if role-name already exists, then it shouldnt create a role',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Role name already exists'
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-            }));
+      req.flush({
+        status: 'role updated successfully',
+        success: true,
+      });
     });
 
-    describe('roleUpdate()', () => {
+    it('should return success false, if role could not be updated', () => {
+      service.roleUpdate(1, 'Admin', true, true, true).subscribe((data: any) => {
+        expect(data).toBeDefined();
+        expect(data.success).toBeUndefined();
+        expect(data.status).toBeDefined();
+      });
 
-        it('should return a role object',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+      const req = httpMock.expectOne(`${environment.SERVER_HOST}:${environment.SERVER_PORT}/role/create`);
+      expect(req.request.method).toBe('POST');
 
-                const mockResponse = {
-                    status: 'role updated successfully',
-                    success: true
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleUpdate(1, 'Admin', true, true, true))).toEqual('object');
-            }));
-        it('it should work in case of a failure',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Database not available'
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleUpdate(1, 'Admin', true, true  , true))).toEqual('object');
-                apiService.roleUpdate(1, 'Admin', true, true, true).subscribe((response: any) => {
-                    expect(response).toBeDefined();
-                    expect(response.success).toBeUndefined();
-                    expect(response.status).toBeDefined();
-                });
-            }));
+      req.flush({
+        status: 'Database not available',
+      });
     });
-    describe('roleDelete()', () => {
-
-        it('should return a role object',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Role deleted successfully',
-                    success: true
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleDelete( 1))).toEqual('object');
-
-            }));
-
-        it('it should work in case of a failure',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Database not available'
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleDelete(1))).toEqual('object');
-                apiService.roleDelete(1).subscribe((response: any) => {
-                    expect(response).toBeDefined();
-                    expect(response.success).toBeUndefined();
-                    expect(response.status).toBeDefined();
-                });
-            }));
-        it('it shouldnt work when their is no role id',
-            inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
-
-                const mockResponse = {
-                    status: 'Role does not exist'
-                };
-
-                mockBackend.connections.subscribe((connection: any) => {
-                    connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
-                    })));
-                });
-
-                expect(typeof(apiService.roleDelete(1))).toEqual('object');
-                apiService.roleDelete(1).subscribe((response: any) => {
-                    expect(response).toBeDefined();
-                    expect(response.success).toBeUndefined();
-                    expect(response.status).toBeDefined();
-                });
-            }));
-    });
-
+  });
+  // describe("roleDelete()", () => {
+  //
+  //     it("should return a role object",
+  //         inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+  //
+  //             const mockResponse = {
+  //                 status: "Role deleted successfully",
+  //                 success: true
+  //             };
+  //
+  //             mockBackend.connections.subscribe((connection: any) => {
+  //                 connection.mockRespond(new Response(new ResponseOptions({
+  //                     body: JSON.stringify(mockResponse)
+  //                 })));
+  //             });
+  //
+  //             expect(typeof(apiService.roleDelete( 1))).toEqual("object");
+  //
+  //         }));
+  //
+  //     it("it should work in case of a failure",
+  //         inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+  //
+  //             const mockResponse = {
+  //                 status: "Database not available"
+  //             };
+  //
+  //             mockBackend.connections.subscribe((connection: any) => {
+  //                 connection.mockRespond(new Response(new ResponseOptions({
+  //                     body: JSON.stringify(mockResponse)
+  //                 })));
+  //             });
+  //
+  //             expect(typeof(apiService.roleDelete(1))).toEqual("object");
+  //             apiService.roleDelete(1).subscribe((response: any) => {
+  //                 expect(response).toBeDefined();
+  //                 expect(response.success).toBeUndefined();
+  //                 expect(response.status).toBeDefined();
+  //             });
+  //         }));
+  //     it("it shouldnt work when their is no role id",
+  //         inject([ApiService, XHRBackend], (apiService: ApiService, mockBackend: any) => {
+  //
+  //             const mockResponse = {
+  //                 status: "Role does not exist"
+  //             };
+  //
+  //             mockBackend.connections.subscribe((connection: any) => {
+  //                 connection.mockRespond(new Response(new ResponseOptions({
+  //                     body: JSON.stringify(mockResponse)
+  //                 })));
+  //             });
+  //
+  //             expect(typeof(apiService.roleDelete(1))).toEqual("object");
+  //             apiService.roleDelete(1).subscribe((response: any) => {
+  //                 expect(response).toBeDefined();
+  //                 expect(response.success).toBeUndefined();
+  //                 expect(response.status).toBeDefined();
+  //             });
+  //         }));
+  // });
 });
