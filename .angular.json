@@ -67,7 +67,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "baseHref": "/",
               "fileReplacements": [
                 {
@@ -123,6 +123,9 @@
               "browserTarget": "angular-example-app:build:production",
               "aot": false
             },
+            "dev": {
+              "browserTarget": "angular-example-app:build:dev"
+            },
             "de": {
               "browserTarget": "angular-example-app:build:de"
             },
@@ -151,9 +154,6 @@
               {
                 "input": "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
               },
-              "src/assets/css/reset.css",
-              "src/assets/css/loading.css",
-              "src/app/styles/global.scss"
             ],
             "assets": [
               {
@@ -218,46 +218,6 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "ngx-example-library": {
-      "root": "projects/ngx-example-library",
-      "sourceRoot": "projects/ngx-example-library/src",
-      "projectType": "library",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/ngx-example-library/tsconfig.lib.json",
-            "project": "projects/ngx-example-library/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "projects/ngx-example-library/ng-package.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngx-example-library/src/test.ts",
-            "tsConfig": "projects/ngx-example-library/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-example-library/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ngx-example-library/tsconfig.lib.json",
-              "projects/ngx-example-library/tsconfig.spec.json"
-            ],
             "exclude": [
               "**/node_modules/**"
             ]
