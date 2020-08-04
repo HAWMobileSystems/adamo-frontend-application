@@ -1,82 +1,67 @@
 /// <reference types="Cypress" />
 
 
-describe('Positive Test ', () => {
+describe('Login Test ', () => {
 
-  beforeEach(() => {
-    cy.viewport(1200, 1000);
-  })
-  context('login', () => {
-    it('.visit() - localhost:8085', () => {
-      cy.visit('http://localhost:8085')
-    })
+  before(() => {
+    cy.visit('http://localhost:8085')
+    cy.get('.input[formcontrolname="email"]')
+      .type('daniel.hilpoltsteiner@haw-landshut.de')
+    cy.get('.input[formcontrolname="password"]')
+      .type('12345678')
+    cy.get('button').contains('Login').click();
+  });
 
-    it('.type() - input email', () => {
-      cy.get('.input[formcontrolname="email"]')
-        .type('daniel.hilpoltsteiner@haw-landshut.de')
-        .should('have.value', 'daniel.hilpoltsteiner@haw-landshut.de')
-    })
+  after(() => {
+    cy.get('.logout').click()
+  });
 
-    it('.type() - input password', () => {
-      cy.get('.input[formcontrolname="password"]')
-        .type('12345678')
-        .should('have.value', '12345678')
-    })
-
-    it('.click() - submit login form', () => {
-      cy.get('button').contains('Login').click()
-      cy.url().should('include', '/overview/dashboard')
-    })
-
-  })
   context('foward administration', () => {
 
-    it('.url() - forward to administration if responsiv', () => {
+    it('.url() - forward to administration is available on admin User', () => {
       // cy.get('.navbar-burger').click()
-      cy.contains('Administration').click()
-      cy.url().should('include', '/administration')
-    })
+      cy.contains('Administration').click();
+      cy.url().should('include', '/administration');
+    });
 
     it('Test for Users', () => {
-      cy.get('.tabs > ul > :nth-child(1) > a').click()
+      cy.get('.tabs > ul > :nth-child(1) > a').click();
 
       cy.get('.tabs > ul > :nth-child(1)')
-        .should('have.class', 'is-active')
-    })
+        .should('have.class', 'is-active');
+    });
 
     it('Test for Model', () => {
-      cy.get('.tabs > ul > :nth-child(2) > a').click()
+      cy.get('.tabs > ul > :nth-child(2) > a').click();
 
       cy.get('.tabs > ul > :nth-child(2)')
-        .should('have.class', 'is-active')
-    })
-  })
+        .should('have.class', 'is-active');
+    });
+  });
 
   context('test model open', () => {
 
     it('.() - open sample model', () => {
       // cy.get('.navbar-burger').click()
-      cy.contains('+').click()
-      cy.get('.is-grouped > :nth-child(2) > .button').should('not.exist')
-      cy.wait(100)
-      cy.get(':nth-child(3) > tr > :nth-child(1)').click()
-      cy.get('.is-grouped > :nth-child(2) > .button').should('exist').click()
-      cy.url().should('include', '/model')
-      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('exist')
-    })
+      cy.contains('+').click();
+      cy.get('.is-grouped > :nth-child(2) > .button').should('not.exist');
+      cy.wait(100);
+      cy.get(':nth-child(3) > tr > :nth-child(1)').click();
+      cy.get('.is-grouped > :nth-child(2) > .button').should('exist').click();
+      cy.url().should('include', '/model');
+      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('exist');
+    });
 
     it('.() - close model', () => {
-   
-      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('exist')
-      cy.get('.close').click()
 
-      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('not.exist')
-      cy.url().should('include', '/overview/dashboard')
-    })
+      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('exist');
+      cy.get('.close').click();
 
-  })
-})
-
+      cy.get('.navbar-start > .navbar-item > :nth-child(1)').should('not.exist');
+      cy.url().should('include', '/overview/dashboard');
+    });
+  });
+});
 
 // it('.focus() - focus on a DOM element', () => {
 //   // https://on.cypress.io/focus
