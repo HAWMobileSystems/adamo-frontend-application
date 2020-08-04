@@ -47,12 +47,12 @@ const customPaletteModule = {
   paletteProvider: ["type", PaletteProvider]
 };
 
-@Component({
-  selector: "basemodeler",
-  templateUrl: "./simplemodeler.component.html",
-  styleUrls: ["./modeler.component.css"],
-  providers: [BPMNStore]
-})
+// @Component({
+//   selector: "basemodeler",
+//   templateUrl: "./simplemodeler.component.html",
+//   styleUrls: ["./modeler.component.css"],
+//   providers: [BPMNStore]
+// })
 export class BaseModelerComponent implements OnInit {
   // @Input() public modelId: string;
   // @Input() public newDiagramXML: string;

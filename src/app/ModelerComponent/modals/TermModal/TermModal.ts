@@ -20,7 +20,7 @@ export class TermModal {
   public selected: string;
   public output: string;
   public index: number = 0;
-  private form : any;
+  public form : any;
   public cssClass: string = "";
 
   public animation: boolean = true;

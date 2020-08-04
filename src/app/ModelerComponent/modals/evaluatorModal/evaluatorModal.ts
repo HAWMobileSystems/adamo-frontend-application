@@ -66,7 +66,7 @@ export class EvalModal {
     console.log('EvaluatorModal dismissed');
   }
 
-  public closed() {
+  public close() {
     console.log('EvaluatorModal closed');
   }
 

@@ -7,29 +7,43 @@ import { UserService } from '../../../services/user.service';
 @Component({
   selector: 'app-earned',
   templateUrl: './earned.component.html',
-  styleUrls: ['./earned.component.css']
+  styleUrls: ['./earned.component.css'],
 })
 export class EarnedComponent implements OnInit {
+  set selected(value: any) {
+    this._selected = value;
+  }
+  get selected(): any {
+    return this._selected;
+  }
+  get profiles(): any {
+    return this._profiles;
+  }
+  get newProfile(): any {
+    return this._newProfile;
+  }
 
-  private selected: any;
-  private newProfile: any;
-  private profiles: any;
+  private _selected: any;
+  private _newProfile: any;
+  private _profiles: any;
+
+  public search: any;
 
   constructor(
     private apiService: ApiService,
     private userService: UserService,
     private snackbarService: SnackBarService,
-    private mqttService: AdamoMqttService
+    private mqttService: AdamoMqttService,
   ) {}
 
   public ngOnInit() {
     //defines the structure for a new empty profile
-    this.newProfile = {
+    this._newProfile = {
       rid: '',
       profile: '',
       read: '',
       write: '',
-      admin: ''
+      admin: '',
     };
 
     this.getAllProfiles();
@@ -46,13 +60,13 @@ export class EarnedComponent implements OnInit {
 
   //gets a list of all profiles from DB
   public getAllProfiles() {
-    this.profiles = [];
+    this._profiles = [];
 
     this.userService.getAllProfiles().subscribe(
       (response: { success: any; data: any; _body: string }) => {
         if (response.success) {
-          this.profiles = response.data;
-          this.selected = null;
+          this._profiles = response.data;
+          this._selected = null;
         } else {
           this.snackbarService.error(response._body);
         }
@@ -60,7 +74,7 @@ export class EarnedComponent implements OnInit {
       (error: { _body: string }) => {
         this.snackbarService.error(JSON.parse(error._body).status);
         console.log(error);
-      }
+      },
     );
   }
 
@@ -68,18 +82,16 @@ export class EarnedComponent implements OnInit {
   public profileUpdate() {
     this.apiService
       .profileUpdate(
-        this.selected.rid,
-        this.selected.profile,
-        this.selected.read,
-        this.selected.write,
-        this.selected.admin
+        this._selected.rid,
+        this._selected.profile,
+        this._selected.read,
+        this._selected.write,
+        this._selected.admin,
       )
       .subscribe(
         (response: { success: any; status: string; _body: string }) => {
           if (response.success) {
-            this.mqttService
-              .getClient()
-              .publish('administrations/Profile', JSON.stringify({}));
+            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
             this.snackbarService.error(response._body);
@@ -88,25 +100,18 @@ export class EarnedComponent implements OnInit {
         (error: { _body: string }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
-        }
+        },
       );
   }
 
   //creates a new profile
   public profileCreate() {
     this.apiService
-      .profileCreate(
-        this.selected.profile,
-        this.selected.read,
-        this.selected.write,
-        this.selected.admin
-      )
+      .profileCreate(this._selected.profile, this._selected.read, this._selected.write, this._selected.admin)
       .subscribe(
         (response: { success: any; status: string; _body: string }) => {
           if (response.success) {
-            this.mqttService
-              .getClient()
-              .publish('administrations/Profile', JSON.stringify({}));
+            this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
             this.snackbarService.success(response.status);
           } else {
             this.snackbarService.error(response._body);
@@ -115,18 +120,16 @@ export class EarnedComponent implements OnInit {
         (error: { _body: string }) => {
           this.snackbarService.error(JSON.parse(error._body).status);
           console.log(error);
-        }
+        },
       );
   }
 
   //deletes the selected profile
   public profileDelete() {
-    this.apiService.profileDelete(this.selected.rid).subscribe(
+    this.apiService.profileDelete(this._selected.rid).subscribe(
       (response: { success: any; status: string; _body: string }) => {
         if (response.success) {
-          this.mqttService
-            .getClient()
-            .publish('administrations/Profile', JSON.stringify({}));
+          this.mqttService.getClient().publish('administrations/Profile', JSON.stringify({}));
           this.snackbarService.success(response.status);
         } else {
           this.snackbarService.error(response._body);
@@ -135,7 +138,7 @@ export class EarnedComponent implements OnInit {
       (error: { _body: string }) => {
         this.snackbarService.error(JSON.parse(error._body).status);
         console.log(error);
-      }
+      },
     );
   }
 }

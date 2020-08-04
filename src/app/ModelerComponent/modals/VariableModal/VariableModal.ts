@@ -14,10 +14,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
   })
 
 export class VariableModal {
-    private IPIM_VAL : string = 'IPIM_Val';
-    private IPIM_META : string = 'IPIM_Meta';
+    get variables(): Variable[] {
+        return this._variables;
+    }
+    private IPIM_VAL : string = "IPIM_Val";
+    private IPIM_META : string = "IPIM_Meta";
 
-    private variables: Variable[];
+    private _variables: Variable[];
 
 
     private data: any;
@@ -28,7 +31,7 @@ export class VariableModal {
         private fb: FormBuilder,
         @Inject(MAT_DIALOG_DATA) data: any,
       private dialogRef: MatDialogRef<VariableModal>) {
-        this.variables = [];
+        this._variables = [];
         this.data = data
         this.fillModal();
     } 
@@ -47,7 +50,7 @@ export class VariableModal {
 
     public opened() {
         console.log('opened Variable Modal');
-        this.variables = [];
+        this._variables = [];
         this.fillModal();
     }
 
@@ -62,7 +65,7 @@ export class VariableModal {
     }
 
     public addVar(name: string, value: string, meta: boolean): void {
-        this.variables.push(new Variable(name, value, meta));
+        this._variables.push(new Variable(name, value, meta));
     }
 
     public fillModal(): void {
@@ -135,15 +138,15 @@ export class VariableModal {
 
         //Alle Elemente des Eingabefeldes durchlaufen um Variablen zu finden und dem Root Element hinzuzufügen
         //const fieldset= document.getElementById('variablefset');
-        for (let fieldi = 0; fieldi < this.variables.length; fieldi++) {
-            if ((this.variables[fieldi]).value !== '') {
+        for (let fieldi = 0; fieldi < this._variables.length; fieldi++) {
+            if ((this._variables[fieldi]).value !== '') {
                 extras[0].values.push(moddle.create('camunda:Property'));
-                this.variables[fieldi].meta
-                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (this.variables[fieldi]).name.trim()
-                    : extras[0].values[fieldi].name = this.IPIM_VAL + '_' + (this.variables[fieldi]).name.trim();
+                this._variables[fieldi].meta
+                    ? extras[0].values[fieldi].name = this.IPIM_META + '_' + (this._variables[fieldi]).name.trim()
+                    : extras[0].values[fieldi].name = this.IPIM_VAL + '_' + (this._variables[fieldi]).name.trim();
 
-                this.variables[fieldi].value !== ''
-                    ? extras[0].values[fieldi].value = (this.variables[fieldi]).value.trim()
+                this._variables[fieldi].value !== ''
+                    ? extras[0].values[fieldi].value = (this._variables[fieldi]).value.trim()
                     : extras[0].values[fieldi].value = ' ';
             }
         }

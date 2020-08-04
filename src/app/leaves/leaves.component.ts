@@ -8,7 +8,7 @@ import { Router, NavigationEnd } from "@angular/router";
   styleUrls: ['./leaves.component.css']
 })
 export class LeavesComponent{
-    private activeTab = '';
+    public activeTab = '';
     constructor(
         private router: Router,
       ) {

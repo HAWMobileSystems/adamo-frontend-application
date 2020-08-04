@@ -29,8 +29,8 @@
                 </tr>
             </thead>
             <tbody></tbody>
-            <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search"
-                (click)="selected = model" [ngClass]="{'info': selected === model}">
+            <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search">
+<!--                (click)="selected = model" [ngClass]="{'info': selected === model}">-->
                 <td>{{model.model_name}}</td>
                 <td>{{model.model_version | version}}</td>
                 <td>
@@ -39,7 +39,10 @@
                     <i *ngIf="!model.can_read && !model.can_write" class="fas fa-ban" title="no permission"></i>
                 </td>
                 <td>
-                    
+                    <a (click)="loadModel(model)" >
+                        <i class="fas fa-download"></i>
+                    </a>
+
                 </td>
             </tr>
             <tfoot></tfoot>
@@ -53,13 +56,13 @@
                 <span>Importieren</span>
             </button>
         </div>
-        <div class="control">
-            <button *ngIf="selected" class="button is-info" (click)="loadSelected()">
-                <span class="icon is-small">
-                    <i class="fas fa-download"></i></span>
-                <span>Aus Datenbank laden</span>
-            </button>
-        </div>
+<!--        <div class="control">-->
+<!--            <button *ngIf="selected" class="button is-info" (click)="loadSelected()">-->
+<!--                <span class="icon is-small">-->
+<!--                    <i class="fas fa-download"></i></span>-->
+<!--                <span>Aus Datenbank laden</span>-->
+<!--            </button>-->
+<!--        </div>-->
         <div class="control">
             <input #fileSelectorInput type="file" (change)="changeListener($event)" style="display:none">
         </div>
@@ -73,7 +76,7 @@
             </div>
             <p class="control">
 
-                <a class="button is-info" (click)="createEmpty(newModelName)">NEW</a>
+                <a class="button is-info" (click)="createEmpty()">NEW</a>
 
             </p>
         </div>

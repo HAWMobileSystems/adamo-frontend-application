@@ -1,33 +1,27 @@
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { TabbarService } from '../../services/tabbar.service';
-import { AuthService } from '../../services';
-import { Router } from '@angular/router';
+import { Component, ViewChild, ElementRef } from "@angular/core";
+import { UserService } from "../../services/user.service";
+import { TabbarService } from "../../services/tabbar.service";
+import { AuthService } from "../../services";
+import { Router } from "@angular/router";
 
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'frontpage-header',
-  templateUrl: './frontpage-header.template.html'
+  selector: "frontpage-header",
+  templateUrl: "./frontpage-header.template.html"
 })
 export class FrontpageHeaderComponent {
 
-  @ViewChild('navBurger') navBurger: ElementRef;
-  @ViewChild('navMenu') navMenu: ElementRef;
+  @ViewChild("navBurger") public navBurger: ElementRef;
+  @ViewChild("navMenu") public navMenu: ElementRef;
 
   constructor(
     private router: Router,
-    private translate: TranslateService,
-    // private userService: UserService,
-    // private authService: AuthService,
-    // private tabbarService: TabbarService,
-    
-  ){
-   
+    public translate: TranslateService
+  ) {}
+
+  public onBurgerClicked() {
+    this.navBurger.nativeElement.classList.toggle("is-active");
+    this.navMenu.nativeElement.classList.toggle("is-active");
   }
-  
-  onBurgerClicked() {
-        this.navBurger.nativeElement.classList.toggle('is-active');
-        this.navMenu.nativeElement.classList.toggle('is-active');
-    }
 }

@@ -8,7 +8,8 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { EventEmitterService } from '../../services/EventEmitter.service';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { CollaborationModelEntity } from '../../models/CollaborationModelEntity';
 
 @Component({
   selector: 'modelloader',
@@ -26,7 +27,7 @@ export class ModelLoaderComponent {
     modelname: '',
     modelxml: IPIM_OPTIONS.NEWMODEL,
     version: '',
-    lastchange: ''
+    lastchange: '',
   };
   public models: any = [];
   private modelDataChangedLast7Days: any;
@@ -46,11 +47,10 @@ export class ModelLoaderComponent {
     private mqttService: AdamoMqttService,
     private translate: TranslateService,
   ) {
-    translate.get('MODELLOADER.PERMISSION').subscribe(console.log)
+    translate.get('MODELLOADER.PERMISSION').subscribe(console.log);
   }
 
   //Bereitet dem MQTT vor, damit alle kollaborativen Modelle dort an den ExpressJS weitergeleitet werden
-  
 
   // private initMqtt() {
   //   try {
@@ -72,12 +72,12 @@ export class ModelLoaderComponent {
     //     if (response.success) {
     //       //Only start Working when login was successfull
     //       this.mqttService.getClient(response.email);
-    if(!this.authService.getCurrentUser()) {
+    if (!this.authService.getCurrentUser()) {
       this.router.navigate(['']);
     }
-          // this.initMqtt();
-          this.getAllModels();
-          this.getLatestChanges();
+    // this.initMqtt();
+    this.getAllModels();
+    this.getLatestChanges();
     //     } else {
     //       this.snackbarService.error(response.status);
     //       console.error('Error while retrieving session');
@@ -92,7 +92,6 @@ export class ModelLoaderComponent {
     //     this.router.navigate(['/front-page']);
     //   }
     // );
-   
   }
 
   //Create an empty model in the database
@@ -105,28 +104,27 @@ export class ModelLoaderComponent {
       (error: any) => {
         this.snackbarService.error(JSON.parse(error).status);
         console.log(error);
-      }
+      },
     );
   }
   //import a model from harddisk to database
   public createLoaded() {
-    this.modelService
-      .modelCreate(this.diskModelName, this.diskModelXml)
-      .subscribe(
-        (response: any) => {
-          this.snackbarService.success(response);
-          console.log(response);
-        },
-        (error: any) => {
-          this.snackbarService.error(JSON.parse(error).status);
-          console.log(error);
-        }
-      );
+    this.modelService.modelCreate(this.diskModelName, this.diskModelXml).subscribe(
+      (response: any) => {
+        this.snackbarService.success(response);
+        console.log(response);
+      },
+      (error: any) => {
+        this.snackbarService.error(JSON.parse(error).status);
+        console.log(error);
+      },
+    );
   }
 
   //create a new model without anything
   public createNew() {
     const model = new Model(this.newModel);
+    // const collabModel = new CollaborationModelEntity(model)
     this.eventEmitterService.emitOnModelSelected(model);
     // this.loadModel.emit(model);
   }
@@ -141,7 +139,7 @@ export class ModelLoaderComponent {
     const file: File = inputValue.files[0];
     const myReader: FileReader = new FileReader();
     //event is called when file is loaded from disk
-    myReader.onloadend = e => {
+    myReader.onloadend = (e) => {
       this.diskModelName = file.name.split('.')[0];
       this.diskModelXml = myReader.result as string;
       this.createLoaded();
@@ -166,7 +164,7 @@ export class ModelLoaderComponent {
     //   console.log("modelloader.loadSelected", this.selected)
     //   this.apiService
     //     .getModel(this.selected.id, this.selected.model_version)
-    //     .subscribe( 
+    //     .subscribe(
     //       (response: any) => { // this will be a ModelResponseDTO
     //         model.xml = response.modelXML;
     //         console.info(model);
@@ -179,40 +177,47 @@ export class ModelLoaderComponent {
     //       }
     //     );
     // } else {
-// maybe some conformance checks but better
+    // maybe some conformance checks but better
     this.eventEmitterService.emitOnModelSelected(this.selected);
 
-      // this.loadModel.emit(this.selected);
+    // this.loadModel.emit(this.selected);
     // }
   }
 
   //get a list of all models from DB
   public getAllModels() {
-    let userID = this.authService.getCurrentUser().id
+    const userID = this.authService.getCurrentUser().id;
     console.log(userID);
     this.modelService.getAllModelsForUser(userID).subscribe(
       (response: Object) => {
-          this.models = response;
-          this.selected = null;
-          console.log("modelloader.getAllModelsForUser",response);
+        this.models = response;
+        this.selected = null;
+        console.log('modelloader.getAllModelsForUser', response);
       },
       (error: any) => {
         this.snackbarService.error(error._body);
         console.log(error);
-      }
+      },
     );
   }
 
   //Get latest changes to models from database
   public getLatestChanges() {
     this.modelService.getModelsChangedLast7Days().subscribe(
-      (response: any) => { // Change to ModelResponseDTO[]
-          this.modelDataChangedLast7Days = response;
+      (response: any) => {
+        // Change to ModelResponseDTO[]
+        this.modelDataChangedLast7Days = response;
       },
       (error: any) => {
         this.snackbarService.error(error._body);
         console.log(error);
-      }
+      },
     );
+  }
+
+  loadModel(model: any) {
+    console.log(model)
+    const collaborationModel = new CollaborationModelEntity(model);
+    this.eventEmitterService.emitOnModelSelected(collaborationModel);
   }
 }

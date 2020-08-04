@@ -11,12 +11,12 @@ import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 @Component({
   selector: "app-tutorialview",
   templateUrl: "./tutorialview.component.html",
-  styleUrls: ["./tutorialview.component.css"],
+  styleUrls: ["./tutorialview.component.css"]
 })
 export class TutorialViewComponent implements OnInit {
   private user: any;
   private lang: string;
-  private startview: Startview[] = new Array();
+  public startview: Startview[] = new Array();
 
   //Strings for accordion
   private BPMN: string;
@@ -33,14 +33,14 @@ export class TutorialViewComponent implements OnInit {
     private router: Router
   ) {
     this.user = this.authService.getCurrentUser();
-    if(!this.user) {
-      router.navigate(['/']);
+    if (!this.user) {
+      router.navigate(["/"]);
     }
   }
 
   // this.langService.lang$.subscribe(lang => {
   // console.log(this.lang)
-  ngOnInit() {
+  public ngOnInit() {
     this.lang = this.translateService.currentLang;
     this.onLanguageChange();
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -49,8 +49,8 @@ export class TutorialViewComponent implements OnInit {
   }
 
   private onLanguageChange(event?: LangChangeEvent) : void {
-    if(event){
-        this.lang = event.lang
+    if (event) {
+        this.lang = event.lang;
     }
     if (this.lang === Language.de) {
         this.BPMN = "BPMN für";
@@ -71,22 +71,22 @@ export class TutorialViewComponent implements OnInit {
       });
   }
 
-  parseIncomingJSON(json) {
+  public parseIncomingJSON(json) {
     console.log(json);
     this.startview = [];
 
-    let keys_catName = new Set();
+    const keys_catName = new Set();
     json.forEach((entry) => {
       keys_catName.add(entry.catName);
     });
 
     keys_catName.forEach((key) => {
-      let help = new Startview(key);
+      const help = new Startview(key);
       json.forEach((entry) => {
         if (key === entry.catName) {
           help.catIdentifier = entry.catIdentifier;
           help.intro_status = entry.intro;
-          let test = entry.mctest.split("/");
+          const test = entry.mctest.split("/");
           help.mult_qs_cor = test[0];
           help.mult_qs_all = test[1];
           help.tasks.push(
