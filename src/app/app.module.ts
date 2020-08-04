@@ -44,6 +44,7 @@ import { BsModalModule, BsModalService } from "ng2-bs3-modal";
 import { MatDialogModule } from "@angular/material";
 import { ModelService } from "./services/model.service";
 import { SharedMaterialModule } from "./shared/material.module";
+import { environment } from '../environments/environment';
 // AoT requires an exported function for factories
 // export function HttpLoaderFactory(httpClient: HttpClient) {
 //   return new TranslateHttpLoader(httpClient);
@@ -51,8 +52,8 @@ import { SharedMaterialModule } from "./shared/material.module";
 // import { Angular2BulmaModule } from 'angular2-bulma';
 //check for correct branch!
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: "localhost",
-  port: 4711,
+  hostname: environment.MQTT_HOST,
+  port: environment.MQTT_WS_PORT,
   path: "/",
 };
 export function HttpLoaderFactory(http: HttpClient) {
