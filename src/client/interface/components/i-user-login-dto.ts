@@ -9,3 +9,12 @@ export interface IUserLoginDto {
     password: string;
 
 }
+
+export class IUserLoginDtoImpl implements IUserLoginDto {
+    public email: string;
+    public password: string;
+
+    constructor( email: string,  password: string) {
+
+    }
+}
