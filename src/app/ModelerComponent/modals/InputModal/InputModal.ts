@@ -51,9 +51,10 @@ export class InputModal {
   public dismissed() {
     console.log("InputModal dismissed");
   }
-  public closed() {
+
+  public close = () => {
     console.log("InputModal closed");
-  }
+  };
   public clearModal(s: string) {
     //Bereich zum Löschen per getElement abfragen
     const inpNode = document.getElementById(s);
