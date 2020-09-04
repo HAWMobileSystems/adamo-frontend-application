@@ -34,7 +34,7 @@
     "big-integer": "^1.6.34",
     "bootstrap": "^3.3.7",
     "bpmn-js": "^3.2.1",
-    "bpmn-js-properties-panel": "^0.29.0",
+    "bpmn-js-properties-panel": "^0.35.0",
     "camunda-bpmn-moddle": "^3.2.0",
     "core-js": "^2.4.1",
     "diagram-js-origin": "^1.1.1",
