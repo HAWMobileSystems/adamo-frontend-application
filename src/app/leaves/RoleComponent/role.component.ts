@@ -32,14 +32,14 @@ export class RoleComponent {
 
     this.getAllRoles();
 
-    this.mqttService.getClient().subscribe("administrations/role");
-    const i = this;
-    this.mqttService.getClient().on("message", (topic: any, message: any) => {
-      if (topic.startsWith("administrations/role")) {
-        console.log("Test from remote:" + message.toString());
-        i.getAllRoles();
-      }
-    });
+    // this.mqttService.getClient().subscribe("administrations/role");
+    // const i = this;
+    // this.mqttService.getClient().on("message", (topic: any, message: any) => {
+    //   if (topic.startsWith("administrations/role")) {
+    //     console.log("Test from remote:" + message.toString());
+    //     i.getAllRoles();
+    //   }
+    // });
   }
 
   //gets a list of all roles from DB

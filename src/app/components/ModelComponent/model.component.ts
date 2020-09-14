@@ -29,14 +29,14 @@ export class ModelComponent {
 
     this.getAllModels();
 
-    this.mqttService.getClient().subscribe('administration/model/#');
-    this.mqttService.getClient().observe('administration/model/#').subscribe();
-    this.mqttService.getClient().on('message', (topic: any, message: any) => {
-      if (topic.startsWith('administration/model')) {
-        console.log('Test from remote:' + message.toString());
-        this.getAllModels();
-      }
-    });
+    // this.mqttService.getClient().subscribe('administration/model/#');
+    // this.mqttService.getClient().observe('administration/model/#').subscribe();
+    // this.mqttService.getClient().on('message', (topic: any, message: any) => {
+    //   if (topic.startsWith('administration/model')) {
+    //     console.log('Test from remote:' + message.toString());
+    //     this.getAllModels();
+    //   }
+    // });
   }
 
   //gets a list of all models from DB
