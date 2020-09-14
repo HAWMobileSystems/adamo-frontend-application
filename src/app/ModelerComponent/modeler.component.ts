@@ -33,6 +33,10 @@ import { IPIM_OPTIONS } from '../modelerConfig.service';
 import { SnackBarService } from '../services/snackbar.service';
 import * as propertiesPanelModule from 'bpmn-js-properties-panel';
 import * as propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+
+
+import minimapModule from 'diagram-js-minimap';
+
 import { NGXLogger } from 'ngx-logger';
 import { tap } from 'rxjs/operators';
 import { ModelDto } from '../entities/interfaces/ModelDto';
@@ -285,12 +289,14 @@ export class ModelerComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = { modeler: this.modeler };
-    const evaluateProcessModalRef = this.dialog.open(InputModal, dialogConfig);
+    const inputModalRef = this.dialog.open(InputModal, dialogConfig);
     // this.termModal.modal.open();
 
-    evaluateProcessModalRef.afterClosed().subscribe((confirmed: boolean) => {
+    inputModalRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         console.log('evaluateProcessModalRef confirmed');
+
+        this.evaluateProcess();
         // this.getCommandStack().publishXML();
         // snack.dismiss();
         // const a = document.createElement('a');
@@ -315,9 +321,12 @@ export class ModelerComponent implements OnInit {
     this.getSubProcessList(this.lookup.SELECTION);
   };
 
-  public openEvaluatorModal = () => {
+  public async openEvaluatorModal() {
     //before we can open the modal we have a lot of work to do so start with the current xml!
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    try {
+      const result = await this.modeler.saveXML({ format: true });
+      const { xml } = result;
+      console.log(xml);
       this.evaluator = new Evaluator(
         this.modelID,
         // this.modelId.split("_")[1],
@@ -326,7 +335,12 @@ export class ModelerComponent implements OnInit {
         this,
       );
       this.logger.debug('ElevatorModal_Clicked!');
-    });
+    } catch (err) {
+      console.log(err);
+    }
+    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    //
+    // });
   };
 
   //gets all subprocesses and loads the subprocess modal
@@ -424,7 +438,16 @@ export class ModelerComponent implements OnInit {
   };
 
   //highlights all elements with a term .. or turns them back to black
-  private highlightTerms = () => {};
+  private highlightTerms = () => {
+    this.logger.info('toggleTerms', this.termsColored)
+    const elementRegistry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
+    //if colored return to black else color
+    this.termsColored
+      ? this.toggleTermsNormal(elementRegistry, modeling)
+      : this.toggleTermsColored(elementRegistry, modeling);
+    this.termsColored = !this.termsColored;
+  };
 
   //resets the diagram back to before it was evaluated
   private resetDiagram = () => {
@@ -433,8 +456,8 @@ export class ModelerComponent implements OnInit {
     this.logger.debug(this.model);
     //get latest version from expressjs (can be database or collaborativ)
     this.apiService.getModel(this.model.id, this.model.modelVersion).subscribe(
-      (response: { data: { modelxml: any } }) => {
-        const xml = response.data.modelxml;
+      (response ) => {
+        const xml = response.modelXML;
         console.info('Reset-Model', xml);
         //Import Model
         this.modeler.importXML(xml);
@@ -453,14 +476,18 @@ export class ModelerComponent implements OnInit {
   };
 
   //saves the current model to DB
-  private saveToDb = () => {
+  private async saveToDb() {
     this.logger.debug('saving to db');
     //extract xml from modeler
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+    try {
+      const result = await this.modeler.saveXML({ format: true });
+      const { xml } = result;
+
+    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
       this.logger.debug(this.model);
       //upsert the current model
       this.apiService.modelUpsert(this.model.id, this.model.modelName, xml, this.model.modelVersion).subscribe(
@@ -495,48 +522,89 @@ export class ModelerComponent implements OnInit {
           this.snackbarService.newSnackBarMessage('Error: ' + JSON.parse(error._body).status, 'red');
         },
       );
-    });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   //prepare diagram for file downlaod
 
-  public saveXMLWrapper = () => {
+  public async saveXMLWrapper() {
     let xmlResponse = '';
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-      if (err) {
-        console.log(err, xml);
-        return;
-      }
+    try {
+      const result = await this.modeler.saveXML({ format: true });
+      const { xml } = result;
+      console.log(xml);
       xmlResponse = xml;
-    });
-    console.log(xmlResponse);
-    return xmlResponse;
-  };
-  private saveDiagram = () => {
+      return xmlResponse;
+    } catch (err) {
+      console.log(err.message, err.warnings);
+      return;
+    }
+    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    //   if (err) {
+    //     console.log(err, xml);
+    //     return;
+    //   }
+    //   xmlResponse = xml;
+    // });
+    // console.log(xmlResponse);
+    // return xmlResponse;
+  }
+  
+  private async saveDiagram() {
     const downloadLink = $('#js-download-diagram');
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    try {
+      const result = await this.modeler.saveXML({ format: true });
+      const { xml } = result;
+      console.log(xml);
       const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
-    });
-  };
+    } catch (err) {
+      console.log(err.message, err.warnings);
+    }
+    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    //   const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
+    //   FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
+    // });
+  }
 
   //prepare diagram for svg download
-  private saveSVG = () => {
+  private async saveSVG() {
     const downloadSvgLink = $('#js-download-SVG');
-    this.modeler.saveSVG((err: any, svg: any) => {
+
+    try {
+      const result = await this.modeler.saveSVG();
+      const { svg } = result;
+      console.log(svg);
       const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
       FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
-    });
-  };
+    } catch (err) {
+      console.log(err.message, err.warnings);
+    }
+    // this.modeler.saveSVG((err: any, svg: any) => {
+    //   const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    //   FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
+    // });
+  }
 
-  private exportToEngine = () => {
-    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+  private async exportToEngine() {
+    try {
+      const result = await this.modeler.saveXML({ format: true });
+      const { xml } = result;
+      console.log(xml);
+
       this.apiService.uploadToEngine(this.model.modelName + '.bpmn', xml);
-      // .subscribe(response => {
-      //   this.logger.debug(response);
-      // });
-    });
-  };
+    } catch (err) {
+      console.log(err.message, err.warnings);
+    }
+    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+    //   this.apiService.uploadToEngine(this.model.modelName + '.bpmn', xml);
+    //   // .subscribe(response => {
+    //   //   this.logger.debug(response);
+    //   // });
+    // });
+  }
 
   //loads the currently selected subprocess in a new tab
   private openSubProcessModel = () => {
@@ -670,6 +738,7 @@ export class ModelerComponent implements OnInit {
         propertiesProviderModule,
         customPaletteModule,
         LintModule,
+        minimapModule
       ],
       moddleExtensions: {
         camunda: this.camundaModdleDescriptor,
@@ -754,24 +823,33 @@ export class ModelerComponent implements OnInit {
   }
 
   //opens a diagram, mostly capsules the modeler import function
-  private openDiagram = (xml: string) => {
-    this.lastDiagramXML = xml;
-    this.modeler.importXML(xml, (err: any) => {
-      this.logger.debug('import successful');
-    });
-  };
+  private async openDiagram(xml: string) {
+    try {
+      const result = await this.modeler.importXML(xml);
+      const { warnings } = result;
+      console.log(warnings);
+      this.lastDiagramXML = xml;
+    } catch (err) {
+      console.log(err.message, err.warnings);
+    }
+  }
 
   //laods the bpmn and emit an event when the laoding is finished
-  private loadBPMN(model: any) {
-    console.log(model);
-    this.modeler.importXML(model, this.handleError);
-    // this.modeler.importXML(IPIM_OPTIONS.NEWMODEL, this.handleError);
-    this.loadedCompletely.emit();
-    //show snackbar for successfull loading!
-    this.snackbarService.newSnackBarMessage('loaded successfully', 'limegreen');
-    //set default 2 row palette
-    const palette = $('.djs-palette');
-    this.expandToTwoColumns(palette);
+  private async loadBPMN(modelXML: any) {
+    console.log(modelXML);
+    try {
+      const result = await this.modeler.importXML(modelXML);
+      const { warnings } = result;
+      console.log(warnings);
+      this.loadedCompletely.emit();
+      //show snackbar for successfull loading!
+      this.snackbarService.newSnackBarMessage('loaded successfully', 'limegreen');
+
+      const palette = $('.djs-palette');
+      this.expandToTwoColumns(palette);
+    } catch (err) {
+      console.log(err.message, err.warnings);
+    }
     return;
   }
 
@@ -784,12 +862,6 @@ export class ModelerComponent implements OnInit {
     canvas.zoom('fit-viewport');
   }
 
-  private handleError(err: any) {
-    if (err) {
-      console.log('error during rendering ', err);
-      // this.logger.debug("error rendering", err);
-    }
-  }
 
   //returns a list of all terms of selected elements
   public getTermList = (scope: string): string[] => {
@@ -922,8 +994,10 @@ export class ModelerComponent implements OnInit {
       }
     }
     //maps the color of the term bases on the IPIM color palette
+    this.logger.info('Color Element list, ', colorelements )
     this.ipimColors.map((elem, index) => {
       if (colorelements[index].length > 0) {
+
         this.highlightElement(colorelements[index], index);
         // modeling.setColor(colorelements[index], {
         //   stroke: this.ipimColors[index]
@@ -935,7 +1009,8 @@ export class ModelerComponent implements OnInit {
   private highlightElement(element: any, index: number) {
     const registry = this.modeler.get('elementRegistry');
     const modelling = this.modeler.get('modeling');
-    // const element = this.modeler.get('elementRegistry').get(elementID);
+    // const element = this.modeler.get('elementRegistry').get(elementID)
+    this.logger.info(element, index)
     modelling.setColor([element], { stroke: this.ipimColors[index] });
   }
 

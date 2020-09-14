@@ -32,7 +32,7 @@
             <tr *ngFor="let model of (models | filterUnique: ['id', search, selected]) | filter:search">
 <!--                (click)="selected = model" [ngClass]="{'info': selected === model}">-->
                 <td>{{model.model_name}}</td>
-                <td>{{model.model_version | version}}</td>
+                <td>{{model.model_version}}</td>
                 <td>
                     <i *ngIf="model.can_read" class="fas fa-eye" title="read permission"></i>
                     <i *ngIf="model.can_write" class="fas fa-pencil-alt" title="write permission"></i>
@@ -40,7 +40,7 @@
                 </td>
                 <td>
                     <a (click)="loadModel(model)" >
-                        <i class="fas fa-download"></i>
+                        <i class="fa fa-folder-open"></i>
                     </a>
 
                 </td>

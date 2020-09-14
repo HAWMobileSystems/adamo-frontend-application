@@ -99,6 +99,9 @@ export class ModelLoaderComponent {
     this.modelService.modelCreate(this.newModelName, this.newModelXml).subscribe(
       (response: any) => {
         this.snackbarService.success(response);
+        this.getAllModels();
+
+        this.loadModel(response);
         console.log(response);
       },
       (error: any) => {
