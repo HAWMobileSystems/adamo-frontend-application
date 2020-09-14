@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CollaborationModelEntity } from '../../models/CollaborationModelEntity';
+import { NGXLogger } from 'ngx-logger';
 // import { RoleType } from "../../../../../adamo-nest-server/src/constants/role-type";
 
 @Component({
@@ -24,6 +25,7 @@ export class AppHeaderComponent {
   public showMenu;
   constructor(
     private router: Router,
+    private logger: NGXLogger,
     // private userService: UserService,
     private authService: AuthService,
     private tabbarService: TabbarService,
@@ -47,6 +49,7 @@ export class AppHeaderComponent {
   }
 
   ngOnDestroy() {
+    this.logger.debug('ngOnDestroy: AppHeaderComponent');
     for (let index = 0; index <= this.models.length; index++) {
       this.unsubscribefromMQTT(index);
       this.tabbarService.removeTab(index);
@@ -74,10 +77,12 @@ export class AppHeaderComponent {
     this.router.navigate['/overview'];
   }
   unsubscribefromMQTT(index: number) {
+    const currentModel = this.models[index];
     try {
       this.mqttService
         // .getClient()
-        .unsubscribe('MODEL/model_' + this.models[index].id + '_' + this.models[index].model_version);
+        //  const topic = 'MODEL/model_' + model.id + '_' + model.model_version;
+        .unsubscribe(`MODEL/model_${currentModel.id}_${currentModel.model_version}`);
     } catch (error) {
       console.error('could not unsubscribe from index', index, this.models[index]);
       console.error('error', error);
