@@ -84,11 +84,11 @@ export class FrontPageComponent implements OnInit {
           this.router.navigate(['/overview']);
           // this.router.navigate([this.returnUrl]);
         },
-        (error: any) => {
-          this.logger.debug('error received ', error);
-          this.error = error.statusText;
-          if (error.name === 'HttpErrorResponse') {
-            this.error = 'Server is not reachable';
+        (httpErrorResponse: any) => {
+          this.logger.debug('error received ', httpErrorResponse);
+          this.error = httpErrorResponse.statusText;
+          if (httpErrorResponse.name === 'HttpErrorResponse') {
+            this.error = httpErrorResponse.error.message;
           }
           this.loading = false;
         },
