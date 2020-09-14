@@ -19,6 +19,7 @@ import { LevelService } from './services/level.service';
 import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { LanguageService } from './services/language.service';
+import { MatCardModule } from '@angular/material/card';
 // import { ModelerComponent } from '../../ModelerComponent/modeler.component';
 
 @NgModule({
@@ -41,8 +42,9 @@ import { LanguageService } from './services/language.service';
     //BrowserAnimationsModule,
     ResizableModule,
     AngularSplitModule,
-    TutorialRoutingModule, 
-    SharedModule
+    TutorialRoutingModule,
+    SharedModule,
+    MatCardModule,
   ],
   providers: [
     LevelService,

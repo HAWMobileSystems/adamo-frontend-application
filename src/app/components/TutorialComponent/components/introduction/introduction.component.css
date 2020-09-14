@@ -1,3 +1,10 @@
 .btn-alignment {
     align-content: center;
 }
+.mat-button-group > .mat-button {
+
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+}
