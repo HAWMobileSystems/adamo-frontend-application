@@ -1,5 +1,6 @@
 //module.exports = require('./config/karma.conf.js');
-
+const puppeteer = require('puppeteer');
+process.env.CHROME_BIN = puppeteer.executablePath();
 
 module.exports = function(config) {
   var configuration = {
@@ -26,7 +27,7 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeTravisCi: {
         base: 'Chrome',
