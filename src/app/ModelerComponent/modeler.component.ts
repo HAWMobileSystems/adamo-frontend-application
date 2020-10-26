@@ -294,7 +294,7 @@ export class ModelerComponent implements OnInit {
   };
 
   public openSubprocessModal = () => {
-    this.getSubProcessList(this.lookup.SELECTION);
+    this.getSubProcessList(BPMNJSModelerLookupTablesEnum.SELECTION);
   };
 
   public async openEvaluatorModal() {
@@ -726,11 +726,11 @@ export class ModelerComponent implements OnInit {
     };
 
     this.logger.debug(container);
-    const firstElementInContainer = container.get(0);
+    const firstElementInContainer = container.children.item(0);
 
     if (firstElementInContainer) {
-      container.get(0).addEventListener('dragover', handleDragOver, false);
-      container.get(0).addEventListener('drop', handleelect, false);
+      firstElementInContainer.addEventListener('dragover', handleDragOver, false);
+      firstElementInContainer.addEventListener('drop', handleelect, false);
     } else {
       console.error('firstElementInContainer is undefined', container);
     }
