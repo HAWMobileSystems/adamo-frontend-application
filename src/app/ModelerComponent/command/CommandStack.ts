@@ -1,22 +1,27 @@
 // import {Inherits} from 'inherits';
-import { ModelComponent } from "../../components/ModelComponent/model.component";
-import { ModelerComponent } from "../modeler.component";
-import { IPIM_OPTIONS } from "../../modelerConfig.service";
+import { ModelComponent } from '../../components/ModelComponent/model.component';
+import { ModelerComponent } from '../modeler.component';
+import { IPIM_OPTIONS } from '../../modelerConfig.service';
 
-import { AdamoMqttService } from "../../services/mqtt.service";
-const commandInterceptor = require("diagram-js/lib/command/CommandInterceptor");
-import { environment } from "./../../../environments/environment";
-import { IMqttMessage } from "ngx-mqtt";
+import { AdamoMqttService } from '../../services/mqtt.service';
+const commandInterceptor = require('diagram-js/lib/command/CommandInterceptor');
+import { environment } from './../../../environments/environment';
+import { IMqttMessage } from 'ngx-mqtt';
+import { AuthService } from '../../services';
+
+
+
+//EventBusLogger.$inject = ["eventBus"];
+
 
 export class CommandStack {
   private modeler: any; //Modeler from Main Application
-  private COMMANDSTACK: string = "commandStack"; //Commandstack from Modeler ... used for tests
-  private EVENTBUS: string = "eventBus"; //Eventbus from Modeler to trigger for element changed Event
-  private ELEMENTREGISTRY: string = "elementRegistry"; //ElementRegistry from Modeler for testing purposes
-  private DRAGGING: string = "dragging"; //Dragging Class from Modeler, used for aborting possible movement while refreshing
-  private mqttString: string =
-    environment.SERVER_HOST + ":" + environment.MQTT_PORT; //Connection path for the mqtt Server
-  private defaultTopic: string = "IPIM Default"; //Default Topic to subscribe on
+  private COMMANDSTACK = 'commandStack'; //Commandstack from Modeler ... used for tests
+  private EVENTBUS = 'eventBus'; //Eventbus from Modeler to trigger for element changed Event
+  private ELEMENTREGISTRY = 'elementRegistry'; //ElementRegistry from Modeler for testing purposes
+  private DRAGGING = 'dragging'; //Dragging Class from Modeler, used for aborting possible movement while refreshing
+  private mqttString: string = environment.SERVER_HOST + ':' + environment.MQTT_PORT; //Connection path for the mqtt Server
+  private defaultTopic = 'IPIM Default'; //Default Topic to subscribe on
   private commandStack: any; //commandStack for testing purposes
   private eleReg: any; //elementRegistry for Testing purposes
   private id: any; //Generated unique ID for Client to avoid Echos
@@ -27,11 +32,7 @@ export class CommandStack {
 
   //Commandstack Class
 
-  constructor(
-    modeler: any,
-    modelerComponenetRoot: ModelerComponent,
-    private mqttService: AdamoMqttService
-  ) {
+  constructor(modeler: any, modelerComponenetRoot: ModelerComponent, private mqttService: AdamoMqttService, private authService: AuthService) {
     this.modeler = modeler; //take modeler from super function
     this.commandStack = this.modeler.get(this.COMMANDSTACK); //get commandStack from Modeler
     this.eleReg = this.modeler.get(this.ELEMENTREGISTRY); //get ElementRegistry from Modeler
@@ -39,34 +40,37 @@ export class CommandStack {
     this.id = this.guidGenerator(); //generate the unique ID for this Browser
     this.modelerComponenetRoot = modelerComponenetRoot;
     // this.topic = this.modelerComponenetRoot.modelId;
-    this.topic =
-      "" +
-      "model_" +
-      this.modelerComponenetRoot.modelID +
-      "_" +
-      this.modelerComponenetRoot.modelVersion;
+    this.topic = '' + 'model_' + this.modelerComponenetRoot.modelID + '_' + this.modelerComponenetRoot.modelVersion;
     this.stopEvaluationisRunning = false;
 
-    this.mqttService.getClient().observe("MODEL/" + this.topic).subscribe((message: IMqttMessage) => {
-      const messagePayload = message.payload.toString();
-      this.receiveMessage("MODEL/" +this.topic, messagePayload);
-      console.log("Topic", "MODEL/" +this.topic)
-    }); //subscribe Client to defaulttopic on MQTT Server
-    this.mqttService.getClient().observe("modelupsert").subscribe((message: IMqttMessage) => {
-      const messagePayload = message.payload.toString();
-      console.log("Topic", this.topic)
-      this.receiveMessage(this.topic, messagePayload);
-    });
+    this.mqttService
+      .getClient()
+      .observe('MODEL/' + this.topic)
+      .subscribe((message: IMqttMessage) => {
+        const messagePayload = message.payload.toString();
+        this.receiveMessage('MODEL/' + this.topic, messagePayload);
+
+        console.log('Topic', 'MODEL/' + this.topic);
+      }); //subscribe Client to defaulttopic on MQTT Server
+    this.mqttService
+      .getClient()
+      .observe('modelupsert')
+      .subscribe((message: IMqttMessage) => {
+        const messagePayload = message.payload.toString();
+        console.log('Topic', this.topic);
+        this.receiveMessage(this.topic, messagePayload);
+      });
 
     //Register Event to trigger when a new Message is received ... triggers only if topic is subscribed!
     // this.mqttService.getClient().on("message", (topic: any, message: any) => {
-      //call function to handle the new message
-      // this.receiveMessage(topic, message);
+    //call function to handle the new message
+    // this.receiveMessage(topic, message);
     // });
 
     //Call Publish function if something changes here we use the Eventbus Event element changed!
-    this.modeler.on("elements.changed", (event) => {this.publishXML(event)});
-    // this.modeler.on("elements.changed", this.publishXML());
+    this.modeler.on('elements.changed', (event) => {
+      this.publishXML(event);
+    });
   }
 
   //Starts Evaluation Mode ... Model will unsubscribe and no longer publish!
@@ -82,68 +86,90 @@ export class CommandStack {
   };
 
   //Handle a new Message from MQTT-Server
-  public receiveMessage = (topic: any, message: any) => {
-    console.log('receive Message', topic, 'with message',);
+  public async receiveMessage(topic: any, message: any) {
+    console.log('receive Message', topic, 'with message', message);
     const event = JSON.parse(message);
-    if (topic.startsWith("MODEL/")) {
+    if (topic.startsWith('MODEL/')) {
       //Parse event from String to variable
 
       //check if the Event was issued from remote or self
-      if (event.IPIMID !== this.id && "MODEL/" + this.topic === topic) {
+      if (event.IPIMID !== this.id && 'MODEL/' + this.topic === topic) {
         if (this.stopEvaluationisRunning) {
           return;
         }
         //event was remote so cancel dragging if active an import new XML String
-        console.log("Test from remote:" + message.toString());
+        console.log('Test from remote:' + message.toString());
 
         this.dragging.cancel();
 
-        this.modeler.importXML(event.XMLDoc.toString(), (err: any) => {
-          console.log(err);
-        });
+        try {
+          const { warnings } = await this.modeler.importXML(event.XMLDoc);
+          console.log('Imported BPMN 2.0 diagram', warnings);
+
+          const overlays = this.modeler.get('overlays');
+
+          for (let deltaElement of event.delta) {
+            overlays.add(deltaElement.id,
+              {
+                position: {
+                  bottom: 0,
+                  right: 0
+                },
+                html: `${event.user}`
+              })
+          }
+
+        } catch (err) {
+          const { warnings } = err;
+
+          console.log('Failed to import BPMN 2.0 diagram', err, warnings);
+        }
+        // this.modeler.importXML(event.XMLDoc.toString(), (err: any) => {
+        //   console.log(err);
+        // });
       }
-    } else if (topic === "modelupsert") {
+    } else if (topic === 'modelupsert') {
       const model = this.modelerComponenetRoot.model;
       if (model.id === event.mid && model.modelVersion === event.version) {
         model.modelVersion = event.newVersion;
-        this.mqttService
-          .getClient()
-          .unsubscribe("MODEL/model_" + event.mid + "_" + event.version);
-        this.mqttService
-          .getClient()
-          .subscribe("MODEL/model_" + event.mid + "_" + event.newVersion);
-        this.topic = "model_" + event.mid + "_" + event.newVersion;
+        this.mqttService.getClient().unsubscribe('MODEL/model_' + event.mid + '_' + event.version);
+        this.mqttService.getClient().subscribe('MODEL/model_' + event.mid + '_' + event.newVersion);
+        this.topic = 'model_' + event.mid + '_' + event.newVersion;
       }
     }
   };
 
   //Publish the current Model as XML to the MQTT Server ... automatically called on element.changed
-  public publishXML = (event: any): void => {
+  public async publishXML(event: any) {
     //If
-    console.log("publish xml", this.modeler, event )
+    console.log('publish xml', this.modeler, event);
     if (this.stopEvaluationisRunning) {
       return;
     }
+
+    const elementRegistry = this.modeler.get('elementRegistry')
+
     // user modeled something or
     // performed a undo/redo operation
-    let xmlString = this.modelerComponenetRoot.saveXMLWrapper()
+    const xmlString = await this.modelerComponenetRoot.saveXMLWrapper();
+
     // { format: true }, (err: any, xml: any) => {
-      // if (err) {
-      //   console.log(err, xml);
-      //   return;
-      // }
-      const transfer: any = {
-        IPIMID: this.id,
-        XMLDoc: xmlString, 
-        delta: event
-      };
-      console.log(this.topic, transfer)
-      this.mqttService
-        // .getClient().client()
-        .publish("MODEL/" + this.topic, JSON.stringify(transfer));
+    // if (err) {
+    //   console.log(err, xml);
+    //   return;
+    // }
+    const transfer: any = {
+      user: this.authService.getCurrentUser().email,
+      IPIMID: this.id,
+      XMLDoc: xmlString,
+      delta: event,
+    };
+    console.log(this.topic, transfer);
+    this.mqttService
+      // .getClient().client()
+      .publish('MODEL/' + this.topic, JSON.stringify(transfer));
     // });
-  
-}
+  };
 
   //Testfunction for evaluating the CommandStack
   public commandTest = () => {
@@ -162,17 +188,14 @@ export class CommandStack {
     commandInterceptor.on = commandInterceptor.prototype.on;
 
     //finally implement the hook and be happy!
-    commandInterceptor.prototype.executed.call(
-      commandInterceptor,
-      (event: any) => {
-        if (typeof event.context.IPIMremote === "undefined") {
-          //&& event.command === 'shape.create') {  //lane.updateRefs
-          event.context.IPIMremote = "yes";
+    commandInterceptor.prototype.executed.call(commandInterceptor, (event: any) => {
+      if (typeof event.context.IPIMremote === 'undefined') {
+        //&& event.command === 'shape.create') {  //lane.updateRefs
+        event.context.IPIMremote = 'yes';
 
-          this.mqttService.getClient().publish("IPIM", JSON.stringify(event));
-        }
+        this.mqttService.getClient().publish('IPIM', JSON.stringify(event));
       }
-    );
+    });
   };
 
   //Creates a unique GUI for each Client to eliminate echos
@@ -180,19 +203,6 @@ export class CommandStack {
     const S4 = () => {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
-    return (
-      S4() +
-      S4() +
-      "-" +
-      S4() +
-      "-" +
-      S4() +
-      "-" +
-      S4() +
-      "-" +
-      S4() +
-      S4() +
-      S4()
-    );
+    return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4();
   }
 }

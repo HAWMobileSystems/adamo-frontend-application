@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Jsonp } from '@angular/http';
 import { AdamoMqttService } from '../services/mqtt.service';
 import { PaletteProvider } from './palette/palette';
 import { CustomPropertiesProvider } from './properties/props-provider';
@@ -34,13 +33,13 @@ import { SnackBarService } from '../services/snackbar.service';
 import * as propertiesPanelModule from 'bpmn-js-properties-panel';
 import * as propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 
-
 import minimapModule from 'diagram-js-minimap';
 
 import { NGXLogger } from 'ngx-logger';
 import { tap } from 'rxjs/operators';
 import { ModelDto } from '../entities/interfaces/ModelDto';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { AuthService } from '../services';
 
 const customPaletteModule = {
   paletteProvider: ['type', PaletteProvider],
@@ -76,7 +75,7 @@ export class ModelerComponent implements OnInit {
   private snackbarText: string;
   private extraPaletteEntries: any;
   private commandQueue: Subject<any>;
-  private container: JQuery; // = '#js-drop-zone';
+  private container: Element; // = '#js-drop-zone';
   private containerRef = '#js-canvas';
   private propsPanelRef = '#js-properties-panel';
   private defaultModel = '/diagrams/scrum.bpmn';
@@ -103,32 +102,16 @@ export class ModelerComponent implements OnInit {
   public modelVersion;
   public modelID;
 
-  //definitions for IPIM background texts
-  private ipimTags: any = {
-    META: 'IPIM_meta_',
-    VAL: 'IPIM_Val_',
-    CALC: 'ipim_calc',
-    SUBPROCESS: 'ipim_subprocess',
-  };
-
-  //definitions for modeler parts
-  private lookup: any = {
-    MODELING: 'modeling',
-    ELEMENTREGISTRY: 'elementRegistry',
-    SELECTION: 'selection',
-    VALUES: 'values',
-  };
-
   constructor(
     private apiService: ApiService,
     private dialog: MatDialog,
-    private http: Http,
     private store: BPMNStore,
     private ref: ChangeDetectorRef,
     private snackbarService: SnackBarService,
     private router: Router,
     private mqttService: AdamoMqttService,
     private logger: NGXLogger,
+    private authService: AuthService,
   ) {
     const splittedUrl = this.router.url.split('/');
     this.modelID = splittedUrl[splittedUrl.length - 2];
@@ -173,7 +156,7 @@ export class ModelerComponent implements OnInit {
       .paletteEntries()
       .pipe(tap((entries: any) => (this.extraPaletteEntries = entries)))
       .subscribe(() => {
-        return this.createModeler();
+        return this.initializeModeler();
       });
     //link everything with the function map
     this.commandQueue.subscribe((cmd: { action: string | number }) => {
@@ -189,24 +172,17 @@ export class ModelerComponent implements OnInit {
 
   public ngAfterViewInit(): void {
     this.modeler.attachTo(this.el.nativeElement);
-    // this is scary as fuck -.-
     //test if its a modern browser ...
-    $(document).ready(() => {
-      this.container = $('#js-drop-zone');
-      if (!window.FileList || !window.FileReader) {
-        window.alert(
-          'Looks like you use an older browser that does not support drag and drop. ' +
-            'Try using Chrome, Firefox or the Internet Explorer > 10.',
-        );
-      } else {
-        this.logger.debug(this.container);
-        this.registerFileDrop(this.container, this.openDiagram);
-      }
-
-      //get ipim logo and append it to camunda logo
-      // const img = document.getElementById('ipimlogo-' + this.modelId);
-      // this.modeler.container.append(img);
-    });
+    this.container = document.querySelector('js-drop-zone');
+    if (!window.FileList || !window.FileReader) {
+      window.alert(
+        'Looks like you use an older browser that does not support drag and drop. ' +
+          'Try using Chrome, Firefox or the Internet Explorer > 10.',
+      );
+    } else {
+      this.logger.debug(this.container);
+      this.registerFileDrop(this.container, this.openDiagram);
+    }
   }
 
   //Notification when the modeler finished loading
@@ -338,16 +314,13 @@ export class ModelerComponent implements OnInit {
     } catch (err) {
       console.log(err);
     }
-    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-    //
-    // });
-  };
+  }
 
   //gets all subprocesses and loads the subprocess modal
   private getSubProcessList = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
-    scope === this.lookup.SELECTION
+    scope === BPMNJSModelerLookupTablesEnum.SELECTION
       ? (elements = this.modeler.get(scope).get())
       : (elements = this.modeler.get(scope).getAll());
     const terms: string[] = [];
@@ -365,7 +338,7 @@ export class ModelerComponent implements OnInit {
             //Schleife über alle Elemente
             for (let i = 0; i < extras[0].values.length; i++) {
               //Prüfen ob der Name des Elementes IPIM_Val entspricht
-              if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (extras[0].values[i].name.toLowerCase().startsWith(ModelerEvaluationTagsEnum.SUBPROCESS)) {
                 if (terms.indexOf(extras[0].values[i].value) === -1) {
                   terms.push(extras[0].values[i].value);
                 }
@@ -388,7 +361,7 @@ export class ModelerComponent implements OnInit {
   private returnSubProcessList = (scope: string): string[] => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
-    scope === this.lookup.SELECTION
+    scope === BPMNJSModelerLookupTablesEnum.SELECTION
       ? (elements = this.modeler.get(scope).get())
       : (elements = this.modeler.get(scope).getAll());
     const terms: string[] = [];
@@ -406,7 +379,7 @@ export class ModelerComponent implements OnInit {
             //Schleife über alle Elemente
             for (let i = 0; i < extras[0].values.length; i++) {
               //Prüfen ob der Name des Elementes IPIM_Val entspricht
-              if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (extras[0].values[i].name.toLowerCase().startsWith(ModelerEvaluationTagsEnum.SUBPROCESS)) {
                 if (terms.indexOf(extras[0].values[i].value) === -1) {
                   terms.push(extras[0].values[i].value);
                 }
@@ -439,7 +412,7 @@ export class ModelerComponent implements OnInit {
 
   //highlights all elements with a term .. or turns them back to black
   private highlightTerms = () => {
-    this.logger.info('toggleTerms', this.termsColored)
+    this.logger.info('toggleTerms', this.termsColored);
     const elementRegistry = this.modeler.get('elementRegistry');
     const modeling = this.modeler.get('modeling');
     //if colored return to black else color
@@ -456,7 +429,7 @@ export class ModelerComponent implements OnInit {
     this.logger.debug(this.model);
     //get latest version from expressjs (can be database or collaborativ)
     this.apiService.getModel(this.model.id, this.model.modelVersion).subscribe(
-      (response ) => {
+      (response: any) => {
         const xml = response.modelXML;
         console.info('Reset-Model', xml);
         //Import Model
@@ -483,11 +456,6 @@ export class ModelerComponent implements OnInit {
       const result = await this.modeler.saveXML({ format: true });
       const { xml } = result;
 
-    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
       this.logger.debug(this.model);
       //upsert the current model
       this.apiService.modelUpsert(this.model.id, this.model.modelName, xml, this.model.modelVersion).subscribe(
@@ -501,7 +469,7 @@ export class ModelerComponent implements OnInit {
             //show snackbar for success
             this.snackbarService.newSnackBarMessage('saved successfully', 'limegreen');
             //also save alls partmodels for later evaluation
-            const partmodels = this.returnSubProcessList(this.lookup.ELEMENTREGISTRY);
+            const partmodels = this.returnSubProcessList(BPMNJSModelerLookupTablesEnum.ELEMENTREGISTRY);
             partmodels.forEach((pmid) => {
               this.apiService
                 .partModelCreate(this.modelId.split('_')[1], this.modelId.split('_')[2], pmid)
@@ -525,7 +493,7 @@ export class ModelerComponent implements OnInit {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   //prepare diagram for file downlaod
 
@@ -536,22 +504,13 @@ export class ModelerComponent implements OnInit {
       const { xml } = result;
       console.log(xml);
       xmlResponse = xml;
-      return xmlResponse;
+      return xml;
     } catch (err) {
       console.log(err.message, err.warnings);
-      return;
+      return '';
     }
-    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-    //   if (err) {
-    //     console.log(err, xml);
-    //     return;
-    //   }
-    //   xmlResponse = xml;
-    // });
-    // console.log(xmlResponse);
-    // return xmlResponse;
   }
-  
+
   private async saveDiagram() {
     const downloadLink = $('#js-download-diagram');
     try {
@@ -563,16 +522,11 @@ export class ModelerComponent implements OnInit {
     } catch (err) {
       console.log(err.message, err.warnings);
     }
-    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-    //   const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
-    //   FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.bpmn');
-    // });
   }
 
   //prepare diagram for svg download
   private async saveSVG() {
     const downloadSvgLink = $('#js-download-SVG');
-
     try {
       const result = await this.modeler.saveSVG();
       const { svg } = result;
@@ -582,10 +536,7 @@ export class ModelerComponent implements OnInit {
     } catch (err) {
       console.log(err.message, err.warnings);
     }
-    // this.modeler.saveSVG((err: any, svg: any) => {
-    //   const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-    //   FileSaver.saveAs(blob, 'diagramm ' + this.modelId + '.svg');
-    // });
+    // this.modeler.s
   }
 
   private async exportToEngine() {
@@ -598,24 +549,18 @@ export class ModelerComponent implements OnInit {
     } catch (err) {
       console.log(err.message, err.warnings);
     }
-    // this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
-    //   this.apiService.uploadToEngine(this.model.modelName + '.bpmn', xml);
-    //   // .subscribe(response => {
-    //   //   this.logger.debug(response);
-    //   // });
-    // });
   }
 
   //loads the currently selected subprocess in a new tab
   private openSubProcessModel = () => {
-    this.loadSubProcessModel(this.lookup.SELECTION);
+    this.loadSubProcessModel(BPMNJSModelerLookupTablesEnum.SELECTION);
   };
 
   //loads the currently selected subprocess in a new tab
   private loadSubProcessModel = (scope: string) => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
-    scope === this.lookup.SELECTION
+    scope === BPMNJSModelerLookupTablesEnum.SELECTION
       ? (elements = this.modeler.get(scope).get())
       : (elements = this.modeler.get(scope).getAll());
     const terms: string[] = [];
@@ -633,7 +578,7 @@ export class ModelerComponent implements OnInit {
             //Schleife über alle Elemente
             for (let i = 0; i < extras[0].values.length; i++) {
               //Prüfen ob der Name des Elementes IPIM_Val entspricht
-              if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.SUBPROCESS)) {
+              if (extras[0].values[i].name.toLowerCase().startsWith(ModelerEvaluationTagsEnum.SUBPROCESS)) {
                 if (terms.indexOf(extras[0].values[i].value) === -1) {
                   terms.push(extras[0].values[i].value);
                 }
@@ -654,10 +599,6 @@ export class ModelerComponent implements OnInit {
           this.apiService.getModel(element).subscribe(
             (response: any) => {
               const model = new Model(response.data);
-              // model.xml = response.data.modelxml;
-              // model.name = response.data.modelname;
-              // model.id = response.data.mid;
-              // model.version = response.data.version;
               console.info(model);
               //emit event for new model
               this.loadSubProcess.emit(model);
@@ -683,7 +624,7 @@ export class ModelerComponent implements OnInit {
   //resets zoom, so that whole diagram fits
   private zoomToFit = () => {
     const canvasObject = this.modeler.get('canvas');
-    canvasObject.zoom('fit-viewport');
+    canvasObject.zoom(BPMNJSModelerLookupTablesEnum.FIT_VIEWPORT);
   };
 
   //functionmap to link the palette buttons with an actual function
@@ -707,14 +648,6 @@ export class ModelerComponent implements OnInit {
 
   //initializes a new moderler with custom props and palette
   private initializeModeler() {
-    this.logger.debug('customPaletteModule', customPaletteModule);
-    this.logger.debug('modelId', this.modelId);
-    this.logger.debug('containerRef', this.containerRef);
-    this.logger.debug('camundamoddledescriptor', this.camundaModdleDescriptor);
-    this.logger.debug('extraPaletteEntries', this.extraPaletteEntries);
-    this.logger.debug('commandQueue', this.commandQueue);
-    this.logger.debug('propertiesPanelModule', propertiesPanelModule);
-    this.logger.debug('propertiesProviderModule', propertiesProviderModule);
     this.modeler = new BpmnModeler({
       // container: '#' + this.modelId ,//+ ' > ' ,//+ this.containerRef,
       // container: "#canvas", //+ ' > ' ,//+ this.containerRef,
@@ -732,17 +665,32 @@ export class ModelerComponent implements OnInit {
         // parent: '#' + this.modelId + ' ' + this.propsPanelRef
       },
       additionalModules: [
+        // {
+        //   __init__: ["eventBusLogger"],
+        //   eventBusLogger: ["type", EventBusLogger]
+        // },
         { extraPaletteEntries: ['type', () => this.extraPaletteEntries] },
         { commandQueue: ['type', () => this.commandQueue] },
         propertiesPanelModule,
         propertiesProviderModule,
         customPaletteModule,
         LintModule,
-        minimapModule
+        minimapModule,
       ],
       moddleExtensions: {
         camunda: this.camundaModdleDescriptor,
       },
+    });
+
+    this.commandStack = new CommandStack(this.modeler, this, this.mqttService, this.authService);
+    const commandStack = this.modeler.get(BPMNJSModelerLookupTablesEnum.COMMANDSTACK);
+
+    document.addEventListener('keypress', function (event) {
+      if (event.key === BPMNJSModelerLookupTablesEnum.UNDO) {
+        commandStack.undo();
+      } else if (event.key === BPMNJSModelerLookupTablesEnum.REDO) {
+        commandStack.redo();
+      }
     });
   }
 
@@ -751,21 +699,8 @@ export class ModelerComponent implements OnInit {
    * adds the extraPaletteEntries from the bpmn-store
    *
    */
-  private createModeler() {
-    this.initializeModeler();
-    try {
-      this.commandStack = new CommandStack(this.modeler, this, this.mqttService);
-    } catch (error) {
-      this.logger.debug('error in commandstack init', error);
-    }
-    // Start with an empty diagram:
-    // const linkToDiagram = new Link(this.defaultModel);
-    // this.url = linkToDiagram.href; //this.urls[0].href;
-    // this.loadBPMN();
-  }
-
   //register the filedrop ... no longer working as we use tabbed modeling now
-  private registerFileDrop = (container: JQuery, callback: Function) => {
+  private registerFileDrop = (container: Element, callback: Function) => {
     const handleelect = (e: any) => {
       e.stopPropagation();
       e.preventDefault();
@@ -801,21 +736,11 @@ export class ModelerComponent implements OnInit {
     }
   };
 
-  //retruns the color of all elements in the modler back to black
+  //retruns the color of all elements in the modeler back to black
   private toggleTermsNormal = (elementRegistry: any, modeling: any) => {
     this.logger.debug('toggleTermsNormal');
-    //Alle Elemente der ElementRegistry holen
-    const elements = elementRegistry.getAll();
-    modeling.setColor(elements, {
-      stroke: 'black',
-    });
+    modeling.setColor(elementRegistry.getAll(), { stroke: 'black' });
   };
-
-  private normalizeAll() {
-    const registry = this.modeler.get('elementRegistry');
-    const modelling = this.modeler.get('modeling');
-    modelling.setColor(registry.getAll(), { stroke: 'black' });
-  }
 
   //create a new digagramm .. no longer used as we tab now
   private createNewDiagram() {
@@ -857,17 +782,16 @@ export class ModelerComponent implements OnInit {
   private postLoad() {
     this.logger.debug('publishing');
     this.commandStack.publishXML();
-    const canvas = this.modeler.get('canvas');
+    const canvas = this.modeler.get(BPMNJSModelerLookupTablesEnum.CANVAS);
 
-    canvas.zoom('fit-viewport');
+    canvas.zoom(BPMNJSModelerLookupTablesEnum.FIT_VIEWPORT.toString());
   }
-
 
   //returns a list of all terms of selected elements
   public getTermList = (scope: string): string[] => {
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
     let elements: any;
-    scope === this.lookup.SELECTION
+    scope === BPMNJSModelerLookupTablesEnum.SELECTION
       ? (elements = this.modeler.get(scope).get())
       : (elements = this.modeler.get(scope).getAll());
     const terms: string[] = [];
@@ -875,13 +799,13 @@ export class ModelerComponent implements OnInit {
     for (const element of elements) {
       //Prüfen ob erweiterte Eigenschaften für das Objekt existieren
       if (element.businessObject.extensionElements) {
-        //Wenn vorhandne die Elemente auslesen
-        const extras = element.businessObject.extensionElements.get('values'); // this.lookup.values
+        //Wenn vorhanden die Elemente auslesen
+        const extras = element.businessObject.extensionElements.get(BPMNJSModelerLookupTablesEnum.VALUES); // this.lookup.values
         if (extras[0].values) {
           //Schleife über alle Elemente
           for (let i = 0; i < extras[0].values.length; i++) {
             //Prüfen ob der Name des Elementes IPIM_Val entspricht
-            if (extras[0].values[i].name.toLowerCase().startsWith(this.ipimTags.CALC)) {
+            if (extras[0].values[i].name.toLowerCase().startsWith(ModelerEvaluationTagsEnum.CALC)) {
               if (terms.indexOf(extras[0].values[i].value) === -1) {
                 terms.push(extras[0].values[i].value);
               }
@@ -898,8 +822,8 @@ export class ModelerComponent implements OnInit {
     //Stop MQTT from Publishing
     this.commandStack.startEvaluateMode();
 
-    const elementRegistry = this.modeler.get(this.lookup.ELEMENTREGISTRY);
-    const modeling = this.modeler.get(this.lookup.MODELING);
+    const elementRegistry = this.modeler.get(BPMNJSModelerLookupTablesEnum.ELEMENTREGISTRY);
+    const modeling = this.modeler.get(BPMNJSModelerLookupTablesEnum.MODELING);
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
     const varValMap = {};
@@ -916,12 +840,16 @@ export class ModelerComponent implements OnInit {
             //Prüfen ob der Name des Elementes IPIM_Val entspricht
             if (valueName.startsWith('IPIM_Val_'.toLowerCase())) {
               //Variablen als Key mit Wert in Map übernehmen
-              varValMap[valueName.replace('IPIM_Val_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+              varValMap[valueName.replace(ModelerEvaluationTagsEnum.VAL.toLowerCase(), '')] = extras[0].values[
+                i
+              ].value.toLowerCase();
             }
             //Prüfen ob der Name des Elementes IPIM_Val entspricht
-            if (valueName.startsWith('IPIM_META_'.toLowerCase())) {
+            if (valueName.startsWith(ModelerEvaluationTagsEnum.META.toLowerCase())) {
               //Variablen als Key mit Wert in Map übernehmen
-              varValMap[valueName.replace('IPIM_META_'.toLowerCase(), '')] = extras[0].values[i].value.toLowerCase();
+              varValMap[valueName.replace(ModelerEvaluationTagsEnum.META.toLowerCase(), '')] = extras[0].values[
+                i
+              ].value.toLowerCase();
             }
           }
         }
@@ -937,7 +865,7 @@ export class ModelerComponent implements OnInit {
           //Schleife über alle Elemente
           for (let i = 0; i < extras[0].values.length; i++) {
             //Prüfen ob der Name des Elementes IPIM entspricht
-            if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+            if (extras[0].values[i].name.toLowerCase() === ModelerEvaluationTagsEnum.CALC) {
               //Stringoperationen um den Wert anzupassen.
               let evalterm = extras[0].values[i].value.toLowerCase();
               //Solange ein [ Zeichen vorkommt, String nach Variablen durchszuchen und ersetzen mit VarValMap einträgen
@@ -973,9 +901,10 @@ export class ModelerComponent implements OnInit {
   private toggleTermsColored(elementRegistry: any, modeling: any) {
     this.logger.debug('toggleTermscolored');
     //Objekte vom this.modeler holen um nicht immer so viel tippen zu müssen.
-    const terms = this.getTermList('elementRegistry');
+    const terms = this.getTermList(BPMNJSModelerLookupTablesEnum.ELEMENTREGISTRY);
     //Alle Elemente der ElementRegistry holen
     const elements = elementRegistry.getAll();
+    console.log(elements);
 
     const colorelements = this.ipimColors.map(() => []);
     for (const element of elements) {
@@ -986,7 +915,8 @@ export class ModelerComponent implements OnInit {
         if (extras[0].values) {
           for (let i = 0; i < extras[0].values.length; i++) {
             //Prüfen ob der Name des Elementes IPIM entspricht
-            if (extras[0].values[i].name.toLowerCase() === this.ipimTags.CALC) {
+            if (extras[0].values[i].name.toLowerCase() === ModelerEvaluationTagsEnum.CALC) {
+              console.log(element);
               colorelements[terms.indexOf(extras[0].values[i].value) % this.ipimColors.length].push(element);
             }
           }
@@ -994,24 +924,25 @@ export class ModelerComponent implements OnInit {
       }
     }
     //maps the color of the term bases on the IPIM color palette
-    this.logger.info('Color Element list, ', colorelements )
+    this.logger.info('Color Element list, ', colorelements);
     this.ipimColors.map((elem, index) => {
       if (colorelements[index].length > 0) {
-
+        console.log(colorelements[index]);
         this.highlightElement(colorelements[index], index);
-        // modeling.setColor(colorelements[index], {
-        //   stroke: this.ipimColors[index]
-        // });
       }
     });
   }
 
-  private highlightElement(element: any, index: number) {
-    const registry = this.modeler.get('elementRegistry');
-    const modelling = this.modeler.get('modeling');
-    // const element = this.modeler.get('elementRegistry').get(elementID)
-    this.logger.info(element, index)
-    modelling.setColor([element], { stroke: this.ipimColors[index] });
+  private highlightElement(elements: any, index: number) {
+    // const registry = this.modeler.get('elementRegistry');
+    const modeling = this.modeler.get('modeling');
+    // for (const element of elements) {
+    //
+    //   this.logger.info('elements', elements, '[elements]', [elements], 'registry.get(element.id)', registry.get(element.id), 'element', element)
+    //   // modeling.setColor( registry.get(element.id), { stroke: this.ipimColors[index] });
+    //   // modeling.setColor(elements, { stroke: this.ipimColors[index] });
+    // }
+    modeling.setColor(elements, { stroke: this.ipimColors[index] });
   }
 
   //shows an Overlay for loading purposes

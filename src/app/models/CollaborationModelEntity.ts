@@ -87,11 +87,11 @@ export class CollaborationModelEntity {
 
   // constructor() {}
 
-  constructor(model: IModelPermissionDto) {
-    this._model_xml = model.model_xml;
-    this._model_name = model.model_name;
+  constructor(model: any ) { // either ImodelPermisisonDTO | IModelDto
+    this._model_xml = model.model_xml || model.modelXML;
+    this._model_name = model.model_name || model.modelName;
     this._id = model.id;
-    this._model_version = model.model_version || null;
+    this._model_version = model.model_version || model.modelVersion ||null;
     this._can_read = model.can_read || null;
     this._can_write = model.can_write || null;
     this._collaborator = [];
