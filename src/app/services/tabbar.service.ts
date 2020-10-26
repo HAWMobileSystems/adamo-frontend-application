@@ -6,9 +6,10 @@ import { IPIM_OPTIONS } from '../modelerConfig.service';
 import { AdamoMqttService } from './mqtt.service';
 import { CollaborationModelEntity } from '../models/CollaborationModelEntity';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TabbarService {
-
   constructor(private adamoMqttService: AdamoMqttService) {}
 
   private modelTabs: CollaborationModelEntity[] = [];

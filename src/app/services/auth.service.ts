@@ -10,6 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IUserLoginDto } from '../../client/interface/components/i-user-login-dto';
 import { IUserDto } from '../../client/interface/components/i-user-dto';
 import { UserWithTokenDto } from '../models/dto/UserWithTokenDTO';
+import { NGXLogger } from 'ngx-logger';
 
 const options = {
   withCredentials: true,
@@ -32,8 +33,8 @@ export class AuthService {
   //Session handling: Authentication when user is logging in
   private localStorageCurrentUserKey = 'currentUser';
 
-  constructor(private http: HttpClient) {
-    console.log('autservice constructor ');
+  constructor(private http: HttpClient, private logger: NGXLogger) {
+    this.logger.debug('Constructor Authservice');
     this.currentUserSubject = new BehaviorSubject<UserWithTokenDto>(
       JSON.parse(localStorage.getItem(this.localStorageCurrentUserKey)),
     );
@@ -45,7 +46,7 @@ export class AuthService {
    * @returns currentUser as DTO or null
    */
   public getCurrentUser(): UserDto {
-    console.log('called getCurrentUser', this.currentUserSubject.value);
+    this.logger.trace('AuthService: getCurrentUserWithTokenDto', this.currentUserSubject.value);
     if (!this.currentUserSubject.value) {
       throw new Error('No User');
     }
@@ -53,7 +54,8 @@ export class AuthService {
   }
 
   public getCurrentUserWithTokenDto(): UserWithTokenDto {
-    console.log('called getCurrentUser', this.currentUserSubject.value);
+    this.logger.trace('AuthService: getCurrentUserWithTokenDto', this.currentUserSubject.value);
+    // console.log('called getCurrentUser', this.currentUserSubject.value);
     if (!this.currentUserSubject.value) {
       throw new Error('No User');
     }

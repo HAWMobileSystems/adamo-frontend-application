@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { MqttService, IMqttServiceOptions, IMqttMessage } from 'ngx-mqtt';
 // const mqtt = require('mqtt');
 import { environment } from './../../environments/environment';
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AdamoMqttService {
   private subject: Subject<any> = new Subject<any>();
   private keepAfterNavigationChange = true;
