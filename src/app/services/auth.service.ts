@@ -4,7 +4,7 @@ import { IPIM_OPTIONS } from '../modelerConfig.service';
 import { ModelElement } from '../ModelerComponent/evaluator/modelElement';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 import { UserDto } from '../models/dto/UserDTO';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IUserLoginDto } from '../../client/interface/components/i-user-login-dto';
